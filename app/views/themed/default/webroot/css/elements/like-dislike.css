@@ -1,0 +1,79 @@
+/** LIKE & DISLIKE **/
+#vote_block{
+	position: relative;
+	display: block;
+	float: right;
+	clear:both;
+	color:#333;
+	text-align:left;
+	font-family:arial,sans-serif;
+	font-size:12px;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:16px;
+	margin:0;
+	padding:0;
+}
+#vote_block a:hover{
+	border: none !important;
+}
+#vote_block .like_dislike .voteblock{ margin-bottom:8px;}
+#vote_block .like_dislike,
+#vote_block .like_dislike ul,
+#vote_block .like_dislike menu,
+#vote_block .like_dislike dir{
+	list-style-type:none;
+	padding: 0;
+	margin: 0;
+}
+#vote_block .like_dislike .number,
+#vote_block #popularity_rating .number{
+	float:left;
+	background: whiteSmoke;
+	height:16px;
+	width:90px;
+	font-size:12px;
+	border-right: 2px solid #fff;
+	color:#333;
+	line-height:16px;
+	margin: 0;
+	padding: 5px 0 5px 5px;
+}
+
+#vote_block .like_dislike li:first-child,
+#vote_block #popularity_rating li:first-child{
+	border-bottom: 1px solid #fff;
+}
+
+#vote_block .like_dislike li,
+#vote_block #popularity_rating li{
+	float:left;
+	font-size:12px;
+	list-style:none;
+	text-align: left;
+	margin: 0;
+}
+#vote_block .like_dislike .action a.liked,
+#vote_block .like_dislike .action a.disliked{ background-color:#999; }
+#vote_block .like_dislike .action a.like,
+#vote_block .like_dislike .action a.dislike,
+#vote_block .like_dislike .action a.liked,
+#vote_block .like_dislike .action a.disliked{
+	background: black url('/img/icons/thumbs-up-down.png') no-repeat 6px 7px;
+}
+#vote_block .like_dislike .action a.dislike,
+#vote_block .like_dislike .action a.disliked{ background-position:6px -19px; }
+#vote_block .like_dislike .action a{
+	color: #ffffff;
+	display:block;
+	font-weight:bold;
+	padding:5px 0px 5px 23px;
+	margin: 0;
+	width:50px;
+	text-decoration:none;
+}
+#vote_block .like_dislike .action a.like:hover,
+#vote_block .like_dislike .action a.dislike:hover{ background-color:#C00; }
+#vote_block .like_dislike .action a.liked, .like_dislike .action a.disliked{ background-color: #999; }
+/** END LIKE & DISLIKE **/

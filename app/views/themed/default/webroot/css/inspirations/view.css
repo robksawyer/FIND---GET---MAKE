@@ -1,0 +1,30 @@
+div.inspirations.view{
+	font-family: Arial, Helvetica, Verdana, Geneva, sans-serif;
+	padding: 0px;
+	margin: 0px;
+}
+
+div.inspirations.view .inspiration-image{
+	position: relative;
+	display: block;
+	clear: both;
+	margin: 0px 0px 10px 0px;
+	/*border: 32px solid #000000;*/
+	padding: 0px;
+}
+div.inspirations.view .inspiration-image a,
+div.inspirations.view .inspiration-image a img{
+	padding: 0px !important;
+	margin: 0px;
+}
+
+div.inspirations.view .inspiration-image a img{
+	max-width: 500px !important;
+	/*width: 100%;*/
+}
+
+div.inspirations.view .inspiration-image a:hover{
+	text-decoration: none !important;
+	background: none;
+}
+

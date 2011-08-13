@@ -1,0 +1,70 @@
+/** Navigation - default loutout */
+#navbar{ 
+	z-index: 2 !important; 
+	border-top:1px #1c1c1c solid;
+	background-color:#262626;
+}
+.nav-main{
+	z-index: 3 !important; 
+	float:left;
+	width:950px;
+	padding:5px;
+}
+.log-main{float:right;width:400px;padding:5px;text-align:right;}
+.log-main ul,
+.nav-main ul{
+	z-index: 4 !important; 
+	list-style-type:none;
+}
+.log-main ul li,
+.nav-main ul li{ margin:0;padding:0;display:inline;padding:0px;}
+.log-main ul li a,
+.nav-main ul li a{margin:0;padding:0;}
+/*.nav-main ul.nav-browsedrop li a{ padding-right: 10px; border-right:1px solid #ffffff !important;}
+.nav-main ul.nav-browsedrop li:last-child a{ padding-right: 10px; border-right:none !important;}*/
+.log-main ul li a:hover,
+.nav-main ul li a:hover{margin:0;padding:0;}
+.log-main ul li.welcomeuser{color:#999;font-size:12px;padding-right:10px;}
+#navbar .log-main a,
+#navbar .nav-main a{font-weight:normal;color:#999;text-transform:capitalize;font-size:12px;padding:6px 15px;}
+#navbar .log-main a:hover,
+#navbar .nav-main a:hover{background-color:#464646;color:#ffffff;}
+#navbar .nav-main ul li.topnavActive a{background-color:#464646;padding-top:9px;border-top:1px black solid;border-right:1px #222 solid;border-left:1px #222 solid;}
+#navbar .nav-main ul li.active a{
+	color: #ef3f23;
+}
+#navbar img{
+	position: relative;
+	float: none !important;
+	clear: none;
+	margin-left: -7px;
+}
+/** CREATE SOMETHING **/
+#nav-browsedrop-1{left:0px;position:absolute;top:88px;background-color:#464646;border-bottom:1px solid #999999;border-left:1px solid #999999;border-right:1px solid #999999;}
+#nav-browsedrop-1 li{display:inline;padding:0px;}
+#nav-browsedrop-1 li a{display:inline;padding:7px;}
+/** ADD SOMETHING **/
+#nav-browsedrop-2{left:125px;position:absolute;top:88px;background-color:#464646;border-bottom:1px solid #999999;border-left:1px solid #999999;border-right:1px solid #999999;}
+#nav-browsedrop-2 li{display:inline;padding:0px;}
+#nav-browsedrop-2 li a{display:inline;padding:7px;}
+/** EXPLORE **/
+#nav-browsedrop-3{left:145px;position:absolute;top:88px;background-color:#464646;border-bottom:1px solid #999999;border-left:1px solid #999999;border-right:1px solid #999999;}
+#nav-browsedrop-3 li{display:inline;padding:0px;}
+#nav-browsedrop-3 li a{display:inline;padding:7px;}
+/** FORUM **/
+#nav-browsedrop-4{left:250px;position:absolute;top:88px;background-color:#464646;border-bottom:1px solid #999999;border-left:1px solid #999999;border-right:1px solid #999999;}
+#nav-browsedrop-4 li{display:inline;padding:0px;}
+#nav-browsedrop-4 li a{display:inline;padding:7px;}
+/** SEARCH **/
+#nav-browsedrop-5{left:390px;position:absolute;top:88px;background-color:#464646;border-bottom:1px solid #999999;border-left:1px solid #999999;border-right:1px solid #999999;}
+#nav-browsedrop-5 li{display:inline;padding:0px;}
+#nav-browsedrop-5 li a{display:inline;padding:7px;}
+/** ROLODEX **/
+#nav-browsedrop-6{left:300px;position:absolute;top:88px;background-color:#464646;border-bottom:1px solid #999999;border-left:1px solid #999999;border-right:1px solid #999999;}
+#nav-browsedrop-6 li{display:inline;padding:0px;}
+#nav-browsedrop-6 li a{display:inline;padding:7px;}
+
+.nav-main ul li ul{margin:0;padding:6px 0;}
+.nav-main ul li ul li{display:inline;}
+.nav-main ul li ul li a{display:inline;background-color:#464646;}
+#navbar .nav-main ul li.topnavActive ul li a{border:1px solid #464646;}

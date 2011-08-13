@@ -1,0 +1,118 @@
+.ownership-form{position:relative;margin:0;padding:0 0 15px 0;width:400px;float:left;}
+.ownership-form fieldset{padding:0;margin:0;border:none;}
+.ownership-form form{padding:0;margin:0;}
+.ownership-form form .checkbox{padding:0;margin:0;width:100px;display:block;float:left;}
+.ok-button{display:block;cursor:pointer;padding:5px 10px !important;background-color:black;margin:0px;width:auto;float:left;}
+.ok-button:hover{cursor:pointer;background-color:red;}
+.ok-button a{text-decoration:none;color:#ffffff !important;}
+.ok-button a:hover{color:#ffffff !important;text-decoration:none;}
+.ownership-button-selected .ownership-form-button{display:block;float:left;cursor:pointer;padding:10px 15px;width:auto;clear:both;background-color:#777777;}
+.ownership-button-selected .ownership-form-button:hover{cursor:pointer;background-color:red;}
+.ownership-button-selected a{color:#ffffff;text-decoration:none;}
+.ownership-button-selected a:hover{text-decoration:none;color:#ffffff;}
+.ownership-button .ownership-form-button{display:block;float:left;cursor:pointer;padding:10px 15px;background-color:black;width:auto;clear:both;}
+.ownership-button .ownership-form-button:hover{cursor:pointer;background-color:red;}
+.ownership-button a{color:#ffffff;text-decoration:none;}
+.ownership-button a:hover{text-decoration:none;color:#ffffff;}
+.ownerships-section{position:relative;margin-top:25px;margin-left:0px;padding:0;}
+.ownerships-section .ownership-item{ 
+	float: left;
+	width: 64px;
+	height: auto;
+	margin: 5px;
+}
+.ownerships-section .ownership-item img{
+	width: 64px;
+	height: 64px;
+	margin: -5px;
+}
+.ownerships-section .ownership-item a{
+	font-size: 11px;
+	padding: 0;
+	margin: 5px 0 5px 0;
+}
+#user-wants,
+#user-hads,
+#user-haves{}
+#ownership-element{
+	position: relative;
+	float: right;
+	background: transparent;
+	clear: both;
+	color:#333;
+	font-family:arial,sans-serif;
+	font-size:12px;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	height:auto;
+	line-height:16px;
+	margin:10px 0 10px 0;
+	padding: 0;
+	text-align:center;
+}
+#ownership-element a:hover{
+	border: none !important;
+}
+#ownership-element .ownership-counts{
+	position: relative;
+	list-style-type:none;
+	text-decoration:none;
+	padding: 0;
+}
+#ownership-element .ownership-counts li{
+	border-right:1px solid #CCC;
+	float:left;
+	list-style:none;
+	padding: 0 10px 0 0;
+	margin: 0 10px 0 0;
+	display:list-item;
+	text-align: center;
+}
+#ownership-element .ownership-counts li:last-child,
+#ownership-element .ownership-counts li.last{ border-right:none;}
+#ownership-element .ownership-counts li a{
+	color:#333;
+	display: block;
+	clear: both;
+	font-size:1.15em;
+	font-weight:bold;
+	padding-bottom:2px;
+	text-decoration:none;
+}
+#OwnershipSetOwnershipForm fieldset.form-type{
+	position: relative;
+	margin: 10px 0 0 0;
+	font-size: 12px;
+}
+#OwnershipSetOwnershipForm fieldset.form-type legend{
+	position: relative;
+	display: block;
+	font-size: 14px !important;
+	line-height: 18px;
+	padding: 10px 0 10px 0;
+	margin: 0 0 15px 0;
+}
+#OwnershipSetOwnershipForm input[type="radio"]{
+	margin: 0 10px 0 0;
+	padding: 0;
+}
+#OwnershipSetOwnershipForm label{
+	position: relative;
+	top: -4px;
+	padding: 0;
+	margin: 0;
+}
+/*.messagepop a.selected{background-color:#1F75CC;color:white;z-index:100;}
+*/
+.messagepop{color:#333;font-family:arial,sans-serif;font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;line-height:16px;list-style-type:none;background-color:whiteSmoke;border:1px solid black;display:none;margin-top:5px;position:absolute;text-align:left;width:160px;z-index:50;padding:10px 15px;}
+.messagepop *{margin:0px;padding:0px;}
+.messagepop p,
+.messagepop.div{border-bottom:1px solid #EFEFEF;margin:2px 0;padding-bottom:8px;}
+.messagepop p{margin-bottom:0.75em;}
+.messagepop a{outline:none !important;outline-style:none !important;outline-width:initial !important;outline-color:initial !important;}
+.messagepop .close{background-image:url('/img/icons/close-bg.gif') !important;background-attachment:scroll;background-clip:border-box;background-color:transparent;background-origin:padding-box;height:16px !important;position:absolute;right:5px;top:5px;width:16px;margin:0px 0px 0px 0px;padding:0px 0px 0px 0px;}
+.messagepop .close a{background:url('/img/icons/close-bg.gif') no-repeat !important;background-image:url('/img/icons/close-bg.gif') !important;background-repeat-x:no-repeat !important;background-repeat-y:no-repeat !important;background-attachment:initial !important;background-position-x:initial !important;background-position-y:initial !important;background-origin:initial !important;background-clip:initial !important;background-color:initial !important;display:block;font-size:1em;height:0px;overflow-x:hidden;overflow-y:hidden;padding:16px 0px 0px !important;text-indent:-2000px;width:16px !important;}
+.messagepop .close a:hover{background-color:#C00 !important;background-position:0px -16px !important;text-decoration:none;}
+.messagepop label{display:block;margin-bottom:3px;padding-left:15px;line-height:21px !important;}
+.messagepop .submit input{cursor:pointer;}

@@ -1,0 +1,247 @@
+<div class="attachments view">
+<?php
+	echo $this->element('top_actions',array('item'=>$attachment,'model'=>'Attachment','rate'=>false,'cache'=>false));
+?>
+<div class="attachments box">
+	<?php echo $this->Html->image($attachment['Attachment']['path']); ?>
+</div>
+	<dl><?php $i = 0; $class = ' class="altrow"';?>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $attachment['Attachment']['id']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Name'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $attachment['Attachment']['name']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Type'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $attachment['Attachment']['type']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Size'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $attachment['Attachment']['size']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Filesize'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $attachment['Attachment']['filesize']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Ext'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $attachment['Attachment']['ext']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Group'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $attachment['Attachment']['group']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Width x Height'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $attachment['Attachment']['width'].' x '. $attachment['Attachment']['height']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Path'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $attachment['Attachment']['path']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Path Small'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $attachment['Attachment']['path_small']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Path Med'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $attachment['Attachment']['path_med']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Uploaded'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $this->Time->niceShort($attachment['Attachment']['uploaded'],'',''); ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Modified'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $this->Time->niceShort($attachment['Attachment']['modified'],'',''); ?>
+			&nbsp;
+		</dd>
+	</dl>
+</div>
+<div class="related">
+	<h3><?php __('Related Contractors');?></h3>
+	<?php if (!empty($attachment['Contractor'])):?>
+	<table cellpadding = "0" cellspacing = "0">
+	<tr>
+		<th><?php __('Id'); ?></th>
+		<th><?php __('Name'); ?></th>
+		<th><?php __('Slug'); ?></th>
+		<th><?php __('Description'); ?></th>
+		<th><?php __('Address1'); ?></th>
+		<th><?php __('Address2'); ?></th>
+		<th><?php __('City'); ?></th>
+		<th><?php __('State'); ?></th>
+		<th><?php __('Zip'); ?></th>
+		<th><?php __('Country Id'); ?></th>
+		<th><?php __('Phone'); ?></th>
+		<th><?php __('Email'); ?></th>
+		<th><?php __('Fax'); ?></th>
+		<th><?php __('Url'); ?></th>
+		<th><?php __('Created'); ?></th>
+		<th><?php __('Modified'); ?></th>
+	</tr>
+	<?php
+		$i = 0;
+		foreach ($attachment['Contractor'] as $contractor):
+			$class = null;
+			if ($i++ % 2 == 0) {
+				$class = ' class="altrow"';
+			}
+		?>
+		<tr<?php echo $class;?>>
+			<td><?php echo $contractor['id'];?></td>
+			<td><?php echo $this->Html->link($contractor['name'],array('controller'=>'contractors','action'=>'view',$contractor['id'])); ?></td>
+			<td><?php echo $contractor['slug'];?></td>
+			<td><?php echo $contractor['description'];?></td>
+			<td><?php echo $contractor['address1'];?></td>
+			<td><?php echo $contractor['address2'];?></td>
+			<td><?php echo $contractor['city'];?></td>
+			<td><?php echo $contractor['state'];?></td>
+			<td><?php echo $contractor['zip'];?></td>
+			<td><?php echo $contractor['country_id'];?></td>
+			<td><?php echo $contractor['phone'];?></td>
+			<td><?php echo $contractor['email'];?></td>
+			<td><?php echo $contractor['fax'];?></td>
+			<td><?php echo $this->Html->link($contractor['url'],$contractor['url'],array('title'=>$contractor['name'],'target'=>'_blank'));?></td>
+			<td><?php echo $this->Time->niceShort($contractor['created'],'','');?></td>
+			<td><?php echo $this->Time->niceShort($contractor['modified'],'','');?></td>
+		</tr>
+	<?php endforeach; ?>
+	</table>
+<?php endif; ?>
+
+	<div class="actions">
+		<ul>
+			<li><?php echo $this->Html->link(__('New Contractor', true), array('controller' => 'contractors', 'action' => 'add'));?> </li>
+		</ul>
+	</div>
+</div>
+<div class="related">
+	<h3><?php __('Related Houses');?></h3>
+	<?php if (!empty($attachment['House'])):?>
+	<table cellpadding = "0" cellspacing = "0">
+	<tr>
+		<th><?php __('Id'); ?></th>
+		<th><?php __('Client Id'); ?></th>
+		<th><?php __('Name'); ?></th>
+		<th><?php __('Description'); ?></th>
+		<th><?php __('Address1'); ?></th>
+		<th><?php __('Address2'); ?></th>
+		<th><?php __('City'); ?></th>
+		<th><?php __('State'); ?></th>
+		<th><?php __('Zip'); ?></th>
+		<th><?php __('Country Id'); ?></th>
+		<th><?php __('Bedrooms'); ?></th>
+		<th><?php __('Bathrooms'); ?></th>
+		<th><?php __('Amenities'); ?></th>
+		<th><?php __('Phone'); ?></th>
+		<th><?php __('More Details'); ?></th>
+		<th><?php __('Square Footage'); ?></th>
+		<th><?php __('Created'); ?></th>
+		<th><?php __('Modified'); ?></th>
+	</tr>
+	<?php
+		$i = 0;
+		foreach ($attachment['House'] as $house):
+			$class = null;
+			if ($i++ % 2 == 0) {
+				$class = ' class="altrow"';
+			}
+		?>
+		<tr<?php echo $class;?>>
+			<td><?php echo $house['id'];?></td>
+			<td><?php echo $house['client_id'];?></td>
+			<td><?php echo $this->Html->link($house['name'],array('controller'=>'houses','action'=>'view',$house['id'])); ?></td>
+			<td><?php echo $house['description'];?></td>
+			<td><?php echo $house['address1'];?></td>
+			<td><?php echo $house['address2'];?></td>
+			<td><?php echo $house['city'];?></td>
+			<td><?php echo $house['state'];?></td>
+			<td><?php echo $house['zip'];?></td>
+			<td><?php echo $house['country_id'];?></td>
+			<td><?php echo $house['bedrooms'];?></td>
+			<td><?php echo $house['bathrooms'];?></td>
+			<td><?php echo $house['amenities'];?></td>
+			<td><?php echo $house['phone'];?></td>
+			<td><?php echo $house['more_details'];?></td>
+			<td><?php echo $house['square_footage'];?></td>
+			<td><?php echo $this->Time->niceShort($house['created'],'','');?></td>
+			<td><?php echo $this->Time->niceShort($house['modified'],'','');?></td>
+		</tr>
+	<?php endforeach; ?>
+	</table>
+<?php endif; ?>
+
+	<div class="actions">
+		<ul>
+			<li><?php echo $this->Html->link(__('New House', true), array('controller' => 'houses', 'action' => 'add'));?> </li>
+		</ul>
+	</div>
+</div>
+<div class="related">
+	<h3><?php __('Related Sources');?></h3>
+	<?php if (!empty($attachment['Source'])):?>
+	<table cellpadding = "0" cellspacing = "0">
+	<tr>
+		<th width="25%"><?php __('Name'); ?></th>
+		<th><?php __('City'); ?></th>
+		<th><?php __('State'); ?></th>
+		<th><?php __('Zip'); ?></th>
+		<th><?php __('Country Id'); ?></th>
+		<th><?php __('Email'); ?></th>
+		<th><?php __('Url'); ?></th>
+		<th><?php __('Created'); ?></th>
+		<th><?php __('Modified'); ?></th>
+	</tr>
+	<?php
+		$i = 0;
+		foreach ($attachment['Source'] as $source):
+			$class = null;
+			if ($i++ % 2 == 0) {
+				$class = ' class="altrow"';
+			}
+		?>
+		<tr<?php echo $class;?>>
+			<td><?php echo $this->Html->link($source['name'],array('controller'=>'sources','action'=>'view',$source['id']),array('title'=>$source['description'])); ?></td>
+			<td><?php echo $source['city'];?></td>
+			<td><?php echo $source['state'];?></td>
+			<td><?php echo $source['zip'];?></td>
+			<td><?php echo $source['country_id'];?></td>
+			<td><?php echo $source['email'];?></td>
+			<td><?php echo $this->Html->link($source['url'],$source['url'],array('title'=>$source['name'],'target'=>'_blank'));?></td>
+			<td><?php echo $this->Time->niceShort($source['created'],'','');?></td>
+			<td><?php echo $this->Time->niceShort($source['modified'],'','');?></td>
+		</tr>
+	<?php endforeach; ?>
+	</table>
+<?php endif; ?>
+
+	<div class="actions">
+		<ul>
+			<li><?php echo $this->Html->link(__('New Source', true), array('controller' => 'sources', 'action' => 'add'));?> </li>
+		</ul>
+	</div>
+</div>
+
+<?php
+	//Related inspirations
+	echo $this->element('clients',array('item'=>$attachment,'model'=>'Attachment','cache'=>false));
+	
+	//Related inspirations
+	echo $this->element('inspirations',array('item'=>$attachment,'model'=>'Attachment','cache'=>false));
+?>

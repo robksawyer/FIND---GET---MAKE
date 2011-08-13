@@ -1,0 +1,146 @@
+<?php
+class UfosController extends AppController {
+
+	var $name = 'Ufos';
+	var $helpers = array('Tags.TagCloud');
+	var $components = array('Uploader.Uploader','String');
+	
+	function index($filter = null) {
+		$this->Ufo->recursive = 2;
+		
+		//debug($ufos);
+		if (isset($this->passedArgs['by'])) {
+			$this->paginate = array(
+								'Tagged'=>array(
+									'model' => 'Ufo',
+									'tagged',
+									'by' => $this->passedArgs['by']
+									//'recursive' => 2 //Doesn't change anything
+								)
+							);
+			$ufos = $this->paginate('Tagged');
+			
+			$counter = 0;
+			foreach($ufos as $ufo){
+				//Find attachments
+				if(!empty($ufo['Ufo']['id'])){
+					$temp_att = $this->Ufo->read(null,$ufo['Ufo']['id']);
+					//debug($temp_att);
+					$ufos[$counter]['Attachment'] = $temp_att['Attachment'];
+
+					$counter++;
+				}else{
+					unset($ufos[$counter]);
+				}
+			}
+		}else{
+			$ufos = $this->paginate();
+		}
+		
+		$this->set(compact('ufos'));
+		$this->set('string', $this->String);
+	}
+
+	function view($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid ufo', true));
+			$this->redirect(array('action' => 'index','admin'=>false));
+		}
+		$this->set('ufo', $this->Ufo->read(null, $id));
+	}
+
+	function admin_add() {
+		if (!empty($this->data)) {
+			
+			//Upload the attachments
+			$this->uploadAttachments('Ufo');
+			//debug($this->data);
+			$this->data['Ufo']['attachment_id'] = $this->data['Attachment']['Attachment'][0];
+			unset($this->data['Attachment']);
+			
+			$this->Ufo->create();
+			if ($this->Ufo->save($this->data)) {
+				$this->Session->setFlash(__('The ufo has been saved', true));
+				$id = $this->Ufo->getLastInsertID();
+				$this->redirect(array('admin'=>false,'action' => 'view',$id));
+			} else {
+				$this->Session->setFlash(__('The ufo could not be saved. Please, try again.', true));
+			}
+		}
+		$attachments = $this->Ufo->Attachment->find('list');
+		$this->set(compact('attachments'));
+	}
+
+	function admin_edit($id = null) {
+		if (!$id && empty($this->data)) {
+			$this->Session->setFlash(__('Invalid ufo', true));
+			$this->redirect(array('action' => 'index','admin'=>false));
+		}
+		if (!empty($this->data)) {
+			
+			//Upload the attachments
+			$this->uploadAttachments('Ufo',$id);
+			$this->data['Ufo']['attachment_id'] = $this->data['Attachment']['Attachment'][0];
+			unset($this->data['Attachment']);
+			
+			if ($this->Ufo->save($this->data)) {
+				$this->Session->setFlash(__('The ufo has been saved', true));
+				$this->redirect(array('admin'=>false,'action' => 'view',$id));
+			} else {
+				$this->Session->setFlash(__('The ufo could not be saved. Please, try again.', true));
+			}
+		}
+		
+		if (empty($this->data)) {
+			$this->data = $this->Ufo->read(null, $id);
+		}
+		$attachments = $this->Ufo->Attachment->find('list');
+		$this->set(compact('attachments'));
+	}
+
+	function admin_delete($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid id for ufo', true));
+			$this->redirect(array('action'=>'index','admin'=>false));
+		}
+		if ($this->Ufo->delete($id)) {
+			$this->Session->setFlash(__('Ufo deleted', true));
+			$this->redirect(array('action'=>'index','admin'=>false));
+		}
+		$this->Session->setFlash(__('Ufo was not deleted', true));
+		$this->redirect(array('action' => 'index','admin'=>false));
+	}
+	
+	/**
+	 * Retrieves the items from the user id passed
+	 * @param id User id
+	 */
+	function getUfosFromUser($id = null){
+		$this->Ufo->recursive = 2;
+		if(isset($this->params['requested'])) {
+			$ufos = $this->Ufo->find('all',array(
+											'conditions'=>array('Ufo.user_id' => $id),
+											'limit' => 25,
+											'order' => array('Ufo.created DESC')
+											)
+										);
+			return $ufos;
+		}
+	}
+	
+	/**
+	 * Finds the tags associated with this model
+	 */
+	function tags(){
+		$this->Ufo->recursive = 2;
+		$this->paginate = array(
+							'Tagged'=>array(
+											'conditions'=>array('Tagged.model'=>'Ufo'),
+											'limit' => 25,
+											'order' => array('Tag.name ASC')
+											));
+		
+		$tags = $this->paginate('Tagged');
+		$this->set(compact('tags'));
+	}
+}

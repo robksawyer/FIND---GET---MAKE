@@ -1,0 +1,86 @@
+/*
+ * SimpleModal Basic Modal Dialog
+ * http://www.ericmmartin.com/projects/simplemodal/
+ * http://code.google.com/p/simplemodal/
+ *
+ * Copyright (c) 2010 Eric Martin - http://ericmmartin.com
+ *
+ * Licensed under the MIT license:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *
+ * Revision: $Id: basic.css 257 2010-07-27 23:06:56Z emartin24 $
+ */
+
+#basic-modal-content {display:none;}
+
+/* Overlay */
+#simplemodal-overlay {background-color:#000; cursor:wait;}
+
+/* Container */
+#simplemodal-container {
+	height:525px; 
+	width:650px; 
+	color:#bbb; 
+	background-color:#fff; 
+	border:4px solid #444; 
+	padding:12px;
+}
+#simplemodal-container .simplemodal-data {padding:8px;}
+#simplemodal-container code {background:#141414; border-left:3px solid #65B43D; color:#bbb; display:block; font-size:12px; margin-bottom:12px; padding:4px 6px 6px;}
+#simplemodal-container a {color:#ddd;}
+#simplemodal-container a.modalCloseImg {
+	background:url('/theme/default/img/modal/x.png') top right no-repeat; 
+	width:25px; height:29px; 
+	display:inline; 
+	z-index:3200; 
+	position:absolute; 
+	top:-15px; right:-16px; 
+	cursor:pointer;
+}
+#simplemodal-container a.modalCloseImg:hover{
+	background:url('/theme/default/img/modal/x_on.png') top right no-repeat;
+}
+#simplemodal-container h3 { 
+	color:#ef3f23 !important; 
+	border-bottom: 3px solid #ef3f23; 
+	text-transform: lowercase; 
+	width: auto;
+	float: left;
+	clear: both;
+	margin-bottom: 25px;
+	padding-bottom: 3px;
+}
+#basic-modal-content p{
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	clear: both;
+}
+
+#basic-modal-content  #products{
+	margin-top: 0 !important;
+	padding-top: 5px !important;
+}
+
+
+/** ADD PRODUCTS FORM **/
+#basic-modal-content .products.form{
+	background: #ffffff !important;
+	padding: 0px;
+	margin: 0;
+}
+#basic-modal-content .products.form a:link,
+#basic-modal-content .products.form a:visited,
+#basic-modal-content .products.form a:active{
+	color: #666666;
+}
+#basic-modal-content .products.form .wrapper{
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+
+#basic-modal-content input#attach-url{
+	width: 90% !important;
+}
+/** END ADD PRODUCTS FORM **/

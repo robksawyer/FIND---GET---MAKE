@@ -1,0 +1,172 @@
+.image{
+	margin-right: 25px;
+	position:relative;
+}
+#taggable-image{
+	/*float: left;*/
+}
+/** ATTACHMENT TAGS **/
+/* Tagging specfic styles here */
+.on-off {
+	position: relative;
+	display: block;
+	margin-bottom: 0px;
+}
+
+.start-tagging, 
+.finish-tagging {
+	background:#e7e7e7;
+	width: 110px;
+	padding:5px 3px;
+	color:#232323;
+	cursor:pointer;
+	font-weight:bold;
+	text-align:center;
+}
+
+.start-tagging:hover, 
+.finish-tagging:hover {
+	background:#e3e3e3;
+	color:#232323;
+}
+
+/* Image Map CSS */
+ul.map{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+
+ul.map li {
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+ul.map li a {
+	position:absolute;
+	padding: 0px;
+	display:block;
+	cursor:pointer;
+	color:#000;
+	border:2px solid #dde3c5; 
+	background-color: #edefe4;
+	filter:alpha(opacity=20);
+	opacity:0.20;
+}
+ul.map li a div {
+	width: auto;
+	display:none;
+}
+
+/*.map li a.hover,
+.map li a:hover {
+	background: url(/img/tag_hotspot_on_62x62.png) top left no-repeat;
+}*/
+/*
+use this for a sqaure border highlight
+*/
+
+ul.map li a.hover, 
+ul.map li a:hover { 
+	color: #ffffff;
+	/*border:2px solid #0e9a82; */
+	filter:alpha(opacity=55);
+	opacity:0.55;
+}
+
+ul.map li .hover,
+ul.map li a:hover div{ 
+	color: #000000 !important;
+	margin-top: 2px !important;
+	padding:5px !important;
+}
+
+/* THIS SHOWS ON HOVER OF THE TITLES */
+/*ul.map li .hover{ 
+	color: #ffffff !important;
+	border:2px solid #0e9a82 !important; 
+	background-color: #0e9a82 !important;
+	padding: 10px;
+	text-align: center;
+}*/
+
+/* END THIS SHOWS ON HOVER OF THE TITLES */
+
+.tag_titles{
+	position: relative;
+	float: left;
+	padding: 0;
+	margin: 0;
+}
+.tag_titles ul#titles {
+	display: inline;
+	padding: 0;
+	margin: 0;
+}
+
+.tag_titles ul#titles li {
+	float: left;
+	margin: 3px 5px 3px 0;
+	list-style: none;
+	padding: 4px 4px;
+	background: #efefef;
+}
+
+.tag_titles ul#titles li:first-child {
+}
+
+/* Form CSS */
+#title_container { 
+	background: #262626; 
+	color: #acacac;
+	position:absolute; 
+	z-index:999;
+	width:auto; 
+	padding:10px;
+	
+}
+#title_container label { 
+	font-size:14px; 
+	color:#acacac; 
+}
+#title_container input { 
+	position: relative;
+	width: 115px; 
+	margin: 0 auto;
+}
+#title_container .send { 
+	position:absolute; 
+	left:5px; 
+	top:755px; 
+}
+
+/* Error box */
+#error-box { width:200px; height:60px; padding:10px; margin-left:300px; background:#ffadad; border:1px #000 solid; position:absolute; top:303px; z-index:1; }
+.confirm { background:#0FC !important; color:#333 !important; }
+.err { list-style-image:url(/img/icons/delete.gif); margin-left:25px; }
+.confirm .err { list-style-image:url(/img/test-pass-icon.png); }
+.err li { margin-bottom:8px; }
+.closebtn { position:absolute; bottom:10px; right:10px; background:url(/img/icons/delete.gif) no-repeat 0px 0; padding-left:15px; }
+.confirm .closebtn { background:url(/img/test-pass-icon.png) no-repeat 0px 0; }
+
+#AttachmentTagAddForm label{
+	padding: 3px;
+}
+#AttachmentTagAddForm .input,
+#AttachmentTagAddForm input.name{
+	position: relative;
+	display: inline;
+	float: left;
+	clear: none;
+	font-size: 12px;
+}
+
+#AttachmentTagAddForm .submit,
+#AttachmentTagAddForm .submit input[type="submit"]{
+	position: relative;
+	display: inline;
+	margin: 0px;
+	padding: 4px;
+}
+
+/** END ATTACHMENT TAGS **/
