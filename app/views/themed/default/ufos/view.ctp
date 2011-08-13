@@ -28,10 +28,17 @@
 		<?php echo $this->Html->image($ufo['Attachment']['path'],array('alt'=>$title,'url'=>$source_url,'title'=>$title)); ?>
 	</div>
 </div>
+<div class="clear"></div>
+<?php if(!empty($source_url)): ?>
+<div class="source">
+	<?php echo "Source: ".$this->Html->link($source_url, $source_url,array('target'=>'_blank')); ?>
+</div>
+<?php endif; ?>
+<br/>
 <?php if(!empty($ufo['Ufo']['description'])): ?>
-<dl class="description">
+<div class="description">
 	<?php echo "<span class='light-grey'>".$ufo['Ufo']['description']."</span>"; ?>
-</dl>
+</div>
 <div class="clear"></div>
 <?php endif; ?>
 <div id="comments">

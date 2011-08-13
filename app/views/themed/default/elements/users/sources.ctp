@@ -1,5 +1,5 @@
 <div class="sources moderate">
-	<div class="header lime"><?php __('Your latest sources');?></div>
+	<div class="header grey"><?php __('Your latest sources');?></div>
 	<?php if (!empty($userSources)):?>
 	<div class="latest">
 	<?php
@@ -18,6 +18,8 @@
 		</ul>
 	</div>
 	<div class="clear"></div>
+<?php else: ?>
+<div class="missing-content"><p>Keep track of any shop that stocks your favorite brands.</p></div>
 <?php endif; ?>
 </div>
 <div class="clear"></div>

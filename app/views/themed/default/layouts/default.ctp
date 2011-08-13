@@ -148,7 +148,7 @@
 			<div id="content">
 				<?php
 					if ($this->params['action'] == 'display' || $this->params['action'] == 'admin_moderate') {
-						//The competition was here.
+						//The challenge was here.
 					}
 				?>
 				<?php echo $this->Session->flash();?>

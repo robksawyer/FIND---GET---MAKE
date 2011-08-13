@@ -1,9 +1,11 @@
-<div class="products moderate">
-	<div class="header pink"><?php __('Products owned by you');?></div>
+<div class="haves moderate">
+	<div class="header grey"><?php __('Products owned by you');?></div>
+	<?php
+	if(!empty($products)):
+	?>
 	<!-- Start gridded items -->
 	<div id="grid-container-have-products">
 	<?php
-	if(!empty($products)):
 	$i = 0;
 	foreach ($products as $product):
 	?>
@@ -45,7 +47,6 @@
 		</div>
 	<?php 
 	endforeach; 
-	endif;
 	?>
 	</div>
 	<div class="clear"></div>
@@ -55,8 +56,12 @@
 			<li><?php echo $this->Html->link(__('See All &rsaquo;', true), array('plugin'=>'','admin'=>false,'controller' => 'products', 'action' => 'users',$authUser['User']['id']),array('escape'=>false));?> </li>
 		</ul>
 	</div>
+	<?php else: ?>
+		<div class="missing-content"><p>Navigate to a product. Click <i>+add to list</i> under a product image, and select Have list to make products appear here.<p></div>
+	<?php
+	endif;
+	?>
 </div>
-
 <div class="clear"></div>
 <script type="text/javascript">
 $(function(){

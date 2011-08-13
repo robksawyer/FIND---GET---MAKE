@@ -1,9 +1,14 @@
+<?php 
+	$products = $this->requestAction('/products/userProducts/'.$user_id.'/10'); 
+?>
 <div class="products moderate">
-	<div class="header pink"><?php __('Latest products');?></div>
+	<div class="header grey"><?php __('Latest products');?></div>
+	<?php
+	if(!empty($products)):
+	?>
 	<!-- Start gridded items -->
 	<div id="grid-container-products">
 	<?php
-	if(!empty($products)):
 	$i = 0;
 	foreach ($products as $product):
 
@@ -45,13 +50,13 @@
 				<div class="clear"></div>
 			</div>
 		</div>
-	<?php 
-	endforeach; 
-	endif;
-	?>
+	<?php endforeach; ?>
 	</div>
 	<div class="clear"></div>
 	<!-- End gridded items -->
+	<?php else: ?>
+		<div class="missing-content"><p>Adding a product is an easy way to keep track of an item you’ve been wanting to buy or use in a space.</p></div>
+	<?php endif; ?>
 </div>
 <div class="clear"></div>
 <script type="text/javascript">

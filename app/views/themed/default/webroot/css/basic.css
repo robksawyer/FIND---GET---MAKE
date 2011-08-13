@@ -332,6 +332,15 @@ div.message {
  * 
 */
 
+div.missing-content{
+	position: relative;
+	clear: both;
+	margin-top: 25px;
+	font-size: 16px;
+	color: #a7a7a7;
+	font-weight: normal;
+}
+
 .ad{
 	margin: 10px 0 10px 0;
 	padding: 5px;
@@ -801,6 +810,11 @@ ul.inline-list li img{ }
 .index .header.grey,
 .moderate .header.grey{
 	border-bottom: 4px solid #d3d3d3;
+}
+
+.index .header.red,
+.moderate .header.red{
+	border-bottom: 4px solid #EF3F23;
 }
 
 .index .header.pink,
@@ -1523,7 +1537,7 @@ input, textarea {
 /** END PRETTY INPUT FIELDS **/
 
 /** COMPETITION **/
-#competition{
+#challenge{
 	position: relative;
 	text-align: center;
 	margin: -10px 0 15px 0;
@@ -1533,13 +1547,13 @@ input, textarea {
 	background-color: #f7f7f7;
 }
 
-#competition .competition{
+#challenge .challenge{
 	position: relative;
 	font-size: 18px;
 	color: #232323;
 	padding: 20px;
 }
-#competition .competition-details{
+#challenge .challenge-details{
 	position: relative;
 	text-align: left !important;
 	margin-top: 10px;
@@ -1549,26 +1563,26 @@ input, textarea {
 	font-weight: normal;
 	border-top: 1px solid #bfbfbf;
 }
-#competition:hover{
+#challenge:hover{
 	color: #232323;
 	background: #fff;
 	border-color: #ef3f23;
 }
-#competition .competition a{
+#challenge .challenge a{
 	position: relative;
 	color: #444444;
 	font-weight: normal;
 	padding: 20px;
 	text-align: center;
 }
-#competition .competition a:hover{
+#challenge .challenge a:hover{
 	color: #000000;
 	font-weight: normal;
 }
-#competition .competition img.competition-hide{
+#challenge .challenge img.challenge-hide{
 	
 }
-#competition .competition .competition-hide-link{
+#challenge .challenge .challenge-hide-link{
 	position: relative;
 	float: right;
 	margin: -20px;
@@ -1604,10 +1618,11 @@ input, textarea {
 	width: 100%;
 }
 
-.moderate.inspirations{
-	width: 90%;
-}
-.moderate.products{
+.moderate.inspirations,
+.moderate.products,
+.moderate.collections,
+.moderate.wants,
+.moderate.haves{
 	width: 90%;
 }
 /** END MODERATE **/
@@ -1675,17 +1690,14 @@ input, textarea {
 #grid-container-products,
 #grid-container-have-products,
 #grid-container-want-products,
-#grid-container-inspirations{
+#grid-container-inspirations,
+#grid-container-collections{
 	position: relative;
 	top: 15px;
 	width: 100% !important;
 }
 
-#grid-container .grid-item,
-#grid-container-products .grid-item,
-#grid-container-have-products .grid-item,
-#grid-container-want-products .grid-item,
-#grid-container-inspirations .grid-item{
+.grid-item{
 	position: relative;
 	display: block;
 	float: left;
@@ -1698,32 +1710,18 @@ input, textarea {
 	clear: none;
 }
 
-#grid-container .grid-item img,
-#grid-container .grid-item a,
-#grid-container-products .grid-item a,
-#grid-container-have-products .grid-item a,
-#grid-container-want-products .grid-item a,
-#grid-container-inspirations .grid-item a,
-#grid-container-products .grid-item img,
-#grid-container-inspirations .grid-item img{
+.grid-item img,
+.grid-item a{
 	position: relative;
 	padding: 0 0 3px 0;
 	margin: 0;
 }
 
-#grid-container .grid-item img,
-#grid-container-products .grid-item img,
-#grid-container-have-products .grid-item img,
-#grid-container-want-products .grid-item img,
-#grid-container-inspirations .grid-item img{
+.grid-item img{
 	max-width: 200px;
 }
 
-#grid-container .grid-item p.description,
-#grid-container-products .grid-item p.description,
-#grid-container-have-products .grid-item p.description,
-#grid-container-want-products .grid-item p.description,
-#grid-container-inspirations .grid-item p.description{
+.grid-item p.description{
 	position: relative;
 	display: block;
 	color: #000000 !important;
@@ -1734,16 +1732,16 @@ input, textarea {
 	border-bottom: none !important;
 }
 
-#grid-container .grid-item .bottom-detail,
-#grid-container-products .grid-item .bottom-detail,
-#grid-container-have-products .grid-item .bottom-detail,
-#grid-container-want-products .grid-item .bottom-detail,
-#grid-container-inspirations .grid-item .bottom-detail{
+.grid-item .bottom-detail{
 	border-top: 1px solid #000000;
 	border-bottom: 3px solid #000000;
 	padding: 4px 0 5px 0;
 	margin: 12px 0 0 0;
 	width: 100%;
+}
+.grid-item .date{
+	padding-left: 0;
+	margin-left: 1px;
 }
 .grid-item .lock{
 	position: relative;
@@ -1757,28 +1755,16 @@ input, textarea {
 	margin: 0;
 }
 
-#grid-container .grid-item span,
-#grid-container-products .grid-item span,
-#grid-container-have-products .grid-item span,
-#grid-container-want-products .grid-item span,
-#grid-container-inspirations .grid-item span{
+.grid-item span{
 	float: left;
 	padding-left: 5px;
 }
-#grid-container .grid-item .rating,
-#grid-container-products .grid-item .rating,
-#grid-container-have-products .grid-item .rating,
-#grid-container-want-products .grid-item .rating,
-#grid-container-inspirations .grid-item .rating{
+.grid-item .rating{
 	float: none;
 	padding: 0;
 	margin: 5px 0 5px 0;
 }
-#grid-container .grid-item .rating img,
-#grid-container-products .grid-item .rating img,
-#grid-container-have-products .grid-item .rating img,
-#grid-container-want-products .grid-item .rating img,
-#grid-container-inspirations .grid-item .rating img{
+.grid-item .rating img{
 	width: 10px;
 	height: 10px;
 }

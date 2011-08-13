@@ -29,7 +29,7 @@
 </div>
 <div class="right-container-index">
 	<div class="inspirations index">
-		<div class="header orange">
+		<div class="header red">
 		<?php
 		if(empty($this->params['named']['by'])){
 			__('Inspirations');
@@ -38,10 +38,12 @@
 		}
 		?>
 		</div>
-		<p style="margin-top: 20px">Inspirations are: <br/>completed rooms you lust after<br/>lines &amp; shapes you want to use<br/>colors and forms that enthrall you<br/>sketches that one day will be fully realized.</p>
-		<div id="grid-container">
+		<h4>Inspirations are: <br/>completed rooms you lust after<br/>lines &amp; shapes you want to use<br/>colors and forms that enthrall you<br/>sketches that one day will be fully realized.</h4>
 		<?php
 		if(!empty($inspirations)):
+		?>
+		<div id="grid-container">
+		<?php
 		$i = 0;
 		foreach ($inspirations as $inspiration):
 			
@@ -52,10 +54,14 @@
 						echo $this->Html->image($inspiration['Attachment'][0]['path_med'],array('alt'=>'','url'=>array('action'=>'view',$inspiration['Inspiration']['id']))); 
 					}
 				?>
-				<br/>
-				<span class="title"><?php echo $this->Html->link($inspiration['Inspiration']['name'],array('controller'=>'inspirations','action'=>'view',$inspiration['Inspiration']['id'])); ?></span><br/>
-				<span class="description"><?php echo $string->truncate($inspiration['Inspiration']['description'],250); ?></span><br/>
-				<?php if(!empty($inspiration['Inspiration']['designer'])) echo "Designed by ".$inspiration['Inspiration']['designer']; ?><br/>
+				<div class="title"><?php echo $this->Html->link($inspiration['Inspiration']['name'],array('controller'=>'inspirations','action'=>'view',$inspiration['Inspiration']['id'])); ?></div>
+				<div class="description"><?php echo $string->truncate($inspiration['Inspiration']['description'],250); ?></div>
+				<?php 
+				if(!empty($inspiration['Inspiration']['designer'])){
+					echo "<div class='designer'>Designed by ".$inspiration['Inspiration']['designer']."</div>"; 
+				}
+				?>
+				<div class="designer"><?php echo "Added by ".$this->Html->link($inspiration['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$inspiration['User']['id'])); ?></div>
 				<div class="bottom-detail">
 					<span class="date"><?php 
 							echo $this->Time->niceShort($inspiration['Inspiration']['created'],null,null);
@@ -86,10 +92,7 @@
 					<div class="clear"></div>
 				</div>
 			</div>
-		<?php 
-		endforeach; 
-		endif;
-		?>
+		<?php endforeach; ?>
 		</div>
 		<div class="clear"></div>
 		
@@ -112,7 +115,8 @@
 				<li><?php //echo $this->Html->link(__('New Inspiration', true), array('action' => 'add','admin'=>true)); ?></li>
 			</ul>
 		</div>
-		
+		<?php else: ?>
+		<?php endif; ?>
 	</div>
 </div>
 <script type="text/javascript">

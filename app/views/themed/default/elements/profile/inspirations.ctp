@@ -1,8 +1,13 @@
+<?php 
+	$inspirations = $this->requestAction('/inspirations/userInspirations/'.$user_id.'/10'); 
+?>
 <div class="inspirations moderate">
-	<div class="header teal"><?php __('Latest inspirations');?></div>
-	<div id="grid-container-inspirations">
+	<div class="header grey"><?php __('Latest inspirations');?></div>
 	<?php
 	if(!empty($inspirations)):
+	?>
+	<div id="grid-container-inspirations">
+	<?php
 	$i = 0;
 	foreach ($inspirations as $inspiration):
 	?>
@@ -44,12 +49,12 @@
 				<div class="clear"></div>
 			</div>
 		</div>
-	<?php 
-	endforeach; 
-	endif;
-	?>
+	<?php endforeach; ?>
 	</div>
 	<div class="clear"></div>
+	<?php else: ?>
+		<div class="missing-content"><p>Inspirations are tear sheets that depict a space you’d like to step inside. Use the product database to find the elements (tables, chairs, lamps) in your inspiration image. It’s satisfying to find the exact products used, but this isn’t a test: find and attach different products if you’d like.</p></div>
+	<?php endif; ?>
 </div>
 <div class="clear"></div>
 <script type="text/javascript">

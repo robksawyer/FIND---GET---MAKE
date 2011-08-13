@@ -1,8 +1,5 @@
-<?php
-	$collections = $this->requestAction('/collections/userCollections/'.$user_id.'/10');
-?>
 <div class="collections moderate">
-	<div class="header grey"><?php __('latest collections'); ?></div>
+	<div class="header grey"><?php __('Your latest Collections'); ?></div>
 	<?php
 	if(!empty($collections)):
 	?>

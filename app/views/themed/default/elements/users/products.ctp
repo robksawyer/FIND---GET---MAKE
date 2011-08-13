@@ -1,9 +1,11 @@
 <div class="products moderate">
-	<div class="header pink"><?php __('Your latest products');?></div>
+	<div class="header grey"><?php __('Your latest products');?></div>
+	<?php
+	if(!empty($products)):
+	?>
 	<!-- Start gridded items -->
 	<div id="grid-container-products">
 	<?php
-	if(!empty($products)):
 	$i = 0;
 	foreach ($products as $product):
 
@@ -45,10 +47,7 @@
 				<div class="clear"></div>
 			</div>
 		</div>
-	<?php 
-	endforeach; 
-	endif;
-	?>
+	<?php endforeach; ?>
 	</div>
 	<div class="clear"></div>
 	<!-- End gridded items -->
@@ -59,6 +58,9 @@
 			<li><?php echo $this->Html->link(__('See All &rsaquo;', true), array('plugin'=>'','admin'=>false,'controller' => 'products', 'action' => 'users',$authUser['User']['id']),array('escape'=>false));?> </li>
 		</ul>
 	</div>
+	<?php endif; ?>
+	<?php else:?>
+	<div class="missing-content"><p>Adding a product is an easy way to keep track of an item you’ve been wanting to buy or use in a space.</p></div>
 	<?php endif; ?>
 </div>
 

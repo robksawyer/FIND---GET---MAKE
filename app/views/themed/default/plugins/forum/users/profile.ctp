@@ -68,20 +68,24 @@ if (!empty($user)) { ?>
 <div class="moderate-area">
 	<div class="left-container-with-sidebar">
 	<?php
-	$userProducts = $this->requestAction('/products/userProducts/'.$user['User']['id'].'/10');
-	$userInspirations = $this->requestAction('/inspirations/userInspirations/'.$user['User']['id'].'/10');
 	
 	//inspirations
-	echo $this->element('profile'.DS.'inspirations',array('inspirations'=>$userInspirations));
+	echo $this->element('profile'.DS.'inspirations',array('user_id'=>$user['User']['id']));
 
+	//collections
+	echo $this->element('profile'.DS.'collections',array('user_id'=>$user['User']['id']));
+	
 	//products
-	echo $this->element('profile'.DS.'products',array('products'=>$userProducts));
+	echo $this->element('profile'.DS.'products',array('user_id'=>$user['User']['id']));
 	?>
 	</div>
 	<div class="right-sidebar">
 	<?php
 	//sources
 	echo $this->element('profile'.DS.'sources',array('user_id'=>$user['User']['id']));
+	
+	//ufos
+	echo $this->element('profile'.DS.'ufos',array('user_id'=>$user['User']['id']));
 	?>
 	</div>
 </div>

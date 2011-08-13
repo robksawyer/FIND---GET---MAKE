@@ -30,8 +30,8 @@
 			<script type="text/javascript" src="http://theinteriorsource.disqus.com/combination_widget.js?num_items=5&hide_mods=0&color=grey&default_tab=people&excerpt_length=200"></script>
 		</div>
 		<?php
-			//Competition
-			echo $this->element('competition',array('cache'=>false));
+			//Challenge
+			echo $this->element('challenge',array('cache'=>false));
 		?>
 	</div>
 </div>

@@ -31,7 +31,7 @@ if(!empty($this->Paginator->params['paging']['Tagged'])){
 </div>
 <div class="right-container-index">
 	<div class="sources index">
-		<div class="header pink">
+		<div class="header red">
 		<?php 
 			if(empty($this->params['named']['by'])){
 				__('Sources ('.$total_count.')');
@@ -40,6 +40,7 @@ if(!empty($this->Paginator->params['paging']['Tagged'])){
 			}
 		?>
 		</div>
+		<h4>Keep track of any shop that stocks your favorite brands.</h4>
 		<table cellpadding="0" cellspacing="0">
 		<tr>
 				<th width="25%"><?php echo $this->Paginator->sort('name');?></th>

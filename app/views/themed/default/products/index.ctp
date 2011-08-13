@@ -32,18 +32,20 @@
 </div>
 <div class="right-container-index">
 	<div class="products index">
-		<div class="header teal"><?php 
+		<div class="header red"><?php 
 			if(empty($this->params['named']['by'])){
 				__('Products ('.$total_count.')');
 			}else{
 				__('Products tagged [ '.$this->params['named']['by'].' ]');
 			}
 		?></div>
-		
+		<h4>Adding a product is an easy way to keep track of an item you’ve been wanting to buy or use in a space.</h4>
+		<?php
+		if(!empty($products)):
+		?>
 		<!-- Start gridded items -->
 		<div id="grid-container">
 		<?php
-		if(!empty($products)):
 		$i = 0;
 		foreach ($products as $product):
 			
@@ -54,12 +56,9 @@
 						echo $this->Html->image($product['Attachment'][0]['path_med'],array('alt'=>'','url'=>array('action'=>'view',$product['Product']['id']))); 
 					}
 				?>
-				<br/>
-				<span class="title"><?php echo $this->Html->link($product['Product']['name'],array('controller'=>'products','action'=>'view',$product['Product']['id'])); ?></span>
-				<br/>
-				<p class="description"><?php echo $string->truncate($product['Product']['description'],250); ?></p>
-				<br/>
-				<?php if(!empty($product['Product']['designer'])) echo "Designed by, ".$product['Product']['designer']; ?><br/>
+				<div class="title"><?php echo $this->Html->link($product['Product']['name'],array('controller'=>'products','action'=>'view',$product['Product']['id'])); ?></div>
+				<div class="description"><?php echo $string->truncate($product['Product']['description'],250); ?></div>
+				<?php if(!empty($product['Product']['designer'])) echo "<div class='designer'>Designed by, ".$product['Product']['designer']."</div>"; ?><br/>
 				<div class="bottom-detail">
 					<span class="date"><?php echo $this->Time->niceShort($product['Product']['created'],null,null)." / "; ?>&nbsp;</span>
 					<span class="tags"><?php
@@ -84,14 +83,10 @@
 					<div class="clear"></div>
 				</div>
 			</div>
-		<?php 
-		endforeach; 
-		endif;
-		?>
+		<?php endforeach; ?>
 		</div>
 		<div class="clear"></div>
 		<!-- End gridded items -->
-		
 		<!-- Paging -->
 		<p>
 		<?php
@@ -113,6 +108,9 @@
 				<li><?php //echo $this->Html->link(__('New Product', true), array('action' => 'add','admin'=>true)); ?></li>
 			</ul>
 		</div>
+		<?php else: ?>
+			
+		<? endif;?>
 	</div>
 </div>
 <script type="text/javascript">

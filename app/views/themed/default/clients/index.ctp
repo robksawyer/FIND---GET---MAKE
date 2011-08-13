@@ -8,7 +8,7 @@
 	}
 ?>
 <div class="clients index">
-	<div class="header pink"><?php __('Clients');?></div>
+	<div class="header red"><?php __('Clients');?></div>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th width="15%"><?php echo $this->Paginator->sort('name');?></th>

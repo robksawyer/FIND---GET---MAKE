@@ -24,18 +24,20 @@
 </div>
 <div class="right-container-index">
 	<div class="collections index">
-		<div class="header grey"><?php 
+		<div class="header red"><?php 
 			if(empty($this->params['named']['by'])){
 				__('Collections');
 			}else{
 				__('Collections tagged [ '.$this->params['named']['by'].' ]');
 			}
 		?></div>
-	
+		<h4>Things you’ve grouped together for any reason or season: that’s a collection.</h4>
+		<?php
+		if(!empty($collections)): 
+		?>
 		<!-- Start gridded items -->
 		<div id="grid-container">
 		<?php
-		if(!empty($collections)):
 		$i = 0;
 		foreach ($collections as $collection):
 		
@@ -79,11 +81,10 @@
 					}
 				?>
 				<br/>
-				<span class="title"><?php echo $this->Html->link($collection['Collection']['name'],array('controller'=>'collections','action'=>'view',$collection['Collection']['id'])); ?></span>
-				<br/>
-				<p class="description"><?php echo $string->truncate($collection['Collection']['description'],350); ?></p>
-				<br/>
-				<?php if(!empty($collection['Collection']['designer'])) echo "Designed by ".$collection['Collection']['designer']; ?><br/>
+				<div class="title"><?php echo $this->Html->link($collection['Collection']['name'],array('controller'=>'collections','action'=>'view',$collection['Collection']['id'])); ?></div>
+				<div class="description"><?php echo $string->truncate($collection['Collection']['description'],350); ?></div>
+				<?php if(!empty($collection['Collection']['credit'])) echo "<div class='designer'>Credit: ".$collection['Collection']['credit']."</div>"; ?>
+					<div class="designer"><?php echo "Added by ".$this->Html->link($collection['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$collection['User']['id'])); ?></div>
 				<div class="bottom-detail">
 					<span class="date"><?php echo $this->Time->niceShort($collection['Collection']['created'],null,null); ?>&nbsp;</span>
 					<span class="tags"><?php
@@ -112,10 +113,7 @@
 					<div class="clear"></div>
 				</div>
 			</div>
-		<?php 
-		endforeach; 
-		endif;
-		?>
+		<?php endforeach; ?>
 		</div>
 		<div class="clear"></div>
 		<!-- End gridded items -->
@@ -139,5 +137,8 @@
 				<li><?php echo $this->Html->link(__('New Collection', true), array('action' => 'add','admin'=>true)); ?></li>
 			</ul>
 		</div>
+		<?php else: ?>
+			
+		<?php endif; ?>
 	</div>
 </div>

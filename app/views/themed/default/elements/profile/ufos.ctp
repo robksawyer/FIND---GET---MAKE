@@ -1,5 +1,8 @@
+<?php
+	$userUfos = $this->requestAction('/ufos/getUfosFromUser/'.$user_id.'/10');
+?>
 <div class="ufos moderate">
-	<div class="header grey"><?php __('Your latest ufos');?></div>
+	<div class="header grey"><?php __('latest ufos');?></div>
 	<div class="clear"></div>
 	<?php if (!empty($userUfos)):?>
 	<div class="images">
@@ -9,7 +12,7 @@
 	?>
 		<?php
 			if(!empty($ufo['Attachment']['path_small'])){
-				echo $this->Html->image($ufo['Attachment']['path_small'],array('alt'=>'','url'=>array('controller'=>'ufos','action'=>'view',$ufo['Ufo']['id'],'admin'=>false))); 
+				echo $this->Html->image($ufo['Attachment']['path_small'],array('alt'=>'','url'=>array('plugin'=>'','controller'=>'ufos','action'=>'view',$ufo['Ufo']['id'],'admin'=>false))); 
 			}
 		?>
 		<?php endforeach; ?>

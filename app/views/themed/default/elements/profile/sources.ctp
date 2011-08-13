@@ -2,7 +2,7 @@
 	$userData = $this->requestAction('/sources/getProfileData/'.$user_id);
 ?>
 <div class="sources moderate">
-	<div class="header lime"><?php __('Latest sources');?></div>
+	<div class="header grey"><?php __('Latest sources');?></div>
 	<?php if (!empty($userData)):?>
 	<div class="latest">
 	<?php
@@ -15,5 +15,7 @@
 		</div>
 	<?php endforeach; ?>
 	</div>
+<?php else: ?>
+	<div class="missing-content"><p>Keep track of any shop that stocks your favorite brands.</p></div>
 <?php endif; ?>
 </div>

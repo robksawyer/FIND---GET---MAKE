@@ -81,51 +81,29 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 	<div class="left-container-with-sidebar">
 		<?php
 		//wants
-		if(!empty($wantedProducts)){
-			echo $this->element('users'.DS.'wants',array('products'=>$wantedProducts));
-		}
+		echo $this->element('users'.DS.'wants',array('products'=>$wantedProducts));
+
 		//haves
-		if(!empty($haveProducts)){
-			echo $this->element('users'.DS.'haves',array('products'=>$haveProducts));
-		}
+		echo $this->element('users'.DS.'haves',array('products'=>$haveProducts));
 		
 		//collections
-		if(!empty($userCollections)){
-			echo $this->element('users'.DS.'wants',array('products'=>$userCollections));
-		}else{
-			//Start adding now. Some description about adding collections and what they are.
-		}
+		echo $this->element('users'.DS.'collections',array('collections'=>$userCollections));
 		
 		//inspirations
-		if(!empty($userInspirations)){
-			echo $this->element('users'.DS.'inspirations',array('inspirations'=>$userInspirations));
-		}else{
-			//Start adding now. Some copy related to what inspirations are and how to add them.
-		}
+		echo $this->element('users'.DS.'inspirations',array('inspirations'=>$userInspirations));
 		
 		//products
-		if(!empty($userProducts)){
-			echo $this->element('users'.DS.'products',array('products'=>$userProducts));
-		}else{
-			//Some copy related to what products are and how to add them and why.
-		}
+		echo $this->element('users'.DS.'products',array('products'=>$userProducts));
+
 		?>
 	</div>
 	<div class="right-sidebar">
 		<?php
 		//sources
-		if(!empty($userProducts)){
-			echo $this->element('users'.DS.'sources',compact('userProducts'));
-		}else{
-			//Why how where
-		}
+		echo $this->element('users'.DS.'sources',compact('userSources'));
 		
 		//ufos
-		if(!empty($userUfos)){
-			echo $this->element('users'.DS.'ufos',compact('userUfos'));
-		}else{
-			//Why how where
-		}
+		echo $this->element('users'.DS.'ufos',compact('userUfos'));
 		
 		?>
 	</div>

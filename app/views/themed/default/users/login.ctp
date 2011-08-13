@@ -9,10 +9,7 @@
 		<?php echo $this->Form->input('auto_login', array('type' => 'checkbox', 'label' => __d('forum', 'Remember Me?', true))); ?>
 		<?php echo $this->Form->end(__d('forum', 'Login', true)); ?>
 	</fieldset>
-	<p>
-		The Source is a closed service and was built for my own personal use.
-	</p>
 	<p style="display:none">
-		If you don't already have an account, you can create one <a href="/admin/users/add">here</a>.
+		If you don't already have an account, you can create one <a href="/users/signup">here</a>.
 	</p>
 </div>

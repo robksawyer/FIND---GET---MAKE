@@ -8,7 +8,8 @@
 	}
 ?>
 <div class="contractors index">
-	<div class="header teal"><?php __('Contractors');?></div>
+	<div class="header red"><?php __('Contractors');?></div>
+	<h4></h4>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('name');?></th>

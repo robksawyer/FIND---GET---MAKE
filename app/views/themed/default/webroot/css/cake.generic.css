@@ -24,8 +24,13 @@ a img{border:none;}
 h1,h2,h3,h4{font-weight:normal;margin-bottom:0.5em;margin-top:0.5em;}
 h1{background:#fff;color:#003d4c;font-size:100%;}
 h2{background:#fff;color:#e32;font-family:'Gill Sans','lucida grande',helvetica,arial,sans-serif;font-size:190%;}
-h3{color:#993;font-family:'Gill Sans','lucida grande',helvetica,arial,sans-serif;font-size:165%;}
-h4{color:#993;font-weight:normal;}
+h3{color:#333;font-family:'Gill Sans','lucida grande',helvetica,arial,sans-serif;font-size:165%;}
+h4{
+	color:#333;
+	font-weight:normal;
+	font-size: 14px;
+	padding: 10px 0 10px 0;
+}
 ul,li{margin:0 12px;list-style-type:none;}
 p{margin-bottom: 0.75em;}
 /** Layout **/
