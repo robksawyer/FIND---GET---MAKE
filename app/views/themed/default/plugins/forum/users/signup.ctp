@@ -1,4 +1,3 @@
-
 <div class="forumHeader">
 	<h2><?php __d('forum', 'Sign Up'); ?></h2>
 </div>

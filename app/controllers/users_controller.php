@@ -21,7 +21,7 @@ class UsersController extends AppController {
 	function beforeFilter() {
 		parent::beforeFilter();
 		
-		$this->Auth->allow('login','logout');
+		$this->Auth->allow('login','logout','register');
 		$this->AjaxHandler->handle('hide_welcome');
 	}
 	
@@ -112,7 +112,17 @@ class UsersController extends AppController {
 		$this->set('user', $user);
 		$this->set('string', $this->String);
 	}
-
+	
+	/**
+	 * Handles registering the user with social services (Twitter, Facebook)
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function register(){
+		$this->layout = 'clean';
+		
+	}
 	
 	/**
 	 * Update items in the database after the user logs in. 

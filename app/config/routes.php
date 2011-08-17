@@ -31,6 +31,9 @@
  * ...and connect the rest of 'Pages' controller's urls.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+	Router::connect('/privacy', array('plugin'=>'','controller' => 'pages', 'action' => 'display','privacy'));
+	Router::connect('/signup', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'signup'));
+	Router::connect('/register', array('controller' => 'users', 'action' => 'register'));
 	
 	//Sitemap
 	Router::connect('/sitemap', array('controller' => 'sitemaps', 'action' => 'index')); 
@@ -41,7 +44,6 @@
 	Router::connect('/forum', array('plugin' => 'forum', 'controller' => 'home', 'action' => 'index'));
 	Router::connect('/admin/users/add', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'signup'));
 	Router::connect('/profiles/*', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'profile'));
-	Router::connect('/users/signup', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'signup'));
 	Router::connect('/following/*', array('plugin' => '', 'controller' => 'user_followings', 'action' => 'following'));
 	Router::connect('/followers/*', array('plugin' => '', 'controller' => 'user_followings', 'action' => 'followers'));
 	//Router::connect('/users/login',array('plugin'=>'forum','controller'=>'users','action'=>'login')); 

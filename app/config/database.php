@@ -83,4 +83,16 @@ class DATABASE_CONFIG {
 		'prefix' => '',
 		'encoding' => 'UTF8'
 	);
+	
+	/**
+	 * TwitterSource using OAuth
+	 *
+	 * @var array
+	 */
+	var $twitter = array(
+	    'driver' => 'TwitterKit.TwitterSource',
+	    'oauth_consumer_key'    => 'mhmBaKcwoZ6wDUJPXJKb1g',
+	    'oauth_consumer_secret' => 'lHaNuTfnaOL7eZWsJmCu7RaEmgDRC8yQJKgm75ztfJA',
+	    'oauth_callback'        => 'http://www.find-get-make.com/users/signup',
+	);
 }

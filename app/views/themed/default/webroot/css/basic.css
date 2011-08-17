@@ -41,6 +41,20 @@ html{
 	background: none;
 }
 
+#register{
+	position: relative;
+	width: 800px;
+	margin: 0 auto;
+}
+#register .social-register{
+	float: left;
+	width: 550px;
+}
+#register .sign-in{
+	float: right;
+	width: 200px;
+}
+
 .users #login{
 	float: left;
 	width: 500px;
