@@ -2110,6 +2110,12 @@ span.total a:hover{
 	float: right;
 	padding: 0;
 }
+
+#join .basic-sign-up a,
+#join .plus-sign-up a{
+	text-decoration: none;
+}
+	
 #join .basic-sign-up,
 #join .plus-sign-up{
 	position: relative;
@@ -2192,8 +2198,15 @@ span.total a:hover{
 }
 
 #user-feed .grid-item .added-by{
-	padding: 5px 0;
+	padding: 2px 0;
 }
+#user-feed .grid-item .title{
+	padding: 0px 0px 5px 0;
+}
+#user-feed .grid-item .feed-text-title{
+	font-size: 14px;
+}
+
 #user-feed .grid-item .text-title{
 	font-size: 14px;
 	text-align: left;

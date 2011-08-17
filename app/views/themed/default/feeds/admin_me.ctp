@@ -38,8 +38,7 @@
 		<?php
 			for($i=0;$i<count($feed);$i++):
 				$model = key($feed[$i]);
-				debug($model);
-				
+
 				$feed_item = $feed[$i];
 				//Display the items 
 				if(!empty($feed_item)):
@@ -79,12 +78,12 @@
 ?>
 <script type="text/javascript">
 $(function(){
-	/*var $container = $("#grid-container");
+	var $container = $("#grid-container");
 	$container.imagesLoaded(function(){
 		$container.masonry({
 			//option
 			itemSelector: '.grid-item'
 		});
-	});*/
+	});
 });
 </script>

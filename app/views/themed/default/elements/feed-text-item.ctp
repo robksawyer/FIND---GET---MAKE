@@ -14,7 +14,7 @@ if($model == "Source"){
 	*/
 	if($showLikeDislike) echo $this->element('feed-like-dislike',array('cache'=>false,'user'=>$user,'model'=>$model,'model_id'=>$model_id));
 	?>
-	<div class="title"><?php echo $this->Html->link($feed_item[$model]['name'],array('controller'=>$controller,
+	<div class="feed-text-title"><?php echo $this->Html->link($feed_item[$model]['name'],array('controller'=>$controller,
 																												'action'=>$action,
 																												'plugin'=>'',
 																												'admin'=>false,
@@ -29,7 +29,7 @@ if($model == "Source"){
 			$limit = 2;
 			$counter = 0;
 			if(!empty($feed_item['Tag'])){
-			  	echo " / Tagged as ";
+			  	echo " / ";
 				foreach($feed_item['Tag'] as $tag){
 					if($counter == $limit) break;
 					if($counter == ($limit - 1) || count($feed_item['Tag']) < 2){
