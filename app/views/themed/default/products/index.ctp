@@ -10,7 +10,7 @@
 		$this->Paginator->params['paging']['Product'] = $this->Paginator->params['paging']['Tagged'];
 	}
 	
-	$this->Html->script('jquery.masonry.min',array('inline'=>false));
+	echo $this->Html->script('jquery.masonry.min',array('inline'=>false));
 ?>
 <div class="left-container">
 	<?php
@@ -58,7 +58,8 @@
 				?>
 				<div class="title"><?php echo $this->Html->link($product['Product']['name'],array('controller'=>'products','action'=>'view',$product['Product']['id'])); ?></div>
 				<div class="description"><?php echo $string->truncate($product['Product']['description'],250); ?></div>
-				<?php if(!empty($product['Product']['designer'])) echo "<div class='designer'>Designed by, ".$product['Product']['designer']."</div>"; ?><br/>
+				<?php if(!empty($product['Product']['designer'])) echo "<div class='designer'>Designed by ".$product['Product']['designer']."</div>"; ?>
+				<div class="designer"><?php echo "Found by ".$this->Html->link($product['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$product['User']['username'])); ?></div>
 				<div class="bottom-detail">
 					<span class="date"><?php echo $this->Time->niceShort($product['Product']['created'],null,null)." / "; ?>&nbsp;</span>
 					<span class="tags"><?php

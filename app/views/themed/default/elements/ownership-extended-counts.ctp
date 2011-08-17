@@ -24,17 +24,21 @@
 	echo $this->Html->css('elements/ownerships');
 ?>
 <div id="ownership-counts">
+	<?php if(!empty($haveusers)): ?>
 	<div id="user-haves" class="ownerships-section">
 		<h3><?php __('Users That Have This'); ?> (<span class='haveuser-count'><?php echo $haveuser_count; ?></span> total)</h3>
 		<?php 
-			//debug($ownusers); 
 			foreach($haveusers as $user){
 				echo "<div class='ownership-item'>";
 				// Gravatar
 				if ($this->Cupcake->settings['enable_gravatar'] == 1) {
+					echo "<div class='avatar'>";
 					if ($avatar = $this->Cupcake->gravatar($user['User']['email'])) {
-						echo "<div class='avatar'>".$this->Html->link($avatar,array('controller'=>'users','action'=>'profile','plugin'=>'forum',$user['User']['id']),array('escape'=>false))."</div>";
-					} 
+						echo $this->Html->link($avatar,array('controller'=>'users','action'=>'profile','plugin'=>'forum',$user['User']['username']),array('escape'=>false));
+					}else{
+						echo $this->Html->image('no_gravatar.jpg',array('url'=>array('controller'=>'users','action'=>'profile','plugin'=>'forum',$user['User']['username'])));
+					}
+					echo "</div>";
 				}
 				echo $this->Html->link(__($user['User']['username'],true),array('controller'=>'users','action'=>'view',$user['User']['slug']));
 				echo "</div>";
@@ -42,6 +46,8 @@
 		?>
 	</div>
 	<div class="clear"></div>
+	<?php endif; ?>
+	<?php if(!empty($wantusers)): ?>
 	<div id="user-wants" class="ownerships-section">
 		<h3><?php __('Users That Want This'); ?> (<span class='wantuser-count'><?php echo $wantuser_count; ?></span> total)</h3>
 		<?php 
@@ -50,16 +56,21 @@
 				echo "<div class='ownership-item'>";
 				// Gravatar
 				if ($this->Cupcake->settings['enable_gravatar'] == 1) {
+					echo "<div class='avatar'>";
 					if ($avatar = $this->Cupcake->gravatar($user['User']['email'])) {
-						echo "<div class='avatar'>".$this->Html->link($avatar,array('controller'=>'users','action'=>'profile','plugin'=>'forum',$user['User']['id']),array('escape'=>false))."</div>";
+						echo $this->Html->link($avatar,array('controller'=>'users','action'=>'profile','plugin'=>'forum',$user['User']['id']),array('escape'=>false));
+					}else{
+						echo $this->Html->image('no_gravatar.jpg',array('url'=>array('controller'=>'users','action'=>'profile','plugin'=>'forum',$user['User']['username'])));
 					} 
 				}
+				echo "</div>";
 				echo $this->Html->link(__($user['User']['username'],true),array('controller'=>'users','action'=>'profile','plugin'=>'forum',$user['User']['id']));
 				echo "</div>";
 			}
 		?>
 	</div>
 	<div class="clear"></div>
+	<?php endif; ?>
 	<div id="user-hads" class="ownerships-section" style="display:none">
 		<!--<h3>Users who had this <?php //echo $model; ?> (<span class='haduser-count'><?php //echo $haduser_count; ?></span>)</h3>-->
 		<?php 

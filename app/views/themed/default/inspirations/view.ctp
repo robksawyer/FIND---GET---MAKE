@@ -20,11 +20,23 @@
 			?>
 		</div>
 		<!--- END TAGGABLE IMAGE SECTION -->
+		<div class="source">
+			<?php echo $this->Html->link('Source',$inspiration['Inspiration']['source_url'],array('target'=>'_blank')); ?>
+			&nbsp;
+		</div>
 	</div>
 	<!-- END LEFT CONTAINER -->
 	
 	<!-- START RIGHT CONTAINER -->
 	<div class="right-container">
+		<div class="right-sidebar">
+			<?php
+			echo $this->element('like-dislike',array('model_id'=>$inspiration['Inspiration']['id'],
+																	'model'=>'Inspiration',
+																	'cache'=>false
+																	));
+			?>
+		</div>
 		<!--- DETAILS SECTION -->
 		<div class="details">
 			<div id="responseSuccess" class="message" style="display: none"></div>
@@ -34,6 +46,10 @@
 			<?php if(!empty($inspiration['Inspiration']['designer'])): ?>
 				<li class="designer">
 					<?php echo "Designed by ".$inspiration['Inspiration']['designer']; ?>
+				</li>
+			<?php endif; ?>
+				<li class="added-by">
+					<?php echo "Added by ".$this->Html->link($inspiration['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$inspiration['User']['username'])); ?>
 				</li>
 				<li class="address">
 					<?php
@@ -47,7 +63,6 @@
 						):
 					?>
 					Address:
-					<?php endif; ?>
 					<ul>
 					<?php 
 						if(!empty($inspiration['Inspiration']['address1'])){
@@ -84,10 +99,6 @@
 				</li>
 				<?php endif; ?>
 				<li class="description"><?php if(!empty($inspiration['Inspiration']['description'])) echo $inspiration['Inspiration']['description']; ?></li>
-				<li class="source">
-					<?php echo "Source:".$this->Html->link($string->truncate($inspiration['Inspiration']['source_url']),$inspiration['Inspiration']['source_url'],array('target'=>'_blank')); ?>
-					&nbsp;
-				</li>
 			</ul>
 		</div>
 		<!--- END DETAILS SECTION -->

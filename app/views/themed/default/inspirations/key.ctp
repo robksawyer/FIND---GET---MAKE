@@ -44,6 +44,10 @@
 			<?php echo $this->element('taggable_image',array('inspiration'=>$inspiration,'disableTagging'=>$disableTagging)); ?>
 		</div>
 		<!--- END TAGGABLE IMAGE SECTION -->
+		<div class="source">
+			<?php echo $this->Html->link('Source',$inspiration['Inspiration']['source_url'],array('target'=>'_blank')); ?>
+			&nbsp;
+		</div>
 	</div>
 	<!-- END LEFT CONTAINER -->
 	
@@ -59,6 +63,10 @@
 				<li class="designer">
 					<?php echo "Designed by ".$inspiration['Inspiration']['designer']; ?>
 				</li>
+				<?php endif; ?>
+				<li class="added-by">
+					<?php echo "Added by ".$inspiration['User']['username']; ?>
+				</li>
 				<li class="address">
 					<?php
 						if(
@@ -71,7 +79,6 @@
 						):
 					?>
 					Address:
-					<?php endif; ?>
 					<ul>
 					<?php 
 						if(!empty($inspiration['Inspiration']['address1'])){
@@ -108,10 +115,6 @@
 				</li>
 				<?php endif; ?>
 				<li class="description"><?php if(!empty($inspiration['Inspiration']['description'])) echo $inspiration['Inspiration']['description']; ?></li>
-				<li class="source">
-					<?php echo "Source:".$this->Html->link($string->truncate($inspiration['Inspiration']['source_url']),$inspiration['Inspiration']['source_url'],array('target'=>'_blank')); ?>
-					&nbsp;
-				</li>
 			</ul>
 		</div>
 		<!--- END DETAILS SECTION -->

@@ -2,15 +2,17 @@
 	<div class="header grey"><?php __('Your latest sources');?></div>
 	<?php if (!empty($userSources)):?>
 	<div class="latest">
+		<ul>
 	<?php
 		$i = 0;
 		foreach ($userSources as $id => $source):
 			//debug($source);
 		?>
-		<div>
-			<td><?php echo $this->Html->link($source,array('controller'=>'sources','action'=>'view','admin'=>false,$id));?></td>
-		</div>
+		
+			<li><?php echo $this->Html->link($source,array('controller'=>'sources','action'=>'view','admin'=>false,$id));?></li>
+		
 	<?php endforeach; ?>
+		</ul>
 	</div>
 	<div class="actions">
 		<ul>

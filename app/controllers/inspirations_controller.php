@@ -26,7 +26,7 @@ class InspirationsController extends AppController {
 		$this->Uploader->tempDir = 'media/transfer/img/inspirations/';
 		//$this->Uploader->mime('image', 'gif', 'image/gif');
 		//$this->Uploader->maxNameLength = 50;
-		$this->Auth->allow('key');
+		$this->Auth->allow('userInspirations','getProfileData');
 		$this->Auth->deny('view');
 	}
 	

@@ -2,9 +2,6 @@
 class User extends AppModel {
 	var $name = 'User';
 	var $displayField = 'username';
-	var $virtualFields = array(
-		'full_name' => "CONCAT(fname, ' ', lname)"
-	);
 	
 	/**
 	 * A column map allowing you to define the name of certain user columns.
@@ -23,95 +20,13 @@ class User extends AppModel {
 		'lastLogin'		=> 'lastLogin'
 	);
 	
-	var $validate = array(
-		'username' => array(
-			'alphaNumeric' => array(
-				'rule' => 'alphaNumeric',
-				'required' => true,
-				'message' => 'Must be alphabets and numbers only'
-			),
-			'between' => array(
-				'rule' => array('between', 3, 25),
-				'message' => 'Must be between 3 to 25 characters'
-			)
-		),
-		'password' => array(
-			'empty' => array(
-				'rule' => 'notEmpty',
-				'required' => true,
-				'allowEmpty' => false,
-				'message' => 'Password is required',
-			)
-		),
-		'password_confirm' => array(
-			'empty' => array(
-				'rule' => 'notEmpty',
-				'required' => false,
-				'allowEmpty' => false,
-				'message' => 'Please confirm the password.',
-			)
-		),
-		'email' => array(
-			'empty' => array(
-				'rule' => 'notEmpty',
-				'required' => true,
-				'allowEmpty' => false,
-				'message' => 'Email is required',
-			),
-			'valid' => array(
-				'rule' => 'email',
-				'required' => true,
-				'allowEmpty' => true,
-				'message' => 'Please enter a valid email address',
-			)
-		)
-	);
-	
-	/** 
-	 * Checks User data is valid before allowing access to system 
-	 * @param array $data 
-	 * @return boolean|array 
-	 */	 
-	function check_user_data($data) {
-		// init	 
-		$return = FALSE;
-
-		// find user with passed username
-		$conditions = array(
-			'User.username'=>$data['User']['username'],
-			'User.status'=>'1'	
-		);	
-		$user = $this->find('first',array('conditions'=>$conditions));	
-
-		// not found
-		if(!empty($user)) {	 
-			$salt = Configure::read('Security.salt');
-			// check password
-			if($user['User']['password'] == md5($data['User']['password'].$salt)) {	 
-				$return = $user;
-			}
-		}
-
-		return $return;	 
-	}
-	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
-	var $belongsTo = array(
-		'Country' => array(
-			'className' => 'Country',
-			'foreignKey' => 'country_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
-	);
 
 	var $hasMany = array(
 		'Collection' => array(
 			'className' => 'Collection',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -124,155 +39,77 @@ class User extends AppModel {
 		'Client' => array(
 			'className' => 'Client',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => false
 		),
 		'Contractor' => array(
 			'className' => 'Contractor',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => false
 		),
 		'Attachment' => array(
 			'className' => 'Attachment',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => false
 		),
 		'House' => array(
 			'className' => 'House',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => true
 		),
 		'Inspiration' => array(
 			'className' => 'Inspiration',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => false
 		),
 		'Product' => array(
 			'className' => 'Product',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => false
 		),
 		'Source' => array(
 			'className' => 'Source',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => false
 		),
 		'SourceCategory' => array(
 			'className' => 'SourceCategory',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => false
 		),
 		'ProductCategory' => array(
 			'className' => 'ProductCategory',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => false
 		),
 		'ContractorSpecialty' => array(
 			'className' => 'ContractorSpecialty',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => false
 		),
 		'Ufo' => array(
 			'className' => 'Ufo',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => false
 		),
 		'Vote' => array(
 			'className' => 'Vote',
 			'foreignKey' => 'user_id',
-			'dependent' => false
+			'dependent' => true
 		),
 		'Ownership' => array(
 			'className' => 'Ownership',
 			'foreignKey' => 'user_id',
-			'dependent' => false
+			'dependent' => true
+		),
+		'UserFollowing' => array(
+			'className' => 'UserFollowing',
+			'foreignKey' => 'user_id',
+			'dependent' => true
+		),
+		'Feed' => array(
+			'className' => 'Feed',
+			'foreignKey' => 'user_id',
+			'dependent' => true
 		)
 	);
 	
@@ -300,7 +137,7 @@ class User extends AppModel {
 	 * @return 
 	 * 
 	*/
-	function updateTotalLikesDislikes($model=null,$user_id=null){
+	public function updateTotalLikesDislikes($model=null,$user_id=null){
 		$this->id = $user_id;
 		$totalLikes = $this->Vote->getAllUserLikes($model,$user_id);
 		$totalDislikes = $this->Vote->getAllUserDislikes($model,$user_id);
@@ -308,5 +145,240 @@ class User extends AppModel {
 		$this->saveField('total'.$model.'Likes',$totalLikes);
 		$this->saveField('total'.$model.'Dislikes',$totalDislikes);
 	}
-
+	
+	/**
+	 * Updates the total follow count for a particular user
+	 * @param user_id The user to target
+	 * @return 
+	 * 
+	*/
+	public function updateTotalFollowCount($user_id=null){
+		$this->id = $user_id;
+		$totalFollows = $this->UserFollowing->getFollowCount($user_id);
+		$this->saveField('totalUsersFollowing',$totalFollows);
+	}
+	
+	/**
+	 * Updates the total follower count for a particular user
+	 * @param user_id The user to target
+	 * @return 
+	 * 
+	*/
+	public function updateTotalFollowerCount($user_id=null){
+		$this->id = $user_id;
+		$totalFollowers = $this->UserFollowing->getFollowerCount($user_id);
+		$this->saveField('totalFollowers',$totalFollowers);
+	}
+	
+	/**
+	 * Updates the total count of products added by this user
+	 * @param user_id The user to target
+	 * @return 
+	 * 
+	*/
+	public function updateTotalProducts($user_id=null){
+		$this->id = $user_id;
+		$total = $this->getTotalProducts($user_id);
+		$this->saveField('totalProducts',$total);
+	}
+	
+	/**
+	 * Returns the total number of products for a user
+	 * @param int user_id The user targeting
+	 * @return int total 
+	 * 
+	*/
+	public function getTotalProducts($user_id=null){
+		$this->id = $user_id;
+		$total = $this->Product->find('count',array('conditions'=>array('Product.user_id'=>$user_id)));
+		return $total;
+	}
+	
+	
+	/**
+	 * Updates the total count of sources added by this user
+	 * @param user_id The user to target
+	 * @return 
+	 * 
+	*/
+	public function updateTotalSources($user_id=null){
+		$this->id = $user_id;
+		$total = $this->getTotalSources($user_id);
+		$this->saveField('totalSources',$total);
+	}
+	
+	/**
+	 * Returns the total number of sources for a user
+	 * @param int user_id The user targeting
+	 * @return int total 
+	 * 
+	*/
+	public function getTotalSources($user_id=null){
+		$this->id = $user_id;
+		$total = $this->Source->find('count',array('conditions'=>array('Source.user_id'=>$user_id)));
+		return $total;
+	}
+	
+	/**
+	 * Updates the total count of inspirations added by this user
+	 * @param user_id The user to target
+	 * @return 
+	 * 
+	*/
+	public function updateTotalInspirations($user_id=null){
+		$this->id = $user_id;
+		$total = $this->getTotalInspirations($user_id);
+		$this->saveField('totalInspirations',$total);
+	}
+	
+	/**
+	 * Returns the total number of inspirations for a user
+	 * @param int user_id The user targeting
+	 * @return int total 
+	 * 
+	*/
+	public function getTotalInspirations($user_id=null){
+		$this->id = $user_id;
+		$total = $this->Inspiration->find('count',array('conditions'=>array('Inspiration.user_id'=>$user_id)));
+		return $total;
+	}
+	
+	/**
+	 * Updates the total count of collections added by this user
+	 * @param user_id The user to target
+	 * @return 
+	 * 
+	*/
+	public function updateTotalCollections($user_id=null){
+		$this->id = $user_id;
+		$total = $this->getTotalCollections($user_id);
+		$this->saveField('totalCollections',$total);
+	}
+	
+	/**
+	 * Returns the total number of collections for a user
+	 * @param int user_id The user targeting
+	 * @return int total 
+	 * 
+	*/
+	public function getTotalCollections($user_id=null){
+		$this->id = $user_id;
+		$total = $this->Collection->find('count',array('conditions'=>array('Collection.user_id'=>$user_id)));
+		return $total;
+	}
+	
+	/**
+	 * Updates the total count of ufos added by this user
+	 * @param user_id The user to target
+	 * @return 
+	 * 
+	*/
+	public function updateTotalUfos($user_id=null){
+		$this->id = $user_id;
+		$total = $this->getTotalUfos($user_id);
+		$this->saveField('totalUfos',$total);
+	}
+	
+	/**
+	 * Returns the total number of ufos for a user
+	 * @param int user_id The user targeting
+	 * @return int total 
+	 * 
+	*/
+	public function getTotalUfos($user_id=null){
+		$this->id = $user_id;
+		$total = $this->Ufo->find('count',array('conditions'=>array('Ufo.user_id'=>$user_id)));
+		return $total;
+	}
+	
+	/**
+	 * Find a user by his username
+	 * @param string username The username to search for
+	 * @return 
+	 * 
+	*/
+	public function findByUsername($username=null){
+		$user = $this->find('first',array('conditions'=>array('username'=>$username)));
+		return $user;
+	}
+	
+	/**
+	 * Handles finding information about the user being followed
+	 * @param id follow_user_id The followed user
+	 * @return array user_details 
+	 * 
+	*/
+	public function getFollowerDetails($follow_user_id=null){
+		$this->recursive = -1;
+		$user_details = $this->find('first',array('conditions'=>array(
+																	'User.id'=>$follow_user_id
+																	),
+												'fields'=>array('id','username','slug',
+																'created','status','email',
+																'totalSources','totalProducts','totalInspirations',
+																'totalCollections','totalUfos',
+																'totalPosts','totalTopics','totalProductLikes',	
+																'totalProductDislikes','totalUsersFollowing'
+																)
+												));
+		return $user_details;
+	}
+	
+	/**
+	 * Handles returning the feed for a particular user
+	 * @param id follow_user_id The followed user
+	 * @return array user_details 
+	 * 
+	*/
+	public function getFeed($user_id=null){
+		$this->recursive = 1;
+		$user_details = $this->Feed->find('all',array('recursive'=>1,
+												'conditions'=>array(
+																	'Feed.user_id'=>$user_id
+																	),
+												'order'=>'Feed.record_created DESC'
+												));
+		return $user_details;
+	}
+	
+	/**
+	 * Handles returning the feed details (items) for a particular user
+	 * @param id follow_user_id The followed user
+	 * @return array user_details 
+	 * 
+	*/
+	public function getFeedDetails($user_id=null){
+		$this->recursive = 1;
+		$user_details = $this->Feed->getUserFeedData($user_id);
+		//debug($user_details);
+		$user_feed_data = array();
+		foreach($user_details as $feed_item){
+			$this->$feed_item['Feed']['model']->recursive = 1;
+			$user_feed_data[] = $this->$feed_item['Feed']['model']->getFeedData($feed_item['Feed']['model_id']);
+		}
+		return $user_feed_data;
+	}
+	
+	/**
+	 * Handles returning a group of feeds for users. The method finds then packs an array full of the feed data for the items.
+	 * @param array user_ids The feeds to show
+	 * @return array user_feed_data
+	 * 
+	*/
+	public function getFeeds($user_ids=null){
+		$this->recursive = -1;
+		$user_feeds = $this->Feed->find('all',array('recursive'=>-1,
+												'conditions'=>array(
+																	'Feed.user_id'=>$user_ids
+																	),
+												'order'=>'Feed.record_created DESC'
+												));
+		$user_feed_data = array();
+		foreach($user_feeds as $feed_item){
+			$this->$feed_item['Feed']['model']->recursive = 1;
+			$user_feed_data[] = $this->$feed_item['Feed']['model']->read(null,$feed_item['Feed']['model_id']);
+		}
+		//debug($user_feed_data);
+		return $user_feed_data;
+	}
 }

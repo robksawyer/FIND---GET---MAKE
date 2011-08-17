@@ -67,7 +67,7 @@
 					</ul>
 				</li>
 				<?php
-					if(!empty($authUser) && PRIVATE_SOLUTION == 1):
+					if(!empty($authUser) && Configure::read('FGM.private_solution') == 1):
 						echo "<li class='nav-browsedrop-link-6'>";
 						echo $this->Html->link('+ rolodex','#',array('id'=>'nav-browsedrop-6-link','class'=>'nav-browsedrop-lz'));
 							echo "<ul id='nav-browsedrop-6' class='nav-browsedrop' style='display:none;' index='100'>";
@@ -91,7 +91,6 @@
 				?>
 				<li><?php echo $this->Html->link('join','/pages/join'); ?></li>
 				<?php endif; ?>
-				<li><?php echo $this->Html->link('blog','	http://findgetmake.tumblr.com/',array('target'=>'_blank'));?></li>
 			</ul>
 		</div>
 	

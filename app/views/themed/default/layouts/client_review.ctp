@@ -122,8 +122,8 @@
 								echo $this->Html->link('Login','/users/login',array('title'=>'Login'));
 							}
 						}else{
-							if(!empty($authUser['User']['fname'])){
-								echo "Hi, ".ucwords($authUser['User']['fname']).". | ";
+							if(!empty($authUser['User']['fullname'])){
+								echo "Hi, ".ucwords($authUser['User']['fullname']).". | ";
 							}else{
 								echo "Hi, ".$authUser['User']['username'].". | ";
 							}

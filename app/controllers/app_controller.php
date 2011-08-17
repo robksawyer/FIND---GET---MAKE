@@ -41,11 +41,14 @@ App::import(array(
 
 class AppController extends Controller {
 	
-	var $components = array('Auth','AutoLogin','Session','Cookie','RequestHandler','AjaxHandler', 'Forum.Toolbar','String');
+	var $components = array('Auth','Forum.AutoLogin','Session',
+							'Cookie','RequestHandler','AjaxHandler', 
+							'Forum.Toolbar','String','Facebook.Connect');
 	var $helpers = array('Form', 'Html', 'Time','Session',
 						'Js' => array('Jquery'),
 						'Forum.Cupcake', 'Forum.Decoda' => array(),
-						'Popup.Popup'=>array('Jquery')
+						'Popup.Popup'=>array('Jquery'),
+						'Facebook.Facebook'
 						);
 	
 	var $view = 'Theme';
@@ -76,7 +79,7 @@ class AppController extends Controller {
 		/** END SOCIAL/SHARING **/
 		
 		//You have to keep view open for the photo tags to work.
-		$this->Auth->allow('home','display','index','view','find','collage','login','logout');
+		$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
 		$this->Auth->autoRedirect = false;
 		
 		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login','admin'=>false);        
@@ -84,7 +87,7 @@ class AppController extends Controller {
 		$this->Auth->loginRedirect = array('controller' => 'users', 'action' => 'moderate','admin'=>true);
 		//$this->Auth->autoRedirect = true;
 		
-		$this->AjaxHandler->handle('admin_hide_competition');
+		$this->AjaxHandler->handle('admin_hide_challenge');
 		
 		//Custom settings for AutoLogin component
 		//http://bakery.cakephp.org/articles/milesj/2009/07/05/autologin-component-an-auth-remember-me-feature
@@ -105,24 +108,24 @@ class AppController extends Controller {
 		$this->set('authUser', $this->Auth->user());
 		
 		/*
-			TODO Set up a check to see if the user has hidden the competition.
+			TODO Set up a check to see if the user has hidden the challenge.
 			* This'll involve adding a new database field that will log this. Or, you 
 			* could use the deactivated Session key.
 		*/
-		$resetCompetitionSession = false; //Show the competition if it has been removed
-		if($resetCompetitionSession){
-			$this->Session->write('Competition.deactivated',false);
+		$resetChallengeSession = false; //Show the challenge if it has been removed
+		if($resetChallengeSession){
+			$this->Session->write('Challenge.deactivated',false);
 		}
 		
-		//Set the competition Session. Note: The method is inside of app_controller.php
-		$cTitle = $this->Session->read('Competition.title');
-		$checkTitle = $this->setCompetitionSession();
-		$cSlug = $this->Session->read('Competition.slug');
-		$deactivated = $this->Session->read('Competition.deactivated');
-		$this->set('competition_deactivated',$deactivated);
+		//Set the challenge Session. Note: The method is inside of app_controller.php
+		$cTitle = $this->Session->read('Challenge.title');
+		$checkTitle = $this->setChallengeSession();
+		$cSlug = $this->Session->read('Challenge.slug');
+		$deactivated = $this->Session->read('Challenge.deactivated');
+		$this->set('challenge_deactivated',$deactivated);
 		if(empty($cTitle) || empty($cSlug) || $checkTitle != $cTitle){
 			if(empty($deactivated)){
-				$this->set('competition',$this->setCompetitionSession());
+				$this->set('challenge',$this->setChallengeSession());
 			}
 		}
 		
@@ -130,47 +133,47 @@ class AppController extends Controller {
 	}
 	
 	/**
-	 * This method sets up the competition Session variables.
+	 * This method sets up the challenge Session variables.
 	 * @param 
 	 * @return 
 	 * 
 	*/
-	public function setCompetitionSession(){
-		$competition = $this->findCompetition();
-		if(!empty($competition)){
-			$this->Session->write('Competition.title',$competition['Topic']['title']);
-			$this->Session->write('Competition.slug',$competition['Topic']['slug']);
-			return $competition;
+	public function setChallengeSession(){
+		$challenge = $this->findChallenge();
+		if(!empty($challenge)){
+			$this->Session->write('Challenge.title',$challenge['Topic']['title']);
+			$this->Session->write('Challenge.slug',$challenge['Topic']['slug']);
+			return $challenge;
 		}else{
-			$this->Session->setFlash(__('The competition could not be found.', true));
+			//$this->Session->setFlash(__('The challenge could not be found.', true));
 			return null;
 		}
 	}
 	
 	/**
-	 * Finds the latest competition topic in the forum.
+	 * Finds the latest challenge topic in the forum.
 	 * @param 
 	 * @return 
 	 * 
 	*/
-	public function findCompetition(){
+	public function findChallenge(){
 		//ClassRegistry::init('Topic');
 		$latestTopic = $this->Topic->findLatestTopic(2);
 		return $latestTopic;
 	}
 	
 	/**
-	 * Hides the competition header.
+	 * Hides the challenge header.
 	 **/ 
-	public function admin_hide_competition(){
+	public function admin_hide_challenge(){
 		Configure::write('debug', 0); //it will avoid any extra output
 		if ($this->RequestHandler->isAjax()) {
 			$this->autoLayout = false;
 			$this->autoRender = false;
 			
-			$this->Session->delete('Competition.title');
-			$this->Session->delete('Competition.slug');
-			$this->Session->write('Competition.deactivated',1);
+			$this->Session->delete('Challenge.title');
+			$this->Session->delete('Challenge.slug');
+			$this->Session->write('Challenge.deactivated',1);
 			//$this->redirect($this->referer());
 			$this->AjaxHandler->response(true,'deactivated');
 			$this->AjaxHandler->respond();

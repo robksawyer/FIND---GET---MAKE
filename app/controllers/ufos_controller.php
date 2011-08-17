@@ -5,8 +5,23 @@ class UfosController extends AppController {
 	var $helpers = array('Tags.TagCloud');
 	var $components = array('Uploader.Uploader','String');
 	
+	function beforeFilter(){
+		parent::beforeFilter();
+		
+		$this->Auth->allow('getUfosFromUser');
+	}
+	
 	function index($filter = null) {
 		$this->Ufo->recursive = 2;
+		
+		// query all distinct first letters used in names
+		$letters = $this->Ufo->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `ufos` ORDER BY `name`');
+		
+		$links = array();
+		// push all letters into a non-nested array
+		foreach ($letters as $row) {
+			array_push($links, current($row[0]));
+		}
 		
 		//debug($ufos);
 		if (isset($this->passedArgs['by'])) {
@@ -37,7 +52,7 @@ class UfosController extends AppController {
 			$ufos = $this->paginate();
 		}
 		
-		$this->set(compact('ufos'));
+		$this->set(compact('ufos','filter','links'));
 		$this->set('string', $this->String);
 	}
 
@@ -114,16 +129,12 @@ class UfosController extends AppController {
 	/**
 	 * Retrieves the items from the user id passed
 	 * @param id User id
+	 * @param limit 
 	 */
-	function getUfosFromUser($id = null){
+	function getUfosFromUser($id = null,$limit=25){
 		$this->Ufo->recursive = 2;
 		if(isset($this->params['requested'])) {
-			$ufos = $this->Ufo->find('all',array(
-											'conditions'=>array('Ufo.user_id' => $id),
-											'limit' => 25,
-											'order' => array('Ufo.created DESC')
-											)
-										);
+			$ufos = $this->Ufo->userUfos($id,$limit);
 			return $ufos;
 		}
 	}

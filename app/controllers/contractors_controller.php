@@ -12,7 +12,7 @@ class ContractorsController extends AppController {
 	}
 	
 	function index() {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			$this->Contractor->recursive = 2;
 		
 			$contractors = $this->paginate();
@@ -46,7 +46,7 @@ class ContractorsController extends AppController {
 	}
 
 	function view($id = null) {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			if (!$id) {
 				$this->Session->setFlash(__('Invalid contractor', true));
 				$this->redirect(array('action' => 'index','admin'=>false));
@@ -65,7 +65,7 @@ class ContractorsController extends AppController {
 	}
 
 	function admin_add() {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			//Check to make sure a model and id was passed
 			if(isset($this->passedArgs['model'])){
 				$model = ucwords($this->passedArgs['model']);
@@ -122,7 +122,7 @@ class ContractorsController extends AppController {
 	}
 
 	function admin_edit($id = null) {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			if (!$id && empty($this->data)) {
 				$this->Session->setFlash(__('Invalid contractor', true));
 				$this->redirect(array('action' => 'index','admin'=>false));
@@ -158,7 +158,7 @@ class ContractorsController extends AppController {
 	}
 
 	function admin_delete($id = null) {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			if (!$id) {
 				$this->Session->setFlash(__('Invalid id for contractor', true));
 				$this->redirect(array('action'=>'index','admin'=>false));
@@ -176,7 +176,7 @@ class ContractorsController extends AppController {
 	 * Finds the tags associated with this model
 	 */
 	function tags(){
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			$this->Contractor->recursive = 2;
 			$this->paginate = array(
 								'Tagged'=>array(

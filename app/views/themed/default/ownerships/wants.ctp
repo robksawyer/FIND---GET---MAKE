@@ -21,7 +21,7 @@
 </div>
 <div class="right-container-index">
 	<div class="products index">
-		<div class="header teal"><?php 
+		<div class="header red"><?php 
 			__('Products that '.$user['User']['username'].' wants');
 		?></div>
 		
@@ -44,7 +44,7 @@
 				<br/>
 				<p class="description"><?php echo $string->truncate($product['Product']['description'],250); ?></p>
 				<br/>
-				<?php if(!empty($product['Product']['designer'])) echo "Designed by, ".$product['Product']['designer']; ?><br/>
+				<?php if(!empty($product['Product']['designer'])) echo "Designed by ".$product['Product']['designer']; ?><br/>
 				<div class="bottom-detail">
 					<span class="date"><?php echo $this->Time->niceShort($product['Product']['created'],null,null)." / "; ?>&nbsp;</span>
 					<span class="tags"><?php

@@ -16,17 +16,29 @@
 	echo $this->element('top_actions',array('item'=>$collection,'model'=>'Collection','rate'=>true,'cache'=>false));
 ?>
 <h2><?php  
-		__($collection['Collection']['name'].'&mdash;'.$collection['Collection']['total_products']." products");
+		__($collection['Collection']['name']." <span class='includes'>includes ".$collection['Collection']['total_products']." product(s)</span>");
 		if(!empty($collection['Collection']['credit'])){
 			echo "<div class='credit'>&mdash;".$collection['Collection']['credit']."</div>";
 		}
 		?></h2>
+	<div class="right-sidebar">
+		<?php
+		echo $this->element('like-dislike',array('model_id'=>$collection['Collection']['id'],
+																'model'=>'Collection',
+																'cache'=>false
+																));
+		?>
+	</div>
 	<?php if(!empty($collection['Collection']['description'])): ?>
-	<dl class="description">
+	<div class="description">
 			<?php echo "<span class='light-grey'>".$collection['Collection']['description']."</span>"; ?>
 			&nbsp;
-	</dl>
+	</div>
 	<?php endif; ?>
+	<div class="added-by">
+		<?php echo "Added by ".$this->Html->link($collection['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$collection['User']['username'])); ?>
+	</div>
+	<br/>
 	<div class="sharing">
 	<?php 
 		echo $this->element('share-buttons',array('controller'=>'collections',

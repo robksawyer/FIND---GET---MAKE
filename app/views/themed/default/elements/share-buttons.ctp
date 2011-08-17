@@ -11,7 +11,7 @@ if(empty($disable_sharing)):
 ?>
 <div class="button public-share"><?php echo $this->Html->link('Share','javascript:return false;',array('title'=>'Share the public link.')); ?></div>
 <div id="share-panel" style="display:none">
-		<label for="share-panel-url">Link to this item:</label>
+		<label for="share-panel-url">Share link:</label>
 		<input class="share-panel-url" type="text" value="<?php echo $rootURL; ?>">
 </div>
 <script type="text/javascript">

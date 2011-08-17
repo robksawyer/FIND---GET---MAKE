@@ -13,6 +13,9 @@ if(!empty($this->Paginator->params['paging']['Tagged'])){
 
 <div class="left-container">
 	<?php
+		//Index Box Ad (300x250)
+		echo $this->element('index-box-ad',array('cache'=>false));
+		
 		//Rating sorter
 		echo $this->element('source-sorter',array('cache'=>false));
 		
@@ -24,22 +27,20 @@ if(!empty($this->Paginator->params['paging']['Tagged'])){
 		
 		//Designer sorter
 		//echo $this->element('designer-sorter',array('cache'=>false));
-		
-		//Index Box Ad (300x250)
-		echo $this->element('index-box-ad',array('cache'=>false));
 	?>
 </div>
 <div class="right-container-index">
 	<div class="sources index">
-		<div class="header pink">
+		<div class="header red">
 		<?php 
 			if(empty($user)){
 				__('Sources ('.$total_count.')');
 			}else{
-				__('Sources added by '.$user['User']['username']);
+				__('Sources found by '.$user['User']['username']);
 			}
 		?>
 		</div>
+		<h4>Keep track of any shop that stocks your favorite brands.</h4>
 		<table cellpadding="0" cellspacing="0">
 		<tr>
 				<th width="25%"><?php echo $this->Paginator->sort('name');?></th>

@@ -27,7 +27,47 @@ class Vote extends AppModel {
 							'order' => ''
 						)
 						);
-										
+	var $hasMany = array(
+		'Feed' => array(
+			'className' => 'Feed',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Feed.model' => 'Vote'),
+			'dependent' => true,
+			'exclusive' => true
+		)
+	);
+	
+	/**
+	 * Updates the total count in the user table for this particular type of item
+	 * @param created 
+	 * @return 
+	 * 
+	*/	
+	/*function afterSave($created){
+		if($created){
+			//Update the total count for the user
+			$last = $this->read(null,$this->id);
+			if(!empty($last['User']['id'])){
+				
+				//Add the feed data to the feed
+				$this->Feed->addFeedData('Vote',$last);
+			}
+		}
+	}*/
+	
+	/**
+	 * Returns the needed feed data for a specific record
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	public function getFeedData($model_id=null){
+		$this->recursive = 2;
+		$this->User->recursive = -1;
+		$data = $this->read(null,$model_id);	
+		
+		return $data;
+	}
 	
 	/**
 	 * This method returns the total number of likes in the system for a specific item

@@ -1,0 +1,56 @@
+<?php
+	$likes = $this->requestAction('/votes/getLikes/'.$model.'/'.$model_id);
+	//$dislikes = $this->requestAction('/votes/getDislikes/'.$model.'/'.$model_id);
+	$user_likes = $this->requestAction('/votes/getUserLikes/'.$model.'/'.$model_id);
+	//$user_dislikes = $this->requestAction('/votes/getUserDislikes/'.$model.'/'.$model_id);
+?>
+<div id="vote_block" class="voteblock votedirup">
+	<ul class="like_dislike">
+		<?php if(!empty($authUser)): ?>
+		<li class="likes"><?php echo "<div class='vote-val-like-".$model_id."'>".$likes."</div> likes"; ?></li>
+		<li class="action">
+			<?php
+				if($user_likes < 1){
+					echo $this->Js->link('like', array('admin'=>false,'controller'=>'votes','action'=>'vote_up',$model,$model_id), array(
+															//'onclick'=>'return false;',
+															'class'=>'vote dup like vote-'.$model_id,
+															'title'=>'like',
+															'beforeSend'=>'showLoader('.$model_id.');',
+															'success'=>'updateLikeDislike(data);'
+															));
+					echo $this->Js->link('dislike', array('admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), array(
+															//'onclick'=>'return false;',
+															'class'=>'vote ddown dislike vote-'.$model_id,
+															'title'=>'dislike',
+															'style'=>'display:none',
+															'beforeSend'=>'showLoader('.$model_id.');',
+															'success'=>'updateLikeDislike(data);'	
+															));
+				}else{
+					echo $this->Js->link('dislike', array('admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), array(
+															//'onclick'=>'return false;',
+															'class'=>'vote ddown dislike vote-'.$model_id,
+															'title'=>'dislike',
+															'beforeSend'=>'showLoader('.$model_id.');',
+															'success'=>'updateLikeDislike(data);'	
+															));
+					echo $this->Js->link('like', array('admin'=>false,'controller'=>'votes','action'=>'vote_up',$model,$model_id), array(
+															//'onclick'=>'return false;',
+															'class'=>'vote dup like vote-'.$model_id,
+															'title'=>'like',
+															'style'=>'display:none',
+															'beforeSend'=>'showLoader('.$model_id.');',
+															'success'=>'updateLikeDislike(data);'
+															));
+				}
+			?>
+		</li>
+		<?php endif; ?>
+		<div id="ajax-status-<?php echo $model_id; ?>" style="display:none"><?php echo $this->Html->image('ajax-loader.gif',array('Loading...')); ?></div>
+	</ul>
+	<div class="clear"></div>
+</div>
+<div class="clear"></div>
+<?php
+echo $this->Html->script('elements/feed-like-dislike',array('inline'=>false));
+?>

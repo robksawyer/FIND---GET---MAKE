@@ -69,6 +69,12 @@
 			?>
 			<div class="clear"></div>
 		<?php endif; ?>
+		<div class="source"><?php
+		if(!empty($product['Product']['source_url'])):
+			echo $this->Html->link('Source',$product['Product']['source_url'],array('title'=>$product['Product']['source_url'],'target'=>'_blank'));
+		endif;
+		?>
+		</div>
 		</div>
 		<!-- END LEFT CONTAINER -->
 		
@@ -105,6 +111,11 @@
 							}
 						?></h3>
 					<ul>
+						<?php if(!empty($product['Product']['description'])): ?>
+							<li class="description">
+							<?php echo $product['Product']['description']; ?>
+							</li>
+						<?php endif; ?>
 						<li class="designer">
 							<?php if(!empty($product['Product']['designer'])): ?>
 							<?php echo "Designed by ".$product['Product']['designer']; ?>
@@ -125,24 +136,14 @@
 							echo "Price: ".$product['Product']['price'];
 						} ?>
 						</li>
-						<?php if(!empty($product['Product']['description'])): ?>
-							<li class="description">
-							<?php echo $product['Product']['description']; ?>
-							</li>
-						<?php endif; ?>
 						<li class="source">
 						<?php
 						if(!empty($product['Product']['purchase_url'])){
-							echo "Buy it:".$this->Html->link($string->truncate($product['Product']['purchase_url']),$product['Product']['purchase_url'],array('title'=>$product['Product']['purchase_url'],'target'=>'_blank'));
+							echo $this->Html->link('Buy',$product['Product']['purchase_url'],array('title'=>$product['Product']['purchase_url'],'target'=>'_blank'));
 						}
 						?>
 						</li>
-						<li class="source"><?php
-						if(!empty($product['Product']['source_url'])):
-							echo "Source:". $this->Html->link($string->truncate($product['Product']['source_url']),$product['Product']['source_url'],array('title'=>$product['Product']['source_url'],'target'=>'_blank'));
-						endif;
-						?>
-						</li>
+						<li class="found-by">Found by <?php echo $product['User']['username']; ?></li>
 					</ul>
 					<?php echo $this->element('social-buttons',array('cache'=>false)); ?>
 				</div>

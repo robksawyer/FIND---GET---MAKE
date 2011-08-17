@@ -4,26 +4,29 @@
 	if(!empty($this->params['named']['by'])){
 		$this->Paginator->options(array('url' => $this->passedArgs));
 	}
+	
+	$this->Html->script('jquery.masonry.min',array('inline'=>false));
 ?>
 <div class="left-container">
 	<?php
+		//Index Box Ad (300x250)
+		echo $this->element('index-box-ad',array('cache'=>false));
+		
 		//Rating sorter
 		echo $this->element('product-sorter',array('cache'=>false));
 		
 		//Alphabet sorter
-		echo $this->element('alphabet-sorter',array('cache'=>false,'controller'=>'products'));
+		echo $this->element('alphabet-sorter',array('cache'=>false));
 		
 		//Category sorter
 		echo $this->element('product-category-sorter',array('cache'=>false,'productCategories'=>$productCategories));
-		//Designer sorter
-		//echo $this->element('designer-sorter',array('cache'=>false));
 		
 		$this->Html->script('jquery.masonry.min',array('inline'=>false));
 	?>
 </div>
 <div class="right-container-index">
 	<div class="productCategories index">
-		<div class="header teal">
+		<div class="header red">
 			<?php  __('Items in the category [ '.ucwords($productCategory['ProductCategory']['name']).' ]');?>
 		</div>
 		<?php if(empty($productCategory['Product'])){
@@ -44,10 +47,11 @@
 						echo $this->Html->image($productCategory['Attachment'][0]['path_med'],array('alt'=>'','url'=>array('controller'=>'products','action'=>'view',$productCategory['id']))); 
 					}
 				?>
-				<br/>
-				<span class="title"><?php echo $this->Html->link($productCategory['name'],array('controller'=>'products','action'=>'view',$productCategory['id'])); ?></span><br/>
-				<span class="description"><?php echo $string->truncate($productCategory['description'],250); ?></span><br/>
-				<?php if(!empty($productCategory['designer'])) echo "Designed by, ".$productCategory['designer']; ?><br/>
+				<div class="title"><?php echo $this->Html->link($productCategory['name'],array('controller'=>'products','action'=>'view',$productCategory['id'])); ?></div>
+				<div class="description"><?php echo $string->truncate($productCategory['description'],250); ?></div>
+				<?php if(!empty($productCategory['designer'])) echo "<div class='designer'>Designed by ".$productCategory['designer']."</div>"; ?>
+				<div class="designer"><?php echo "Found by ".$this->Html->link($productCategory['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$productCategory['User']['username'])); ?></div>
+				<?php if(!empty($productCategory['designer'])) echo "Designed by ".$productCategory['designer']; ?><br/>
 				<div class="bottom-detail">
 					<span class="date"><?php echo $this->Time->niceShort($productCategory['created'],null,null)." / "; ?>&nbsp;</span>
 					<span class="tags"><?php
@@ -58,7 +62,7 @@
 						if(!empty($productCategory['Tag'])){
 							foreach($productCategory['Tag'] as $tag){
 								if($counter == $limit) break;
-
+						
 								if($counter == ($limit - 1) || count($productCategory['Tag']) < 2){
 									echo $this->Html->link($tag['name'],array('controller'=>'products','action'=>'index/by:'.$tag['keyname']));
 								}else{
@@ -95,3 +99,14 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+$(function(){
+	var $container = $("#grid-container");
+	$container.imagesLoaded(function(){
+		$container.masonry({
+			//option
+			itemSelector: '.grid-item'
+		});
+	});
+});
+</script>

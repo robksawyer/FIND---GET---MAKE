@@ -46,6 +46,13 @@ class Inspiration extends AppModel {
 			'conditions' => '',
 			'dependent' => true,
 			'exclusive' => true
+		),
+		'Feed' => array(
+			'className' => 'Feed',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Feed.model' => 'Inspiration'),
+			'dependent' => true,
+			'exclusive' => true
 		)
 	);
 	
@@ -97,6 +104,38 @@ class Inspiration extends AppModel {
 		)
 	);
 	
+	/**
+	 * Updates the total count in the user table for this particular type of item
+	 * @param created 
+	 * @return 
+	 * 
+	*/	
+	public function afterSave($created){
+		if($created){
+			//Update the total count for the user
+			$last = $this->read(null,$this->id);
+			if(!empty($last['User']['id'])){
+				$this->User->updateTotalInspirations($last['User']['id']);
+				
+				//Add the feed data to the feed
+				$this->Feed->addFeedData('Inspiration',$last);
+			}
+		}
+	}
+	
+	/**
+	 * Returns the needed feed data for a specific record
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	public function getFeedData($model_id=null){
+		$this->recursive = 2;
+		$this->User->recursive = -1;
+		$data = $this->read(null,$model_id);	
+		
+		return $data;
+	}
 	
 	/**
 	 * Get the most recent inspirations for a specific user

@@ -24,6 +24,7 @@ class CollectionsController extends AppController {
 		//$this->Uploader->mime('image', 'gif', 'image/gif');
 		//$this->Uploader->maxNameLength = 50;
 		
+		$this->Auth->allow('userCollections');
 	}
 	
 	function find() {
@@ -274,6 +275,34 @@ class CollectionsController extends AppController {
 		}
 	}
 	
+	/**
+	 * This method handles only showing collections added by a certain user.
+	 * @param int id The user id targetting 
+	 * @return 
+	 * 
+	*/
+	function users($id = null) {
+		$this->Collection->recursive = 2;
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid user id', true));
+			$this->redirect(array('action' => 'index','admin'=>false));
+		}
+		
+		$user = $this->Collection->User->find('first',array('conditions'=>array('User.id'=>$id)));
+		if(empty($user)){
+			$this->Session->setFlash(__('Invalid user id', true));
+			$this->redirect(array('action' => 'index','admin'=>false));
+		}
+		
+		$collections = $this->paginate('Collection',array(
+										   'Collection.user_id' => $id
+										));
+										
+		$total_count = $this->Collection->find('count');
+		$this->set(compact('collections','total_count','user','links'));
+		$this->set('string', $this->String);
+	}
+	
 	/** 
 	 * This is a helper method that removes a product from the collection.
 	 * @param id The collection id targeting.
@@ -391,6 +420,28 @@ class CollectionsController extends AppController {
 		if(empty($bypassRedirect)){
 			$this->Session->setFlash(__('The keycode has been generated.', true));
 			$this->redirect(array('action'=>'key','admin'=>false,$keycode));
+		}
+	}
+	
+	/**
+	 * Returns the total collections for a specific user
+	 * @param int user_id The user id you're trying to pull data for
+	 * @return 
+	 * 
+	*/
+	function getProfileData($user_id=null){
+		return $this->Collection->getProfileData($user_id);
+	}
+	
+	/**
+	 * Retrieves the items from the user id passed
+	 * @param id User id
+	 */
+	function userCollections($id = null,$limit=25){
+		$this->Collection->recursive = 2;
+		if(isset($this->params['requested'])) {
+			$collections = $this->Collection->userCollections($id,$limit,'all');
+			return $collections;
 		}
 	}
 	

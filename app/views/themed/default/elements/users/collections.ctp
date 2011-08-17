@@ -49,10 +49,8 @@
 				}
 			?>
 			<br/>
-			<span class="title"><?php echo $this->Html->link($collection['Collection']['name'],array('controller'=>'collections','action'=>'view',$collection['Collection']['id'])); ?></span>
-			<br/>
-			<p class="description"><?php echo $string->truncate($collection['Collection']['description'],350); ?></p>
-			<br/>
+			<div class="title"><?php echo $this->Html->link($collection['Collection']['name'],array('controller'=>'collections','action'=>'view',$collection['Collection']['id'])); ?></div>
+			<div class="description"><?php echo $string->truncate($collection['Collection']['description'],350); ?></div>
 			<?php if(!empty($collection['Collection']['designer'])) echo "Designed by ".$collection['Collection']['designer']; ?><br/>
 			<div class="bottom-detail">
 				<span class="date"><?php echo $this->Time->niceShort($collection['Collection']['created'],null,null); ?>&nbsp;</span>

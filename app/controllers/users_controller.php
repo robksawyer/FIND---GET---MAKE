@@ -22,6 +22,7 @@ class UsersController extends AppController {
 		parent::beforeFilter();
 		
 		$this->Auth->allow('login','logout');
+		$this->AjaxHandler->handle('hide_welcome');
 	}
 	
 	/**
@@ -63,6 +64,14 @@ class UsersController extends AppController {
 			$this->set('posts', $this->Topic->Post->getLatestByUser($user['User']['id']));
 		}
 		
+		//Update the total counts
+		$this->User->updateTotalInspirations($user['User']['id']);
+		$this->User->updateTotalCollections($user['User']['id']);
+		$this->User->updateTotalProducts($user['User']['id']);
+		$this->User->updateTotalSources($user['User']['id']);
+		//Update follow related counts
+		$this->User->updateTotalFollowCount($user['User']['id']);
+		$this->User->updateTotalFollowerCount($user['User']['id']);
 		
 		//Request data for the elements
 		$userSources = $this->User->Source->userSources($user['User']['id']);
@@ -74,25 +83,30 @@ class UsersController extends AppController {
 		$userInspirations = $this->User->Inspiration->userInspirations($user['User']['id'],10,'all');
 		$this->set(compact('userInspirations'));
 		
+		$userCollections = $this->User->Collection->userCollections($user['User']['id'],10,'all');
+		$this->set(compact('userCollections'));
+		
 		$userUfos = $this->User->Ufo->userUfos($user['User']['id']);
 		$this->set(compact('userUfos'));
 		
 		$wantedProductsTemp = $this->User->Ownership->getUserWants('Product',$user['User']['id']);
+		$wantedProducts = array();
 		//Find the full product details
 		if(!empty($wantedProductsTemp)){
 			foreach($wantedProductsTemp as $product){
 				$wantedProducts[] = $this->User->Product->read(null,$product['Product']['id']);
-			}
-			$this->set(compact('wantedProducts'));
+			}	
 		}
+		$this->set(compact('wantedProducts'));
+		
 		$haveProductsTemp = $this->User->Ownership->getUserHaves('Product',$user['User']['id']);
+		$haveProducts = array();
 		if(!empty($haveProductsTemp)){
 			foreach($haveProductsTemp as $product){
 				$haveProducts[] = $this->User->Product->read(null,$product['Product']['id']);
 			}
-			$this->set(compact('haveProducts'));
 		}
-		
+		$this->set(compact('haveProducts'));
 		
 		//$this->set('user', $this->User->read(null, $user['User']['id']));
 		$this->set('user', $user);
@@ -146,7 +160,7 @@ class UsersController extends AppController {
 					
 					// save to session
 					$this->Session->write('User',$result);
-					$this->Session->write('Competition.deactivated',false);
+					$this->Session->write('Challenge.deactivated',false);
 					$this->Session->delete('Forum');
 					
 					//Build and set the cookie
@@ -173,8 +187,8 @@ class UsersController extends AppController {
 	 * Logs out a User
 	 */
 	function logout() {
-		if($this->Session->check('Competition')){
-			$this->Session->delete('Competition');
+		if($this->Session->check('Challenge')){
+			$this->Session->delete('Challenge');
 		}
 		if($this->Session->check('Forum')){
 			$this->Session->delete('Forum');
@@ -186,6 +200,36 @@ class UsersController extends AppController {
 		$this->Session->setFlash(__('You have successfully logged out.',true));
 		$this->redirect($this->Auth->logout());
 	}
+	
+	/**
+	 * Handles showing staff favorites and allows users to find others
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function find(){
+		
+	}
+	
+	/**
+	 * Hides the welcome blurb that lives in the admin_moderate view
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function hide_welcome(){
+		if($this->RequestHandler->isAjax()) {
+			$this->autoLayout = false;
+			$this->autoRender = false;
+			$response = array('success' => false);
+			$this->User->id = $this->Auth->user('id');
+			$this->User->saveField('hide_welcome',1);
+			$this->AjaxHandler->response(true, 1);
+			$this->AjaxHandler->respond();
+			return;
+		}
+	}
+	
 	
 	/*
 	function admin_index() {
@@ -204,104 +248,7 @@ class UsersController extends AppController {
 		$this->set('user', $this->User->read(null, $id));
 		$this->set('string', $this->String);
 	}*/
-
-	/*function admin_add() {
-		//Delete any previous sessions
-		$currentSession = $this->Session->read('User');
-		if($currentSession) $this->Session->del('User');
-		
-		if(!empty($this->data)) {
-			
-			// set the form data to enable validation
-			$this->User->set( $this->data );
-			// see if the data validates
-			if($this->User->validates()) {
-				if($this->Auth->password($this->data['User']['password_confirm']) == $this->data['User']['password']){
-					
-					//Cleanup
-					if(!empty($this->data['User']['url'])){
-						$this->data['User']['url'] = $this->cleanURL($this->data['User']['url']); //Clean the URL
-					}
-					$this->data['User']['slug'] = $this->toSlug($this->data['User']['fullname']);
-
-					$name_array = $this->String->split_full_name($this->data['User']['fullname']);
-					$this->data['User']['fname'] = $name_array['fname'];
-					$this->data['User']['lname'] = $name_array['lname'];
-					$this->data['User']['suffix'] = $name_array['suffix'];
-					$this->data['User']['salutation'] = $name_array['salutation'];
-					$this->data['User']['initials'] = $name_array['initials'];
-
-					unset($this->data['User']['password_confirm']);
-					unset($this->data['User']['fullname']);
-				
-					$this->User->create();
-					if ($this->User->save($this->data)) {
-						$user = $this->User->id;
-
-						// send signup email containing password to the user 
-						//$assigned_password = 'password';
-						//$this->data['User']['password'] = $assigned_password;
-						//Send an email to the user and thank them for signing up
-						//$sendEmail = true;
-						//if($sendEmail){
-						//	if($this->_sendNewUserMail( $user['User']['id'],$password )){
-						//		$this->redirect(array('controller'=>'brands','action'=>'add',$user['User']['id']));
-						//	}
-						//}
-
-						$this->Auth->login($this->data);
-						$this->Session->setFlash(__('Your account has been created.', true));
-						$this->redirect(array('controller'=>'users','action'=>'moderate','admin'=>true));
-					} else {
-						$this->Session->setFlash(__('You account could not be created, try again.', true));
-					}
-				}else{
-					$this->Session->setFlash(__('The passwords entered, do NOT match.', true));
-				}
-			}else{
-				$errors = $this->User->invalidFields(); // contains validationErrors array
-				$this->Session->setFlash(__('User validation failed.', true));
-			}
-		}
-		$countries = $this->User->Country->find('list');
-		$this->set(compact('countries'));
-	}*/
 	
-	/**
-	* Send the user an email on signup
-	*/
-	function _sendNewUserMail($id,$password) {
-		$user = $this->User->read(null,$id);
-		if($user){
-			
-			$this->set('password', $password);
-			
-			// Set data for the "view" of the Email
-			$this->set('activate_url','http://'.env('SERVER_NAME').'/users/activate/'.$user['User']['id'].'/' .$this->getActivationHash($id));
-			$this->set('username', $this->data['User']['name']);
-			
-			$this->Email->to = $user['User']['email_address'];
-			$this->Email->bcc = array('robksawyer+thesource@gmail.com');  
-			$this->Email->subject = 'Welcome to THE SOURCE, '.$user['User']['name'];
-			$this->Email->replyTo = 'noreply@'.env('SERVER_NAME');
-			$this->Email->from = 'THE SOURCE <robksawyer+thesource@gmail.com>';
-			$this->Email->template = 'welcome_message'; // note no '.ctp'
-			//Send as 'html', 'text' or 'both' (default is 'text')
-			$this->Email->sendAs = 'both'; // because we like to send pretty mail
-			//Set view variables as normal
-			$this->set('user', $user);
-			
-			//Do not pass any args to send()
-			if($this->Email->send()){
-				return true;
-			}else{
-				return false;
-			}
-		}else{
-			return false;
-		}
-		
-	}
 	
 	/**
 	 * Activates a user account from an incoming link

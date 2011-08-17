@@ -16,6 +16,13 @@ class Ufo extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'User' => array(
+			'className' => 'User',
+			'foreignKey' => 'user_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 	
@@ -26,9 +33,48 @@ class Ufo extends AppModel {
 			'conditions' => array('Rating.model' => 'Ufo'),
 			'dependent' => true,
 			'exclusive' => true
+		),
+		'Feed' => array(
+			'className' => 'Feed',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Feed.model' => 'Ufo'),
+			'dependent' => true,
+			'exclusive' => true
 		)
 	);
 	
+	/**
+	 * Updates the total count in the user table for this particular type of item
+	 * @param created 
+	 * @return 
+	 * 
+	*/	
+	public function afterSave($created){
+		if($created){
+			//Update the total count for the user
+			$last = $this->read(null,$this->id);
+			if(!empty($last['User']['id'])){
+				$this->User->updateTotalUfos($last['User']['id']);
+				
+				//Add the feed data to the feed
+				$this->Feed->addFeedData('Ufo',$last);
+			}
+		}
+	}
+	
+	/**
+	 * Returns the needed feed data for a specific record
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	public function getFeedData($model_id=null){
+		$this->recursive = 2;
+		$this->User->recursive = -1;
+		$data = $this->read(null,$model_id);	
+		
+		return $data;
+	}
 	
 	/**
 	 * Get the most recent ufos for a specific user
@@ -37,7 +83,7 @@ class Ufo extends AppModel {
 	 * @param int $limit The number of results to return
 	 * @return Array
 	 **/
-	public function userUfos($user_id=null,$limit=10,$type=null){
+	function userUfos($user_id=null,$limit=10,$type=null){
 		$this->recursive = 2;
 		$items = $this->find('all',
 									array(

@@ -12,7 +12,7 @@ class HousesController extends AppController {
 	}
 	
 	function index() {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			$this->House->recursive = 2;
 
 			$houses = $this->paginate();
@@ -55,7 +55,7 @@ class HousesController extends AppController {
 	}
 
 	function view($id = null) {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			$this->House->recursive = 2;
 			if (!$id) {
 				$this->Session->setFlash(__('Invalid house', true));
@@ -67,7 +67,7 @@ class HousesController extends AppController {
 	}
 
 	function admin_add($client_id = null) {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			if (!empty($this->data)) {
 	
 				//Clean the image url
@@ -108,7 +108,7 @@ class HousesController extends AppController {
 	}
 
 	function admin_edit($id = null) {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			if (!$id && empty($this->data)) {
 				$this->Session->setFlash(__('Invalid house', true));
 				$this->redirect(array('action' => 'index'));
@@ -139,7 +139,7 @@ class HousesController extends AppController {
 	}
 
 	function admin_delete($id = null) {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			if (!$id) {
 				$this->Session->setFlash(__('Invalid id for house', true));
 				$this->redirect(array('action'=>'index','admin'=>false));
@@ -157,7 +157,7 @@ class HousesController extends AppController {
 	 * Finds the tags associated with this model
 	 */
 	function tags(){
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			$this->House->recursive = 2;
 			$this->paginate = array(
 								'Tagged'=>array(

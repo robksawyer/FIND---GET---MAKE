@@ -12,7 +12,7 @@ class ClientsController extends AppController {
 	}
 	
 	function index() {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			$this->Client->recursive = 2;
 		
 			$clients = $this->paginate();
@@ -47,7 +47,7 @@ class ClientsController extends AppController {
 	}
 
 	function view($id = null) {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			$this->Client->recursive = 2;
 			if (!$id) {
 				$this->Session->setFlash(__('Invalid client', true));
@@ -59,7 +59,7 @@ class ClientsController extends AppController {
 	}
 
 	function admin_add() {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			if (!empty($this->data)) {
 				//Make sure that the client doesn't already exist
 				$passed_check = $this->verifyAddition('Client');
@@ -95,7 +95,7 @@ class ClientsController extends AppController {
 	}
 
 	function admin_edit($id = null) {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			if (!$id && empty($this->data)) {
 				$this->Session->setFlash(__('Invalid client', true));
 				$this->redirect(array('action' => 'index','admin'=>false));
@@ -130,7 +130,7 @@ class ClientsController extends AppController {
 	}
 
 	function admin_delete($id = null) {
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			if (!$id) {
 				$this->Session->setFlash(__('Invalid id for client', true));
 				$this->redirect(array('action'=>'index','admin'=>false));
@@ -148,7 +148,7 @@ class ClientsController extends AppController {
 	 * Finds the tags associated with this model
 	 */
 	function tags(){
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			$this->Client->recursive = 2;
 			$this->paginate = array(
 								'Tagged'=>array(

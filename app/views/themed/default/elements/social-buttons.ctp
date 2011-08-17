@@ -1,10 +1,10 @@
-<?php 
+<?php
 if(!empty($controller) && !empty($keycode)){
 	$rootURL = "http://".$_SERVER['SERVER_NAME']."/".$controller."/key/".$keycode;
 }else{
 	$rootURL = "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 }
-if(!empty($social_sharing)): 
+if(Configure::read('FGM.social_sharing') == 1): 
 ?>
 <div class="social">
 	<span class="fbsend"><div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:send href="<?php echo $rootURL; ?>" font="arial"></fb:send></span>

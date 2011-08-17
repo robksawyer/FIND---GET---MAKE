@@ -61,7 +61,7 @@
 					echo "<div class='designer'>Designed by ".$inspiration['Inspiration']['designer']."</div>"; 
 				}
 				?>
-				<div class="designer"><?php echo "Added by ".$this->Html->link($inspiration['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$inspiration['User']['id'])); ?></div>
+				<div class="designer"><?php echo "Added by ".$this->Html->link($inspiration['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$inspiration['User']['username'])); ?></div>
 				<div class="bottom-detail">
 					<span class="date"><?php 
 							echo $this->Time->niceShort($inspiration['Inspiration']['created'],null,null);

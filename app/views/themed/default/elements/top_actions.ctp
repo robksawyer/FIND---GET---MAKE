@@ -34,7 +34,7 @@
 		<?php 
 		if(empty($removeEdit)):
 			//Check the logged in user to make sure that the user who created the item matches before showing.
-			if($authUser['User']['id'] == $item['User']['id'] || PRIVATE_SOLUTION_GROUP_CHANGE == 1):
+			if($authUser['User']['id'] == $item['User']['id'] || Configure::read('FGM.group_change') == 1):
 				echo "<li>".$this->Html->image('icons/edit.gif', array(
 																					'alt' => 'Edit',
 																					'title' => 'Edit',
@@ -63,7 +63,7 @@
 		<?php 
 		if(empty($removeDelete)): 
 			//Check the logged in user to make sure that the user who created the item matches before showing.
-			if($authUser['User']['id'] == $item['User']['id'] || PRIVATE_SOLUTION_GROUP_CHANGE == 1):
+			if($authUser['User']['id'] == $item['User']['id'] || Configure::read('FGM.group_change') == 1):
 					echo "<li>".$this->Html->link(
 							$this->Html->image("icons/delete.gif", array(
 																						"alt" => "Delete",

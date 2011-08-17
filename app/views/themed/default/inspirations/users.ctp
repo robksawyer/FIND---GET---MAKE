@@ -14,11 +14,14 @@
 ?>
 <div class="left-container">
 	<?php
+		//Index Box Ad (300x250)
+		echo $this->element('index-box-ad',array('cache'=>false));	
+	
 		//Rating sorter
-		echo $this->element('product-sorter',array('cache'=>false));
+		echo $this->element('inspiration-sorter',array('cache'=>false));
 		
 		//Alphabet sorter
-		//echo $this->element('alphabet-sorter',array('cache'=>false));
+		echo $this->element('alphabet-sorter',array('cache'=>false));
 		
 		//Designer sorter
 		//echo $this->element('designer-sorter',array('cache'=>false));
@@ -26,7 +29,7 @@
 </div>
 <div class="right-container-index">
 	<div class="inspirations index">
-		<div class="header orange">
+		<div class="header red">
 			<?php 
 				if(empty($user)){
 					__('Inspirations ('.$total_count.')');
@@ -35,7 +38,7 @@
 				}
 			?>
 		</div>
-		<p style="margin-top: 20px">Inspirations are: <br/>completed rooms you lust after<br/>lines &amp; shapes you want to use<br/>colors and forms that enthrall you<br/>sketches that one day will be fully realized.</p>
+		<h4>Inspirations are: <br/>completed rooms you lust after<br/>lines &amp; shapes you want to use<br/>colors and forms that enthrall you<br/>sketches that one day will be fully realized.</h4>
 		<div id="grid-container">
 		<?php
 		if(!empty($inspirations)):
@@ -52,7 +55,7 @@
 				<br/>
 				<span class="title"><?php echo $this->Html->link($inspiration['Inspiration']['name'],array('controller'=>'inspirations','action'=>'view',$inspiration['Inspiration']['id'])); ?></span><br/>
 				<span class="description"><?php echo $string->truncate($inspiration['Inspiration']['description'],250); ?></span><br/>
-				<?php if(!empty($inspiration['Inspiration']['designer'])) echo "Designed by, ".$inspiration['Inspiration']['designer']; ?><br/>
+				<?php if(!empty($inspiration['Inspiration']['designer'])) echo "Designed by ".$inspiration['Inspiration']['designer']; ?><br/>
 				<div class="bottom-detail">
 					<span class="date"><?php echo $this->Time->niceShort($inspiration['Inspiration']['created'],null,null)." / "; ?>&nbsp;</span>
 					<span class="tags"><?php

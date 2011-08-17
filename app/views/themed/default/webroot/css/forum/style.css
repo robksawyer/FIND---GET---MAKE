@@ -319,7 +319,7 @@ td.empty {
 
 #textarea {
 	float: left;
-	width: 70%; }
+	width: 100%; }
 
 #textarea textarea { width: 75%; }
 
@@ -329,7 +329,15 @@ td.empty {
 
 .al { text-align: left; }
 .ac { text-align: center; }
-.ar { text-align: right; }
+.ar { position: relative; text-align: left; width: 40%;}
+
+.ar label{
+	display: block;
+}
+
+.ar input{
+	margin-right: 10px;
+}
 
 .fr { float: right; }
 .fl { float: left; }
@@ -389,4 +397,34 @@ td.empty {
 	border: none;
 	padding: 10px;
 	margin: 0;
+}
+#UserAbout input{
+	position: relative;
+	padding: 0;
+	margin: 0;
+}
+#UserEditForm .after{
+	color: #a7a7a7;
+	padding: 3px;
+	margin: 0 0 0 5px;
+}
+#charlimitinfo{
+	position: relative;
+	color: #a7a7a7;
+	margin: -15px 0px 5px 10px;
+	padding: 0;
+}
+.forumHeader h2{
+	background: none;
+}
+#formWrapper { 
+	width: 80%;
+	background: #f6f6f6;
+	padding: 5px 15px 15px 15px;
+	margin: 0 auto;
+}
+.change{
+	margin: 10px;
+	color: #666;
+	cursor: pointer;
 }

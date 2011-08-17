@@ -66,7 +66,7 @@
 		echo '</div></div>';
 	?>
 	</fieldset>
-	<?php if(PRIVATE_SOLUTION): ?>
+	<?php if(Configure::read('FGM.private_solution') == 1): ?>
 	<fieldset>
 		<legend><?php __('Other Details'); ?></legend>
 	<?php

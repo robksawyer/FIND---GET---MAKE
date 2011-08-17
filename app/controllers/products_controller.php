@@ -20,15 +20,6 @@ class ProductsController extends AppController {
 			TODO Search tags
 		*/
 	);
-
-	function find() {
-		$this->Prg->commonProcess();
-		$this->paginate['conditions'] = $this->Product->parseCriteria($this->passedArgs);
-		$this->set('products', $this->paginate());
-		$this->set('string', $this->String);
-		$productCategories = $this->Product->ProductCategory->find('list',array( 'order' => 'name ASC' ));
-		$this->set(compact('productCategories'));
-	}
 	
 	function beforeFilter(){
 		parent::beforeFilter();
@@ -40,6 +31,16 @@ class ProductsController extends AppController {
 		//$this->Uploader->mime('image', 'gif', 'image/gif');
 		//$this->Uploader->maxNameLength = 50;
 		
+		$this->Auth->allow('getProductsForSource','getProductsForInspiration','getTags','getProfileData','getCount');
+	}
+
+	function find() {
+		$this->Prg->commonProcess();
+		$this->paginate['conditions'] = $this->Product->parseCriteria($this->passedArgs);
+		$this->set('products', $this->paginate());
+		$this->set('string', $this->String);
+		$productCategories = $this->Product->ProductCategory->find('list',array( 'order' => 'name ASC' ));
+		$this->set(compact('productCategories'));
 	}
 	
 	function index($filter = null) {
@@ -144,9 +145,15 @@ class ProductsController extends AppController {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid product', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
+		}else{
+			$product = $this->Product->read(null,$id);
+			if(empty($product)){
+				$this->Session->setFlash(__('Invalid product', true));
+				$this->redirect(array('action' => 'index','admin'=>false));
+			}
+			$this->set('product', $product);
+			$this->set('string', $this->String);
 		}
-		$this->set('product', $this->Product->read(null, $id));
-		$this->set('string', $this->String);
 		
 		/*$products = $this->Product->getAll();
 		$productList = $this->Product->getList();

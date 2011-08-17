@@ -115,7 +115,7 @@ class VotesController extends AppController {
 				$this->Vote->set('dislikes', 0);
 				
 				if($this->Vote->save()){
-					//$lastInsertId = $this->Vote->getLastInsertID();
+					$lastInsertId = $this->Vote->getLastInsertID();
 					$types = $this->setLikesDislikes($model,$model_id,'up');
 					$this->AjaxHandler->response(true, $types);
 				}else{
@@ -125,6 +125,7 @@ class VotesController extends AppController {
 				//The vote already exists
 				
 				$this->Vote->id = $votes['Vote']['id'];
+				$lastInsertId = $votes['Vote']['id'];
 				//$this->Vote->saveField('model_id',$model_id);
 				//$this->Vote->saveField('user_id', $user_id);
 				$this->Vote->saveField('likes', 1);
@@ -132,6 +133,14 @@ class VotesController extends AppController {
 				$types = $this->setLikesDislikes($model,$model_id,'up');
 				$this->AjaxHandler->response(true, $types);
 			}
+			
+			
+			$last = $this->Vote->read(null,$lastInsertId);
+			if(!empty($last['User']['id'])){
+				//Add the feed data to the feed
+				$this->Vote->Feed->addFeedData('Vote',$last);
+			}
+			
 			
 			$this->AjaxHandler->respond();
 			
@@ -180,6 +189,7 @@ class VotesController extends AppController {
 				$this->Vote->set('dislikes', 1);
 				if($this->Vote->save()){
 					//The save completed
+					$lastInsertId = $this->Vote->getLastInserID();
 					$types = $this->setLikesDislikes($model,$model_id,'down');
 					$this->AjaxHandler->response(true, $types);
 				}else{
@@ -189,6 +199,7 @@ class VotesController extends AppController {
 				//The vote already exists
 				
 				$this->Vote->id = $votes['Vote']['id'];
+				$lastInsertId = $votes['Vote']['id'];
 				//$this->Vote->set('model_id',$id);
 				//$this->Vote->set('model',$model);
 				//$this->Vote->set('name',strtolower($model));
@@ -199,6 +210,13 @@ class VotesController extends AppController {
 				$types = $this->setLikesDislikes($model,$model_id,'down');
 				$this->AjaxHandler->response(true, $types);
 			}
+			
+			$last = $this->Vote->read(null,$lastInsertId);
+			if(!empty($last['User']['id'])){
+				//Add the feed data to the feed
+				$this->Vote->Feed->addFeedData('Vote',$last);
+			}
+			
 			
 			$this->AjaxHandler->respond();
 			
@@ -288,7 +306,9 @@ class VotesController extends AppController {
 		$types = array ('likes'=>$likes,
 						'dislikes'=>$dislikes,
 						'type'=>$kind,
-						'user_likes'=>$user_likes,'user_dislikes'=>$user_dislikes
+						'user_likes'=>$user_likes,
+						'user_dislikes'=>$user_dislikes,
+						'id'=>$model_id
 						);
 		//return json_encode($types);
 		return $types;

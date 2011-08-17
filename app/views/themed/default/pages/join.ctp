@@ -2,7 +2,8 @@
 	$this->Html->script('jquery.corner',array('inline'=>false));
 ?>
 <div id="join">
-	<p>FIND | GET | MAKE is an open-ended and flexible design tool that assists in management of vendors, products, and inspiration tear sheets. 	</p><p>With purchase, you’ll get:</p>
+	<h4>FIND | GET | MAKE is an open-ended and flexible design tool that assists in management of vendors, products, and inspiration tear sheets.
+		<br/>With purchase, you’ll get:</h4>
 	<div class="group">
 		<div class="plus">
 			<div class="header">

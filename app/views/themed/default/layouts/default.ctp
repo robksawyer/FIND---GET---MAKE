@@ -18,7 +18,8 @@
  */
 ?>
 <?php echo $this->Html->docType('xhtml-trans'); ?> 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!--<html xmlns="http://www.w3.org/1999/xhtml">-->
+<?php echo $this->Facebook->html(); ?>
 	<head>
 		<?php echo $this->Html->charset(); ?>
 		<title>
@@ -122,8 +123,8 @@
 								echo $this->Html->link('Login','/users/login',array('title'=>'Login'));
 							}
 						}else{
-							if(!empty($authUser['User']['fname'])){
-								echo "Hi, ".ucwords($authUser['User']['fname']).". | ";
+							if(!empty($authUser['User']['fullname'])){
+								echo "Hi, ".ucwords($authUser['User']['fullname']).". | ";
 							}else{
 								echo "Hi, ".$authUser['User']['username'].". | ";
 							}
@@ -163,9 +164,18 @@
 
 			</div>
 			<div id="footer">
-				<?php echo $this->Html->link('Feedback','https://spreadsheets.google.com/spreadsheet/viewform?formkey=dFUtdmpVUkV3Njc1Nmo2d1RzWF9sekE6MQ',array('target'=>'_blank')); ?> | Copyright &copy; 2011 FIND | GET | MAKE : A Kate Tapia and Rob Sawyer Production 
+				<h3>FIND | GET | MAKE helps you find the sources you need, get the products you want, and make your dreams a reality.</h3>
+				<?php echo $this->Html->link('Feedback','https://spreadsheets.google.com/spreadsheet/viewform?formkey=dFUtdmpVUkV3Njc1Nmo2d1RzWF9sekE6MQ',array('target'=>'_blank','class'=>'feedback')); ?> Copyright 2011, FIND | GET | MAKE : A Kate Tapia and Rob Sawyer Production 
+				<?php echo $this->Html->link('Blog','http://findgetmake.tumblr.com/',array('target'=>'_blank'));?>
+				<?php echo $this->Html->link('About','#');?>
+				<?php echo $this->Html->link('Privacy Policy','#');?>
+				<?php echo $this->Html->link('Terms','#');?>
+			</div>
+			<div id="sub-footer">
+			<?php echo $this->Facebook->like(); ?>
 			</div>
 		</div>
 		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
 	</body>
+	<?php echo $this->Facebook->init(); ?>
 </html>

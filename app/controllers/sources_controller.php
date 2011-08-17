@@ -29,6 +29,8 @@ class SourcesController extends AppController {
 		$this->Uploader->tempDir = 'media/transfer/img/sources/';
 		//$this->Uploader->mime('image', 'gif', 'image/gif');
 		//$this->Uploader->maxNameLength = 50;
+		
+		$this->Auth->allow('getCount','getTags','getProfileData');
 	}
 
 	function find() {
@@ -156,6 +158,12 @@ class SourcesController extends AppController {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid source', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
+		}else{
+			$source = $this->Source->read(null, $id);
+			if(empty($source)){
+				$this->Session->setFlash(__('Invalid source', true));
+				$this->redirect(array('action' => 'index','admin'=>false));
+			}
 		}
 		
 		$contractors = $this->Source->Contractor->find('list');
@@ -164,7 +172,7 @@ class SourcesController extends AppController {
 		$sourceCategories = $this->Source->SourceCategory->find('list',array( 'order' => 'name ASC' ));
 		
 		$this->set('tags', $this->Source->Tagged->find('cloud', array('limit' => 10)));
-		$this->set('source', $this->Source->read(null, $id));
+		$this->set('source', $source);
 		$this->set(compact('contractors','inspirations','attachments','sourceCategories'));
 		$this->set('string', $this->String);
 	}
@@ -242,26 +250,30 @@ class SourcesController extends AppController {
 				 * Check to see if a contractor was added. If a name was added, check the 
 				 * name against already added contractors. If the name exist, associate the contractor
 				 * id to the source. */
-				if(!empty($this->data['Contractor']['name'])){
-					$contractor = $this->Source->Contractor->findByName($this->data['Contractor']['name']);
-					if(empty($contractor)){
-						$this->Source->Contractor->create();
-						//Create a slug for it.
-						$this->data['Contractor']['slug'] = $this->toSlug($this->data['Contractor']['name']);
-						if($this->Source->Contractor->save($this->data['Contractor'])){
-							//$this->Session->setFlash(__('The contractor has been saved', true));
-							$contractor_id = $this->Source->Contractor->getLastInsertID();
-							$this->data['Contractor'][0] = $contractor_id; //Add the contractor
+				if(Configure::read('FGM.private_solution') == 1){
+					if(!empty($this->data['Contractor']['name'])){
+						$contractor = $this->Source->Contractor->findByName($this->data['Contractor']['name']);
+						if(empty($contractor)){
+							$this->Source->Contractor->create();
+							//Create a slug for it.
+							$this->data['Contractor']['slug'] = $this->toSlug($this->data['Contractor']['name']);
+							if($this->Source->Contractor->save($this->data['Contractor'])){
+								//$this->Session->setFlash(__('The contractor has been saved', true));
+								$contractor_id = $this->Source->Contractor->getLastInsertID();
+								$this->data['Contractor'][0] = $contractor_id; //Add the contractor
+							}else{
+								$this->Session->setFlash(__('The contractor could not be saved. Please, try again.', true));
+							}
 						}else{
-							$this->Session->setFlash(__('The contractor could not be saved. Please, try again.', true));
+							//debug($contractor);
+							unset($this->data['Contractor']['name']);
+							$this->data['Contractor'][0] = $contractor['Contractor']['id'];
 						}
 					}else{
-						//debug($contractor);
-						unset($this->data['Contractor']['name']);
-						$this->data['Contractor'][0] = $contractor['Contractor']['id'];
+						unset($this->data['Contractor']);
 					}
 				}else{
-					unset($this->data['Contractor']);
+					//Do nothing
 				}
 				
 				//Check for a redirect variable
@@ -281,7 +293,7 @@ class SourcesController extends AppController {
 					$id = $this->Source->getLastInsertID();
 					//Generate and create keycode
 					$this->generateKeycode($id,true);
-					
+				
 					if(!empty($redirect)){
 						$this->redirect($redirect);
 					}else{

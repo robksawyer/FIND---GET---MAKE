@@ -1,5 +1,5 @@
 <?php 
-	if(ADVERTISING): 
+	if(Configure::read('FGM.advertising')==1): 
 ?>
 <div class="ad">
 <!-- Index_Box_Unit -->

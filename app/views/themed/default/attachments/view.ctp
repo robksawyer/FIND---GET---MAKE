@@ -28,7 +28,7 @@
 			$controller = "inspirations";
 			$action = "view";
 		}
-		if(PRIVATE_SOLUTION){
+		if(Configure::read('FGM.private_solution') == 1){
 			if(!empty($attachment['Client'])){
 				$item = $attachment['Client'];
 				$type = "client";

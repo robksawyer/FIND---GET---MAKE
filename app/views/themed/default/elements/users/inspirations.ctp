@@ -17,7 +17,7 @@
 			<br/>
 			<span class="title"><?php echo $this->Html->link($inspiration['Inspiration']['name'],array('admin'=>false,'controller'=>'inspirations','action'=>'view',$inspiration['Inspiration']['id'])); ?></span><br/>
 			<span class="description"><?php echo $string->truncate($inspiration['Inspiration']['description'],150); ?></span><br/>
-			<?php if(!empty($inspiration['Inspiration']['designer'])) echo "Designed by, ".$inspiration['Inspiration']['designer']; ?><br/>
+			<?php if(!empty($inspiration['Inspiration']['designer'])) echo "Designed by ".$inspiration['Inspiration']['designer']; ?><br/>
 			<div class="bottom-detail">
 				<span class="date"><?php echo $this->Time->niceShort($inspiration['Inspiration']['created'],null,null); ?>&nbsp;</span>
 				<span class="tags"><?php

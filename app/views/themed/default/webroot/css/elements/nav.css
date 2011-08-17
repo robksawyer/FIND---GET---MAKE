@@ -26,7 +26,7 @@
 .nav-main ul li a:hover{margin:0;padding:0;}
 .log-main ul li.welcomeuser{color:#999;font-size:12px;padding-right:10px;}
 #navbar .log-main a,
-#navbar .nav-main a{font-weight:normal;color:#999;text-transform:capitalize;font-size:12px;padding:6px 15px;}
+#navbar .nav-main a{font-weight:normal;color:#999;text-transform:capitalize;font-size:12px;padding:6px 15px;text-decoration: none;}
 #navbar .log-main a:hover,
 #navbar .nav-main a:hover{background-color:#464646;color:#ffffff;}
 #navbar .nav-main ul li.topnavActive a{background-color:#464646;padding-top:9px;border-top:1px black solid;border-right:1px #222 solid;border-left:1px #222 solid;}

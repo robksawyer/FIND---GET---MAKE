@@ -8,61 +8,80 @@ if (!empty($user)) { ?>
 	<?php // Gravatar
 	if ($this->Cupcake->settings['enable_gravatar'] == 1) {
 		if ($avatar = $this->Cupcake->gravatar($user['User']['email'])) {
-			echo "<div class='avatar'>".$avatar."</div>";
+			echo "<div class='avatar'>".$avatar;
+			echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$user['User']['id']));
+			echo '<div class="clear"></div>';
+			echo "</div>";
 		}else{
 			echo "<div class='avatar'>";
 			echo $this->Html->image('no_gravatar.jpg')."<br/>";
+			echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$user['User']['id']));
+			echo '<div class="clear"></div>';
 			echo "</div>";
 		}
-	}	
+	}
 	?>
-	<ul>
-		<?php 
-			if(!empty($user['User']['fname']) && !empty($user['User']['lname'])){
-				echo "<li class='name'>".$user['User']['fname']." ".$user['User']['lname']; 
-				echo " <span class='serif'>a.k.a</span> ".$user['User']['username']."</li>";
-			}else{
-				echo "<li class='name'>".$user['User']['username']."</li>";
-			}
-		?>
-		<br/>
-		<?php if (!empty($user['User'][$this->Cupcake->columnMap['signature']])) { ?>
-		<li class="signature"><?php $this->Decoda->parse($user['User'][$this->Cupcake->columnMap['signature']], false, array('b', 'i', 'u', 'img', 'url', 'align', 'color', 'size', 'code')); ?></li>
-		<?php } ?>
-		<?php
-			$source_count = $this->requestAction('/sources/getCount/'.$user['User']['id']);
-			$product_count = $this->requestAction('/products/getCount/'.$user['User']['id']);
-		?>
-		<ul class="totals">
-			<li><span class='total'><i>Total sources added:</i> <?php echo $this->Html->link($source_count,array('plugin'=>'','admin'=>false,'controller'=>'sources','action'=>'users',$user['User']['id']));; ?></span> <span class='total'><i>Total products added:</i> <?php echo $this->Html->link($product_count,array('plugin'=>'','admin'=>false,'controller'=>'products','action'=>'users',$user['User']['id'])); ?></span></li>
+	<div class="user-details">
+		<ul>
+			<?php 
+				if(!empty($user['User']['fullname'])){
+					echo "<li class='name'>".$user['User']['fullname']; 
+					echo " <span class='serif'>a.k.a</span> ".$user['User']['username']."</li>";
+				}else{
+					echo "<li class='name'>".$user['User']['username']."</li>";
+				}
+			?>
+			<?php if (!empty($user['User']['about'])) { ?>
+			<li class="about"><?php echo $user['User']['about']; ?></li>
+			<?php } ?>
+			<li>
+				<?php 
+				//Link to the user's feed
+				echo $this->Html->link('Feed',array('plugin'=>'','admin'=>false,'controller'=>'feeds','action'=>'user',$user['User']['username']))." | ";
+				echo $this->Html->link($user['User']['totalUsersFollowing'].' following,',array('plugin'=>'','controller'=>'user_followings','action'=>'following',$user['User']['username'])); 
+				?>
+				<?php 
+				if($user['User']['totalFollowers'] > 1 || $user['User']['totalFollowers'] == 0){
+					echo $this->Html->link($user['User']['totalFollowers'].' followers',array('plugin'=>'','controller'=>'user_followings','action'=>'followers',$user['User']['username'])); 
+				}else{
+					echo $this->Html->link($user['User']['totalFollowers'].' follower',array('plugin'=>'','controller'=>'user_followings','action'=>'followers',$user['User']['username'])); 
+				}
+				?>
+			</li>
 		</ul>
-		<li>Joined: <?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></li>
-		<li>Total topics: <?php echo number_format($user['User'][$this->Cupcake->columnMap['totalTopics']]); ?></li>
-		<li>Total posts: <?php echo number_format($user['User'][$this->Cupcake->columnMap['totalPosts']]); ?></li>
-		<li>Roles: <?php if (!empty($user['Access'])) { 
-			$roles = array();
-			foreach ($user['Access'] as $access) {
-				$roles[] = $access['AccessLevel']['title'];
-			}
-			echo implode(', ', $roles);
-		} else {
-			echo '<em>'. __d('forum', 'N/A', true) .'</em>';
-		} ?></li>
-		<li>Last login: <?php if (!empty($user['User'][$this->Cupcake->columnMap['lastLogin']])) {
-			echo $this->Time->relativeTime($user['User'][$this->Cupcake->columnMap['lastLogin']], array('userOffset' => $this->Cupcake->timezone()));
-		} else {
-			echo '<em>'. __d('forum', 'Never', true) .'</em>';
-		} ?></li>
-		<li>Moderates: <?php if (!empty($user['Moderator'])) { 
-			$mods = array();
-			foreach ($user['Moderator'] as $mod) {
-				$mods[] = $this->Html->link($mod['ForumCategory']['title'], array('controller' => 'category', 'action' => 'view', $mod['ForumCategory']['id']));
-			}
-			echo implode(', ', $mods);
-		} else {
-			echo '<em>'. __d('forum', 'N/A', true) .'</em>';
-		} ?></li>
-	</ul>
+		<ul class="totals">
+			<li><span class='total'><i>Total sources added:</i> <?php echo $this->Html->link($user['User']['totalSources'],array('plugin'=>'','admin'=>false,'controller'=>'sources','action'=>'users',$user['User']['id']));; ?></span> <span class='total'><i>Total products added:</i> <?php echo $this->Html->link($user['User']['totalProducts'],array('plugin'=>'','admin'=>false,'controller'=>'products','action'=>'users',$user['User']['id'])); ?></span></li>
+			<li><span class='total'><i>Total inspirations:</i> <?php echo $this->Html->link($user['User']['totalInspirations'],array('plugin'=>'','admin'=>false,'controller'=>'inspirations','action'=>'users',$user['User']['id']));; ?></span> <span class='total'><i>Total collections:</i> <?php echo $this->Html->link($user['User']['totalCollections'],array('plugin'=>'','admin'=>false,'controller'=>'collections','action'=>'users',$user['User']['id'])); ?></span></li>
+		</ul>
+		<ul>
+			<li>Joined <?php echo $this->Time->timeAgoInWords($user['User']['created']); ?></li>
+			<li style="display: none">Total topics: <?php echo number_format($user['User'][$this->Cupcake->columnMap['totalTopics']]); ?></li>
+			<li style="display: none">Total posts: <?php echo number_format($user['User'][$this->Cupcake->columnMap['totalPosts']]); ?></li>
+			<li style="display:none">Roles: <?php if (!empty($user['Access'])) { 
+				$roles = array();
+				foreach ($user['Access'] as $access) {
+					$roles[] = $access['AccessLevel']['title'];
+				}
+				echo implode(', ', $roles);
+			} else {
+				echo '<em>'. __d('forum', 'N/A', true) .'</em>';
+			} ?></li>
+			<li style="display: none">Last login: <?php if (!empty($user['User'][$this->Cupcake->columnMap['lastLogin']])) {
+				echo $this->Time->relativeTime($user['User'][$this->Cupcake->columnMap['lastLogin']], array('userOffset' => $this->Cupcake->timezone()));
+			} else {
+				echo '<em>'. __d('forum', 'Never', true) .'</em>';
+			} ?></li>
+			<li style="display: none">Moderates: <?php if (!empty($user['Moderator'])) { 
+				$mods = array();
+				foreach ($user['Moderator'] as $mod) {
+					$mods[] = $this->Html->link($mod['ForumCategory']['title'], array('controller' => 'category', 'action' => 'view', $mod['ForumCategory']['id']));
+				}
+				echo implode(', ', $mods);
+			} else {
+				echo '<em>'. __d('forum', 'N/A', true) .'</em>';
+			} ?></li>
+		</ul>
+	</div>
 </div>
 <div class="clear"></div>
 <div class="moderate-area">

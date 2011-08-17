@@ -125,8 +125,14 @@
 		</dd>
 	</dl>
 	<div class="clear"></div>
+	<?php if(!empty($source['User']['username'])): ?>
+		<div class="added-by"><?php echo "Found by ".$source['User']['username']; ?></div>
+	<?php else: ?>
+		<div class="added-by"><?php echo "Found by unknown"; ?></div>
+	<?php endif; ?>
 	<?php echo $this->element('social-buttons',array('cache'=>false)); ?>
 </div>
+<div class="clear"></div>
 <?php 
 	//Related products
 	if(!empty($source['Product'])){

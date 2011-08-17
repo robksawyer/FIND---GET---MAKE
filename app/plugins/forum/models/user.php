@@ -26,7 +26,7 @@ class User extends ForumAppModel {
 	 * @var string
 	 */
 	public $tablePrefix = '';
-
+	
 	/**
 	 * A column map allowing you to define the name of certain user columns.
 	 *
@@ -43,10 +43,6 @@ class User extends ForumAppModel {
 		'currentLogin'	=> 'currentLogin',
 		'lastLogin'		=> 'lastLogin'
 	);
-	
-	/*public $virtualFields = array(
-		'full_name' => "CONCAT(User.fname, ' ', User.lname)"
-	);*/
 	
 	/**
 	 * Has many.

@@ -5,7 +5,7 @@
         $links = array();
         if ($this->Cupcake->user()) {
             $links[] = $this->Html->link(__d('forum', 'View New Posts', true), array('controller' => 'search', 'action' => 'index', 'new_posts', 'admin' => false));
-            $links[] = $this->Html->link(__d('forum', 'My Profile', true), array('controller' => 'users', 'action' => 'profile', $this->Cupcake->user('id'), 'admin' => false));
+            $links[] = $this->Html->link(__d('forum', 'My Profile', true), array('controller' => 'users', 'action' => 'profile', $this->Cupcake->user('username'), 'admin' => false));
             $links[] = $this->Html->link(__d('forum', 'Edit Profile', true), array('controller' => 'users', 'action' => 'edit', 'admin' => false));
             //$links[] = $this->Html->link(__d('forum', 'Logout', true), array('controller' => 'users', 'action' => 'logout', 'admin' => false));
         } else {

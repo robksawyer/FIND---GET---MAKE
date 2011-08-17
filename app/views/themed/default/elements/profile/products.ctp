@@ -20,11 +20,10 @@
 				}
 			?>
 			<br/>
-			<span class="title"><?php echo $this->Html->link($product['Product']['name'],array('plugin'=>'','admin'=>false,'controller'=>'products','action'=>'view',$product['Product']['id'])); ?></span>
+			<div class="title"><?php echo $this->Html->link($product['Product']['name'],array('plugin'=>'','admin'=>false,'controller'=>'products','action'=>'view',$product['Product']['id'])); ?></div>
+			<div class="description"><?php echo $string->truncate($product['Product']['description'],250); ?></div>
 			<br/>
-			<p class="description"><?php echo $string->truncate($product['Product']['description'],250); ?></p>
-			<br/>
-			<?php if(!empty($product['Product']['designer'])) echo "Designed by, ".$product['Product']['designer']; ?><br/>
+			<?php if(!empty($product['Product']['designer'])) echo "<div class='designer'>Designed by ".$product['Product']['designer']."</div>"; ?>
 			<div class="bottom-detail">
 				<span class="date"><?php echo $this->Time->niceShort($product['Product']['created'],null,null); ?>&nbsp;</span>
 				<span class="tags"><?php

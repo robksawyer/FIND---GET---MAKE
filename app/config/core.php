@@ -20,30 +20,6 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-/**
- * 
- * Private Hosted Solution
- * 
- * 
- * 0: The private settings are turned off
- * 1: The private settings are turned on
- * 
-*/
-	define('PRIVATE_SOLUTION', 0);
-	define('PRIVATE_SOLUTION_GROUP_CHANGE', 0);
-	
-
-/**
- * 
- * Advertising
- * 
- * 
- * 0: Disable ads
- * 1: Show ads
- * 
-*/
-	define('ADVERTISING', 1);
-
 
 /**
  * CakePHP Debug Level:

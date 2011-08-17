@@ -28,6 +28,13 @@ class Collection extends AppModel {
 			'conditions' => array('Rating.model' => 'Collection'),
 			'dependent' => true,
 			'exclusive' => true
+		),
+		'Feed' => array(
+			'className' => 'Feed',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Feed.model' => 'Collection'),
+			'dependent' => true,
+			'exclusive' => true
 		)
 	);
 	
@@ -59,6 +66,89 @@ class Collection extends AppModel {
 		)
 	);
 	
+	/**
+	 * Updates the total count in the user table for this particular type of item
+	 * @param created 
+	 * @return 
+	 * 
+	*/	
+	 function afterSave($created){
+		if($created){
+			//Update the total count for the user
+			$last = $this->read(null,$this->id);
+			if(!empty($last['User']['id'])){
+				$this->User->updateTotalCollections($last['User']['id']);
+				//Add the feed data to the feed
+				$this->Feed->addFeedData('Collection',$last);
+			}
+		}
+	}
+	
+	/**
+	 * Returns the needed feed data for a specific record
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	public function getFeedData($model_id=null){
+		$this->recursive = 1;
+		$data = $this->read(null,$model_id);
+		for($i=0;$i<count($data['Product']);$i++){
+			if(!empty($data['Product'][$i]['id'])){
+				$product = $this->Product->read(null,$data['Product'][$i]['id']);
+				$data['Product'][$i] = $product;
+			}
+		}
+		
+		return $data;
+	}
+	
+	/**
+	 * Get the most recent collections for a specific user
+	 *
+	 * @param int $user_id The user id of the user you're trying to pull inspirations for.
+	 * @param int $limit The number of results to return
+	 * @return Array
+	 **/
+	function userCollections($user_id=null,$limit=10,$type=null){
+		$this->recursive = 2;
+		if(empty($type)){
+			$items = $this->find('list',
+										array(
+											'conditions'=>array('Collection.user_id' => $user_id),
+											'limit' => $limit,
+											'order' => array('Collection.created DESC')
+											)
+										);
+		}elseif($type=='all'){
+			$items = $this->find('all',
+										array(
+											'conditions'=>array('Collection.user_id' => $user_id),
+											'limit' => $limit,
+											'order' => array('Collection.created DESC')
+											)
+										);
+		}
+		
+		return $items;
+	}
+	
+	/**
+	 * Returns the total collections for a specific user. This is used on the public profile view page.
+	 * @param int user_id The user id you're trying to pull data for
+	 * @return 
+	 * 
+	*/
+	function getProfileData($user_id=null,$limit=10){
+		$items = $this->find('list',
+									array(
+										'conditions'=>array('Collection.user_id' => $user_id),
+										'limit' => $limit,
+										'order' => array('Collection.created DESC')
+										)
+									);
+		return $items;
+	}
 	
 	/**
 	 * Update the total product count

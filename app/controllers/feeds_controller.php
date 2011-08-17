@@ -1,0 +1,233 @@
+<?php
+class FeedsController extends AppController {
+
+	var $name = 'Feeds';
+	
+	var $paginate = array(
+		'Feed' => array(
+			'limit' => 25,
+			'order' => array(
+				'Feed.record_created' => 'desc',
+			),
+		),
+	);
+	
+	/**
+	 * Handles showing the feed of the user that is logged in 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	/*function admin_me(){
+		//Get the logged in user
+		$user = $this->Auth->user();
+		$user = $this->Feed->User->read(null,$user['User']['id']);
+		//debug($user['UserFollowing']);
+		$user_ids = array();
+		$feed = array();
+		if(!empty($user)){
+			//$this->paginate['User'] = $this->Feed->User->getFeedDetails($user['User']['id']);
+			$this->paginate = array(
+									'recursive'=>3,
+									'limit'=>5,
+									'order'=>array('Feed.record_created'=>'desc'),
+									'conditions'=>array(
+										'Feed.user_id'=>$user['User']['id']
+									));
+			//$this->paginate = $feed['User'];
+			$feed = $this->paginate();
+			$this->set(compact('user','feed'));
+		}else{
+			$this->Session->setFlash(__('You must be logged in to access this area.', true));
+			$this->redirect('/users/login');
+		}
+	}*/
+	
+	/**
+	 * Spits out the recent additions from user passed
+	 * @param string username 
+	 * @return 
+	 * 
+	*/
+	function admin_me(){
+		$user = $this->Auth->user();
+		$user = $this->Feed->User->read(null,$user['User']['id']);
+		//debug($user['UserFollowing']);
+		$user_ids = array();
+		$feed = array();
+		if(!empty($user)){
+			/*
+				TODO Set up pagination
+			*/
+			$feed = $this->Feed->User->getFeedDetails($user['User']['id']);
+			$this->set(compact('feed','user'));
+		}else{
+			$this->Session->setFlash(__('This is an invalid user.', true));
+			$this->redirect('/');
+		}
+	}
+	
+	/**
+	 * Spits out the recent additions from user passed
+	 * @param string username 
+	 * @return 
+	 * 
+	*/
+	function user($username=null){
+		if(is_int($username)){
+			$id = $username;
+			$user = $this->Feed->User->read(null,$id);
+		}else{
+			$userTemp = $this->Feed->User->find('first',array('conditions'=>array('username'=>$username)));
+			$id = $userTemp['User']['id'];
+			$user = $this->Feed->User->read(null,$id);
+		}
+		//debug($user['UserFollowing']);
+		$user_ids = array();
+		$feed = array();
+		if(!empty($user)){
+			/*
+				TODO Set up pagination
+			*/
+			$feed = $this->Feed->User->getFeedDetails($user['User']['id']);
+			$this->set(compact('feed','user'));
+		}else{
+			$this->Session->setFlash(__('This is an invalid user.', true));
+			$this->redirect('/');
+		}
+	}
+	
+	/**
+	 * Spits out the recent additions from followed users
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function admin_display(){
+		//Get the logged in user
+		$user = $this->Auth->user();
+		$user = $this->Feed->User->read(null,$user['User']['id']);
+		//debug($user['UserFollowing']);
+		$user_ids = array();
+		$feed = array();
+		if(!empty($user)){
+			//debug($users_following);
+			//Find all of the followed users (with details) for this user
+			foreach($user['UserFollowing'] as $follower){
+				$user_ids[] = $follower['follow_user_id'];
+			}
+			/*
+				TODO Set up pagination
+			*/
+			$feed = $this->Feed->User->getFeeds($user_ids);
+			$this->set(compact('feed','user'));
+		}else{
+			$this->Session->setFlash(__('You must be logged in to access this area.', true));
+			$this->redirect('/users/login');
+		}
+	}
+	
+	/**
+	 * Generate a feed for a user if it doesn't exist
+	 * @param string username
+	 * @return 
+	 * 
+	*/
+	function admin_generate($username=null){
+		$this->Feed->recursive = 1;
+		if (!$username) {
+			$this->Session->setFlash(__('Invalid username', true));
+			$this->redirect(array('admin'=>true,'action' => 'moderate'));
+		}
+		$user = $this->Feed->User->findByUsername($username);
+		if (!$user) {
+			$this->Session->setFlash(__('Invalid username', true));
+			$this->redirect(array('admin'=>true,'action' => 'moderate'));
+		}
+		//debug($user);
+		//Generate feed items for each type
+		$counter = 0;
+		//Collections
+		foreach($user['Collection'] as $item){
+			$this->data[$counter]['Feed']['model'] = 'Collection';
+			$this->data[$counter]['Feed']['user_id'] = $item['user_id'];
+			$this->data[$counter]['Feed']['name'] = strtolower('Collection');
+			$this->data[$counter]['Feed']['model_id'] = $item['id'];
+			$this->data[$counter]['Feed']['record_created'] = $item['created'];
+			$counter++;
+		} 
+		
+		//Inspirations
+		foreach($user['Inspiration'] as $item){
+			$this->data[$counter]['Feed']['model'] = 'Inspiration';
+			$this->data[$counter]['Feed']['user_id'] = $item['user_id'];
+			$this->data[$counter]['Feed']['name'] = strtolower('Inspiration');
+			$this->data[$counter]['Feed']['model_id'] = $item['id'];
+			$this->data[$counter]['Feed']['record_created'] = $item['created'];
+			$counter++;
+		}
+		
+		//Products
+		foreach($user['Product'] as $item){
+			$this->data[$counter]['Feed']['model'] = 'Product';
+			$this->data[$counter]['Feed']['user_id'] = $item['user_id'];
+			$this->data[$counter]['Feed']['name'] = strtolower('Product');
+			$this->data[$counter]['Feed']['model_id'] = $item['id'];
+			$this->data[$counter]['Feed']['record_created'] = $item['created'];
+			$counter++;
+		}
+		
+		//Sources
+		foreach($user['Source'] as $item){
+			$this->data[$counter]['Feed']['model'] = 'Source';
+			$this->data[$counter]['Feed']['user_id'] = $item['user_id'];
+			$this->data[$counter]['Feed']['name'] = strtolower('Source');
+			$this->data[$counter]['Feed']['model_id'] = $item['id'];
+			$this->data[$counter]['Feed']['record_created'] = $item['created'];
+			$counter++;
+		}
+		
+		//Ufos
+		foreach($user['Ufo'] as $item){
+			$this->data[$counter]['Feed']['model'] = 'Ufo';
+			$this->data[$counter]['Feed']['user_id'] = $item['user_id'];
+			$this->data[$counter]['Feed']['name'] = strtolower('Ufo');
+			$this->data[$counter]['Feed']['model_id'] = $item['id'];
+			$this->data[$counter]['Feed']['record_created'] = $item['created'];
+			$counter++;
+		}
+		
+		//Ownerships
+		foreach($user['Ownership'] as $item){
+			$this->data[$counter]['Feed']['model'] = 'Ownership';
+			$this->data[$counter]['Feed']['user_id'] = $item['user_id'];
+			$this->data[$counter]['Feed']['name'] = strtolower('Ownership');
+			$this->data[$counter]['Feed']['model_id'] = $item['id'];
+			$this->data[$counter]['Feed']['record_created'] = $item['created'];
+			$counter++;
+		}
+		
+		//Votes
+		foreach($user['Vote'] as $item){
+			$this->data[$counter]['Feed']['model'] = 'Vote';
+			$this->data[$counter]['Feed']['user_id'] = $item['user_id'];
+			$this->data[$counter]['Feed']['name'] = strtolower('Vote');
+			$this->data[$counter]['Feed']['model_id'] = $item['id'];
+			$this->data[$counter]['Feed']['record_created'] = $item['created'];
+			$counter++;
+		}
+		//debug($this->data);
+		//Save the feed to the database
+		if($this->Feed->saveAll($this->data)){
+			$success = 1;
+			$records = $this->data;
+		}else{
+			$success = 0;
+			$records = 0;
+		}
+		
+		$this->set(compact('success','records'));
+		//Generate a feed record for each addition that the user crated
+		 
+	}
+}

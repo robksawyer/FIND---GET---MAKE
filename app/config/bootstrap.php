@@ -50,3 +50,4 @@
  */
 
 //require APP . 'plugins' . DS . 'media' . DS . 'config' . DS . 'core.php';
+Configure::load('fgm_config');

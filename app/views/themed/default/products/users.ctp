@@ -9,11 +9,13 @@
 	if(!empty($this->Paginator->params['paging']['Tagged'])){
 		$this->Paginator->params['paging']['Product'] = $this->Paginator->params['paging']['Tagged'];
 	}*/
-	
 	$this->Html->script('jquery.masonry.min',array('inline'=>false));
 ?>
 <div class="left-container">
 	<?php
+		//Index Box Ad (300x250)
+		echo $this->element('index-box-ad',array('cache'=>false));
+	
 		//Rating sorter
 		echo $this->element('product-sorter',array('cache'=>false));
 		
@@ -25,21 +27,18 @@
 		
 		//Designer sorter
 		//echo $this->element('designer-sorter',array('cache'=>false));
-		
-		//Index Box Ad (300x250)
-		echo $this->element('index-box-ad',array('cache'=>false));
 	?>
 </div>
 <div class="right-container-index">
 	<div class="products index">
-		<div class="header teal"><?php 
+		<div class="header red"><?php 
 			if(empty($user)){
 				__('Products ('.$total_count.')');
 			}else{
-				__('Products added by '.$user['User']['username']);
+				__('Products found by '.$user['User']['username']);
 			}
 		?></div>
-		
+		<h4>Adding a product is an easy way to keep track of an item you’ve been wanting to buy or use in a space.</h4>
 		<!-- Start gridded items -->
 		<div id="grid-container">
 		<?php
@@ -59,7 +58,7 @@
 				<br/>
 				<p class="description"><?php echo $string->truncate($product['Product']['description'],250); ?></p>
 				<br/>
-				<?php if(!empty($product['Product']['designer'])) echo "Designed by, ".$product['Product']['designer']; ?><br/>
+				<?php if(!empty($product['Product']['designer'])) echo "Designed by ".$product['Product']['designer']; ?><br/>
 				<div class="bottom-detail">
 					<span class="date"><?php echo $this->Time->niceShort($product['Product']['created'],null,null)." / "; ?>&nbsp;</span>
 					<span class="tags"><?php

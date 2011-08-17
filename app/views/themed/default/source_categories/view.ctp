@@ -14,7 +14,7 @@
 </div>
 <div class="right-container-index">
 	<div class="sourceCategories index">
-		<div class="header pink">
+		<div class="header red">
 			<?php  __('Items in the category [ '.ucwords($sourceCategory['SourceCategory']['name']).' ]');?>
 		</div>
 		<?php if(empty($sourceCategory['Source'])){

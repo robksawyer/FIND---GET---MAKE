@@ -32,17 +32,6 @@ class Product extends AppModel {
 				array('name' => 'range_start', 'type' => 'expression', 'method' => 'makeRangeStartCondition', 'field' => 'Project.start BETWEEN ? AND ?'),
 				array('name' => 'range_due', 'type' => 'expression', 'method' => 'makeRangeDueCondition', 'field' => 'Project.due BETWEEN ? AND ?')*/
 			);
-
-	public function findByTags($data = array()) {
-		$this->Tagged->Behaviors->attach('Containable', array('autoFields' => false));
-		$this->Tagged->Behaviors->attach('Search.Searchable');
-		$query = $this->Tagged->getQuery('all', array(
-			'conditions' => array('Tag.name'  => $data['tags']),
-			'fields' => array('foreign_key'),
-			'contain' => array('Tag')
-		));
-		return $query;
-	}
 					
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 	
@@ -98,6 +87,13 @@ class Product extends AppModel {
 			'conditions' => array('Ownership.model' => 'Product'),
 			'dependent' => true,
 			'exclusive' => true
+		),
+		'Feed' => array(
+			'className' => 'Feed',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Feed.model' => 'Product'),
+			'dependent' => true,
+			'exclusive' => true
 		)
 	);
 
@@ -148,6 +144,55 @@ class Product extends AppModel {
 			'insertQuery' => ''
 		)
 	);
+	
+	/**
+	 * Updates the total count in the user table for this particular type of item
+	 * @param created 
+	 * @return 
+	 * 
+	*/	
+	public function afterSave($created){
+		if($created){
+			//Update the total count for the user
+			$last = $this->read(null,$this->id);
+			if(!empty($last['User']['id'])){
+				$this->User->updateTotalProducts($last['User']['id']);
+				
+				//Add the feed data to the feed
+				$this->Feed->addFeedData('Product',$last);
+			}
+		}
+	}
+	
+	/**
+	 * Returns the needed feed data for a specific record
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	public function getFeedData($model_id=null){
+		$this->recursive = 2;
+		$this->User->recursive = -1;
+		$data = $this->read(null,$model_id);	
+		
+		return $data;
+	}
+	
+	/**
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function findByTags($data = array()) {
+		$this->Tagged->Behaviors->attach('Containable', array('autoFields' => false));
+		$this->Tagged->Behaviors->attach('Search.Searchable');
+		$query = $this->Tagged->getQuery('all', array(
+			'conditions' => array('Tag.name'  => $data['tags']),
+			'fields' => array('foreign_key'),
+			'contain' => array('Tag')
+		));
+		return $query;
+	}
 	
 	/**
 	 * Get the most recent products for a specific user

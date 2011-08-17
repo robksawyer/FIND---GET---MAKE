@@ -27,6 +27,49 @@ class Ownership extends AppModel {
 							)
 							);
 
+	var $hasMany = array(
+		'Feed' => array(
+			'className' => 'Feed',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Feed.model' => 'Ownership'),
+			'dependent' => true,
+			'exclusive' => true
+		)
+	);
+	
+	/**
+	 * Updates the total count in the user table for this particular type of item
+	 * @param created 
+	 * @return 
+	 * 
+	*/	
+	public function afterSave($created){
+		if($created){
+			//Update the total count for the user
+			$last = $this->read(null,$this->id);
+			if(!empty($last['User']['id'])){
+				
+				//Add the feed data to the feed
+				$this->Feed->addFeedData('Ownership',$last);
+			}
+		}
+	}
+	
+	/**
+	 * Returns the needed feed data for a specific record
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	public function getFeedData($model_id=null){
+		$this->recursive = 0;
+		$data = $this->read(null,$model_id);
+		if(!empty($data['Product']['id'])){
+			$product = $this->Product->read(null,$data['Product']['id']);
+			$data['Product'] = $product;
+		}
+		return $data;
+	}
 	
 	/**
 	 * 
@@ -96,7 +139,6 @@ class Ownership extends AppModel {
 															"model_id"=>$model_id,
 															"model"=>$model
 															)));
-		//debug($data);
 		return $data;
 	}
 	

@@ -34,9 +34,14 @@
 			?>
 			<div class="clear"></div>
 		<?php endif; ?>
+		<div class="source"><?php
+		if(!empty($product['Product']['source_url'])):
+			echo $this->Html->link('Source',$product['Product']['source_url'],array('title'=>$product['Product']['source_url'],'target'=>'_blank'));
+		endif;
+		?>
+		</div>
 		</div>
 		<!-- END LEFT CONTAINER -->
-		
 		<!-- START RIGHT CONTAINER -->
 		<div class="right-container">
 				<div class="right-sidebar">
@@ -45,7 +50,7 @@
 																				'model'=>'Product',
 																				'cache'=>false
 																				));
-					echo $this->element('like-dislike',array('data'=>$product['Product'],
+					echo $this->element('like-dislike',array('model_id'=>$product['Product']['id'],
 																			'model'=>'Product',
 																			'cache'=>false
 																			));
@@ -60,6 +65,11 @@
 							}
 						?></h3>
 					<ul>
+						<?php if(!empty($product['Product']['description'])): ?>
+							<li class="description">
+							<?php echo $product['Product']['description']; ?>
+							</li>
+						<?php endif; ?>
 						<li class="designer">
 							<?php if(!empty($product['Product']['designer'])): ?>
 							<?php echo "Designed by ".$product['Product']['designer']; ?>
@@ -67,7 +77,7 @@
 						</li>
 						<li class="category">
 						<?php if(!empty($product['ProductCategory']['name'])){
-							echo "Category: ".$this->Html->link(ucwords($product['ProductCategory']['name']),array('controller'=>'product_categories','action'=>'view',$product['ProductCategory']['id']),array('title'=>$product['ProductCategory']['name']));
+							echo "Category:  ".$this->Html->link(ucwords($product['ProductCategory']['name']),array('controller'=>'product_categories','action'=>'view',$product['ProductCategory']['id']),array('title'=>$product['ProductCategory']['name']));
 						} ?>
 						</li>
 						<li class="price">
@@ -75,40 +85,30 @@
 							echo "Price: ".$product['Product']['price'];
 						} ?>
 						</li>
-						<?php if(!empty($product['Product']['description'])): ?>
-							<li class="description">
-							<?php echo $product['Product']['description']; ?>
-							</li>
-						<?php endif; ?>
 						<li class="source">
 						<?php
 						if(!empty($product['Product']['purchase_url'])){
-							echo "Buy it:".$this->Html->link($string->truncate($product['Product']['purchase_url']),$product['Product']['purchase_url'],array('title'=>$product['Product']['purchase_url'],'target'=>'_blank'));
+							echo $this->Html->link('Buy',$product['Product']['purchase_url'],array('title'=>$product['Product']['purchase_url'],'target'=>'_blank'));
 						}
 						?>
 						</li>
-						<li class="source"><?php
-						if(!empty($product['Product']['source_url'])):
-							echo "Source:". $this->Html->link($string->truncate($product['Product']['source_url']),$product['Product']['source_url'],array('title'=>$product['Product']['source_url'],'target'=>'_blank'));
-						endif;
-						?>
-						</li>
+						<li class="found-by">Found by <?php echo $this->Html->link($product['User']['username'],array('plugin'=>'forum','controller'=>'users','action'=>'profile',$product['User']['username'])); ?></li>
 					</ul>
-					<?php 
-						echo $this->element('share-buttons',array('controller'=>'products',
-																				'keycode'=>$product['Product']['keycode'],
-																				'cache'=>false
-																				));
-						echo $this->element('social-buttons',array(
-																				'controller'=>'products',
-																				'keycode'=>$product['Product']['keycode'],
-																				'cache'=>false
-																				));
-					?>
 				</div>
 				<!--- END DETAILS SECTION -->
 				<?php echo $this->element('tags',array('model'=>$product,'cache'=>false)); ?>
 				<div class="clear"></div>
+				<?php 
+					echo $this->element('social-buttons',array(
+																			'controller'=>'products',
+																			'keycode'=>$product['Product']['keycode'],
+																			'cache'=>false
+																			));
+					echo $this->element('share-buttons',array('controller'=>'products',
+																			'keycode'=>$product['Product']['keycode'],
+																			'cache'=>false
+																			));
+				?>
 			<?php 
 				//Related inspirations
 				echo $this->element('inspirations',array('item'=>$product,'model'=>'Product','cache'=>false));

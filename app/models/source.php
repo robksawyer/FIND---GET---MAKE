@@ -26,17 +26,6 @@ class Source extends AppModel {
 				array('name' => 'range_due', 'type' => 'expression', 'method' => 'makeRangeDueCondition', 'field' => 'Project.due BETWEEN ? AND ?')*/
 			);
 	
-	public function findByTags($data = array()) {
-		$this->Tagged->Behaviors->attach('Containable', array('autoFields' => false));
-		$this->Tagged->Behaviors->attach('Search.Searchable');
-		$query = $this->Tagged->getQuery('all', array(
-			'conditions' => array('Tag.name'  => $data['tags']),
-			'fields' => array('foreign_key'),
-			'contain' => array('Tag')
-		));
-		return $query;
-	}
-	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 	var $belongsTo = array(
 		'User' => array(
@@ -80,6 +69,13 @@ class Source extends AppModel {
 			'className' => 'InspirationPhotoTag',
 			'foreignKey' => 'model_id',
 			'conditions' => array('InspirationPhotoTag.model' => 'Source'),
+			'dependent' => true,
+			'exclusive' => true
+		),
+		'Feed' => array(
+			'className' => 'Feed',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Feed.model' => 'Source'),
 			'dependent' => true,
 			'exclusive' => true
 		)
@@ -132,6 +128,50 @@ class Source extends AppModel {
 			'insertQuery' => ''
 		)
 	);
+	
+	/**
+	 * Updates the total count in the user table for this particular type of item
+	 * @param created 
+	 * @return 
+	 * 
+	*/	
+	public function afterSave($created){
+		if($created){
+			//Update the total count for the user
+			$last = $this->read(null,$this->id);
+			if(!empty($last['User']['id'])){
+				$this->User->updateTotalSources($last['User']['id']);
+				
+				//Add the feed data to the feed
+				$this->Feed->addFeedData('Source',$last);
+			}
+		}
+	}
+	
+	/**
+	 * Returns the needed feed data for a specific record
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	public function getFeedData($model_id=null){
+		$this->recursive = 2;
+		$this->User->recursive = -1;
+		$data = $this->read(null,$model_id);	
+		
+		return $data;
+	}
+	
+	public function findByTags($data = array()) {
+		$this->Tagged->Behaviors->attach('Containable', array('autoFields' => false));
+		$this->Tagged->Behaviors->attach('Search.Searchable');
+		$query = $this->Tagged->getQuery('all', array(
+			'conditions' => array('Tag.name'  => $data['tags']),
+			'fields' => array('foreign_key'),
+			'contain' => array('Tag')
+		));
+		return $query;
+	}
 	
 	/**
 	 * Get the most recent sources for a specific user

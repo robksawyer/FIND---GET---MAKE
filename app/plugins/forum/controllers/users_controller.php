@@ -24,7 +24,7 @@ class UsersController extends ForumAppController {
 	 * @access public
 	 * @var array
 	 */
-	public $components = array('Auth', 'Forum.AutoLogin', 'Email');
+	public $components = array('Auth', 'Forum.AutoLogin', 'Email','String');
 	
 	/**
 	 * Pagination.
@@ -63,19 +63,44 @@ class UsersController extends ForumAppController {
 			$this->User->id = $user_id;
 			$this->User->set($this->data);
 			
-			if ($this->User->validates()) {
+			$errors = $this->User->invalidFields();
+			$user_by_email = $this->User->find('first',array('conditions'=>array(
+																				'email'=>mysql_real_escape_string($this->data['User']['email'])
+																				))
+																				);
+			if(!empty($user_by_email)){
+				if(intval($user_by_email['User']['id']) != intval($user_id)){
+					$fail = 1;
+				}else{
+					$fail = 0;
+				}
+			}else{
+				$fail = 0;
+			}
+			if ($this->User->validates() && empty($fail)) {
 				if (isset($this->data['User']['newPassword'])) {
 					$this->data['User']['password'] = $this->Auth->password($this->data['User']['newPassword']);
 				}
+				//Cleanup
+				if($this->data['User']['url'] == "http://") $this->data['User']['url'] = '';
+				if(!empty($this->data['User']['url'])){
+					$this->data['User']['url'] = $this->cleanURL($this->data['User']['url']); //Clean the URL
+				}
 
 				$this->User->id = $user_id;
-				if ($this->User->save($this->data, false, array('email', 'password', $this->User->columnMap['signature'], $this->User->columnMap['locale'], $this->User->columnMap['timezone']))) {
+				
+				//if ($this->User->save($this->data)){
+				if ($this->User->save($this->data, false, array('email','password','url','about','gender','birthday','location','fullname', $this->User->columnMap['signature'], $this->User->columnMap['locale'], $this->User->columnMap['timezone']))) {
 					$this->Session->setFlash(__d('forum', 'Your profile information has been updated!', true));
 
 					foreach ($this->data['User'] as $field => $value) {
 						$this->_refreshAuth($field, $value);
 					}
 				}
+			}else{
+				//Reset email
+				$this->data['User']['email'] = $user['User']['email'];
+				$this->Session->setFlash(__('Your profile information could NOT be updated because this email address is taken.', true),'default', array('class' => 'error-message'));
 			}
 		}
 		
@@ -136,6 +161,14 @@ class UsersController extends ForumAppController {
 	public function logout() {
 		$this->Session->delete('Forum');
 		
+		if($this->Session->check('Challenge')){
+			$this->Session->delete('Challenge');
+		}
+		if($this->Session->check('User')) {
+			$this->Session->delete('User');
+		}
+		$this->Session->destroy();
+		
 		$this->redirect($this->Auth->logout());
 	}
 	
@@ -161,8 +194,16 @@ class UsersController extends ForumAppController {
 	 * @access public
 	 * @param int $id
 	 */
-	public function profile($id) {
-		$user = $this->User->getProfile($id);
+	public function profile($username=null) {
+		//Check to see if the id was passed
+		if(is_int($username)){
+			$id = $username;
+			$user = $this->User->getProfile($id);
+		}else{
+			$userTemp = $this->User->find('first',array('conditions'=>array('username'=>$username)));
+			$id = $userTemp['User']['id'];
+			$user = $this->User->getProfile($id);
+		}
 		
 		if (!empty($user)) {
 			$this->loadModel('Forum.Topic');
@@ -221,9 +262,11 @@ class UsersController extends ForumAppController {
 				$this->data['User']['username'] = strip_tags($this->data['User']['username']);
 				$this->data['User']['password'] = $this->Auth->password($this->data['User']['newPassword']);
 				$this->data['User'][$this->User->columnMap['locale']] = $this->Toolbar->settings['default_locale'];
-
-				if ($this->User->save($this->data, false, array('username', 'email', 'password', $this->User->columnMap['locale']))) {
-					$this->Session->setFlash(__d('forum', 'You have successfully signed up, you may now login and begin posting.', true));
+				$this->data['User']['slug'] = $this->toSlug($this->data['User']['username']);
+				
+				//if ($this->User->save($this->data)){
+				if ($this->User->save($this->data, false, array('username', 'email', 'password','slug', $this->User->columnMap['locale']))) {
+					//$this->Session->setFlash(__d('forum', 'You have successfully signed up, you may now login and start your journey.', true));
 
 					// Send email
 					$message  = sprintf(__d('forum', 'Thank you for signing up on %s, your information is listed below', true), $this->Toolbar->settings['site_name']) .":\n\n";
@@ -236,7 +279,12 @@ class UsersController extends ForumAppController {
 					$this->Email->subject = $this->Toolbar->settings['site_name'] .' - '. __d('forum', 'Sign Up Confirmation', true);
 					$this->Email->send($message);
 					
+					$this->Auth->login($this->data);
 					unset($this->data['User']);
+					$this->Session->setFlash(__('You have successfully created an account and may now start your journey.', true));
+					$this->redirect(array('plugin'=>'','controller'=>'users','action'=>'moderate','admin'=>true));
+					
+					//$this->redirect(array('plugin'=>'','controller' => 'users', 'action' => 'login', 'admin' => false));
 				}
 			}
 		}

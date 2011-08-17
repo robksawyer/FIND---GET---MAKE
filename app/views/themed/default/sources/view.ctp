@@ -11,6 +11,14 @@
 				echo "<br/>&#x21B3;"."<span class='link'>".$this->Html->link($source['Source']['url'],$source['Source']['url'],array('target'=>'_blank'))."</span>";
 			endif;
 		?></h2>
+	<div class="right-sidebar">
+		<?php
+		echo $this->element('like-dislike',array('model_id'=>$source['Source']['id'],
+																'model'=>'Source',
+																'cache'=>false
+																));
+		?>
+	</div>
 	<?php if(!empty($source['Source']['description'])): ?>
 	<dl class="description">
 		<?php echo "<span class='light-grey'>".$source['Source']['description']."</span>"; ?>
@@ -76,6 +84,11 @@
 		</dd>
 	</dl>
 	<div class="clear"></div>
+	<?php if(!empty($source['User']['username'])): ?>
+		<div class="added-by"><?php echo "Found by ".$this->Html->link($source['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$source['User']['username'])); ?></div>
+	<?php else: ?>
+		<div class="added-by"><?php echo "Found by unknown"; ?></div>
+	<?php endif; ?>
 	<?php 
 		echo $this->element('share-buttons',array('controller'=>'sources',
 																'keycode'=>$source['Source']['keycode'],
@@ -88,6 +101,7 @@
 																));
 	?>
 </div>
+<div class="clear"></div>
 <?php 
 	//Related products
 	if(!empty($source['Product'])){
@@ -96,7 +110,7 @@
 	//Related inspirations
 	echo $this->element('inspirations',array('item'=>$source,'model'=>'Source','cache'=>false));
 	
-	if(PRIVATE_SOLUTION){
+	if(Configure::read('FGM.private_solution') == 1){
 		//CONTRACTORS
 		echo $this->element('contractors',array('item'=>$source,'model'=>'Source','cache'=>false));
 	}

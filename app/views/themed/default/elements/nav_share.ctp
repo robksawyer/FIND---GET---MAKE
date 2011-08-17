@@ -3,7 +3,6 @@
 		<div class="nav-main">
 			<ul  id="nav-one" class="nav">
 				<!--<li><?php //echo $this->Html->link('home',array('controller'=>'/'), array('class'=>'closer'));?></li>-->
-				<li><?php echo $this->Html->link('blog','	http://findgetmake.tumblr.com/',array('target'=>'_blank'));?></li>
 				<?php 
 				if(!empty($this->params['pass'][0])):
 					if($this->params['pass'][0] != 'join'): 
