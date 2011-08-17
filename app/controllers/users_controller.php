@@ -2,7 +2,7 @@
 class UsersController extends AppController {
 
 	var $name = 'Users';
-	var $components = array('Auth','AutoLogin','String','Session');
+	var $components = array('Auth','AutoLogin','String','Session','TwitterKit.Twitter');
 	var $helpers = array('Javascript', 'Time', 'Form');
 	var $uses = array('Forum.Topic');
 	
@@ -23,6 +23,38 @@ class UsersController extends AppController {
 		
 		$this->Auth->allow('login','logout','register');
 		$this->AjaxHandler->handle('hide_welcome');
+	}
+	
+	/**
+	 * Add an email field to be saved along with creation.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function beforeFacebookSave(){
+		//$this->Connect->authUser['User']['email'] = $this->Connect->user('email');
+		return true; //Must return true or will not save.
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function beforeFacebookLogin($user){
+		//Logic to happen before a facebook login
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function afterFacebookLogin(){
+		//Logic to happen after successful facebook login.
+		$this->redirect('/sign_up');
 	}
 	
 	/**
@@ -240,6 +272,47 @@ class UsersController extends AppController {
 		}
 	}
 	
+	/**
+	 * Handles the OAuth callback from Twitter
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function oauth_callback() {
+		// check params
+		if (empty($this->params['url']['oauth_token']) || empty($this->params['url']['oauth_verifier'])) {
+			$this->flash(__('Invalid access.', true), '/', 5);
+			return;
+		}
+
+		// get token
+		$this->Twitter->setTwitterSource('twitter');
+		$token = $this->Twitter->getAccessToken();
+
+		if (is_string($token)) {
+			$this->flash(__('Failed to get the access token.', true) . $token, '/', 5);
+			return;
+		}
+
+		//create save data
+		$data['User'] = array(
+			'id' => $token['user_id'],
+			'username' => $token['screen_name'],
+			'password' => Security::hash($token['oauth_token']),
+			'oauth_token' => $token['oauth_token'],
+			'oauth_token_secret' => $token['oauth_token_secret'],
+		);
+
+		if (!$this->User->save($data)) {
+			$this->flash(__('Your account could not be created. Please email us about the issue.', true), 'login', 5);
+			return;
+		}
+
+		$this->Auth->login($data);
+
+		// Redirect to Top
+		//$this->redirect('/admin/moderate');
+	}
 	
 	/*
 	function admin_index() {

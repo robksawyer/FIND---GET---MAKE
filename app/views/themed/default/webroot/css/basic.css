@@ -43,7 +43,10 @@ html{
 
 #register{
 	position: relative;
+	top: 50px;
 	width: 800px;
+	height: 400px;
+	overflow: hidden;
 	margin: 0 auto;
 }
 #register .social-register{
@@ -53,6 +56,12 @@ html{
 #register .sign-in{
 	float: right;
 	width: 200px;
+}
+
+#register .sign-in a{
+	font-size: 18px;
+	color: #ef3f23;
+	font-weight: bold;
 }
 
 .users #login{
@@ -140,8 +149,8 @@ a img{
 	}
 h2,
 legend{
-	color: #2e2e2e !important;
-	font-weight: bold;
+	color: #666 !important;
+	font-weight: normal;
 	letter-spacing: -1px;
 }
 h3{
@@ -355,6 +364,12 @@ div.message {
  * GLOBAL PAGE STYLES
  * 
 */
+
+.footnote{
+	color: #636363;
+	font-size: 11px;
+	margin: 25px 0px;
+}
 
 #sub-footer{
 	position: relative;

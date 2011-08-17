@@ -1,3 +1,4 @@
+<?php debug($this->Facebook->user()); ?>
 <div class="forumHeader">
 	<h2><?php __d('forum', 'Sign Up'); ?></h2>
 </div>

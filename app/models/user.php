@@ -2,6 +2,7 @@
 class User extends AppModel {
 	var $name = 'User';
 	var $displayField = 'username';
+	var $actsAs = array('TwitterKit.Twitter');
 	
 	/**
 	 * A column map allowing you to define the name of certain user columns.
