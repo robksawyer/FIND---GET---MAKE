@@ -6,6 +6,7 @@
 			<!--<a id="btn_twitter" class="btn_oauth_login" data-requires-credential="twitter" href="/auth/register_with_twitter">Sign in with Twitter</a>-->
 		<?php 
 			$linkOptions['login'] = 'Sign in with Twitter';
+			$linkOptions['login'] = 'Sign in with Twitter';
 			echo $this->Twitter->oauthLink($linkOptions); 
 		?>
 		<?php //echo $this->Html->link('Sign in with Twitter','/auth/register_with_twitter',array('id'=>'btn-twitter')); ?>
@@ -23,3 +24,9 @@
 		<?php echo $this->Html->link('Login Here','/login',array('title'=>'Login Here'));?>
 	</div>
 </div>
+<?php
+echo $this->Html->script('jquery.popupWindow',array('inline'=>false));
+?>
+<script type="text/javascript">
+$('.popup').popupWindow({ height:500, width:800, centerBrowser:1 });
+</script>
