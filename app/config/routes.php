@@ -34,6 +34,9 @@
 	Router::connect('/privacy', array('plugin'=>'','controller' => 'pages', 'action' => 'display','privacy'));
 	Router::connect('/signup', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'signup'));
 	Router::connect('/register', array('controller' => 'users', 'action' => 'register'));
+	Router::connect('/login',array('plugin'=>'forum','controller'=>'users','action'=>'login')); 
+	Router::connect('/logout',array('plugin'=>'forum','controller'=>'users','action'=>'logout')); 
+	Router::connect('/join',array('plugin'=>'','controller'=>'pages','action'=>'display','join')); 
 	
 	//Sitemap
 	Router::connect('/sitemap', array('controller' => 'sitemaps', 'action' => 'index')); 
@@ -42,10 +45,8 @@
 	Router::connect('/robots/:action/*', array('controller' => 'sitemaps', 'action' => 'robot'));
 	
 	Router::connect('/forum', array('plugin' => 'forum', 'controller' => 'home', 'action' => 'index'));
-	Router::connect('/admin/users/add', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'signup'));
 	Router::connect('/profiles/*', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'profile'));
 	Router::connect('/following/*', array('plugin' => '', 'controller' => 'user_followings', 'action' => 'following'));
 	Router::connect('/followers/*', array('plugin' => '', 'controller' => 'user_followings', 'action' => 'followers'));
-	//Router::connect('/users/login',array('plugin'=>'forum','controller'=>'users','action'=>'login')); 
 	
 	Router::parseExtensions('rss','xml');

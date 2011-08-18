@@ -2,7 +2,7 @@
 class UsersController extends AppController {
 
 	var $name = 'Users';
-	var $components = array('Auth','AutoLogin','String','Session','TwitterKit.Twitter');
+	//var $components = array('Auth','String','Session');
 	var $helpers = array('Javascript', 'Time', 'Form');
 	var $uses = array('Forum.Topic');
 	
@@ -21,8 +21,8 @@ class UsersController extends AppController {
 	function beforeFilter() {
 		parent::beforeFilter();
 		
-		$this->Auth->allow('login','logout','register');
-		$this->AjaxHandler->handle('hide_welcome');
+		$this->Auth->allow('login','logout','register','oauth_callback','beforeFacebookSave','beforeFacebookLogin','afterFacebookLogin');
+		$this->AjaxHandler->handle('hide_welcome','oauth_callback');
 	}
 	
 	/**
@@ -32,7 +32,8 @@ class UsersController extends AppController {
 	 * 
 	*/
 	function beforeFacebookSave(){
-		//$this->Connect->authUser['User']['email'] = $this->Connect->user('email');
+		$this->Connect->authUser['User']['email'] = $this->Connect->user('email');
+		
 		return true; //Must return true or will not save.
 	}
 	
@@ -54,7 +55,7 @@ class UsersController extends AppController {
 	*/
 	function afterFacebookLogin(){
 		//Logic to happen after successful facebook login.
-		$this->redirect('/sign_up');
+		$this->redirect('/signup');
 	}
 	
 	/**
@@ -154,6 +155,16 @@ class UsersController extends AppController {
 	function register(){
 		$this->layout = 'clean';
 		
+		$linkOptions = array();
+		if (!empty($this->params['named']['datasource'])) {
+			$linkOptions['datasource'] = $this->params['named']['datasource'];
+		}
+		if (!empty($this->params['named']['authenticate'])) {
+			$linkOptions['authenticate'] = $this->params['named']['authenticate'];
+		}
+		
+        $this->set('linkOptions', $linkOptions);
+		$this->set('registrationData', $this->Connect->registrationData());
 	}
 	
 	/**
@@ -226,6 +237,16 @@ class UsersController extends AppController {
 	}
 	
 	/**
+	 * Removes the Facebook auth cookie
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function facebook_logout(){
+		
+	}
+	
+	/**
 	 * Logs out a User
 	 */
 	function logout() {
@@ -272,8 +293,9 @@ class UsersController extends AppController {
 		}
 	}
 	
+	
 	/**
-	 * Handles the OAuth callback from Twitter
+	 * Handles registering a user with the OAuth callback from Twitter
 	 * @param 
 	 * @return 
 	 * 
@@ -300,9 +322,10 @@ class UsersController extends AppController {
 			'username' => $token['screen_name'],
 			'password' => Security::hash($token['oauth_token']),
 			'oauth_token' => $token['oauth_token'],
-			'oauth_token_secret' => $token['oauth_token_secret'],
+			'oauth_token_secret' => $token['oauth_token_secret'] //Access token
 		);
 
+		//debug($data);
 		if (!$this->User->save($data)) {
 			$this->flash(__('Your account could not be created. Please email us about the issue.', true), 'login', 5);
 			return;
@@ -310,8 +333,8 @@ class UsersController extends AppController {
 
 		$this->Auth->login($data);
 
-		// Redirect to Top
-		//$this->redirect('/admin/moderate');
+		// Redirect to moderate page
+		$this->redirect('/admin/users/moderate');
 	}
 	
 	/*

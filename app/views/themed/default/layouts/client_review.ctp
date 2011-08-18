@@ -31,7 +31,7 @@
 		<link rel="shortcut icon" href="<?php echo $this->webroot;?>favicon.ico" type="image/x-icon" />
 		<?php 
 			echo "<!-- A simple css reset from yahoo -->";
-			if(!empty($local)){
+			if(Configure::read('FGM.local') == false){
 				echo $this->Html->css('reset-min.css');
 				echo $this->Html->css('jquery-ui/ui-lightness/jquery-ui-1.8.2.custom');
 			}else{
@@ -62,7 +62,7 @@
 			echo $this->Html->css('modal/basic_ie');
 			echo '<![endif]-->';
 			
-			if(!empty($local)){
+			if(Configure::read('FGM.local') == false){
 				echo $this->Html->script('jquery-1.4.1.min');
 				echo $this->Html->script('jquery-ui/jquery-ui-1.8.2.custom.min');
 			}else{

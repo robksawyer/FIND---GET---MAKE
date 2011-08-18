@@ -36,7 +36,7 @@
 	</div>
 	<div class="clear"></div>
 	<p style="display:none">
-		If you don't already have an account, you can create one <a href="/users/signup">here</a>.
+		If you don't already have an account, you can create one <a href="/register">here</a>.
 	</p>
 </div>
 <script type="text/javascript">

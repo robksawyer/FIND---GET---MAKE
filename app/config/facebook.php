@@ -6,6 +6,8 @@ $config = array(
 		'secret' => 'fcf31bb815c9a6ee21101ff2e2dadfb1',
 		'cookie' => true,
 		'locale' => 'en_US',
+		'xfbml' => true,
+		'oauth' => true
 	)
 );
 ?>

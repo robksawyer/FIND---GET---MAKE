@@ -1,4 +1,16 @@
-<?php debug($this->Facebook->user()); ?>
+<?php
+	if($registrationData){
+		foreach($registrationData['registration'] as $field => $value){
+			if(is_array($value)){
+				$value = implode("|", $value);
+			}
+			echo "<div><strong>$field</strong>: $value</div>";
+		}
+	} else {
+		//echo 'Code: <code>$this->Facebook->registration(array("width" => "500"));</code>';
+		echo $this->Facebook->registration(array('width' => '500', 'redirect-uri' => '/signup'));
+	}
+?>
 <div class="forumHeader">
 	<h2><?php __d('forum', 'Sign Up'); ?></h2>
 </div>

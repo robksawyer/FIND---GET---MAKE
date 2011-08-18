@@ -33,4 +33,11 @@
  * 
 */
 	$config['FGM']['social_sharing'] = 0;
+	
+/**
+ * TESTING: This is used for testing without an internet connection.
+ * It basically removes the google Javascript calls and uses local versions of the Js files.
+*/
+	$config['FGM']['local'] = false;
+
 ?>

@@ -64,6 +64,24 @@ html{
 	font-weight: bold;
 }
 
+#register #btn-twitter{
+	display:block;
+	overflow: hidden;
+	text-indent: -500px;
+	height: 24px;
+	width: 150px;
+	background: url('signin_twitter.png') 0 0 no-repeat;
+}
+
+#register #btn-twitter:hover{
+	background: url('signin_twitter.png') 0 -24px no-repeat;
+}
+
+#register #btn-facebook{
+	position: relative;
+	margin: 10px 0;
+}
+
 .users #login{
 	float: left;
 	width: 500px;

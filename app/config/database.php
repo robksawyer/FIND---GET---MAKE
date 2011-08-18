@@ -93,6 +93,6 @@ class DATABASE_CONFIG {
 	    'driver' => 'TwitterKit.TwitterSource',
 	    'oauth_consumer_key'    => 'mhmBaKcwoZ6wDUJPXJKb1g',
 	    'oauth_consumer_secret' => 'lHaNuTfnaOL7eZWsJmCu7RaEmgDRC8yQJKgm75ztfJA',
-	    'oauth_callback'        => 'http://www.find-get-make.com/users/signup',
+	    'oauth_callback'        => 'http://www.find-get-make.com/users/oauth_callback',
 	);
 }

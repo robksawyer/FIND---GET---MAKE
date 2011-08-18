@@ -43,7 +43,7 @@
 			</ul>
 		</div>
 		<div class="basic-sign-up">
-			<?php echo $this->Html->link('Sign up for Basic',array('controller'=>'users','action'=>'signup','admin'=>false)); ?>
+			<?php echo $this->Html->link('Sign up for Basic','/register'); ?>
 		</div>
 	</div>
 	<div class="clear"></div>

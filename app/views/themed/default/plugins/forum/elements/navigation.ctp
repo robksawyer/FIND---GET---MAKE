@@ -10,7 +10,7 @@
             //$links[] = $this->Html->link(__d('forum', 'Logout', true), array('controller' => 'users', 'action' => 'logout', 'admin' => false));
         } else {
             //$links[] = $this->Html->link(__d('forum', 'Login', true), array('controller' => 'users', 'action' => 'login'));
-            $links[] = $this->Html->link(__d('forum', 'Sign Up', true), array('controller' => 'users', 'action' => 'signup'));
+            $links[] = $this->Html->link(__d('forum', 'Register', true), '/register');
             $links[] = $this->Html->link(__d('forum', 'Forgot Password', true), array('controller' => 'users', 'action' => 'forgot'));
         }
         

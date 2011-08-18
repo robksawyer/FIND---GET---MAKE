@@ -32,7 +32,7 @@
 		<link rel="shortcut icon" href="<?php echo $this->webroot;?>favicon.ico" type="image/x-icon" />
 		<?php 
 			echo "<!-- A simple css reset from yahoo -->";
-			if(!empty($local)){
+			if(Configure::read('FGM.local') == false){
 				echo $this->Html->css('reset-min.css');
 				echo $this->Html->css('jquery-ui/ui-lightness/jquery-ui-1.8.2.custom');
 			}else{
@@ -63,7 +63,7 @@
 			echo $this->Html->css('modal/basic_ie');
 			echo '<![endif]-->';
 			
-			if(!empty($local)){
+			if(Configure::read('FGM.local') == false){
 				echo $this->Html->script('jquery-1.4.1.min');
 				echo $this->Html->script('jquery-ui/jquery-ui-1.8.2.custom.min');
 			}else{
@@ -120,7 +120,7 @@
 					<?php
 						if(empty($authUser)){
 							if ($this->params['action'] != 'login') {
-								echo $this->Html->link('Login','/users/login',array('title'=>'Login'));
+								echo $this->Html->link('Login','/login',array('title'=>'Login'));
 							}
 						}else{
 							if(!empty($authUser['User']['fullname'])){
@@ -132,7 +132,7 @@
 							if ($this->Cupcake->user() && $this->Cupcake->hasAccess('admin')):
 								echo $this->Html->link(__d('forum', 'Admin', true), '/admin/forum/home')." | ";
 							endif;
-							echo $this->Html->link('Logout','/users/logout',array('title'=>'Logout'));
+							echo $this->Html->link('Logout','/logout',array('title'=>'Logout'));
 						
 						}
 					?>

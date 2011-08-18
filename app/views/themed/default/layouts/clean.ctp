@@ -32,7 +32,7 @@
 		<link rel="shortcut icon" href="<?php echo $this->webroot;?>favicon.ico" type="image/x-icon" />
 		<?php 
 			echo "<!-- A simple css reset from yahoo -->";
-			if(!empty($local)){
+			if(Configure::read('FGM.local') == false){
 				echo $this->Html->css('reset-min.css');
 			}else{
 				echo $this->Html->css('http://yui.yahooapis.com/2.8.0r4/build/reset/reset-min.css');
@@ -42,7 +42,7 @@
 			echo $this->Html->css('basic');
 
 
-			if(!empty($local)){
+			if(Configure::read('FGM.local') == false){
 				echo $this->Html->script('jquery-1.4.1.min');
 			}else{
 				echo "<!-- Include jquery 1.4.2 via google apis -->";

@@ -33,17 +33,12 @@
  * @link http://book.cakephp.org/view/957/The-App-Controller
  */
 
-App::import(array(
-	'type' => 'File', 
-	'name' => 'Forum.ForumConfig', 
-	'file' => 'config'. DS .'core.php'
-));
-
 class AppController extends Controller {
 	
 	var $components = array('Auth','Forum.AutoLogin','Session',
 							'Cookie','RequestHandler','AjaxHandler', 
-							'Forum.Toolbar','String','Facebook.Connect');
+							'Forum.Toolbar','String','Facebook.Connect',
+							'TwitterKit.Twitter');
 	var $helpers = array('Form', 'Html', 'Time','Session',
 						'Js' => array('Jquery'),
 						'Forum.Cupcake', 'Forum.Decoda' => array(),
@@ -63,29 +58,8 @@ class AppController extends Controller {
 	 */
 	public function beforeFilter() {
 		
-		/**
-		 * TESTING: This is used for testing without an internet connection.
-		 * It basically removes the google Javascript calls and uses local versions of the Js files.
-		*/
-		$local = false;
-		$this->set(compact('local'));
-		/**
-		 * END TESTING
-		*/
-		
-		/** SOCIAL/SHARING **/
-		$social_sharing = true;
-		$this->set(compact('social_sharing'));
-		/** END SOCIAL/SHARING **/
-		
 		//You have to keep view open for the photo tags to work.
 		$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
-		$this->Auth->autoRedirect = false;
-		
-		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login','admin'=>false);        
-		$this->Auth->logoutRedirect = '/';        
-		$this->Auth->loginRedirect = array('controller' => 'users', 'action' => 'moderate','admin'=>true);
-		//$this->Auth->autoRedirect = true;
 		
 		$this->AjaxHandler->handle('admin_hide_challenge');
 		
@@ -104,8 +78,10 @@ class AppController extends Controller {
 			'loginAction' => 'login',
 			'logoutAction' => 'logout'
 		);
-	
-		$this->set('authUser', $this->Auth->user());
+		
+		//$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login','admin'=>false);     
+		$this->Auth->loginRedirect = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
+		$this->Auth->autoRedirect = true;
 		
 		/*
 			TODO Set up a check to see if the user has hidden the challenge.
@@ -129,6 +105,9 @@ class AppController extends Controller {
 			}
 		}
 		
+		/** SET GLOBAL VARIABLES **/
+		$this->set('facebookUser', $this->Connect->user());
+		$this->set('authUser', $this->Auth->user());
 		$this->set('string', $this->String);
 	}
 	
