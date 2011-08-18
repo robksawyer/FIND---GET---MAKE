@@ -38,7 +38,7 @@ class AppController extends Controller {
 	var $components = array('Auth','Forum.AutoLogin','Session',
 							'Cookie','RequestHandler','AjaxHandler', 
 							'Forum.Toolbar','String','Facebook.Connect',
-							'TwitterKit.Twitter','DebugKit.Toolbar');
+							'TwitterKit.Twitter');
 	var $helpers = array('Form', 'Html', 'Time','Session',
 						'Js' => array('Jquery'),
 						'Forum.Cupcake', 'Forum.Decoda' => array(),
