@@ -299,7 +299,7 @@ class User extends AppModel {
 	 * 
 	*/
 	public function findByUsername($username=null){
-		$user = $this->find('first',array('conditions'=>array('username'=>$username)));
+		$user = $this->find('first',array('conditions'=>array('User.username'=>$username)));
 		return $user;
 	}
 	

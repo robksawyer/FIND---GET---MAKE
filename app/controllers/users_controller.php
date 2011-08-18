@@ -4,7 +4,7 @@ class UsersController extends AppController {
 	var $name = 'Users';
 	//var $components = array('Auth','String','Session');
 	var $helpers = array('Javascript', 'Time', 'Form');
-	var $uses = array('Forum.Topic');
+	var $uses = array('User','Forum.Topic','TwitterKit.TwitterKitUser'); //Taking out User makes the user model become unused
 	
 	var $paginate = array(
 		'User' => array(
@@ -21,8 +21,10 @@ class UsersController extends AppController {
 	function beforeFilter() {
 		parent::beforeFilter();
 		
-		$this->Auth->allow('login','logout','register','oauth_callback','beforeFacebookSave','beforeFacebookLogin','afterFacebookLogin');
-		$this->AjaxHandler->handle('hide_welcome','oauth_callback');
+		$this->Auth->allow('login','logout','register','oauth_callback','beforeFacebookSave',
+							'beforeFacebookLogin','afterFacebookLogin','register_with_twitter',
+							'reset_twitter_cookie');
+		$this->AjaxHandler->handle('hide_welcome');
 	}
 	
 	/**
@@ -300,19 +302,21 @@ class UsersController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function oauth_callback() {
+	function register_with_twitter() {
 		// check params
 		if (empty($this->params['url']['oauth_token']) || empty($this->params['url']['oauth_verifier'])) {
-			$this->flash(__('Invalid access.', true), '/', 5);
+			$this->flash(__('Invalid access.', true), ' / ', 5);
 			return;
 		}
 
 		// get token
 		$this->Twitter->setTwitterSource('twitter');
 		$token = $this->Twitter->getAccessToken();
-
+		
+		//debug($this->Twitter->getAnywhereIdentity());
+		
 		if (is_string($token)) {
-			$this->flash(__('Failed to get the access token.', true) . $token, '/', 5);
+			$this->flash(__('Failed to get the access token.', true) . $token, ' / ', 5);
 			return;
 		}
 
@@ -325,16 +329,57 @@ class UsersController extends AppController {
 			'oauth_token_secret' => $token['oauth_token_secret'] //Access token
 		);
 
-		//debug($data);
-		if (!$this->User->save($data)) {
-			$this->flash(__('Your account could not be created. Please email us about the issue.', true), 'login', 5);
+		//Check to make sure the username doesn't already exist
+		if(!empty($token['screen_name']) && !empty($token['user_id'])){
+			
+			//Build an array of information to save
+			$user_data['User'] = array(
+				'username' => $token['screen_name'],
+				'password' => Security::hash($token['oauth_token'])
+			);
+			
+			//debug($token['screen_name']);
+			$user = $this->User->findByUsername($token['screen_name']);
+			
+			if(empty($user)){
+				//Create the user
+				$this->User->create();
+				if(!$this->User->save($user_data['User'])){
+					$this->Session->flash(__('Your account could not be created. Please email us about the issue.', true), 'default', 'error-message');
+					return;
+				}
+
+			}else{
+				//Update the user's twitter_id
+				$this->User->id = $user['User']['id'];
+				$this->User->saveField('twitter_id',$token['user_id']);
+				//Find the user's password
+				$user_data['User']['password'] = $user['User']['password'];
+			}
+			
+			//Check to make sure the Twitter user doesn't already exist
+			$twitterUser = $this->TwitterKitUser->findByUsername($token['screen_name']);
+			if(empty($twitterUser)){
+				$this->TwitterKitUser->create();
+				if (!$this->TwitterKitUser->save($data['User'])){
+					$this->flash(__('Your account could not be created. Please email us about the issue.', true), 'default', 'error-message');
+					return;
+				}
+			}
+			
+		}else{
+			$this->flash(__('The Twitter authorization failed. Please try again later.', true), 'default', 'error-message');
 			return;
 		}
 
-		$this->Auth->login($data);
+		$this->Auth->login($user_data);
 
 		// Redirect to moderate page
-		$this->redirect('/admin/users/moderate');
+		$this->redirect(array('admin'=>true,'plugin'=>'','controller'=>'users','action'=>'moderate'));
+	}
+	
+	function reset_twitter_cookie(){
+		$this->Twitter->deleteAuthorizeCookie();
 	}
 	
 	/*
