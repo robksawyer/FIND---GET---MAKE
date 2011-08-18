@@ -43,7 +43,7 @@ class AppController extends Controller {
 						'Js' => array('Jquery'),
 						'Forum.Cupcake', 'Forum.Decoda' => array(),
 						'Popup.Popup'=>array('Jquery'),
-						'Facebook.Facebook'
+						'Facebook.Facebook','TwitterKit.Twitter'
 						);
 	
 	var $view = 'Theme';
