@@ -15,3 +15,4 @@ errors.err
 tags
 app/tmp/
 _*
+config/database.php
