@@ -4,7 +4,7 @@
 <div id="join">
 	<h4>FIND | GET | MAKE is an open-ended and flexible design tool that assists in management of vendors, products, and inspiration tear sheets.
 		<br/>With purchase, you’ll get:</h4>
-	<div class="group">
+	<div class="plus-group">
 		<div class="plus">
 			<div class="header">
 				<h1>Plus</h1>
@@ -28,7 +28,7 @@
 			<span>Meetings will be taken in and around the Portland, OR, metropolitan area.</span>
 		</div>
 	</div>
-	<div class="group">
+	<div class="basic-group">
 		<div class="basic">
 			<?php //echo $this->Html->image('site/free.png',array('class'=>'free')); ?>
 			<div class="header">

@@ -33,6 +33,7 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	Router::connect('/privacy', array('plugin'=>'','controller' => 'pages', 'action' => 'display','privacy'));
+	Router::connect('/terms', array('plugin'=>'','controller' => 'pages', 'action' => 'display','terms'));
 	Router::connect('/signup', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'signup'));
 	Router::connect('/forgot_password', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'forgot'));
 	Router::connect('/register', array('controller' => 'users', 'action' => 'register'));

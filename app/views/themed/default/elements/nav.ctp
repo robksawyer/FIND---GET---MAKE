@@ -84,12 +84,12 @@
 				if(!empty($this->params['pass'][0])):
 					if($this->params['pass'][0] != 'join'): 
 				?>
-						<li><?php echo $this->Html->link('join','/pages/join'); ?></li>
+						<li><?php echo $this->Html->link('join','/join'); ?></li>
 				<?php 
 					endif;
 				else: 
 				?>
-				<li><?php echo $this->Html->link('join','/pages/join'); ?></li>
+				<li><?php echo $this->Html->link('join','/join'); ?></li>
 				<?php endif; ?>
 			</ul>
 		</div>

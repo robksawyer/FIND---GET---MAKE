@@ -87,7 +87,7 @@
 				<?php echo $this->Html->link('Blog','http://findgetmake.tumblr.com/',array('target'=>'_blank'));?>
 				<?php echo $this->Html->link('About','#');?>
 				<?php echo $this->Html->link('Privacy Policy','/privacy');?>
-				<?php echo $this->Html->link('Terms','#');?>
+				<?php echo $this->Html->link('Terms','/terms');?>
 			</div>
 			<div id="sub-footer">
 			<?php echo $this->Facebook->like(); ?>

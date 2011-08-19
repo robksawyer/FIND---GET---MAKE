@@ -195,7 +195,11 @@ html{
 	font-weight: normal;
 	min-width: 0px;
 	padding: 4px 8px !important;
-	text-decoration: none;
+	text-decoration: none !important;
+}
+
+.button a{
+	text-decoration: none !important;
 }
 
 a.button:hover{
@@ -439,6 +443,29 @@ div.message {
  * 
 */
 
+.terms-of-service p{
+	padding: 10px 0;
+}
+
+.terms-of-service ul{
+	padding: 10px 0;
+}
+
+.terms-of-service ol{
+	padding: 10px 0;
+}
+
+
+.terms-of-service ol li{
+	padding: 3px 0;
+	list-style-type: upper-roman;
+}
+
+.terms-of-service ul li{
+	padding: 3px 0;
+	list-style-type: circle;
+}
+
 .footnote{
 	color: #636363;
 	font-size: 11px;
@@ -623,6 +650,11 @@ div.missing-content{
 .sharing .public-share{
 	margin: -2px 10px 0 0;
 }
+
+.public-share a{
+	text-decoration: none;
+}
+
 .button.public-share{
 	position: relative;
 	top: 5px;
@@ -2125,14 +2157,15 @@ span.total a:hover{
 #join {
 	color: #000000;
 	background: #ffffff;
-	width: auto;
-	float: left;
+	width: 1024px;
+	margin: 0 auto;
 }
 
 #join h4{
 	padding: 0 0 0 0;
 	margin: 0 0 20px 0;
 	font-size: 20px;
+	width: 800px;
 }
 #join p{
 	font-weight: bold;
@@ -2178,14 +2211,18 @@ span.total a:hover{
 	list-style: disc;
 }
 
-#join .group{
+#join .plus-group{
 	position: relative;
 	font-size: 14px;
+	float: left;
+	width: 500px;
 }
 
-#join .group:first-child{
+#join .basic-group{
 	position: relative;
-	clear: none;
+	font-size: 14px;
+	float: left;
+	width: auto;
 }
 
 #join .plus{

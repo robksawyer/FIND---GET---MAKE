@@ -9,7 +9,7 @@
 				// var disqus_url = 'http://example.com/permalink-to-page.html';
 
 				/* * * DON'T EDIT BELOW THIS LINE * * */
-				<?php if(empty(Configure::read('FGM.local')): ?>
+				<?php if(Configure::read('FGM.local')==1): ?>
 				(function() {
 					var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 						dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

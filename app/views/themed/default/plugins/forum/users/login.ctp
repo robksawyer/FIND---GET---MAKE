@@ -25,7 +25,7 @@
 				<?php echo $this->Form->end(__d('forum', 'Login', true)); ?>
 			</div>
 			<div id="join">
-				<div class="group">
+				<div class="basic-group">
 					<div class="basic">
 						<?php //echo $this->Html->image('site/free.png',array('class'=>'free')); ?>
 						<div class="header">
