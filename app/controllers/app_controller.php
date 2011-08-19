@@ -61,7 +61,6 @@ class AppController extends Controller {
 		
 		//You have to keep view open for the photo tags to work.
 		$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
-		
 		$this->AjaxHandler->handle('admin_hide_challenge');
 		
 		//Custom settings for AutoLogin component
