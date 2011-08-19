@@ -24,6 +24,7 @@ class BetaUsersController extends AppController {
 
 	function add() {
 		$this->layout = 'signup';
+		$this->set("title_for_layout","Launching Soon");
 		if (!empty($this->data)) {
 			$this->BetaUser->create();
 			if ($this->BetaUser->save($this->data)) {

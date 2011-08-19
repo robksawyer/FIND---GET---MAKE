@@ -3,7 +3,7 @@ class UsersController extends AppController {
 
 	var $name = 'Users';
 	//var $components = array('Auth','String','Session');
-	var $helpers = array('Javascript', 'Time', 'Form');
+	//var $helpers = array('Javascript', 'Time', 'Form');
 	var $uses = array('User','Forum.Topic','TwitterKit.TwitterKitUser'); //Taking out User makes the user model become unused
 	
 	var $paginate = array(
@@ -33,11 +33,11 @@ class UsersController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function beforeFacebookSave(){
+	/*function beforeFacebookSave(){
 		$this->Connect->authUser['User']['email'] = $this->Connect->user('email');
 		
 		return true; //Must return true or will not save.
-	}
+	}*/
 	
 	/**
 	 * 
@@ -45,9 +45,9 @@ class UsersController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function beforeFacebookLogin($user){
+	/*function beforeFacebookLogin($user){
 		//Logic to happen before a facebook login
-	}
+	}*/
 	
 	/**
 	 * 
@@ -55,27 +55,10 @@ class UsersController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function afterFacebookLogin(){
+	/*function afterFacebookLogin(){
 		//Logic to happen after successful facebook login.
 		$this->redirect('/signup');
-	}
-	
-	/**
-	 * A column map allowing you to define the name of certain user columns.
-	 *
-	 * @access public
-	 * @var array
-	 */
-	/*var $columnMap = array(
-		'status'		=> 'status',
-		'signature'		=> 'signature',
-		'locale'		=> 'locale', // Must allow 3 characters: eng
-		'timezone'		=> 'timezone', // Must allow 5 digits: -10.5
-		'totalPosts'	=> 'totalPosts',
-		'totalTopics'	=> 'totalTopics',
-		'currentLogin'	=> 'currentLogin',
-		'lastLogin'		=> 'lastLogin'
-	);*/
+	}*/
 	
 	/**
 	 *  User moderation panel
@@ -156,6 +139,7 @@ class UsersController extends AppController {
 	*/
 	function register(){
 		$this->layout = 'clean';
+		$this->set("title_for_layout","Register");
 		
 		$linkOptions = array();
 		if (!empty($this->params['named']['datasource'])) {
@@ -165,8 +149,8 @@ class UsersController extends AppController {
 			$linkOptions['authenticate'] = $this->params['named']['authenticate'];
 		}
 		
+		//debug($this->Connect);
         $this->set('linkOptions', $linkOptions);
-		$this->set('registrationData', $this->Connect->registrationData());
 	}
 	
 	/**
@@ -181,89 +165,20 @@ class UsersController extends AppController {
 	}*/
 	
 	/**
-	 *  The AuthComponent provides the needed functionality
-	 *  for login, so you can leave this function blank.
-	 */
-	function login() {
-		// redirect user if already logged in
-		if($this->Auth->user()) {
-			$this->data = $this->User->read(null,$this->Auth->user('id'));
-			if (!empty($this->data) && !empty($this->data['User']['remember_me'])) {
-				$cookie = array();
-				$cookie['username'] = $this->data['User']['username'];
-				$cookie['password'] = $this->data['User']['password'];
-				$this->User->id = $this->Auth->user('id');
-				$this->User->saveField('remember_me', 1);
-				$this->Cookie->write('Auth.User', $cookie, true, '+1 month');
-				//unset($this->data['User']['remember_me']);
-			}
-			$this->redirect($this->Auth->redirect());
-		}
-		
-		//-- code inside this function will execute only when autoRedirect was set to false (i.e. in a beforeFilter).
-		if(!empty($this->data)) {
-			// set the form data to enable validation
-			$this->User->set($this->data);
-			$this->User->action = 'login';
-			// see if the data validates
-			if($this->User->validates()) {
-				// check user is valid
-				//$result = $this->User->check_user_data($this->data); //This method is in the model
-				
-				if($user = $this->Auth->user()) {
-					$this->User->login($user);
-					
-					// save to session
-					$this->Session->write('User',$result);
-					$this->Session->write('Challenge.deactivated',false);
-					$this->Session->delete('Forum');
-					
-					//Build and set the cookie
-					if(!empty($this->data['User']['remember_me'])){
-						$cookie = array();
-						$cookie['username'] = $this->data['User']['username'];
-						$cookie['password'] = $this->data['User']['password'];
-						$this->User->id = $this->Auth->user('id');
-						$this->User->saveField('remember_me', 1);
-						$this->Cookie->write('Auth.User', $cookie, true, '+1 month');
-					}
-					
-					$this->Session->setFlash(__('You have successfully logged in',true));
-					//$this->redirect($this->Auth->redirect());
-					$this->redirect('/admin/users/moderate');
-				} else {
-					$this->Session->setFlash(__('Either your Username of Password is incorrect',true),'default','error-message');
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Removes the Facebook auth cookie
+	 * Redirects the user to the forum login page. /forum/users/login
 	 * @param 
 	 * @return 
 	 * 
 	*/
-	function facebook_logout(){
-		
+	function login() {
+		$this->redirect('/login');
 	}
 	
 	/**
-	 * Logs out a User
+	 * Redirects the user to the forum logout page. /forum/users/logout
 	 */
 	function logout() {
-		if($this->Session->check('Challenge')){
-			$this->Session->delete('Challenge');
-		}
-		if($this->Session->check('Forum')){
-			$this->Session->delete('Forum');
-		}
-		if($this->Session->check('User')) {
-			$this->Session->delete('User');
-		}
-		$this->Session->destroy();
-		$this->Session->setFlash(__('You have successfully logged out.',true));
-		$this->redirect($this->Auth->logout());
+		$this->redirect('/logout');
 	}
 	
 	/**
@@ -295,20 +210,21 @@ class UsersController extends AppController {
 		}
 	}
 	
-	
 	/**
-	 * Handles registering a user with the OAuth callback from Twitter
+	 * Handles registering a user with the OAuth callback from Twitter. 
 	 * @param 
 	 * @return 
 	 * 
 	*/
 	function register_with_twitter() {
+		//$this->layout = "close_popup";
+		
 		// check params
 		if (empty($this->params['url']['oauth_token']) || empty($this->params['url']['oauth_verifier'])) {
 			$this->flash(__('Invalid access.', true), ' / ', 5);
 			return;
 		}
-
+		
 		// get token
 		$this->Twitter->setTwitterSource('twitter');
 		$token = $this->Twitter->getAccessToken();
@@ -319,7 +235,7 @@ class UsersController extends AppController {
 			$this->flash(__('Failed to get the access token.', true) . $token, ' / ', 5);
 			return;
 		}
-
+		
 		//create save data
 		$data['User'] = array(
 			'id' => $token['user_id'],
@@ -329,57 +245,44 @@ class UsersController extends AppController {
 			'oauth_token_secret' => $token['oauth_token_secret'] //Access token
 		);
 
-		//Check to make sure the username doesn't already exist
+		//Check to make sure the token is legit
 		if(!empty($token['screen_name']) && !empty($token['user_id'])){
+			//Find out if the user's email address is already in the system
+			$userDetails = $this->Twitter->account_verify_credentials();
+			//Save the session data so that we can use it in the sign up form.
+			$this->Session->write('TwitterUserDetails',$userDetails);
 			
-			//Build an array of information to save
-			$user_data['User'] = array(
-				'username' => $token['screen_name'],
-				'password' => Security::hash($token['oauth_token'])
-			);
-			
-			//debug($token['screen_name']);
-			$user = $this->User->findByUsername($token['screen_name']);
-			
-			if(empty($user)){
-				//Create the user
-				$this->User->create();
-				if(!$this->User->save($user_data['User'])){
-					$this->Session->flash(__('Your account could not be created. Please email us about the issue.', true), 'default', 'error-message');
-					return;
-				}
-
-			}else{
-				//Update the user's twitter_id
-				$this->User->id = $user['User']['id'];
-				$this->User->saveField('twitter_id',$token['user_id']);
-				//Find the user's password
-				$user_data['User']['password'] = $user['User']['password'];
-			}
-			
-			//Check to make sure the Twitter user doesn't already exist
-			$twitterUser = $this->TwitterKitUser->findByUsername($token['screen_name']);
-			if(empty($twitterUser)){
-				$this->TwitterKitUser->create();
-				if (!$this->TwitterKitUser->save($data['User'])){
-					$this->flash(__('Your account could not be created. Please email us about the issue.', true), 'default', 'error-message');
-					return;
-				}
-			}
+			//Redirect to the signup page (This is handled by the popup unload method.)
+			//$this->redirect(array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'signup'));
 			
 		}else{
 			$this->flash(__('The Twitter authorization failed. Please try again later.', true), 'default', 'error-message');
 			return;
 		}
-
-		$this->Auth->login($user_data);
-
-		// Redirect to moderate page
-		$this->redirect(array('admin'=>true,'plugin'=>'','controller'=>'users','action'=>'moderate'));
 	}
 	
-	function reset_twitter_cookie(){
+	/**
+	 * Handles registering a user with the OAuth callback from Twitter. 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function register_with_facebook() {
+		
+	}
+	
+	function twitter_logout(){
 		$this->Twitter->deleteAuthorizeCookie();
+	}
+	
+	/**
+	 * Removes the Facebook auth cookie
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function facebook_logout(){
+		
 	}
 	
 	/*

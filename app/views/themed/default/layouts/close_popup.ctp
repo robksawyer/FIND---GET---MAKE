@@ -1,4 +1,4 @@
 <script type="text/javascript">
 	//self.close();
-	window.close();
+	window.close()
 </script>

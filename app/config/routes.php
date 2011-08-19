@@ -38,6 +38,7 @@
 	Router::connect('/login',array('plugin'=>'forum','controller'=>'users','action'=>'login')); 
 	Router::connect('/logout',array('plugin'=>'forum','controller'=>'users','action'=>'logout')); 
 	Router::connect('/join',array('plugin'=>'','controller'=>'pages','action'=>'display','join')); 
+	Router::connect('/settings',array('plugin'=>'forum','controller'=>'users','action'=>'edit')); 
 	
 	//Sitemap
 	Router::connect('/sitemap', array('controller' => 'sitemaps', 'action' => 'index')); 

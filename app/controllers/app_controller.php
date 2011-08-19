@@ -61,27 +61,24 @@ class AppController extends Controller {
 		
 		//You have to keep view open for the photo tags to work.
 		$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
+		$this->Auth->loginRedirect = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
+		//$this->Auth->logoutRedirect = '/';
+		$this->Auth->autoRedirect = false;
+		
 		$this->AjaxHandler->handle('admin_hide_challenge');
 		
 		//Custom settings for AutoLogin component
 		//http://bakery.cakephp.org/articles/milesj/2009/07/05/autologin-component-an-auth-remember-me-feature
 		$this->AutoLogin->cookieName = 'TheSource';
 		$this->AutoLogin->expires = '+1 month';
-		/*$this->AutoLogin->settings = array(
-			'controller' => 'Members',
-			'loginAction' => 'signin',
-			'logoutAction' => 'signout'
-		);*/
+
 		// AutoLogin settings
 		$this->AutoLogin->settings = array(
+			'plugin' => 'forum',
 			'controller' => 'users',
 			'loginAction' => 'login',
 			'logoutAction' => 'logout'
 		);
-		
-		//$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login','admin'=>false);     
-		$this->Auth->loginRedirect = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
-		$this->Auth->autoRedirect = true;
 		
 		/*
 			TODO Set up a check to see if the user has hidden the challenge.

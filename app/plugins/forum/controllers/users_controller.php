@@ -55,6 +55,7 @@ class UsersController extends ForumAppController {
 	 * @access public
 	 */
 	public function edit() {
+		$this->set('title_for_layout','User Settings');
 		$user_id = $this->Auth->user('id');
 		$user = $this->User->get($user_id);
 		
@@ -110,7 +111,7 @@ class UsersController extends ForumAppController {
 			}
 		}
 		
-		$this->Toolbar->pageTitle(__d('forum', 'Edit Profile', true));
+		//$this->Toolbar->pageTitle(__d('forum', 'Edit Profile', true));
 	}
 	
 	/**
@@ -137,6 +138,12 @@ class UsersController extends ForumAppController {
 	 * @access public
 	 */
 	public function login() {
+		$user = $this->Auth->user();
+		if($user && empty($this->data)){
+			$this->User->login($user);
+			$this->Session->delete('Forum');
+			$this->redirect($this->Auth->loginRedirect);
+		}
 		if (!empty($this->data)) {
 			$this->User->set($this->data);
 			$this->User->action = 'login';
@@ -160,7 +167,9 @@ class UsersController extends ForumAppController {
 	 */
 	public function logout() {
 		$this->Session->delete('Forum');
-		
+		if($this->Session->check('TwitterUserDetails')){
+			$this->Session->delete('TwitterUserDetails');
+		}
 		if($this->Session->check('Challenge')){
 			$this->Session->delete('Challenge');
 		}
@@ -253,6 +262,28 @@ class UsersController extends ForumAppController {
 	 * @access public
 	 */
 	public function signup() {
+		//Check to make sure the user hasn't already linked their account with Twitter
+		$twitterUserDetails = $this->Session->read('TwitterUserDetails');
+		$user = $this->User->find('first',array('conditions'=>array('twitter_id'=>$twitterUserDetails['id'])));
+		if(!empty($user) && empty($this->data)){
+			//Build an array of information to login with
+			$user_data['User'] = array(
+				'username' => $user['User']['username'],
+				'password' => $user['User']['password']
+			);
+			$this->Auth->login($user_data);
+			
+			//Redirect to moderate page
+			$this->redirect(array('admin'=>true,'plugin'=>'','controller'=>'users','action'=>'moderate'));
+		}
+		
+		if(!empty($twitterUserDetails) && empty($this->data)){
+			//Load the data array with Twitter data
+			$this->data['User']['fullname'] = $twitterUserDetails['name'];
+			$this->data['User']['username'] = $twitterUserDetails['screen_name'];
+			$this->data['User']['location'] = $twitterUserDetails['location'];
+		}
+		
 		if (!empty($this->data)) {
 			$this->User->create();
 			$this->User->set($this->data);
@@ -260,14 +291,16 @@ class UsersController extends ForumAppController {
 			
 			if ($this->User->validates()) {
 				$this->data['User']['username'] = strip_tags($this->data['User']['username']);
+				$this->data['User']['fullname'] = strip_tags($this->data['User']['fullname']);
+				$this->data['User']['location'] = strip_tags($this->data['User']['location']);
 				$this->data['User']['password'] = $this->Auth->password($this->data['User']['newPassword']);
 				$this->data['User'][$this->User->columnMap['locale']] = $this->Toolbar->settings['default_locale'];
 				$this->data['User']['slug'] = $this->toSlug($this->data['User']['username']);
 				
-				//if ($this->User->save($this->data)){
-				if ($this->User->save($this->data, false, array('username', 'email', 'password','slug', $this->User->columnMap['locale']))) {
+				if(empty($this->data['User']['twitter_id'])) $this->data['User']['twitter_id'] = 0;
+				
+				if ($this->User->save($this->data, false, array('username', 'email', 'location','fullname','twitter_id','password','slug', $this->User->columnMap['locale']))) {
 					//$this->Session->setFlash(__d('forum', 'You have successfully signed up, you may now login and start your journey.', true));
-
 					// Send email
 					$message  = sprintf(__d('forum', 'Thank you for signing up on %s, your information is listed below', true), $this->Toolbar->settings['site_name']) .":\n\n";
 					$message .= __d('forum', 'Username', true) .": ". $this->data['User']['username'] ."\n";
@@ -392,7 +425,10 @@ class UsersController extends ForumAppController {
 		parent::beforeFilter();
 		
 		$this->Auth->allow('index', 'forgot', 'login', 'logout', 'listing', 'profile', 'signup');
-
+		
+		$this->Auth->loginRedirect = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
+		$this->Auth->logoutRedirect = '/';
+		
 		if (isset($this->params['admin'])) {
 			$this->Toolbar->verifyAdmin();
 			$this->layout = 'admin';

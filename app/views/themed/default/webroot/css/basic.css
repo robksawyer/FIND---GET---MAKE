@@ -2,7 +2,7 @@
 *{margin:0px;padding:0px;}
 html{ 
 	background-color: #262626 !important;
-	background-image: url('/img/zig_zag_pattern2.jpg') !important;
+	background-image: url('img/zig_zag_pattern2.jpg') !important;
 }
 /*ul,menu,dir{-webkit-padding-start:40px;display:block;list-style-type:disc;margin:1em 0px;}
 */
@@ -64,20 +64,29 @@ html{
 	font-weight: bold;
 }
 
-#register #btn-twitter{
+#btn-twitter{
 	display:block;
 	overflow: hidden;
 	text-indent: -500px;
 	height: 24px;
 	width: 150px;
-	background: url('signin_twitter.png') 0 0 no-repeat;
+	background: url('img/signin_twitter.png') 0 0 no-repeat;
 }
 
-#register #btn-twitter:hover{
-	background: url('signin_twitter.png') 0 -24px no-repeat;
+#btn-twitter:hover{
+	background: url('img/signin_twitter.png') 0 -24px no-repeat;
 }
 
-#register #btn-facebook{
+#btn-twitter-connect{
+	display:block;
+	overflow: hidden;
+	text-indent: -500px;
+	height: 24px;
+	width: 153px;
+	background: url('img/connect_twitter.png') 0 0 no-repeat;
+}
+
+#btn-facebook{
 	position: relative;
 	margin: 10px 0;
 }

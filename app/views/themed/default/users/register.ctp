@@ -1,18 +1,27 @@
+<?php 
+debug($facebookUser); 
+//debug($registrationData);
+?>
 <div id="register">
-	<?php debug($registrationData); ?>
-	<?php debug($facebookUser); ?>
 	<div class="social-register">
 		<h1>Register now and start posting.</h1>
 			<!--<a id="btn_twitter" class="btn_oauth_login" data-requires-credential="twitter" href="/auth/register_with_twitter">Sign in with Twitter</a>-->
+		<span id="twitter-login-wrap">
 		<?php 
-			$linkOptions['login'] = 'Sign in with Twitter';
-			$linkOptions['login'] = 'Sign in with Twitter';
-			echo $this->Twitter->oauthLink($linkOptions); 
+			//$linkOptions['login'] = 'Sign in with Twitter';
+			//echo $this->Twitter->oauthLink($linkOptions); 
+			echo "<span class='loading'>Loading...</span>";
+			echo $this->Html->link('Connect with Twitter','',array('id'=>'btn-twitter','class'=>'popupwindow','style'=>'display:none'));
 		?>
+		</span>
 		<?php //echo $this->Html->link('Sign in with Twitter','/auth/register_with_twitter',array('id'=>'btn-twitter')); ?>
 		<!--<a id="btn_facebook" class="btn_oauth_login" data-requires-credential="facebook" href="/auth/facebook_connect">Login with Facebook</a>-->
 		<div id="btn-facebook">
-		<?php echo $this->Facebook->login(array('perms' => 'email','redirect-uri' => '/register'),'Connect with Facebook'); ?>
+		<?php echo $facebook->login(array('perms' => 'email'),'Connect with Facebook'); ?>
+		<span class="white"><?= $facebook->logout(array(
+		   'redirect' => array('admin' => false, 'controller' => 'users', 'action' => 'logout'), //'/users/logout', 
+		   'label' => 'Sign Out'
+		 )); ?></span>
 		</div>
 		<div id="not-social">
 		<?php echo "Not social? Sign up the ".$this->Html->link('old fashioned way.','/signup',array('title'=>'Signup the old fashioned way.')); ?>
@@ -25,8 +34,34 @@
 	</div>
 </div>
 <?php
-echo $this->Html->script('jquery.popupWindow',array('inline'=>false));
+	echo $this->Html->script('jquery.popupwindow',array('inline'=>false));
 ?>
 <script type="text/javascript">
-$('.popup').popupWindow({ height:500, width:800, centerBrowser:1 });
+//<![CDATA[
+$(document).ready(function() {
+	var profiles = {
+		windowCenter:{
+			height:500,
+			width:800, 
+			center:1, 
+			onUnload:unloadedPopup,
+			center: 1
+		}
+	}
+	
+	$.getJSON('http://www.find-get-make.com/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
+   	$('#twitter-login-wrap #btn-twitter').attr('href', data.url);
+		$('#twitter-login-wrap #btn-twitter').attr('rel','windowCenter');
+		$('#twitter-login-wrap #btn-twitter').show();
+   	$('#twitter-login-wrap .loading').hide();
+		$('.popupwindow').popupwindow(profiles);
+   });
+
+	function unloadedPopup(){
+		//Redirect the user to the signup page and continue the process
+		window.location="/signup";
+	}
+});
+
+//]]>
 </script>

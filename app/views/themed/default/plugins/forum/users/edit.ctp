@@ -56,6 +56,48 @@
 		<span class="clear"><!-- --></span>
 		<?php echo $this->element('markitup', array('textarea' => 'UserSignature')); ?>
 	</div>
+	<div class="social-networks">
+		<!--
+			TODO Actually check to see if the account is linked.
+		-->
+		<?php echo $this->Form->label(__d('forum', 'Social Networks', true)); ?>
+		<?php if(!empty($this->data['User']['twitter_id'])): ?>
+			<span class="twitter">Your <i>Twitter</i> account is linked.</span>
+		<?php else: ?>
+			<span id="twitter-login-wrap">
+			<?php 
+				echo "<span class='loading'>Loading...</span>";
+				echo $this->Html->link('Connect with Twitter','',array('id'=>'btn-twitter','class'=>'popupwindow','style'=>'display:none'));
+			?>
+			</span>
+		<?php endif; ?>
+		<?php if(!empty($this->data['User']['facebook_id'])): ?>
+			<span class="twitter">Your <i>Facebook</i> account is linked.</span>
+		<?php else: ?>
+			<div id="btn-facebook">
+			<?php echo $this->Facebook->login(array('perms' => 'email','redirect-uri' => '/register'),'Connect with Facebook'); ?>
+			</div>
+		<?php endif; ?>
+	</div>
+	<!--
+		TODO Build out this section
+	-->
+	<div class="email-notifications">
+		<?php //echo $this->Form->label(__d('forum', 'Email Notifications', true)); ?>
+		<?php 
+			//echo $this->Form->input('email_on_follow',array('type'=>'checkbox','label'=>'Email when someone follows you')); 
+			//echo $this->Form->checkbox('email_on_show',array('before'=>'Email when someone shows you a product')); 
+			//echo $this->Form->checkbox('email_on_follow',array('before'=>'Email when someone comments on an item you\'ve added')); 
+		?>
+	</div>
+		
+	<div class="feed-notifications">
+		<?php //echo $this->Form->label(__d('forum', 'Feed Notifications', true)); ?>
+		<?php
+			//echo $this->Form->input('notify_on_add',array('label'=>'Notify when someone adds a product you found','type'=>'checkbox')); 
+			//echo $this->Form->input('notify_on_follow',array('label'=>'Notify when someone follows you','type'=>'checkbox')); 
+		?>
+	</div>
 
 	<?php echo $this->Form->end(__d('forum', 'Update Account', true)); ?>
 	<div class="change">Click to change password</div>
@@ -67,7 +109,36 @@
 		<?php echo $this->Form->end(__d('forum', 'Update Password', true)); ?>
 	</div>
 </div>
+<?php
+	echo $this->Html->script('jquery.popupwindow',array('inline'=>false));
+?>
 <script language="javascript">
+//<![CDATA[
+$(document).ready(function() {
+	var profiles = {
+		windowCenter:{
+			height:500,
+			width:800, 
+			center:1, 
+			onUnload:unloadedPopup,
+			center: 1
+		}
+	}
+	
+	$.getJSON('http://www.find-get-make.com/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
+   	$('#twitter-login-wrap #btn-twitter').attr('href', data.url);
+		$('#twitter-login-wrap #btn-twitter').attr('rel','windowCenter');
+		$('#twitter-login-wrap #btn-twitter').show();
+   	$('#twitter-login-wrap .loading').hide();
+		$('.popupwindow').popupwindow(profiles);
+   });
+
+	function unloadedPopup(){
+		//Redirect the user to the signup page and continue the process
+		window.location="/signup";
+	}
+});
+
 $(".change").toggle(function(){
 	$("#change-password").show();
 },function(){
@@ -90,4 +161,5 @@ function limitChars(textid, limit, infodiv) {
 		return true;
 	}
 }
+//]]>
 </script>
