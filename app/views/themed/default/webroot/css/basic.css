@@ -53,12 +53,14 @@ html{
 	float: left;
 	width: 550px;
 }
-#register .sign-in{
+#register .sign-in,
+#signup-wrapper .sign-in{
 	float: right;
 	width: 200px;
 }
 
-#register .sign-in a{
+#register .sign-in a,
+#signup-wrapper .sign-in a{
 	font-size: 18px;
 	color: #ef3f23;
 	font-weight: bold;
@@ -99,6 +101,51 @@ html{
 
 .users #login .input{
 	width: 80%;
+}
+
+#signup-wrapper{
+	position: relative;
+	clear: both;
+	padding: 0;
+	width: 100%;
+}
+
+#signup-wrapper .wrapper{
+	position: relative;
+	display: block;
+	width: 1024px;
+	margin: 0 auto;
+	padding: 0;
+}
+
+#signup-wrapper .wrapper .sign-up{
+	float: left;
+	width: 600px;
+}
+
+#login-wrapper{
+	position: relative;
+	clear: both;
+	padding: 0;
+	width: 100%;
+}
+
+#login-wrapper .wrapper{
+	position: relative;
+	display: block;
+	width: 1024px;
+	margin: 0 auto;
+	padding: 0;
+}
+
+#social-login {
+	margin: 10px 0;
+	
+}
+
+#social-login span{
+	margin: 10px;
+	
 }
 
 #login-container{
@@ -2078,7 +2125,8 @@ span.total a:hover{
 #join {
 	color: #000000;
 	background: #ffffff;
-	width: 1024px;
+	width: auto;
+	float: left;
 }
 
 #join h4{
@@ -2132,7 +2180,6 @@ span.total a:hover{
 
 #join .group{
 	position: relative;
-	float: left;
 	font-size: 14px;
 }
 

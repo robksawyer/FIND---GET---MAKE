@@ -187,7 +187,6 @@ class ConnectComponent extends Object {
 			$retval = Set::extract("/$field", $this->me);
 			return empty($retval) ? null : $retval[0];
 		}
-		
 		return $this->me;
 	}
 	

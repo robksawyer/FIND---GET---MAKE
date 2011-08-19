@@ -120,6 +120,9 @@ class UsersController extends ForumAppController {
 	 * @access public
 	 */
 	public function forgot() {
+		$this->set('title_for_layout','Forgot Password');
+		$this->layout = 'clean';
+		
 		if (!empty($this->data)) {
 			if ($user = $this->User->forgotRetrieval($this->data)) {
 				$this->Toolbar->resetPassword($user);
@@ -129,7 +132,7 @@ class UsersController extends ForumAppController {
 			}
 		}
 		
-		$this->Toolbar->pageTitle(__d('forum', 'Forgot Password', true));
+		//$this->Toolbar->pageTitle(__d('forum', 'Forgot Password', true));
 	}
 	
 	/**
@@ -138,6 +141,9 @@ class UsersController extends ForumAppController {
 	 * @access public
 	 */
 	public function login() {
+		$this->set('title_for_layout','Login');
+		$this->layout = 'clean';
+		
 		$user = $this->Auth->user();
 		if($user && empty($this->data)){
 			$this->User->login($user);
@@ -157,7 +163,7 @@ class UsersController extends ForumAppController {
 			}
 		}
 		
-		$this->Toolbar->pageTitle(__d('forum', 'Login', true));
+		//$this->Toolbar->pageTitle(__d('forum', 'Login', true));
 	}
 	
 	/**
@@ -262,6 +268,9 @@ class UsersController extends ForumAppController {
 	 * @access public
 	 */
 	public function signup() {
+		$this->set('title_for_layout','Sign Up');
+		$this->layout = 'clean';
+		
 		//Check to make sure the user hasn't already linked their account with Twitter
 		$twitterUserDetails = $this->Session->read('TwitterUserDetails');
 		$user = $this->User->find('first',array('conditions'=>array('twitter_id'=>$twitterUserDetails['id'])));
@@ -322,7 +331,7 @@ class UsersController extends ForumAppController {
 			}
 		}
 		
-		$this->Toolbar->pageTitle(__d('forum', 'Sign Up', true));
+		//$this->Toolbar->pageTitle(__d('forum', 'Sign Up', true));
 	}
 	
 	/**

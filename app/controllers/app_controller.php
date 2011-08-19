@@ -37,14 +37,15 @@ class AppController extends Controller {
 	
 	var $components = array('Auth','Forum.AutoLogin','Session',
 							'Cookie','RequestHandler','AjaxHandler', 
-							'Forum.Toolbar','String','Facebook.Connect',
-							'TwitterKit.Twitter'
+							'Forum.Toolbar','String',
+							'TwitterKit.Twitter',
+							'Facebook.Connect'
 							);
 	var $helpers = array('Form', 'Html', 'Time','Session',
 						'Js' => array('Jquery'),
 						'Forum.Cupcake', 'Forum.Decoda' => array(),
 						'Popup.Popup'=>array('Jquery'),
-						'Facebook.Facebook','TwitterKit.Twitter'
+						'TwitterKit.Twitter','Facebook.Facebook'
 						);
 	
 	var $view = 'Theme';
@@ -52,13 +53,13 @@ class AppController extends Controller {
 	
 	var $uses = array('Forum.Topic');
 	
-	// class variables
-	//var $_User = array();
+	var $facebook;
+	var $facebookUser;
+	
 	/**
 	 * Before any Controller action
 	 */
 	public function beforeFilter() {
-		
 		//You have to keep view open for the photo tags to work.
 		$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
 		$this->Auth->loginRedirect = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
@@ -102,8 +103,12 @@ class AppController extends Controller {
 			}
 		}
 		
+		//FACEBOOK OAUTH SETTINGS
+		$this->Connect->createUser = false;
+		$facebookUser = $this->Connect->user();
+		
 		/** SET GLOBAL VARIABLES **/
-		$this->set('facebookUser', $this->Connect->user());
+		$this->set('facebookUser', $facebookUser);
 		$this->set('authUser', $this->Auth->user());
 		$this->set('string', $this->String);
 	}

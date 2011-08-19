@@ -141,6 +141,7 @@ class UsersController extends AppController {
 		$this->layout = 'clean';
 		$this->set("title_for_layout","Register");
 		
+		//TWITTER OAUTH SETTINGS
 		$linkOptions = array();
 		if (!empty($this->params['named']['datasource'])) {
 			$linkOptions['datasource'] = $this->params['named']['datasource'];
@@ -149,7 +150,6 @@ class UsersController extends AppController {
 			$linkOptions['authenticate'] = $this->params['named']['authenticate'];
 		}
 		
-		//debug($this->Connect);
         $this->set('linkOptions', $linkOptions);
 	}
 	

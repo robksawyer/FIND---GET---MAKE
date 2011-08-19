@@ -1,5 +1,5 @@
 <?php 
-debug($facebookUser); 
+//debug($facebookUser); 
 //debug($registrationData);
 ?>
 <div id="register">
@@ -16,13 +16,9 @@ debug($facebookUser);
 		</span>
 		<?php //echo $this->Html->link('Sign in with Twitter','/auth/register_with_twitter',array('id'=>'btn-twitter')); ?>
 		<!--<a id="btn_facebook" class="btn_oauth_login" data-requires-credential="facebook" href="/auth/facebook_connect">Login with Facebook</a>-->
-		<div id="btn-facebook">
-		<?php echo $facebook->login(array('perms' => 'email'),'Connect with Facebook'); ?>
-		<span class="white"><?= $facebook->logout(array(
-		   'redirect' => array('admin' => false, 'controller' => 'users', 'action' => 'logout'), //'/users/logout', 
-		   'label' => 'Sign Out'
-		 )); ?></span>
-		</div>
+		<!--<div id="btn-facebook">-->
+		<?php //echo $this->Facebook->login(array('perms' => 'email'),'Connect with Facebook'); ?>
+		<!--</div>-->
 		<div id="not-social">
 		<?php echo "Not social? Sign up the ".$this->Html->link('old fashioned way.','/signup',array('title'=>'Signup the old fashioned way.')); ?>
 		</div>
