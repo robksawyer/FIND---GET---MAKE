@@ -14,7 +14,7 @@
 				__('running bond: what others are posting.');
 		?></div>
 		<h4>Your running bond.</h4>
-	<?php 
+	<?php t
 	
 		/**
 		 * Displays a node for an image type item

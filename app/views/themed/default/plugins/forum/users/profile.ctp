@@ -35,7 +35,7 @@ if (!empty($user)) { ?>
 			<li class="about"><?php echo $user['User']['about']; ?></li>
 			<?php } ?>
 			<li class="link">Website/Blog: <?php echo $this->Html->link($user['User']['url'],$user['User']['url'],array('target'=>'_blank')); ?></li>
-			<li>Member since: <?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></li>
+			<li>Member since: <span class="value"><?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></span></li>
 		</ul>
 	</div>
 </div>
@@ -45,12 +45,12 @@ if (!empty($user)) { ?>
 				__('running bond: what '.$user['User']['username'].' is posting.');
 		?></div>
 		<?php
-		//echo $this->element('following-feed',array('cache'=>false));
+		echo $this->element('user-feed',array('cache'=>false,'user_id'=>$user['User']['id']));
 		?>
 	</div>
 	<div class="right-sidebar">
 		<ul class="stats">
-			<div class="title">Your totals</div>
+			<div class="title"><?php echo $user['User']['username']."'s"; ?> totals</div>
 			<li>
 				<div class='total'>
 					<?php echo $this->Html->link($user['User']['totalSources'],array('plugin'=>'','admin'=>false,'controller'=>'sources','action'=>'users',$user['User']['id'])); ?>
@@ -140,3 +140,7 @@ if (!empty($posts)) { ?>
 <?php __d('forum', 'The user you are looking for does not exist.'); ?>
 
 <?php } ?>
+<?php
+//If this is removed the like/dislike buttons will not work
+echo $this->Js->writeBuffer();
+?>

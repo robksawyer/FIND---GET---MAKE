@@ -28,7 +28,7 @@
 		echo $this->element('add_attachment',array('cache'=>false));
 		echo $this->Form->input('slug',array('type' => 'hidden'));
 		echo $this->Form->input('description');
-		//echo $this->Form->input('tags',array('type'=>'text','label'=>'Keywords','after'=>'<div class="extra">Separate each keyword with a comma e.g., modern, red, furniture.</div>'));
+		echo '<div id="charlimitinfo">You have 300 characters left.</div>';
 		echo $this->element('add_tags',array('cache'=>false,'controller'=>'sources'));
 	?>
 	</fieldset>
@@ -75,4 +75,23 @@
 	<?php endif; ?>
 <?php echo $this->Form->end(__('Submit', true));?>
 </div>
-<script type="text/javascript"> $(".chzn-select").chosen(); </script>
+<script type="text/javascript">
+$(".chzn-select").chosen();
+
+$('#SourceDescription').keyup(function(){
+	limitChars('SourceDescription', 300, 'charlimitinfo');
+})
+
+function limitChars(textid, limit, infodiv) {
+	var text = $('#'+textid).val(); 
+	var textlength = text.length;
+	if(textlength > limit) {
+		$('#' + infodiv).html('You cannot write more then '+limit+' characters!');
+		$('#'+textid).val(text.substr(0,limit));
+		return false;
+	} else {
+		$('#' + infodiv).html('You have '+ (limit - textlength) +' characters left.');
+		return true;
+	}
+}
+</script>

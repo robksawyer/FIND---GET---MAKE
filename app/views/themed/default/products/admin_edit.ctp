@@ -25,6 +25,7 @@
 		<?php
 		echo $this->element('add_attachment',array('cache'=>false));
 		echo $this->Form->input('description');
+		echo '<div id="charlimitinfo">You have 300 characters left.</div>';
 		echo $this->Form->input('designer');
 		echo $this->Form->input('price',array('label'=>'Price/Price Range','after'=>'<div class="extra">Ex. $134 or £40-£60</div>'));
 		echo $this->Form->input('source_url',array('label'=>'Source URL','after'=>'<div class="extra">Where did you find this item? Give credit where credit is due.</div>'));
@@ -62,4 +63,23 @@
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>
 </div>
-<script type="text/javascript"> $(".chzn-select").chosen(); </script>
+<script type="text/javascript">
+$(".chzn-select").chosen();
+
+$('#ProductDescription').keyup(function(){
+	limitChars('ProductDescription', 300, 'charlimitinfo');
+})
+
+function limitChars(textid, limit, infodiv) {
+	var text = $('#'+textid).val(); 
+	var textlength = text.length;
+	if(textlength > limit) {
+		$('#' + infodiv).html('You cannot write more then '+limit+' characters!');
+		$('#'+textid).val(text.substr(0,limit));
+		return false;
+	} else {
+		$('#' + infodiv).html('You have '+ (limit - textlength) +' characters left.');
+		return true;
+	}
+}
+</script>

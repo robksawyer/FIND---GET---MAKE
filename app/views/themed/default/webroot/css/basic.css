@@ -2217,9 +2217,14 @@ input, textarea {
 	width: 80%;
 }
 
+.profile .user-details .value{
+	color: #262626;
+}
+
 .profile .user-details ul,
 .profile .user-details ul li{
-	padding: 0;
+	padding: 5px 0;
+	color: #999999;
 	margin: 0;
 }
 
@@ -2230,6 +2235,7 @@ input, textarea {
 
 .profile .user-details .name{
 	font-size: 18px;
+	color: #000000;
 	display: block;
 }
 .profile .user-details .name i{
@@ -2490,7 +2496,7 @@ span.total a:hover{
 	background-color: #262626;
 	border-top: 1px solid #f7f7f7;
 	color: #ffffff;
-	width: 800px;
+	width: 600px;
 	display: block;
 	font-size: 34px;
 	font-weight: bold;
@@ -2512,7 +2518,7 @@ span.total a:hover{
 #auto-pagination-finished{
 	border-top: 1px solid #f7f7f7;
 	color: #ffffff;
-	width: 800px;
+	width: 600px;
 	display: block;
 	font-size: 34px;
 	font-weight: bold;
@@ -2527,7 +2533,12 @@ span.total a:hover{
 	width: 600px;
 }
 #user-feed .grid-item{
-	width: 800px !important;
+	width: 600px !important;
+}
+
+#user-feed .grid-item img{
+	width: auto;
+	max-width: 500px !important;
 	text-align: center;
 }
 
@@ -2562,7 +2573,13 @@ span.total a:hover{
 	padding: 0px 0px 5px 0;
 }
 #user-feed .grid-item .feed-text-title{
-	font-size: 14px;
+	font-size: 32px;
+	text-decoration: none;
+}
+
+#user-feed .grid-item .feed-text-title a{
+	font-weight: bold;
+	text-decoration: none;
 }
 
 #user-feed .grid-item .text-title{

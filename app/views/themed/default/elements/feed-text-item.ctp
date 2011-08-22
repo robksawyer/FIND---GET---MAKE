@@ -12,7 +12,7 @@ if($model == "Source"){
 	/*
 		TODO Add a like/dislike button in this area. Or, possibly the rating.
 	*/
-	if($showLikeDislike) echo $this->element('feed-like-dislike',array('cache'=>false,'user'=>$user,'model'=>$model,'model_id'=>$model_id));
+	if($showLikeDislike) echo $this->element('feed-like-dislike',array('cache'=>false,'model'=>$model,'model_id'=>$model_id));
 	?>
 	<div class="feed-text-title"><?php echo $this->Html->link($feed_item[$model]['name'],array('controller'=>$controller,
 																												'action'=>$action,

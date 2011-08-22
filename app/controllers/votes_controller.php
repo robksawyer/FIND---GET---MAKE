@@ -116,6 +116,10 @@ class VotesController extends AppController {
 				
 				if($this->Vote->save()){
 					$lastInsertId = $this->Vote->getLastInsertID();
+					
+					//Update the feed with the latest liked item.
+					$this->Vote->updateFeed($lastInsertId);
+					
 					$types = $this->setLikesDislikes($model,$model_id,'up');
 					$this->AjaxHandler->response(true, $types);
 				}else{
@@ -130,17 +134,13 @@ class VotesController extends AppController {
 				//$this->Vote->saveField('user_id', $user_id);
 				$this->Vote->saveField('likes', 1);
 				$this->Vote->saveField('dislikes', 0);
+				
+				//Update the feed with the latest liked item.
+				$this->Vote->updateFeed($votes['Vote']['id']);
+				
 				$types = $this->setLikesDislikes($model,$model_id,'up');
 				$this->AjaxHandler->response(true, $types);
 			}
-			
-			
-			$last = $this->Vote->read(null,$lastInsertId);
-			if(!empty($last['User']['id'])){
-				//Add the feed data to the feed
-				$this->Vote->Feed->addFeedData('Vote',$last);
-			}
-			
 			
 			$this->AjaxHandler->respond();
 			
@@ -191,6 +191,10 @@ class VotesController extends AppController {
 					//The save completed
 					$lastInsertId = $this->Vote->getLastInserID();
 					$types = $this->setLikesDislikes($model,$model_id,'down');
+					
+					//Update the feed with the latest liked item.
+					$this->Vote->updateFeed($lastInsertId);
+					
 					$this->AjaxHandler->response(true, $types);
 				}else{
 					$this->AjaxHandler->response(false, 'There was a problem setting the vote. Please, try again.', 0);
@@ -208,15 +212,12 @@ class VotesController extends AppController {
 				$this->Vote->saveField('dislikes', 1);
 				
 				$types = $this->setLikesDislikes($model,$model_id,'down');
+				
+				//Update the feed with the latest liked item.
+				$this->Vote->updateFeed($votes['Vote']['id']);
+				
 				$this->AjaxHandler->response(true, $types);
 			}
-			
-			$last = $this->Vote->read(null,$lastInsertId);
-			if(!empty($last['User']['id'])){
-				//Add the feed data to the feed
-				$this->Vote->Feed->addFeedData('Vote',$last);
-			}
-			
 			
 			$this->AjaxHandler->respond();
 			

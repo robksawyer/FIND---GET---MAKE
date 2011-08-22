@@ -139,6 +139,28 @@ class FeedsController extends AppController {
 	}
 	
 	/**
+	 * Returns the feed data for a user
+	 * @param int user_id
+	 * @param offset
+	 * @return 
+	 * 
+	*/
+	function getUserFeed($user_id=null,$offset=0){
+		$feed = $this->Feed->getUserFeedDataDetails($user_id,$offset);
+		return $feed;
+	}
+	
+	/**
+	 * Returns the total number of items in a feed
+	 * @param int user_id
+	 * @return 
+	 * 
+	*/
+	function getUserFeedCount($user_id=null){
+		return $this->Feed->getFeedCount($user_id);
+	}
+	
+	/**
 	 * Generate a feed for a user if it doesn't exist
 	 * @param string username
 	 * @return 

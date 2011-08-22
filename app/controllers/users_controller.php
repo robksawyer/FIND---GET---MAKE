@@ -21,7 +21,7 @@ class UsersController extends AppController {
 	function beforeFilter() {
 		parent::beforeFilter();
 		
-		$this->Auth->allow('login','logout','register','register_with_twitter');
+		$this->Auth->allow('login','logout','register','register_with_twitter','more_user_feed_data');
 		$this->AjaxHandler->handle('hide_welcome');
 	}
 	
@@ -157,8 +157,7 @@ class UsersController extends AppController {
 	}
 	
 	/**
-	 * Returns the feed data based on the offset passed
-	 * @param user_ids
+	 * Returns the feed data based on the offset passed for the logged in user
 	 * @param offset
 	 * @return 
 	 * 
@@ -171,6 +170,25 @@ class UsersController extends AppController {
 			//Find all of the followed users (with details) for this user
 			$following_user_ids = $this->User->getFollowingUserIds($user_id);
 			$feed = $this->User->Feed->getUsersFollowingFeedData($following_user_ids,$offset);
+			$this->set(compact('feed'));
+		}else{
+			$feed = null;
+			$this->set(compact('feed'));
+		}
+	}
+	
+	
+	/**
+	 * Returns the feed data for a user passed
+	 * @param user_id
+	 * @param offset
+	 * @return 
+	 * 
+	*/
+	function more_user_feed_data($user_id=null,$offset=0){
+		Configure::write ( 'debug', 2);
+		if(!empty($user_id)){
+			$feed = $this->User->Feed->getUserFeedDataDetails($user_id,$offset);
 			$this->set(compact('feed'));
 		}else{
 			$feed = null;

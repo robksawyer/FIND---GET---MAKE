@@ -15,20 +15,46 @@ $image_attachment0 = $product['Attachment'][0];
 ?>
 <div class='grid-item'>
 	<?php
-	/*
-		TODO Add a like/dislike button in this area. Or, possibly the rating.
-	*/
-	if($showLikeDislike) echo $this->element('feed-like-dislike',array('cache'=>false,'user'=>$user,'model'=>$model,'model_id'=>$model_id));
-	echo $this->Html->image($image_attachment0['path_med'],array(
-																	'alt'=>$product['Product']['name'],
-																	'title'=>$product['Product']['name'],
-																	'url'=>array(
-																					'controller'=>$controller,
-																					'action'=>$action,
-																					'plugin'=>'',
-																					'admin'=>false,
-																					$model_id
-																					)));
+	if($showLikeDislike) echo $this->element('feed-like-dislike',array('cache'=>false,'model'=>$model,'model_id'=>$model_id));
+	//Loop through 5 collection images and add those to a collage
+	$limit = 4;
+	//debug($collection['Product'][$i]);
+	for($i=0;$i<count($product['Attachment']);$i++){
+		if(!empty($product['Attachment'][$i])){
+			if($i < $limit){
+				if(count($product['Attachment']) > 1){
+					echo $this->Html->image($product['Attachment'][0]['path_small'],array(
+																												'alt'=>$product['Product']['name'],
+																												'title'=>$product['Product']['name'],
+																												'url'=>array(
+																													'controller'=>$controller,
+																													'action'=>$action,
+																													'plugin'=>'',
+																													'admin'=>false,
+																													$model_id
+																													),
+																												'style'=>'max-height: 75px;padding:5px;'
+																												));
+				}else{
+					echo $this->Html->image($product['Attachment'][$i]['path'],array(
+																											'alt'=>$product['Product']['name'],
+																											'title'=>$product['Product']['name'],
+																											'url'=>array(
+																												'controller'=>$controller,
+																												'action'=>$action,
+																												'plugin'=>'',
+																												'admin'=>false,
+																												$model_id
+																												),
+																											'style'=>'max-height: 200px'
+																											));
+				}
+			
+			}else{
+				break;
+			}
+		}
+	}
 	?>
 	<div class="title"><?php echo $this->Html->link($product['Product']['name'],array('controller'=>$controller,
 																												'action'=>$action,

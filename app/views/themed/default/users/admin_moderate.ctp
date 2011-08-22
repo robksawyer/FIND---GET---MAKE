@@ -97,7 +97,6 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 		<div class="header red"><?php 
 				__('running bond: what others are posting.');
 		?></div>
-		<h4>Content from the <?php echo $this->Html->link($authUser['User']['totalUsersFollowing']." users",array('controller'=>'user_followings','action'=>'following','admin'=>false,'plugin'=>'',$authUser['User']['username'])); ?> that you follow.</h4>
 		<?php
 		echo $this->element('following-feed',array('cache'=>false));
 		?>
@@ -143,7 +142,7 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 			}
 			echo "</div>";
 			echo "<div class='view-all'>";
-			echo $this->Html->link("View all &raquo;",
+			echo $this->Html->link("View all &rarr;",
 										array('plugin'=>'',
 												'admin'=>false,
 												'controller'=>'user_followings',

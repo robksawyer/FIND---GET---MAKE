@@ -24,8 +24,8 @@ $controller = 'products';
 	/*
 		TODO Add a like/dislike button in this area. Or, possibly the rating.
 	*/
-	if($showLikeDislike) echo $this->element('feed-like-dislike',array('cache'=>false,'user'=>$user,'model'=>'Product','model_id'=>$product['Product']['id']));
-	echo $this->Html->image($product_attachment0['path_med'],array(
+	if($showLikeDislike) echo $this->element('feed-like-dislike',array('cache'=>false,'model'=>'Product','model_id'=>$product['Product']['id']));
+	echo $this->Html->image($product_attachment0['path'],array(
 																	'alt'=>$product['Product']['name'],
 																	'title'=>$product['Product']['name'],
 																	'url'=>array(

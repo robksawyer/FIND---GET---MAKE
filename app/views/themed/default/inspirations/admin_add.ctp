@@ -22,6 +22,7 @@
 			echo $this->Form->input('user_id',array('value'=>$authUser['User']['id'],'type'=>'hidden'));
 		}
 		echo $this->Form->input('description');
+		echo '<div id="charlimitinfo">You have 300 characters left.</div>';
 		echo $this->Form->input('designer',array('after'=>'<div class="extra">e.g. Martyn Lawrence-Bullard</div>'));
 		echo $this->Form->input('source_url');
 		echo $this->element('add_tags',array('cache'=>false,'controller'=>'inspirations'));
@@ -86,4 +87,23 @@
 	</div></div>
 <?php echo $this->Form->end(__('Submit', true));?>
 </div>
-<script type="text/javascript"> $(".chzn-select").chosen(); </script>
+<script type="text/javascript">
+$(".chzn-select").chosen();
+
+$('#InspirationDescription').keyup(function(){
+	limitChars('InspirationDescription', 300, 'charlimitinfo');
+})
+
+function limitChars(textid, limit, infodiv) {
+	var text = $('#'+textid).val(); 
+	var textlength = text.length;
+	if(textlength > limit) {
+		$('#' + infodiv).html('You cannot write more then '+limit+' characters!');
+		$('#'+textid).val(text.substr(0,limit));
+		return false;
+	} else {
+		$('#' + infodiv).html('You have '+ (limit - textlength) +' characters left.');
+		return true;
+	}
+}
+</script>

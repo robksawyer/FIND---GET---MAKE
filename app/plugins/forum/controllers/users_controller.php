@@ -226,7 +226,8 @@ class UsersController extends ForumAppController {
 			$this->set('posts', $this->Topic->Post->getLatestByUser($id));
 		}
 		
-		$this->Toolbar->pageTitle(__d('forum', 'User Profile', true), $user['User']['username']);
+		$this->set('title_for_layout','Profile: '.$user['User']['username']);
+		//$this->Toolbar->pageTitle(__d('forum', 'User Profile', true), $user['User']['username']);
 		$this->set('user', $user);
 	}
 	

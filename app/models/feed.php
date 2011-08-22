@@ -63,17 +63,58 @@ class Feed extends AppModel {
 	 * @return 
 	 * 
 	*/
-	function addFeedData($model=null,$data=null){
-		$this->set('model',$model);
-		$this->set('name',strtolower($model));
-		$this->set('user_id',$data['User']['id']);
-		$this->set('model_id',$data[$model]['id']);
-		$this->set('record_created',$data[$model]['created']);
+	public function addFeedData($model=null,$data=null){
+		if($model && $data){
+			$this->set('model',$model);
+			$this->set('name',strtolower($model));
+			$this->set('user_id',$data['User']['id']);
+			$this->set('model_id',$data[$model]['id']);
+			$this->set('record_created',$data[$model]['created']);
 		
-		if($this->save()){
-			//The data saved correctly
-		}else{
-			//There was an error saving the data
+			//Make sure it doesn't already exist
+			$item = $this->find('first',array(
+											'conditions'=>array(
+																'Feed.model'=>$model,
+																'Feed.model_id'=>$data[$model]['id']
+																)
+											)
+										);
+			//Only add it if it doesn't already exist
+			if(empty($item[$model])){
+				if($this->save()){
+					//The data saved correctly
+				}else{
+					//There was an error saving the data
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Handles removing an item from the feed
+	 * @param string model The model to target
+	 * @param int data The item data
+	 * @return 
+	 * 
+	*/
+	public function removeFeedData($model=null,$data=null){
+		if($model && $data){
+			$item = $this->find('first',array(
+											'conditions'=>array(
+																'Feed.model'=>$model,
+																'Feed.model_id'=>$data[$model]['id']
+																)
+											)
+										);
+
+			if(!empty($item)){
+				//Delete the item from the feed
+				if($this->delete($item['Feed']['id'])){
+					//The item was deleted
+				}else{
+					//There was an error deleting the item
+				}
+			}
 		}
 	}
 	
@@ -84,7 +125,7 @@ class Feed extends AppModel {
 	 * @return array data
 	 * 
 	*/
-	function getUserFeedData($user_id=null,$offset=0){
+	public function getUserFeedData($user_id=null,$offset=0){
 		$this->recursive = 1;
 		$data = $this->find('all',array('conditions'=>array(
 															'Feed.user_id'=>$user_id
@@ -94,6 +135,29 @@ class Feed extends AppModel {
 															'limit'=>10
 															));
 		return $data;
+	}
+	
+	
+	/**
+	 * Finds the feed data for a user.
+	 * @param int user_id
+	 * @param offset The offset to pull data from in the query
+	 * @return array data
+	 * 
+	*/
+	public function getUserFeedDataDetails($user_id=null,$offset=0){
+		$this->recursive = -1;
+		$user_feed = $this->getUserFeedData($user_id,$offset);
+		$user_feed_data = array();
+		foreach($user_feed as $feed_item){
+			if($feed_item['Feed']['model'] == "Vote"){
+				$this->$feed_item['Feed']['model']->recursive = 2;
+			}else{
+				$this->$feed_item['Feed']['model']->recursive = 1;
+			}
+			$user_feed_data[] = $this->$feed_item['Feed']['model']->read(null,$feed_item['Feed']['model_id']);
+		}
+		return $user_feed_data;
 	}
 	
 	/**
@@ -122,7 +186,7 @@ class Feed extends AppModel {
 	 * @return 
 	 * 
 	*/
-	function getFeedCount($user_ids=null){
+	public function getFeedCount($user_ids=null){
 		$this->recursive = 1;
 		$count = $this->find('count',array('conditions'=>array(
 															'Feed.user_id'=>$user_ids

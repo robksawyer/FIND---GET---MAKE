@@ -19,6 +19,7 @@
 		echo '</div></div>';
 		echo $this->Form->input('credit',array('after'=>'<div class="extra">Give credit where credit is due.</div>'));
 		echo $this->Form->input('description');
+		echo '<div id="charlimitinfo">You have 300 characters left.</div>';
 		echo $this->Form->input('tags',array('type'=>'text','label'=>'Keywords','after'=>'<div class="extra">Separate each keyword with a comma e.g., modern, red, furniture.</div>'));
 		//echo $this->Form->input('Product',array('after'=>'<div class="extra">Select one or more (hold SHIFT) of the products below to add them to the collection. Hold COMMAND and click to remove a selection.</div>'));
 		
@@ -44,4 +45,23 @@
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>
 </div>
-<script type="text/javascript"> $(".chzn-select").chosen(); </script>
+<script type="text/javascript">
+$(".chzn-select").chosen();
+
+$('#CollectionDescription').keyup(function(){
+	limitChars('CollectionDescription', 300, 'charlimitinfo');
+})
+
+function limitChars(textid, limit, infodiv) {
+	var text = $('#'+textid).val(); 
+	var textlength = text.length;
+	if(textlength > limit) {
+		$('#' + infodiv).html('You cannot write more then '+limit+' characters!');
+		$('#'+textid).val(text.substr(0,limit));
+		return false;
+	} else {
+		$('#' + infodiv).html('You have '+ (limit - textlength) +' characters left.');
+		return true;
+	}
+}
+</script>

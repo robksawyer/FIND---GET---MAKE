@@ -1,18 +1,14 @@
 <?php
 if(empty($action)) $action = 'view';
 if(empty($model_id)) $model_id = $feed_item[$model]['id'];
-if($model == "Product"){
-	$showLikeDislike = true;
-}else{
-	$showLikeDislike = false;
-}
+
+$showLikeDislike = true;
 
 if($model == "Product"){
 	$added_by = "Found by ";
 }else{
 	$added_by = "Added by ";
 }
-//debug($feed_item);
 //if(!empty($feed_item[$model]['Attachment'][0])):
 if(!empty($feed_item['Attachment'][0])):
 ?>
@@ -21,7 +17,7 @@ if(!empty($feed_item['Attachment'][0])):
 	/*
 		TODO Add a like/dislike button in this area. Or, possibly the rating.
 	*/
-	if($showLikeDislike) echo $this->element('feed-like-dislike',array('cache'=>false,'user'=>$user,'model'=>$model,'model_id'=>$model_id));
+	if($showLikeDislike) echo $this->element('feed-like-dislike',array('cache'=>false,'model'=>$model,'model_id'=>$model_id));
 	echo $this->Html->image($feed_item['Attachment'][0]['path'],array(
 																	'alt'=>$feed_item[$model]['name'],
 																	'title'=>$feed_item[$model]['name'],

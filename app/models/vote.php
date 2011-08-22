@@ -47,13 +47,35 @@ class Vote extends AppModel {
 		if($created){
 			//Update the total count for the user
 			$last = $this->read(null,$this->id);
-			if(!empty($last['User']['id'])){
-				
+			if(!empty($last['User']['id']) && $last['Vote']['likes'] == 1){
 				//Add the feed data to the feed
 				$this->Feed->addFeedData('Vote',$last);
 			}
 		}
 	}*/
+	
+	/**
+	 * Update the feed with the latest liked item
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function updateFeed($id=null){
+		$this->recursive = 1;
+		if($id){			
+			$last = $this->read(null,$id);
+			if(!empty($last['Vote']['user_id'])){
+				//Check to see if it was a like or dislike
+				if($last['Vote']['likes'] == 1){
+					//Add the feed data to the feed
+					$this->Feed->addFeedData('Vote',$last);
+				}else if($last['Vote']['dislikes'] == 1){
+					//Disliked item
+					$this->Feed->removeFeedData('Vote',$last);
+				}
+			}
+		}
+	}
 	
 	/**
 	 * Returns the needed feed data for a specific record
