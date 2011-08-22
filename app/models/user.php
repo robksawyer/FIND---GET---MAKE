@@ -326,60 +326,12 @@ class User extends AppModel {
 	}
 	
 	/**
-	 * Handles returning the feed for a particular user
-	 * @param id follow_user_id The followed user
-	 * @return array user_details 
+	 * Returns the ids of the users the logged in user is following
+	 * @param int user_id The logged in user
+	 * @return array user_id The people the logged in user is following
 	 * 
 	*/
-	public function getFeed($user_id=null){
-		$this->recursive = 1;
-		$user_details = $this->Feed->find('all',array('recursive'=>1,
-												'conditions'=>array(
-																	'Feed.user_id'=>$user_id
-																	),
-												'order'=>'Feed.record_created DESC'
-												));
-		return $user_details;
-	}
-	
-	/**
-	 * Handles returning the feed details (items) for a particular user
-	 * @param id follow_user_id The followed user
-	 * @return array user_details 
-	 * 
-	*/
-	public function getFeedDetails($user_id=null){
-		$this->recursive = 1;
-		$user_details = $this->Feed->getUserFeedData($user_id);
-		//debug($user_details);
-		$user_feed_data = array();
-		foreach($user_details as $feed_item){
-			$this->$feed_item['Feed']['model']->recursive = 1;
-			$user_feed_data[] = $this->$feed_item['Feed']['model']->getFeedData($feed_item['Feed']['model_id']);
-		}
-		return $user_feed_data;
-	}
-	
-	/**
-	 * Handles returning a group of feeds for users. The method finds then packs an array full of the feed data for the items.
-	 * @param array user_ids The feeds to show
-	 * @return array user_feed_data
-	 * 
-	*/
-	public function getFeeds($user_ids=null){
-		$this->recursive = -1;
-		$user_feeds = $this->Feed->find('all',array('recursive'=>-1,
-												'conditions'=>array(
-																	'Feed.user_id'=>$user_ids
-																	),
-												'order'=>'Feed.record_created DESC'
-												));
-		$user_feed_data = array();
-		foreach($user_feeds as $feed_item){
-			$this->$feed_item['Feed']['model']->recursive = 1;
-			$user_feed_data[] = $this->$feed_item['Feed']['model']->read(null,$feed_item['Feed']['model_id']);
-		}
-		//debug($user_feed_data);
-		return $user_feed_data;
+	public function getFollowingUserIds($user_id=null){
+		return $this->UserFollowing->getFollowingUserIds($user_id);
 	}
 }

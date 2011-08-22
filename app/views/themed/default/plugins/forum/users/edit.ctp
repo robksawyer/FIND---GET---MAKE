@@ -71,13 +71,15 @@
 			?>
 			</span>
 		<?php endif; ?>
-		<?php if(!empty($this->data['User']['facebook_id'])): ?>
+		<!--
+		<?php //if(!empty($this->data['User']['facebook_id'])): ?>
 			<span class="twitter">Your <i>Facebook</i> account is linked.</span>
-		<?php else: ?>
+		<?php //else: ?>
 			<div id="btn-facebook">
-			<?php echo $this->Facebook->login(array('perms' => 'email','redirect-uri' => '/register'),'Connect with Facebook'); ?>
+			<?php // echo $this->Facebook->login(array('perms' => 'email','redirect-uri' => '/register'),'Connect with Facebook'); ?>
 			</div>
-		<?php endif; ?>
+		<?php //endif; ?>
+		-->
 	</div>
 	<!--
 		TODO Build out this section

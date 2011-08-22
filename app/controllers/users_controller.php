@@ -21,9 +21,7 @@ class UsersController extends AppController {
 	function beforeFilter() {
 		parent::beforeFilter();
 		
-		$this->Auth->allow('login','logout','register','oauth_callback','beforeFacebookSave',
-							'beforeFacebookLogin','afterFacebookLogin','register_with_twitter',
-							'reset_twitter_cookie');
+		$this->Auth->allow('login','logout','register','register_with_twitter');
 		$this->AjaxHandler->handle('hide_welcome');
 	}
 	
@@ -83,16 +81,16 @@ class UsersController extends AppController {
 		}
 		
 		//Update the total counts
-		$this->User->updateTotalInspirations($user['User']['id']);
+		/*$this->User->updateTotalInspirations($user['User']['id']);
 		$this->User->updateTotalCollections($user['User']['id']);
 		$this->User->updateTotalProducts($user['User']['id']);
-		$this->User->updateTotalSources($user['User']['id']);
+		$this->User->updateTotalSources($user['User']['id']);*/
 		//Update follow related counts
-		$this->User->updateTotalFollowCount($user['User']['id']);
-		$this->User->updateTotalFollowerCount($user['User']['id']);
+		//$this->User->updateTotalFollowCount($user['User']['id']);
+		//$this->User->updateTotalFollowerCount($user['User']['id']);
 		
 		//Request data for the elements
-		$userSources = $this->User->Source->userSources($user['User']['id']);
+		/*$userSources = $this->User->Source->userSources($user['User']['id']);
 		$this->set(compact('userSources'));
 		
 		$userProducts = $this->User->Product->userProducts($user['User']['id'],10,'all');
@@ -105,9 +103,9 @@ class UsersController extends AppController {
 		$this->set(compact('userCollections'));
 		
 		$userUfos = $this->User->Ufo->userUfos($user['User']['id']);
-		$this->set(compact('userUfos'));
+		$this->set(compact('userUfos'));*/
 		
-		$wantedProductsTemp = $this->User->Ownership->getUserWants('Product',$user['User']['id']);
+		/*$wantedProductsTemp = $this->User->Ownership->getUserWants('Product',$user['User']['id']);
 		$wantedProducts = array();
 		//Find the full product details
 		if(!empty($wantedProductsTemp)){
@@ -124,8 +122,13 @@ class UsersController extends AppController {
 				$haveProducts[] = $this->User->Product->read(null,$product['Product']['id']);
 			}
 		}
-		$this->set(compact('haveProducts'));
+		$this->set(compact('haveProducts'));*/
 		
+		//$user = $this->User->read(null,$user['User']['id']);
+		$followers = $this->User->UserFollowing->findFollowers($user['User']['id'],5);
+		$user_wants = $this->User->Ownership->getUserWantCount('Product',$user['User']['id']);
+		$user_haves = $this->User->Ownership->getUserHaveCount('Product',$user['User']['id']);
+		$this->set(compact('user_wants','user_haves','followers'));
 		//$this->set('user', $this->User->read(null, $user['User']['id']));
 		$this->set('user', $user);
 		$this->set('string', $this->String);
@@ -151,6 +154,28 @@ class UsersController extends AppController {
 		}
 		
         $this->set('linkOptions', $linkOptions);
+	}
+	
+	/**
+	 * Returns the feed data based on the offset passed
+	 * @param user_ids
+	 * @param offset
+	 * @return 
+	 * 
+	*/
+	function more_feed_data($offset=0){
+		Configure::write ( 'debug', 0);
+		$user_id = $this->Auth->user('id');
+		//$user = $this->User->read(null,$user['User']['id']);
+		if(!empty($user_id)){
+			//Find all of the followed users (with details) for this user
+			$following_user_ids = $this->User->getFollowingUserIds($user_id);
+			$feed = $this->User->Feed->getUsersFollowingFeedData($following_user_ids,$offset);
+			$this->set(compact('feed'));
+		}else{
+			$feed = null;
+			$this->set(compact('feed'));
+		}
 	}
 	
 	/**

@@ -12,7 +12,9 @@ if($model == "Product"){
 }else{
 	$added_by = "Added by ";
 }
-if(!empty($feed_item[$model]['Attachment'][0])):
+//debug($feed_item);
+//if(!empty($feed_item[$model]['Attachment'][0])):
+if(!empty($feed_item['Attachment'][0])):
 ?>
 <div class='grid-item'>
 	<?php
@@ -20,7 +22,7 @@ if(!empty($feed_item[$model]['Attachment'][0])):
 		TODO Add a like/dislike button in this area. Or, possibly the rating.
 	*/
 	if($showLikeDislike) echo $this->element('feed-like-dislike',array('cache'=>false,'user'=>$user,'model'=>$model,'model_id'=>$model_id));
-	echo $this->Html->image($feed_item[$model]['Attachment'][0]['path_med'],array(
+	echo $this->Html->image($feed_item['Attachment'][0]['path'],array(
 																	'alt'=>$feed_item[$model]['name'],
 																	'title'=>$feed_item[$model]['name'],
 																	'url'=>array(
@@ -36,19 +38,19 @@ if(!empty($feed_item[$model]['Attachment'][0])):
 																												'plugin'=>'',
 																												'admin'=>false,
 																												$model_id)); ?></div>
-	<div class="added-by"><?php echo $added_by.$this->Html->link($feed_item[$model]['User']['username'],array('admin'=>false,'controller'=>'users','plugin'=>'forum','action'=>'profile',$feed_item['User']['username'])); ?></div>
+	<div class="added-by"><?php echo $added_by.$this->Html->link($feed_item['User']['username'],array('admin'=>false,'controller'=>'users','plugin'=>'forum','action'=>'profile',$feed_item['User']['username'])); ?></div>
 	<div class='bottom-detail'>
-		<span class='created'><?php echo $this->Time->niceShort($feed_item[$model]['created'],null,null); ?></span>
+		<span class='created'><?php echo $this->Time->timeAgoInWords($feed_item[$model]['created'],null,null); ?></span>
 		<span class="tags">
 			<?php
 			//Build a tag list of only two tags.
 			$limit = 2;
 			$counter = 0;
-			if(!empty($feed_item[$model]['Tag'])){
+			if(!empty($feed_item['Tag'])){
 			  	echo " / ";
-				foreach($feed_item[$model]['Tag'] as $tag){
+				foreach($feed_item['Tag'] as $tag){
 					if($counter == $limit) break;
-					if($counter == ($limit - 1) || count($feed_item[$model]['Tag']) < 2){
+					if($counter == ($limit - 1) || count($feed_item['Tag']) < 2){
 						echo $this->Html->link($tag['name'],array('controller'=>$controller,'action'=>'index/by:'.$tag['keyname']));
 					}else{
 						echo $this->Html->link($tag['name'],array('controller'=>$controller,'action'=>'index/by:'.$tag['keyname'])).", ";

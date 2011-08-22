@@ -31,64 +31,64 @@
 		<link rel="icon" href="<?php echo $this->webroot;?>favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="<?php echo $this->webroot;?>favicon.ico" type="image/x-icon" />
 		<?php 
-			echo "<!-- A simple css reset from yahoo -->";
+			echo "<!-- A simple css reset from yahoo -->"."\n";
 			if(Configure::read('FGM.local') == false){
-				echo $this->Html->css('reset-min.css');
-				echo $this->Html->css('jquery-ui/ui-lightness/jquery-ui-1.8.2.custom');
+				echo $this->Html->css('reset-min.css')."\n";
+				echo $this->Html->css('jquery-ui/ui-lightness/jquery-ui-1.8.2.custom')."\n";
 			}else{
-				echo $this->Html->css('http://yui.yahooapis.com/2.8.0r4/build/reset/reset-min.css');
-				echo $this->Html->css('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/base/jquery-ui.css');
+				echo $this->Html->css('http://yui.yahooapis.com/2.8.0r4/build/reset/reset-min.css')."\n";
+				echo $this->Html->css('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/base/jquery-ui.css')."\n";
 			}
 			
-			echo $this->Html->css('cake.generic');
-			echo $this->Html->css('basic');
-			echo $this->Html->css('elements/nav');
+			echo $this->Html->css('cake.generic')."\n";
+			echo $this->Html->css('basic')."\n";
+			echo $this->Html->css('elements/nav')."\n";
 			//Chosen Select Boxes (http://harvesthq.github.com/chosen/)
-			echo $this->Html->css('chosen/chosen');
+			echo $this->Html->css('chosen/chosen')."\n";
 			//Used for the autocomplete tags element
 			//echo $this->Html->css('jquery.autocomplete');
-			echo $this->Html->css('auto-complete');
+			echo $this->Html->css('auto-complete')."\n";
 			
-			echo $this->Html->css('jquery.tablescroll');
-			echo $this->Html->css('/rating/css/rating');
+			echo $this->Html->css('jquery.tablescroll')."\n";
+			echo $this->Html->css('/rating/css/rating')."\n";
 			
 			//Cupcake Forum
-			echo $this->Html->css('forum/style.css');
+			echo $this->Html->css('forum/style.css')."\n";
 			
 			
 			//Modal windows
-			echo $this->Html->css('modal/basic');
-			echo '<!-- IE6 "fix" for the close png image -->';
-			echo '<!--[if lt IE 7]>';
-			echo $this->Html->css('modal/basic_ie');
+			echo $this->Html->css('modal/basic')."\n";
+			echo '<!-- IE6 "fix" for the close png image -->'."\n";
+			echo '<!--[if lt IE 7]>'."\n";
+			echo $this->Html->css('modal/basic_ie')."\n";
 			echo '<![endif]-->';
 			
 			if(Configure::read('FGM.local') == false){
-				echo $this->Html->script('jquery-1.4.1.min');
-				echo $this->Html->script('jquery-ui/jquery-ui-1.8.2.custom.min');
+				echo $this->Html->script('jquery-1.4.1.min')."\n";
+				echo $this->Html->script('jquery-ui/jquery-ui-1.8.2.custom.min')."\n";
 			}else{
-				echo "<!-- Include jquery 1.4.2 via google apis -->";
-				echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
+				echo "<!-- Include jquery 1.4.2 via google apis -->"."\n";
+				echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js')."\n";
 				//v1.2.6
 				//echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js');
-				echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js');
+				echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js')."\n";
 			}
 			
-			echo $this->Html->script('elements/nav');
-			echo $this->Html->script('common'); //Common helper scripts
-			echo $this->Html->script('/rating/js/rating_jquery_min');
-			echo $this->Html->script('jquery.form');
-			echo $this->Html->script('jquery.autocomplete.min');
-			echo $this->Html->script('jquery.jeditable.mini');
-			echo $this->Html->script('jquery.mousewheel.min');
-			echo "<!-- Chosen Select Boxes (http://harvesthq.github.com/chosen/) -->";
-			echo $this->Html->script('chosen/chosen.jquery.min');
-			echo "<!-- Include jquery modal window apis -->";
-			echo $this->Html->script('modal/jquery.simplemodal.1.4.1.min');
-			echo $this->Html->script('modal/basic');
+			echo $this->Html->script('elements/nav')."\n";
+			echo $this->Html->script('common')."\n"; //Common helper scripts
+			echo $this->Html->script('/rating/js/rating_jquery_min')."\n";
+			echo $this->Html->script('jquery.form')."\n";
+			echo $this->Html->script('jquery.autocomplete.min')."\n";
+			echo $this->Html->script('jquery.jeditable.mini')."\n";
+			echo $this->Html->script('jquery.mousewheel.min')."\n";
+			echo "<!-- Chosen Select Boxes (http://harvesthq.github.com/chosen/) -->"."\n";
+			echo $this->Html->script('chosen/chosen.jquery.min')."\n";
+			echo "<!-- Include jquery modal window apis -->"."\n";
+			echo $this->Html->script('modal/jquery.simplemodal.1.4.1.min')."\n";
+			echo $this->Html->script('modal/basic')."\n";
 			
 			//Cupcake forum
-			echo $this->Html->script('/forum/js/script.js');
+			echo $this->Html->script('/forum/js/script.js')."\n";
 			if ($this->params['controller'] == 'home') {
 				echo $this->Html->meta(__d('forum', 'RSS Feed - Latest Topics', true), array('action' => 'feed', 'ext' => 'rss'), array('type' => 'rss'));
 			} else if (isset($feedId) && in_array($this->params['controller'], array('categories', 'topics'))) {

@@ -443,6 +443,187 @@ div.message {
  * 
 */
 
+.link a{
+	color: #4287b1;
+}
+
+.followers{
+	position: relative;
+	display: block;
+	width: 250px;
+	background: #FAFAFB;
+	border: 1px solid #DDD;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	padding: 10px 10px;
+	margin: 10px 0;
+	color: #d4d4d4;
+	font-size: 15px;
+	font-weight: bold;
+	text-shadow: #b3b3b3 -1px -1px 0px;
+	text-decoration: none;
+	clear: both;
+}
+
+.followers .avatar {
+	display: inline;
+}
+.followers .avatar img{
+	width: 24px;
+	height: 24px;
+	display: inline;
+	padding: 1px;
+	margin: 3px;
+	border: 1px solid #999999;
+}
+
+.followers .avatar img:hover{
+	opacity:.60;
+	filter:alpha(opacity=60);
+}
+
+
+.followers .view-all{
+	position: relative;
+	width: 250px;
+	text-align: right;
+}
+.followers .view-all a{
+	color: #4287b1;
+	font-size: 13px;
+	font-weight: normal;
+	text-decoration: none;
+	text-align: right;
+}
+
+.followers a:hover{
+	color: #262626;
+}
+
+a.simple-btn{
+	position: relative;
+	display: block;
+	width: 250px;
+	background: #FAFAFB;
+	border: 1px solid #DDD;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	padding: 10px 10px;
+	margin: 10px 0;
+	color: #d4d4d4;
+	font-size: 15px;
+	font-weight: bold;
+	text-shadow: #b3b3b3 -1px -1px 0px;
+	text-decoration: none;
+	clear: both;
+}
+
+a.simple-btn:hover{
+	background: #e8e8e8;
+	border: 1px solid #DDD;
+	color: #d4d4d4;
+	text-shadow: #b3b3b3 -1px -1px 0px;
+}
+
+ul.stats{
+	width: 250px;
+	background: #FAFAFB;
+	border: 1px solid #DDD;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	padding: 10px 10px;
+	margin: 0;
+	clear: both;
+}
+
+ul.stats .title{
+	font-size: 15px;
+	color: #d4d4d4;
+	font-weight: bold;
+	margin: 5px 0;
+	text-shadow: #b3b3b3 -1px -1px 0px;
+}
+
+ul.stats li{
+	list-style-type: none;
+	clear: both;
+	text-align: center;
+}
+
+ul.stats li .total{
+	font-size: 36px;
+	font-weight: bold;
+	color: #000000;
+	display: inline;
+	float: left;
+	width: 100px;
+}
+
+ul.stats li .total a{
+	font-weight: bold;
+	text-decoration: none;
+}
+
+ul.stats li .total span{
+	font-size: 11px;
+	font-weight: normal;
+	color: #999999;
+	display: block;
+}
+
+ul.btn-actions{
+	float: right;
+	margin: 0px;
+	position: relative;
+	right: 0px;
+}
+
+.minibutton, 
+.minibutton.disabled:hover{
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F4F4F4), to(#ECECEC));
+	border: 1px solid #D4D4D4;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	color: #333;
+	cursor: pointer;
+	display: inline-block;
+	overflow: visible;
+	position: relative;
+	text-shadow: #ffffff 1px 1px 0px;
+	white-space: nowrap;
+	text-decoration: none;
+	margin: 0;
+	padding: 0;
+}
+
+.minibutton:hover{
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#599BDC), to(#3072B3));
+	border-color: #2A65A0;
+	color: #ffffff;
+	text-decoration: none;
+	text-shadow: #000000 1px 1px 0px;
+	font-weight: normal;
+	padding: 0;
+	margin: 0;
+}
+
+.minibutton > span{
+	display: block;
+	height: 21px;
+	line-height: 21px;
+	padding: 0px 9px 0px 7px;
+}
+
+ul.btn-actions li{
+	color: #333;
+	display: inline;
+	font-size: 11px;
+	font-weight: bold;
+	list-style-type: none;
+	margin: 0px 0px 0px 5px;
+}
+
+
 .terms-of-service p{
 	padding: 10px 0;
 }
@@ -1830,6 +2011,7 @@ input, textarea {
 .welcome h3{
 	color: #777777 !important;
 }
+
 .moderate{
 	position: relative;
 	float: left;
@@ -2304,12 +2486,48 @@ span.total a:hover{
 
 
 /** USER FEED **/
+#auto-pagination-loader{
+	background-color: #262626;
+	border-top: 1px solid #f7f7f7;
+	color: #ffffff;
+	width: 800px;
+	display: block;
+	font-size: 34px;
+	font-weight: bold;
+	padding: 25px 5px;
+	text-align: center;
+	text-decoration: none;
+	text-shadow: #132B42 2px 2px 3px;
+}
+
+#auto-pagination-loader .spinner{
+	background: url('img/auto_pagination_loader.gif');
+	display: inline-block;
+	height: 32px;
+	margin-right: 10px;
+	vertical-align: -5px;
+	width: 32px;
+}
+
+#auto-pagination-finished{
+	border-top: 1px solid #f7f7f7;
+	color: #ffffff;
+	width: 800px;
+	display: block;
+	font-size: 34px;
+	font-weight: bold;
+	padding: 25px 5px;
+	text-align: center;
+	text-decoration: none;
+	text-shadow: #132B42 2px 2px 3px;
+}
+
 #user-feed {
 	position: relative;
 	width: 600px;
 }
 #user-feed .grid-item{
-	width: 300px;
+	width: 800px !important;
 	text-align: center;
 }
 

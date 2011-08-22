@@ -44,7 +44,7 @@ $controller = 'products';
 	<div class="added-by"><?php echo $status_by." ".$this->Html->link($feed_item['User']['username'],array('admin'=>false,'controller'=>'users','plugin'=>'forum','action'=>'profile',$feed_item['User']['username'])); ?></div>
 	<div class="added-by"><?php echo $added_by." ".$this->Html->link($product['User']['username'],array('admin'=>false,'controller'=>'users','plugin'=>'forum','action'=>'profile',$product['User']['username'])); ?></div>
 	<div class='bottom-detail'>
-		<span class='created'><?php echo $this->Time->niceShort($product['Product']['created'],null,null); ?></span>
+		<span class='created'><?php echo $this->Time->timeAgoInWords($product['Product']['created'],null,null); ?></span>
 		<span class="tags">
 			<?php
 			//Build a tag list of only two tags.

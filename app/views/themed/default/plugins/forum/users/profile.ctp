@@ -3,7 +3,7 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 ?>
 <?php // User exists
 if (!empty($user)) { ?>
-<div class="forumHeader profile">
+<div class="header profile">
 	<button type="button" onclick="goTo('<?php echo $this->Html->url(array('action' => 'report', $user['User']['id'])); ?>');" class="fr button"><?php __d('forum', 'Report User'); ?></button>
 	<?php // Gravatar
 	if ($this->Cupcake->settings['enable_gravatar'] == 1) {
@@ -34,78 +34,45 @@ if (!empty($user)) { ?>
 			<?php if (!empty($user['User']['about'])) { ?>
 			<li class="about"><?php echo $user['User']['about']; ?></li>
 			<?php } ?>
-			<li>
-				<?php 
-				//Link to the user's feed
-				echo $this->Html->link('Feed',array('plugin'=>'','admin'=>false,'controller'=>'feeds','action'=>'user',$user['User']['username']))." | ";
-				echo $this->Html->link($user['User']['totalUsersFollowing'].' following,',array('plugin'=>'','controller'=>'user_followings','action'=>'following',$user['User']['username'])); 
-				?>
-				<?php 
-				if($user['User']['totalFollowers'] > 1 || $user['User']['totalFollowers'] == 0){
-					echo $this->Html->link($user['User']['totalFollowers'].' followers',array('plugin'=>'','controller'=>'user_followings','action'=>'followers',$user['User']['username'])); 
-				}else{
-					echo $this->Html->link($user['User']['totalFollowers'].' follower',array('plugin'=>'','controller'=>'user_followings','action'=>'followers',$user['User']['username'])); 
-				}
-				?>
-			</li>
-		</ul>
-		<ul class="totals">
-			<li><span class='total'><i>Total sources added:</i> <?php echo $this->Html->link($user['User']['totalSources'],array('plugin'=>'','admin'=>false,'controller'=>'sources','action'=>'users',$user['User']['id']));; ?></span> <span class='total'><i>Total products added:</i> <?php echo $this->Html->link($user['User']['totalProducts'],array('plugin'=>'','admin'=>false,'controller'=>'products','action'=>'users',$user['User']['id'])); ?></span></li>
-			<li><span class='total'><i>Total inspirations:</i> <?php echo $this->Html->link($user['User']['totalInspirations'],array('plugin'=>'','admin'=>false,'controller'=>'inspirations','action'=>'users',$user['User']['id']));; ?></span> <span class='total'><i>Total collections:</i> <?php echo $this->Html->link($user['User']['totalCollections'],array('plugin'=>'','admin'=>false,'controller'=>'collections','action'=>'users',$user['User']['id'])); ?></span></li>
-		</ul>
-		<ul>
-			<li>Joined <?php echo $this->Time->timeAgoInWords($user['User']['created']); ?></li>
-			<li style="display: none">Total topics: <?php echo number_format($user['User'][$this->Cupcake->columnMap['totalTopics']]); ?></li>
-			<li style="display: none">Total posts: <?php echo number_format($user['User'][$this->Cupcake->columnMap['totalPosts']]); ?></li>
-			<li style="display:none">Roles: <?php if (!empty($user['Access'])) { 
-				$roles = array();
-				foreach ($user['Access'] as $access) {
-					$roles[] = $access['AccessLevel']['title'];
-				}
-				echo implode(', ', $roles);
-			} else {
-				echo '<em>'. __d('forum', 'N/A', true) .'</em>';
-			} ?></li>
-			<li style="display: none">Last login: <?php if (!empty($user['User'][$this->Cupcake->columnMap['lastLogin']])) {
-				echo $this->Time->relativeTime($user['User'][$this->Cupcake->columnMap['lastLogin']], array('userOffset' => $this->Cupcake->timezone()));
-			} else {
-				echo '<em>'. __d('forum', 'Never', true) .'</em>';
-			} ?></li>
-			<li style="display: none">Moderates: <?php if (!empty($user['Moderator'])) { 
-				$mods = array();
-				foreach ($user['Moderator'] as $mod) {
-					$mods[] = $this->Html->link($mod['ForumCategory']['title'], array('controller' => 'category', 'action' => 'view', $mod['ForumCategory']['id']));
-				}
-				echo implode(', ', $mods);
-			} else {
-				echo '<em>'. __d('forum', 'N/A', true) .'</em>';
-			} ?></li>
+			<li class="link">Website/Blog: <?php echo $this->Html->link($user['User']['url'],$user['User']['url'],array('target'=>'_blank')); ?></li>
+			<li>Member since: <?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></li>
 		</ul>
 	</div>
 </div>
-<div class="clear"></div>
 <div class="moderate-area">
 	<div class="left-container-with-sidebar">
-	<?php
-	
-	//inspirations
-	echo $this->element('profile'.DS.'inspirations',array('user_id'=>$user['User']['id']));
-
-	//collections
-	echo $this->element('profile'.DS.'collections',array('user_id'=>$user['User']['id']));
-	
-	//products
-	echo $this->element('profile'.DS.'products',array('user_id'=>$user['User']['id']));
-	?>
+		<div class="header red"><?php 
+				__('running bond: what '.$user['User']['username'].' is posting.');
+		?></div>
+		<?php
+		//echo $this->element('following-feed',array('cache'=>false));
+		?>
 	</div>
 	<div class="right-sidebar">
-	<?php
-	//sources
-	echo $this->element('profile'.DS.'sources',array('user_id'=>$user['User']['id']));
-	
-	//ufos
-	echo $this->element('profile'.DS.'ufos',array('user_id'=>$user['User']['id']));
-	?>
+		<ul class="stats">
+			<div class="title">Your totals</div>
+			<li>
+				<div class='total'>
+					<?php echo $this->Html->link($user['User']['totalSources'],array('plugin'=>'','admin'=>false,'controller'=>'sources','action'=>'users',$user['User']['id'])); ?>
+					<span>sources</span>
+				</div> 
+				<div class='total'>
+					<?php echo $this->Html->link($user['User']['totalProducts'],array('plugin'=>'','admin'=>false,'controller'=>'products','action'=>'users',$user['User']['id'])); ?>
+					<span>products</span>
+				</div>
+			</li>
+			<li>
+				<div class='total'>
+					<?php echo $this->Html->link($user['User']['totalInspirations'],array('plugin'=>'','admin'=>false,'controller'=>'inspirations','action'=>'users',$user['User']['id'])); ?>
+					<span>inspirations</span>
+				</div> 
+				<div class='total'>
+					<?php echo $this->Html->link($user['User']['totalCollections'],array('plugin'=>'','admin'=>false,'controller'=>'collections','action'=>'users',$user['User']['id'])); ?>
+					<span>collections</span>
+				</div>
+			</li>
+			<div class="clear"></div>
+		</ul>
 	</div>
 </div>
 <div class="clear"></div>

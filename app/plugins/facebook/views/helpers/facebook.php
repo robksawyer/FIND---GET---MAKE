@@ -465,9 +465,9 @@ class FacebookHelper extends AppHelper {
 window.fbAsyncInit = function() {
 	FB.init({
 		appId : '{$appId}',
-		session : {$session}, // don't refetch the session when PHP already has it
-		status : true, // check login status
-		cookie : true, // enable cookies to allow the server to access the session
+		//session : {$session}, // don't refetch the session when PHP already has it
+		status : false, // check login status
+		//cookie : true, // enable cookies to allow the server to access the session
 		xfbml : true, // parse XFBML
 		oauth : true // use Oauth
 	});
@@ -475,7 +475,7 @@ window.fbAsyncInit = function() {
 };
 (function() {
 	var e = document.createElement('script');
-	e.src = document.location.protocol + '//connect.facebook.net/{$this->locale}/all.js#appId={$appId}&amp;xfbml=1';
+	e.src = document.location.protocol + '//connect.facebook.net/{$this->locale}/all.js?appId={$appId}&amp;xfbml=1';
 	e.async = true;
 	document.getElementById('fb-root').appendChild(e);
 }());

@@ -86,7 +86,8 @@
  *
  * [Note Routing.admin is deprecated in 1.3.  Use Routing.prefixes instead]
  */
-	Configure::write('Routing.prefixes', array('admin'));
+	//Configure::write('Routing.prefixes', array('admin'));
+	Configure::write('Routing.prefixes', array('ajax','admin'));
 
 /**
  * Turn off all caching application-wide.
@@ -226,9 +227,9 @@
  *
  * To use, prefix the CSS link URL with '/ccss/' instead of '/css/' or use HtmlHelper::css().
  */
-	if(Configure::read('debug') == 0){
+	/*if(Configure::read('debug') == 0){
 		Configure::write('Asset.filter.css', 'assets.php');
-	}
+	}*/
 
 /**
  * Plug in your own custom JavaScript compressor by dropping a script in your webroot to handle the
@@ -236,9 +237,9 @@
  *
  * To use, prefix your JavaScript link URLs with '/cjs/' instead of '/js/' or use JavaScriptHelper::link().
  */
-	if(Configure::read('debug') == 0){
+	/*if(Configure::read('debug') == 0){
 		Configure::write('Asset.filter.js', 'assets.php');
-	}
+	}*/
 
 /**
  * The classname and database used in CakePHP's
@@ -350,4 +351,3 @@ Cache::config('very_long', array(
 );*/
 
 Cache::config('default', array('engine' => 'File'));
-Configure::write('Routing.prefixes', array('ajax','admin'));

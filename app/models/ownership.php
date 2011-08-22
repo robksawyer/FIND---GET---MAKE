@@ -228,6 +228,38 @@ class Ownership extends AppModel {
 	}
 	
 	/**
+	 * This method returns the wants of a particular user
+	 * @param string model The model to target
+	 * @param int user_id The user id to target
+	 * @return data
+	 * 
+	*/
+	function getUserWantCount($model=null,$user_id=null){
+		$data = $this->find('count',array('conditions'=>array(
+															'want_it'=>1,
+															"Ownership.user_id"=>$user_id,
+															'model'=>$model
+															)));
+		return $data;
+	}
+	
+	/**
+	 * This method returns the haves of a particular user
+	 * @param string model The model to target
+	 * @param int user_id The user id to target
+	 * @return data
+	 * 
+	*/
+	function getUserHaveCount($model=null,$user_id=null){
+		$data = $this->find('count',array('conditions'=>array(
+															'have_it'=>1,
+															"Ownership.user_id"=>$user_id,
+															'model'=>$model
+															)));
+		return $data;
+	}
+	
+	/**
 	 * Parses the user id from the Ownership table and returns more of the user's info
 	 * @param data
 	 * @return userData

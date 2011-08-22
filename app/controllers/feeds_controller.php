@@ -106,25 +106,36 @@ class FeedsController extends AppController {
 	function admin_display(){
 		//Get the logged in user
 		$user = $this->Auth->user();
-		$user = $this->Feed->User->read(null,$user['User']['id']);
-		//debug($user['UserFollowing']);
-		$user_ids = array();
-		$feed = array();
-		if(!empty($user)){
-			//debug($users_following);
-			//Find all of the followed users (with details) for this user
-			foreach($user['UserFollowing'] as $follower){
-				$user_ids[] = $follower['follow_user_id'];
-			}
-			/*
-				TODO Set up pagination
-			*/
-			$feed = $this->Feed->User->getFeeds($user_ids);
-			$this->set(compact('feed','user'));
-		}else{
+		if(empty($user)){
 			$this->Session->setFlash(__('You must be logged in to access this area.', true));
 			$this->redirect('/users/login');
 		}
+	}
+	
+	/**
+	 * Returns the feed data for the following people of the logged in user
+	 * @param int user_id
+	 * @return 
+	 * 
+	*/
+	function getUsersFollowingFeedData($offset=0){
+		$user_id = $this->Auth->user('id');
+		//$user = $this->Feed->User->read(null,$user_id);
+		$following_user_ids = $this->Feed->User->getFollowingUserIds($user_id);
+		$feed = $this->Feed->getUsersFollowingFeedData($following_user_ids,$offset);
+		return $feed;
+	}
+	
+	/**
+	 * Returns the total number of items in a feed
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function getUsersFollowingFeedCount(){
+		$user_id = $this->Auth->user('id');
+		$following_user_ids = $this->Feed->User->getFollowingUserIds($user_id);
+		return $this->Feed->getFeedCount($following_user_ids);
 	}
 	
 	/**

@@ -53,9 +53,6 @@ class AppController extends Controller {
 	
 	var $uses = array('Forum.Topic');
 	
-	var $facebook;
-	var $facebookUser;
-	
 	/**
 	 * Before any Controller action
 	 */
@@ -63,6 +60,8 @@ class AppController extends Controller {
 		//You have to keep view open for the photo tags to work.
 		$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
 		$this->Auth->loginRedirect = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
+		$this->Auth->loginAction = '/login';
+		$this->Auth->logoutAction = '/logout';
 		//$this->Auth->logoutRedirect = '/';
 		$this->Auth->autoRedirect = false;
 		
@@ -78,7 +77,8 @@ class AppController extends Controller {
 			'plugin' => 'forum',
 			'controller' => 'users',
 			'loginAction' => 'login',
-			'logoutAction' => 'logout'
+			'logoutAction' => 'logout',
+			'admin'=>false
 		);
 		
 		/*
