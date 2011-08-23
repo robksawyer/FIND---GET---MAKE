@@ -11,41 +11,44 @@
 		<li class="action">
 			<?php
 				if($user_likes < 1){
-					echo $this->Js->link('like', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_up',$model,$model_id), 
+					echo $this->Html->link('like', '#', 
 														array(
-															//'onclick'=>'submit_like('.$model.','.$model_id.')',
+															'onclick'=>'submit_like("'.$model.'","'.$model_id.'"); return false;',
 															'id'=>"vote-".strtolower($model)."-up-".$model_id,
 															'class'=>'vote dup like vote-'.$model_id,
-															'title'=>'like',
-															'beforeSend'=>'showLoader('.$model_id.');',
-															'success'=>'updateLikeDislike(data);'
+															'title'=>'like'
+															//'beforeSend'=>'showLoader('.$model_id.');',
+															//'success'=>'updateLikeDislike(data);'
 															));
-					echo $this->Js->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), 
+					echo $this->Html->link('dislike', '#', 
 														array(
+															'onclick'=>'submit_dislike("'.$model.'","'.$model_id.'"); return false;',
 															'id'=>"vote-".strtolower($model)."-down-".$model_id,
 															'class'=>'vote ddown dislike vote-'.$model_id,
 															'title'=>'dislike',
-															'style'=>'display:none',
-															'beforeSend'=>'showLoader('.$model_id.');',
-															'success'=>'updateLikeDislike(data);'
+															'style'=>'display:none'
+															//'beforeSend'=>'showLoader('.$model_id.');',
+															//'success'=>'updateLikeDislike(data);'
 															));
 				}else{
-					echo $this->Js->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), 
+					echo $this->Html->link('dislike', '#', 
 														array(
+															'onclick'=>'submit_dislike("'.$model.'","'.$model_id.'"); return false;',
 															'id'=>"vote-".strtolower($model)."-down-".$model_id,
 															'class'=>'vote ddown dislike vote-'.$model_id,
-															'title'=>'dislike',
-															'beforeSend'=>'showLoader('.$model_id.');',
-															'success'=>'updateLikeDislike(data);'
+															'title'=>'dislike'
+															//'beforeSend'=>'showLoader('.$model_id.');',
+															//'success'=>'updateLikeDislike(data);'
 															));
-					echo $this->Js->link('like', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_up',$model,$model_id), 
+					echo $this->Html->link('like', '#', 
 														array(
+															'onclick'=>'submit_like("'.$model.'","'.$model_id.'"); return false;',
 															'id'=>"vote-".strtolower($model)."-up-".$model_id,
 															'class'=>'vote dup like vote-'.$model_id,
 															'title'=>'like',
-															'style'=>'display:none',
-															'beforeSend'=>'showLoader('.$model_id.');',
-															'success'=>'updateLikeDislike(data);'
+															'style'=>'display:none'
+															//'beforeSend'=>'showLoader('.$model_id.');',
+															//'success'=>'updateLikeDislike(data);'
 															));
 				}
 			?>
