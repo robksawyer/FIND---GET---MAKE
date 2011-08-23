@@ -11,31 +11,36 @@
 		<li class="action">
 			<?php
 				if($user_likes < 1){
-					echo $this->Js->link('like', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_up',$model,$model_id), array(
-															//'onclick'=>'return false;',
+					echo $this->Js->link('like', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_up',$model,$model_id), 
+														array(
+															//'onclick'=>'submit_like('.$model.','.$model_id.')',
+															'id'=>"vote-".strtolower($model)."-up-".$model_id,
 															'class'=>'vote dup like vote-'.$model_id,
 															'title'=>'like',
 															'beforeSend'=>'showLoader('.$model_id.');',
 															'success'=>'updateLikeDislike(data);'
 															));
-					echo $this->Js->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), array(
-															//'onclick'=>'return false;',
+					echo $this->Js->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), 
+														array(
+															'id'=>"vote-".strtolower($model)."-down-".$model_id,
 															'class'=>'vote ddown dislike vote-'.$model_id,
 															'title'=>'dislike',
 															'style'=>'display:none',
 															'beforeSend'=>'showLoader('.$model_id.');',
-															'success'=>'updateLikeDislike(data);'	
+															'success'=>'updateLikeDislike(data);'
 															));
 				}else{
-					echo $this->Js->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), array(
-															//'onclick'=>'return false;',
+					echo $this->Js->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), 
+														array(
+															'id'=>"vote-".strtolower($model)."-down-".$model_id,
 															'class'=>'vote ddown dislike vote-'.$model_id,
 															'title'=>'dislike',
 															'beforeSend'=>'showLoader('.$model_id.');',
-															'success'=>'updateLikeDislike(data);'	
+															'success'=>'updateLikeDislike(data);'
 															));
-					echo $this->Js->link('like', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_up',$model,$model_id), array(
-															//'onclick'=>'return false;',
+					echo $this->Js->link('like', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_up',$model,$model_id), 
+														array(
+															'id'=>"vote-".strtolower($model)."-up-".$model_id,
 															'class'=>'vote dup like vote-'.$model_id,
 															'title'=>'like',
 															'style'=>'display:none',
@@ -52,5 +57,6 @@
 </div>
 <div class="clear"></div>
 <?php
-echo $this->Html->script('elements/feed-like-dislike');
+echo $this->Html->script('elements/feed-like-dislike', array('inline'=>false));
+echo $this->Js->writeBuffer(array('inline'=>true));
 ?>

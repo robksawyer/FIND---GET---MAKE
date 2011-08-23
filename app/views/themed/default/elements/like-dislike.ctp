@@ -91,36 +91,36 @@
 	<li class="action">
 		<?php
 			if($user_dislikes < 1){
-				echo $this->Js->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), array(
+				echo $this->Html->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), array(
 														//'onclick'=>'return false;',
 														'class'=>'btn auth vote ddown dislike',
 														'title'=>'dislike',
-														'beforeSend'=>'showLoader();',
-														'success'=>'updateLikeDislike(data);'	
+														//'beforeSend'=>'showLoader();',
+														//'success'=>'updateLikeDislike(data);'	
 														));
-				echo $this->Js->link('disliked', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), array(
+				echo $this->Html->link('disliked', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), array(
 														//'onclick'=>'return false;',
 														'class'=>'btn auth vote ddown disliked',
 														'style'=>'display:none;',
 														'title'=>'disliked',
-														'beforeSend'=>'showLoader();',
-														'success'=>'updateLikeDislike(data);'
+														//'beforeSend'=>'showLoader();',
+														//'success'=>'updateLikeDislike(data);'
 														));
 			}else{
-				echo $this->Js->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), array(
+				echo $this->Html->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), array(
 														//'onclick'=>'return false;',
 														'class'=>'btn auth vote ddown dislike',
 														'style'=>'display:none;',
 														'title'=>'dislike',
-														'beforeSend'=>'showLoader();',
-														'success'=>'updateLikeDislike(data);'
+														//'beforeSend'=>'showLoader();',
+														//'success'=>'updateLikeDislike(data);'
 														));
-				echo $this->Js->link('disliked', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), array(
+				echo $this->Html->link('disliked', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), array(
 														//'onclick'=>'return false;',
 														'class'=>'btn auth vote ddown disliked',
 														'title'=>'disliked',
-														'beforeSend'=>'showLoader();',
-														'success'=>'updateLikeDislike(data);'
+														//'beforeSend'=>'showLoader();',
+														//'success'=>'updateLikeDislike(data);'
 														));
 			}
 		?>
@@ -131,4 +131,23 @@
 	<div id="ajax-status" style="display:none"><?php echo $this->Html->image('ajax-loader.gif',array('Loading...')); ?></div>
 </div>
 <div class="clear"></div>
-<?php echo $this->Html->script('elements/like-dislike'); ?>
+<?php 
+	echo $this->Html->script('elements/like-dislike'); 	
+	
+	print $this->Html->scriptBlock(
+<<<JS
+	var model_id = <?php echo $model_id; ?>;
+	var model = "<?php echo $model; ?>";
+	$(document).ready(function () {
+	    $("#vote-down-"+model_id).bind("click", function (event) {
+	        $.ajax({beforeSend:function (XMLHttpRequest) {showLoader(model_id);}, success:function (data, textStatus) {updateLikeDislike(data);}, url:"\/votes\/vote_down\/"+model+"\/"+model_id});
+	return false;
+	    });
+	    $("#vote-up-"+model_id).bind("click", function (event) {
+	        $.ajax({beforeSend:function (XMLHttpRequest) {showLoader(model_id);}, success:function (data, textStatus) {updateLikeDislike(data);}, url:"\/votes\/vote_up\/"+model+"\/"+model_id});
+	return false;
+	    });
+	});
+JS,array('inline' => true));
+	//echo $this->Js->writeBuffer();
+?>

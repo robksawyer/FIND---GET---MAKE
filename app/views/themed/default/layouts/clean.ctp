@@ -32,7 +32,7 @@
 		<link rel="shortcut icon" href="<?php echo $this->webroot;?>favicon.ico" type="image/x-icon" />
 		<?php 
 			echo "<!-- A simple css reset from yahoo -->";
-			if(Configure::read('FGM.local') == false){
+			if(Configure::read('FGM.local') == true){
 				echo $this->Html->css('reset-min.css');
 			}else{
 				echo $this->Html->css('http://yui.yahooapis.com/2.8.0r4/build/reset/reset-min.css');
@@ -42,11 +42,17 @@
 			echo $this->Html->css('basic');
 
 
-			if(Configure::read('FGM.local') == false){
+			if(Configure::read('FGM.local') == true){
 				echo $this->Html->script('jquery-1.4.1.min');
 			}else{
-				echo "<!-- Include jquery 1.4.2 via google apis -->";
-				echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
+				//echo "<!-- Include jquery 1.4.2 via google apis -->";
+				//echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
+				echo $this->Html->script('https://www.google.com/jsapi?key=ABQIAAAAnmDjwFmPVi_wiEa7kcH4kxRoSg5s9K5GPFZf3sp5WjiQsRDImxRDlMCi9qkG8Qo4zHXzieotWXFWzA')."\n";
+				echo '<script language="Javascript" type="text/javascript">'."\n";
+				echo '//<![CDATA['."\n";
+				echo 'google.load("jquery", "1.6.2");'."\n";
+				echo '//]]>'."\n";
+				echo '</script>'."\n";
 			}
 			
 			echo $scripts_for_layout;

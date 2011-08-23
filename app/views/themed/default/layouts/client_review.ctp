@@ -31,7 +31,7 @@
 		<link rel="shortcut icon" href="<?php echo $this->webroot;?>favicon.ico" type="image/x-icon" />
 		<?php 
 			echo "<!-- A simple css reset from yahoo -->";
-			if(Configure::read('FGM.local') == false){
+			if(Configure::read('FGM.local') == true){
 				echo $this->Html->css('reset-min.css');
 				echo $this->Html->css('jquery-ui/ui-lightness/jquery-ui-1.8.2.custom');
 			}else{
@@ -62,15 +62,25 @@
 			echo $this->Html->css('modal/basic_ie');
 			echo '<![endif]-->';
 			
-			if(Configure::read('FGM.local') == false){
+			if(Configure::read('FGM.local') == true){
 				echo $this->Html->script('jquery-1.4.1.min');
 				echo $this->Html->script('jquery-ui/jquery-ui-1.8.2.custom.min');
 			}else{
-				echo "<!-- Include jquery 1.4.2 via google apis -->";
-				echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
+				//echo "<!-- Include jquery 1.4.2 via google apis -->";
+				//echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
 				//v1.2.6
 				//echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js');
-				echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js');
+				//echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js');
+				//v1.2.6
+				//echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js');
+				//echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js')."\n";
+				echo $this->Html->script('https://www.google.com/jsapi?key=ABQIAAAAnmDjwFmPVi_wiEa7kcH4kxRoSg5s9K5GPFZf3sp5WjiQsRDImxRDlMCi9qkG8Qo4zHXzieotWXFWzA')."\n";
+				echo '<script language="Javascript" type="text/javascript">'."\n";
+				echo '//<![CDATA['."\n";
+				echo 'google.load("jquery", "1.6.2");'."\n";
+				echo 'google.load("jqueryui", "1.8.4");'."\n";
+				echo '//]]>'."\n";
+				echo '</script>'."\n";
 			}
 			
 			echo $this->Html->script('elements/nav');

@@ -164,6 +164,8 @@ class UsersController extends AppController {
 	*/
 	function more_feed_data($offset=0){
 		Configure::write ( 'debug', 0);
+		$this->autoLayout = true;
+		$this->autoRender = true;
 		$user_id = $this->Auth->user('id');
 		//$user = $this->User->read(null,$user['User']['id']);
 		if(!empty($user_id)){
@@ -186,7 +188,10 @@ class UsersController extends AppController {
 	 * 
 	*/
 	function more_user_feed_data($user_id=null,$offset=0){
-		Configure::write ( 'debug', 2);
+		Configure::write ( 'debug', 0);
+		$this->autoLayout = true;
+		$this->autoRender = true;
+		//$this->render('more_user_feed_data', 'ajax');
 		if(!empty($user_id)){
 			$feed = $this->User->Feed->getUserFeedDataDetails($user_id,$offset);
 			$this->set(compact('feed'));
