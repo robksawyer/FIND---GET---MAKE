@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ * Currently only products can be owned or wanted.
  */
 class Ownership extends AppModel {
 	var $name = 'Ownership';

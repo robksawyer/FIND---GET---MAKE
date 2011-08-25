@@ -155,7 +155,10 @@ class Feed extends AppModel {
 			}else{
 				$this->$feed_item['Feed']['model']->recursive = 1;
 			}
-			$user_feed_data[] = $this->$feed_item['Feed']['model']->read(null,$feed_item['Feed']['model_id']);
+			$temp_data = $this->$feed_item['Feed']['model']->read(null,$feed_item['Feed']['model_id']);
+			if(!empty($temp_data)){
+				$user_feed_data[] = $temp_data;
+			}
 		}
 		return $user_feed_data;
 	}
@@ -173,8 +176,15 @@ class Feed extends AppModel {
 		
 		$user_feed_data = array();
 		foreach($user_feeds as $feed_item){
-			$this->$feed_item['Feed']['model']->recursive = 1;
-			$user_feed_data[] = $this->$feed_item['Feed']['model']->read(null,$feed_item['Feed']['model_id']);
+			if($feed_item['Feed']['model'] == "Vote"){
+				$this->$feed_item['Feed']['model']->recursive = 2;
+			}else{
+				$this->$feed_item['Feed']['model']->recursive = 1;
+			}
+			$temp_data = $this->$feed_item['Feed']['model']->read(null,$feed_item['Feed']['model_id']);
+			if(!empty($temp_data)){
+				$user_feed_data[] = $temp_data;
+			}
 		}
 		//debug($user_feed_data);
 		return $user_feed_data;

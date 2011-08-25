@@ -6,41 +6,37 @@
 	$user_dislikes = $this->requestAction('/votes/getUserDislikes/'.$model.'/'.$model_id);
 	
 	echo $this->Html->css('elements/like-dislike');
-	echo $this->Html->css("/popup/css/default_theme");
 ?>
 <div id="vote_block" class="voteblock votedirup">
 	<ul class="like_dislike">
 	<li class="upvote_amt_block number">
-		<span class="vote-val-like"><?php echo $likes; ?></span>&nbsp;<?php echo $this->Html->link('like it','javascript:void(0);',array('onclick'=>'return false;','class'=>'users-like','title'=>'See users who like this '.strtolower($model))); ?>
+		<span class="vote-val-like"><?php echo $likes; ?></span>&nbsp;<?php echo 'like it'; ?>
 	</li>
 	<?php if(empty($authUser)): ?>
 	<li class="logged-out action">
 		<?php
-			echo $this->Popup->link('like', array(
-												'class'=>'btn auth vote dup like',
-												'title'=>'like',
-												'element'=>'login'
-												));
-			/*echo $this->Popup->link('liked', array(
-												'class'=>'btn auth vote dup like hidden',
-												'title'=>'liked',
-												'element' => 'login'
-												));*/
+			echo $this->Html->link('like','#', array(
+																'onclick'=>'return false;',
+																'class'=>'btn auth vote dup like disabled',
+																'title'=>'You have to login to like items.',
+																'disabled'=>'disabled'
+																)
+																);
 		?>
 	</li>
 	<?php else: ?>
 	<li class="action">
 		<?php
 			if($user_likes < 1){
-				echo $this->Js->link('like', array('controller'=>'votes','action'=>'vote_up',$model,$model_id), array(
-														//'onclick'=>'return false;',
+				echo $this->Js->link('like', array('controller'=>'votes','action'=>'vote_up',$model,$model_id), 
+													array(
 														'class'=>'btn auth vote dup like',
 														'title'=>'like',
 														'beforeSend'=>'showLoader();',
 														'success'=>'updateLikeDislike(data);'
 														));
-				echo $this->Js->link('liked', array('controller'=>'votes','action'=>'remove_vote',$model,$model_id), array(
-														//'onclick'=>'return false;',
+				echo $this->Js->link('liked', array('controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
+													array(
 														'class'=>'btn auth vote dup liked',
 														'style'=>'display:none;',
 														'id'=>'like',
@@ -49,16 +45,16 @@
 														'success'=>'updateLikeDislike(data);'
 														));
 			}else{
-				echo $this->Js->link('like', array('controller'=>'votes','action'=>'vote_up',$model,$model_id), array(
-														//'onclick'=>'return false;',
+				echo $this->Js->link('like', array('controller'=>'votes','action'=>'vote_up',$model,$model_id), 
+												array(
 														'class'=>'btn auth vote dup like',
 														'style'=>'display:none;',
 														'title'=>'like',
 														'beforeSend'=>'showLoader();',
 														'success'=>'updateLikeDislike(data);'
 														));
-				echo $this->Js->link('liked', array('controller'=>'votes','action'=>'remove_vote',$model,$model_id), array(
-														//'onclick'=>'return false;',
+				echo $this->Js->link('liked', array('controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
+													array(
 														'class'=>'btn auth vote dup liked',
 														'title'=>'liked',
 														'beforeSend'=>'showLoader();',
@@ -70,57 +66,54 @@
 	<?php endif; ?>
 	<div class="clear"></div>
 	<li class="downvote_amt_block number">
-		<span class="vote-val-dislike"><?php echo $dislikes; ?></span>&nbsp;<?php echo $this->Html->link('dislike it','javascript:void(0);',array('onclick'=>'return false;','class'=>'users-dislike','title'=>'See users who dislike this '.strtolower($model))); ?>
+		<span class="vote-val-dislike"><?php echo $dislikes; ?></span>&nbsp;<?php echo 'dislike it'; ?>
 	</li>
 	<?php if(empty($authUser)): ?>
 	<li class="logged-out action">
 		<?php
-			echo $this->Popup->link('dislike', array(
-												'class'=>'btn auth vote dup dislike',
-												'title'=>'dislike',
-												'element'=>'login'
-												));
-			/*echo $this->Popup->link('disliked', array(
-												'class'=>'btn auth vote dup dislike hidden',
-												'title'=>'disliked',
-												'element' => 'login'
-												));*/
+			echo $this->Html->link('dislike','#', array(
+																'onclick'=>'return false;',
+																'class'=>'btn auth vote ddown dislike disabled',
+																'title'=>'You have to login to dislike items.',
+																'disabled'=>'disabled'
+																)
+																);
 		?>
 	</li>
 	<?php else: ?>
 	<li class="action">
 		<?php
 			if($user_dislikes < 1){
-				echo $this->Html->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), array(
-														//'onclick'=>'return false;',
+				echo $this->Js->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), 
+													array(
 														'class'=>'btn auth vote ddown dislike',
 														'title'=>'dislike',
-														//'beforeSend'=>'showLoader();',
-														//'success'=>'updateLikeDislike(data);'	
+														'beforeSend'=>'showLoader();',
+														'success'=>'updateLikeDislike(data);'	
 														));
-				echo $this->Html->link('disliked', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), array(
-														//'onclick'=>'return false;',
+				echo $this->Js->link('disliked', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
+													array(
 														'class'=>'btn auth vote ddown disliked',
 														'style'=>'display:none;',
 														'title'=>'disliked',
-														//'beforeSend'=>'showLoader();',
-														//'success'=>'updateLikeDislike(data);'
+														'beforeSend'=>'showLoader();',
+														'success'=>'updateLikeDislike(data);'
 														));
 			}else{
-				echo $this->Html->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), array(
-														//'onclick'=>'return false;',
+				echo $this->Js->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), 
+													array(
 														'class'=>'btn auth vote ddown dislike',
 														'style'=>'display:none;',
 														'title'=>'dislike',
-														//'beforeSend'=>'showLoader();',
-														//'success'=>'updateLikeDislike(data);'
+														'beforeSend'=>'showLoader();',
+														'success'=>'updateLikeDislike(data);'
 														));
-				echo $this->Html->link('disliked', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), array(
-														//'onclick'=>'return false;',
+				echo $this->Js->link('disliked', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
+													array(
 														'class'=>'btn auth vote ddown disliked',
 														'title'=>'disliked',
-														//'beforeSend'=>'showLoader();',
-														//'success'=>'updateLikeDislike(data);'
+														'beforeSend'=>'showLoader();',
+														'success'=>'updateLikeDislike(data);'
 														));
 			}
 		?>
@@ -132,22 +125,6 @@
 </div>
 <div class="clear"></div>
 <?php 
-	echo $this->Html->script('elements/like-dislike'); 	
-	
-	print $this->Html->scriptBlock(
-<<<JS
-	var model_id = <?php echo $model_id; ?>;
-	var model = "<?php echo $model; ?>";
-	$(document).ready(function () {
-	    $("#vote-down-"+model_id).bind("click", function (event) {
-	        $.ajax({beforeSend:function (XMLHttpRequest) {showLoader(model_id);}, success:function (data, textStatus) {updateLikeDislike(data);}, url:"\/votes\/vote_down\/"+model+"\/"+model_id});
-	return false;
-	    });
-	    $("#vote-up-"+model_id).bind("click", function (event) {
-	        $.ajax({beforeSend:function (XMLHttpRequest) {showLoader(model_id);}, success:function (data, textStatus) {updateLikeDislike(data);}, url:"\/votes\/vote_up\/"+model+"\/"+model_id});
-	return false;
-	    });
-	});
-JS,array('inline' => true));
-	//echo $this->Js->writeBuffer();
+	echo $this->Html->script('elements/like-dislike');
+	echo $this->Js->writeBuffer();
 ?>

@@ -76,4 +76,17 @@
 #vote_block .like_dislike .action a.like:hover,
 #vote_block .like_dislike .action a.dislike:hover{ background-color:#C00; }
 #vote_block .like_dislike .action a.liked, .like_dislike .action a.disliked{ background-color: #999; }
+
+#vote_block li.logged-out a.disabled:link,
+#vote_block li.logged-out a.disabled:visited,
+#vote_block li.logged-out a.disabled:active{
+	opacity: 50%;
+	filter:alpha(opacity=50);
+	background-color: #999999;
+}
+#vote_block li.logged-out a.disabled:hover{
+	opacity: 50%;
+	filter:alpha(opacity=50);
+	background-color: #999999 !important;
+}
 /** END LIKE & DISLIKE **/

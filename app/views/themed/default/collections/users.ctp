@@ -136,11 +136,6 @@
 	 |
 			<?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled'));?>
 		</div>
-		<div class="actions">
-			<ul>
-				<li><?php echo $this->Html->link(__('New Collection', true), array('action' => 'add','admin'=>true)); ?></li>
-			</ul>
-		</div>
 		<?php else: ?>
 			
 		<?php endif; ?>

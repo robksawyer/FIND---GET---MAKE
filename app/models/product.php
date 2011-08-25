@@ -94,6 +94,13 @@ class Product extends AppModel {
 			'conditions' => array('Feed.model' => 'Product'),
 			'dependent' => true,
 			'exclusive' => true
+		),
+		'Flag' => array(
+			'className' => 'Flag',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Flag.model' => 'Product'),
+			'dependent' => true,
+			'exclusive' => true
 		)
 	);
 

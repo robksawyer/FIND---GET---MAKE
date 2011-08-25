@@ -5,6 +5,9 @@
 	margin: 0;
 }
 </style>
+<?php
+	echo $this->Html->css("popup/wide",'stylesheet',array('inline'=>false));
+?>
 <div class="top-actions">
 	<?php if(!empty($authUser)): ?>
 	<ul class="links">
@@ -14,7 +17,7 @@
 		<?php endif; ?>
 		<!-- END PRIVATE -->
 		<!-- RATING -->
-		<?php if(!empty($rate)): ?>
+		<?php if(!empty($rate) && Configure::read('FGM.allow_rating') == 1): ?>
 		<li><?php echo $this->element('rating', array(
 														'plugin' => 'rating',
 														'model' => $model,
@@ -63,7 +66,7 @@
 		<?php 
 		if(empty($removeDelete)): 
 			//Check the logged in user to make sure that the user who created the item matches before showing.
-			if($authUser['User']['id'] == $item['User']['id'] || Configure::read('FGM.group_change') == 1):
+			if($authUser['User']['id'] == $item['User']['id'] || Configure::read('FGM.group_delete') == 1):
 					echo "<li>".$this->Html->link(
 							$this->Html->image("icons/delete.gif", array(
 																						"alt" => "Delete",
@@ -92,7 +95,39 @@
 		endif; 
 		?>
 		<!-- END DELETE -->
+		
+		<!-- FLAG ITEM -->
+		<?php 
+		if(empty($removeFlag)):
+			if($authUser['User']['id'] != $item['User']['id'] || Configure::read('FGM.allow_flagging') == 1):
+				echo $this->Popup->link('Flag item', array(
+													'class'=>'flag-item',
+													'id'=>'flag-'.strtolower($model).'-'.$item[$model]['id'],
+													'title'=>'Flag the item',
+													'element'=>'flag-item'
+													),
+													array(
+														'model'=>$model,
+														'model_id'=>$item[$model]['id']
+														)
+													);
+			endif;
+		endif;
+		?>
+		<!-- END FLAG ITEM -->
 	</ul>
 	<?php endif; ?>
 </div>
 <div class="clear"></div>
+<script type="text/javascript">
+	/**
+	 * 
+	 * @param string model
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	function flag_item(model, model_id){
+		alert("Flagging");
+	}
+</script>

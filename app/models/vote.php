@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ * Votes are named like/dislike in the system
  */
 class Vote extends AppModel {
 	var $name = 'Vote';

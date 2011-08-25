@@ -18,6 +18,8 @@ for($i=0;$i<count($feed);$i++):
 			echo $this->element('feed-vote-item',array('cache'=>false,'model'=>'Vote','feed_item'=>$feed_item,'controller'=>'votes'));
 		}else if($model == 'Ownership'){
 			echo $this->element('feed-ownership-item',array('cache'=>false,'model'=>'Ownership','feed_item'=>$feed_item));
+		}else if($model == 'Ufo'){
+			//echo $this->element('feed-ownership-item',array('cache'=>false,'model'=>'Ownership','feed_item'=>$feed_item));
 		}
 	endif;
 endfor;

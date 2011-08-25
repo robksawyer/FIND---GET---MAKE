@@ -1,7 +1,10 @@
 <?php
-if(empty($action)) $action = 'view';
-if(empty($model_id)) $model_id = $feed_item[$model]['id'];
+//Only do stuff if the item has an image associated with it.
+if(!empty($feed_item['Attachment'][0])):
 
+if(empty($action)) $action = 'view';
+if(empty($model)) $model = 'Product';
+if(empty($model_id)) $model_id = $feed_item[$model]['id'];
 $showLikeDislike = true;
 
 if($model == "Product"){
@@ -9,8 +12,7 @@ if($model == "Product"){
 }else{
 	$added_by = "Added by ";
 }
-//if(!empty($feed_item[$model]['Attachment'][0])):
-if(!empty($feed_item['Attachment'][0])):
+
 ?>
 <div class='grid-item'>
 	<?php

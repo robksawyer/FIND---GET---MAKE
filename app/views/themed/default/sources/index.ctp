@@ -49,7 +49,9 @@ if(!empty($this->Paginator->params['paging']['Tagged'])){
 				<th><?php echo $this->Paginator->sort('city');?></th>
 				<th><?php echo $this->Paginator->sort('state');?></th>
 				<th width="15%"><?php echo $this->Paginator->sort('country_id');?></th>
+				<?php if(Configure::read('FGM.allow_rating') == 1): ?>
 				<th><?php echo $this->Paginator->sort('rating');?></th>
+				<?php endif; ?>
 		</tr>
 		<?php
 		$i = 0;
@@ -68,12 +70,14 @@ if(!empty($this->Paginator->params['paging']['Tagged'])){
 			<td>
 				<?php echo $this->Html->link($source['Country']['name'], array('controller' => 'countries', 'action' => 'view', $source['Country']['id'])); ?>
 			</td>
+			<?php if(Configure::read('FGM.allow_rating') == 1): ?>
 			<td><?php echo $this->element('rating', array(
 															'plugin' => 'rating',
 															'model' => 'Source',
 															'id' => $source['Source']['id'],
 															'name' => strtolower('Source')));
 															?></td>
+			<?php endif; ?>
 		</tr>
 	<?php endforeach; ?>
 		</table>

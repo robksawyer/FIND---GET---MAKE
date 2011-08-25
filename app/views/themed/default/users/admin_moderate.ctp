@@ -73,7 +73,7 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 				</li>-->
 			</ul>
 			<?php if (!empty($user['User']['about'])) { ?>
-			<li class="about"><?php echo $user['User']['about']; ?></li>
+			<li class="about value"><?php echo $user['User']['about']; ?></li>
 			<?php } ?>
 			<?php
 				/*
@@ -85,7 +85,7 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 			
 				//debug($user['Ownership']);
 			?>
-			<li>Member since: <?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></li>
+			<li>Member since: <span class='value'><?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></span></li>
 		</ul>
 	</div>
 </div>

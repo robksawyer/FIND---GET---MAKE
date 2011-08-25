@@ -941,6 +941,22 @@ input[type="text"].phone{
 	border-left: 1px solid #acacac;
 }
 
+
+/** FLAGGING **/
+#flag-item-container .input.select .checkbox{
+	position: relative;
+	border: none;
+	padding: 3px 0;
+	height: auto;
+	margin: 10px 0;
+	float: none;
+}
+
+#flag-item-container fieldset{
+	border: none;
+}
+/** END FLAGGING **/
+
 .input.select .checkbox:first-child{
 	border-left: none;
 }
@@ -986,7 +1002,7 @@ h3.header{
 	position: relative;
 	float: right;
 	margin-left: 15px;
-	z-index: 10;
+	z-index: 2;
 }
 
 .left-container-with-sidebar{
@@ -997,10 +1013,19 @@ h3.header{
 	width: 70%;
 }
 
+.left-container-with-sidebar .header{
+	position: relative;
+	display: block;
+	clear: both;
+	float: none;
+	margin: 0;
+	padding: 0;
+}
+
 .moderate-area .right-sidebar{
 	position: relative;
 	float: left;
-	z-index: 10;
+	z-index: 2;
 	width: 20%;
 	padding: 0;
 }
@@ -1836,6 +1861,12 @@ div#attachments-small ul.wrapper li a:focus{
 	border-bottom: 1px solid #acacac;
 	text-decoration: none;
 }
+
+.top-actions .flag-item{
+	position: relative;
+	top: 3px;
+	font-size: 11px;
+}
 /* END TOP ACTIONS */
 
 
@@ -2223,7 +2254,7 @@ input, textarea {
 
 .profile .user-details ul,
 .profile .user-details ul li{
-	padding: 5px 0;
+	padding: 2px 0;
 	color: #999999;
 	margin: 0;
 }
@@ -2330,7 +2361,7 @@ span.total a:hover{
 	position: relative;
 	padding: 5px 13px 5px 13px;
 	background: #aeaeae;
-	z-index: 12;
+	z-index: 2;
 	font-size: 13px;
 	vertical-align: middle;
 }
@@ -2530,6 +2561,7 @@ span.total a:hover{
 
 #user-feed {
 	position: relative;
+	margin-top: 10px;
 	width: 600px;
 }
 #user-feed .grid-item{
