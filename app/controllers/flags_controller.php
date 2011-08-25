@@ -40,8 +40,74 @@ class FlagsController extends AppController {
 	*/
 	function admin_index(){
 		$flags = $this->paginate('Flag');
+		
+		//Get the flag count for each item.
+		$counter = 0;
+		foreach($flags as $flag){
+			$flags[$counter]['Flag']['count'] = $this->Flag->getItemCount($flag['Flag']['model'],$flag['Flag']['model_id']);
+			$counter++; 
+		}
+		
 		$total_count = $this->Flag->getCount();
 		$this->set(compact('total_count','flags'));
 		$this->set('string', $this->String);
 	}
+	
+	/**
+	 * Deletes a flag
+	 * @param int id The item id
+	 * @return 
+	 * 
+	*/
+	function delete($id=null){
+		
+	}
+	
+	
+	
+	/**
+	 * Finds the flagged item and deactivates it.
+	 * @param int id The flag id
+	 * @return 
+	 * 
+	*/
+	function admin_deactivate_flagged_item($id=null){
+		//Find the item based on the flag id and deactivate it.
+		$item = $this->Flag->findById($id);
+		
+		if(!empty($item)){
+			$this->Flag->$item['Flag']['model']->id = $item['Flag']['model_id'];
+			$this->Flag->$item['Flag']['model']->set(array(
+												'active'=>0 //Set the active field to 0, to not show the item.
+												));
+			//Save the item and then delete the flag
+			if($this->Flag->$item['Flag']['model']->save()){
+				//Set a session flash message and redirect.
+				$this->Session->setFlash("The item has been deactivated!");
+				
+				//Delete the flag
+				if($this->Flag->delete($id)){
+					$this->redirect('/admin/flags');
+				}else{
+					$this->Session->setFlash("There was a problem deleting the flag. The item has been deactivated, though.");
+					$this->redirect('/admin/flags');
+				}
+				exit();
+			}
+		}
+	}
+	
+	
+	/**
+	 * Very destructive and may not be used. Finds the flagged item and deletes it.
+	 * @param int id The flag id
+	 * @return 
+	 * 
+	*/
+	/*function deleteFlaggedItem($id=null){
+		//Find the item based on the flag id and delete it.
+	}*/
+	
+	
+	
 }

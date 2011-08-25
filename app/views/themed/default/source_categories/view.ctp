@@ -40,7 +40,7 @@
 				}
 			?>
 			<tr<?php echo $class;?>>
-				<td><?php echo $this->Html->link($source['name'], array('action' => 'view', $source['id'])); ?>&nbsp;</td>
+				<td><?php echo $this->Html->link($source['name'], array('controller'=>'sources','action' => 'view', $source['id'])); ?>&nbsp;</td>
 				<td><?php echo $this->Html->link($source['SourceCategory']['name'], array('controller'=>'source_categories','action' => 'view', $source['SourceCategory']['id'])); ?>&nbsp;</td>
 				<td><?php echo $this->Html->link($source['url'],$source['url'],array('target'=>'_blank')); ?>&nbsp;</td>
 				<td><?php echo $source['city']; ?>&nbsp;</td>

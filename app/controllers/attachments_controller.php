@@ -5,6 +5,12 @@ class AttachmentsController extends AppController {
 	var $components = array('Uploader.Uploader','String');
 	//var $helpers = array('');
 
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function beforeFilter(){
 		parent::beforeFilter();
 		
@@ -16,8 +22,22 @@ class AttachmentsController extends AppController {
 		
 		//$this->Uploader->mime('image', 'gif', 'image/gif');
 		//$this->Uploader->maxNameLength = 50;
-		
 	}
+	
+	/**
+	 * This happens before the page is rendered
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function beforeRender(){
+		//Check to see if the user has flagged the item
+		$user_id = $this->Auth->user('id');
+		$model = $this->modelClass;
+		$flagged = $this->$model->Flag->hasUserFlagged($user_id,$model,$this->$model->id);
+		$this->set(compact('flagged'));
+	}
+	
 	
 	function index() {
 		$this->Attachment->recursive = 2;

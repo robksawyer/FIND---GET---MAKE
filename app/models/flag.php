@@ -15,42 +15,36 @@ class Flag extends AppModel {
 		'Product' => array(
 			'className' => 'Product',
 			'foreignKey' => 'model_id',
-			'conditions' => array('Flag.model' => 'Product'),
 			'fields' => '',
 			'order' => ''
 		),
 		'Source' => array(
 			'className' => 'Source',
 			'foreignKey' => 'model_id',
-			'conditions' => array('Flag.model'=>'Source'),
 			'fields' => '',
 			'order' => ''
 		),
 		'Inspiration' => array(
 			'className' => 'Inspiration',
 			'foreignKey' => 'model_id',
-			'conditions' => array('Flag.model'=>'Inspiration'),
 			'fields' => '',
 			'order' => ''
 		),
 		'Collection' => array(
 			'className' => 'Collection',
 			'foreignKey' => 'model_id',
-			'conditions' => array('Flag.model'=>'Collection'),
 			'fields' => '',
 			'order' => ''
 		),
 		'Ufo' => array(
 			'className' => 'Ufo',
 			'foreignKey' => 'model_id',
-			'conditions' => array('Flag.model'=>'Ufo'),
 			'fields' => '',
 			'order' => ''
 		),
 		'Attachment' => array(
 			'className' => 'Attachment',
 			'foreignKey' => 'model_id',
-			'conditions' => array('Flag.model'=>'Attachment'),
 			'fields' => '',
 			'order' => ''
 		)
@@ -64,6 +58,36 @@ class Flag extends AppModel {
 	*/
 	public function getCount(){
 		$count = $this->find('count');
+		return $count;
+	}
+	
+	
+	/**
+	 * Checks to see if the logged in user has flagged an item
+	 * @param int user_id The logged in user id
+	 * @param string model
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	public function hasUserFlagged($user_id=null,$model=null,$model_id=null){
+		$flag = $this->find('first',array('conditions'=>array(
+																'Flag.model' => $model,
+																'Flag.model_id'=>$model_id,
+																'Flag.user_id'=>$user_id
+															)));
+		if(empty($flag)) return false; else return true;
+	}
+	
+	/**
+	 * Get the total number of flags for a certain item
+	 * @param string model The model to target
+	 * @param int id The model id to target
+	 * @return int The total number of flagged items
+	 * 
+	*/
+	public function getItemCount($model=null,$id=null){
+		$count = $this->find('count',array('conditions'=>array('Flag.model_id'=>$id,'Flag.model'=>$model)));
 		return $count;
 	}
 	

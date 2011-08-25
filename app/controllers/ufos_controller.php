@@ -11,6 +11,21 @@ class UfosController extends AppController {
 		$this->Auth->allow('getUfosFromUser');
 	}
 	
+	/**
+	 * This happens before the page is rendered
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function beforeRender(){
+		//Check to see if the user has flagged the item
+		$user_id = $this->Auth->user('id');
+		$model = $this->modelClass;
+		$flagged = $this->$model->Flag->hasUserFlagged($user_id,$model,$this->$model->id);
+		$this->set(compact('flagged'));
+	}
+	
+	
 	function index($filter = null) {
 		$this->Ufo->recursive = 2;
 		

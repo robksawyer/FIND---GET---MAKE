@@ -25,6 +25,30 @@ class Vote extends AppModel {
 							'foreignKey' => 'model_id',
 							'fields' => '',
 							'order' => ''
+						),
+						'Source' => array(
+							'className' => 'Source',
+							'foreignKey' => 'model_id',
+							'fields' => '',
+							'order' => ''
+						),
+						'Inspiration' => array(
+							'className' => 'Inspiration',
+							'foreignKey' => 'model_id',
+							'fields' => '',
+							'order' => ''
+						),
+						'Collection' => array(
+							'className' => 'Collection',
+							'foreignKey' => 'model_id',
+							'fields' => '',
+							'order' => ''
+						),
+						'Ufo' => array(
+							'className' => 'Ufo',
+							'foreignKey' => 'model_id',
+							'fields' => '',
+							'order' => ''
 						)
 						);
 	var $hasMany = array(

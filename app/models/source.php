@@ -78,6 +78,13 @@ class Source extends AppModel {
 			'conditions' => array('Feed.model' => 'Source'),
 			'dependent' => true,
 			'exclusive' => true
+		),
+		'Flag' => array(
+			'className' => 'Flag',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Flag.model' => 'Source'),
+			'dependent' => true,
+			'exclusive' => true
 		)
 	);
 
@@ -128,6 +135,30 @@ class Source extends AppModel {
 			'insertQuery' => ''
 		)
 	);
+	
+	/**
+	 * Don't show products that aren't active
+	 * @param Array queryData Data from the find. 
+	 * @return Array
+	 * 
+	*/
+	function beforeFind($queryData){
+		$conditions = $queryData['conditions'];
+		
+		if(!is_array($conditions)) {
+			if(!$conditions) {
+				$conditions = array();
+			}else {
+				$conditions = array($conditions);
+			}
+		}
+		
+		if(!array_key_exists('active',$conditions) && !isset($conditions[$this->alias.'.active'])) {
+			$conditions[$this->alias.'.active'] = 1;
+		}
+		$queryData['conditions'] = $conditions;
+		return $queryData;
+	}
 	
 	/**
 	 * Updates the total count in the user table for this particular type of item

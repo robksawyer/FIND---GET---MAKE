@@ -32,7 +32,7 @@
  * 1: Show the rating component globally
  * 
 */
-	$config['FGM']['allow_rating'] = 1;
+	$config['FGM']['allow_rating'] = 0;
 
 
 		

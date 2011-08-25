@@ -23,7 +23,7 @@
 										'unrelated'=>'Unrelated: This isn\'t related to interior design at all.',
 										'incorrect'=>'Incorrect: Parts of the data associated with this entry are incorrect. Please describe what you feel should change below.',
 										'spam'=>'Spam: This is spam.',
-										'other'=>'Other: Just read my description below, you\'ll see what I\'m talking about.', 
+										'other'=>'Other: Just read my description below, you\'ll see what I\'m talking about.'
 										);
 				echo $this->Form->input('reason', array('type'=>'radio','options'=>$options));
 				echo $this->Form->input('description');

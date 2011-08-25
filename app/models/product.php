@@ -153,6 +153,30 @@ class Product extends AppModel {
 	);
 	
 	/**
+	 * Don't show products that aren't active
+	 * @param Array queryData Data from the find. 
+	 * @return Array
+	 * 
+	*/
+	function beforeFind($queryData){
+		$conditions = $queryData['conditions'];
+		
+		if(!is_array($conditions)) {
+			if(!$conditions) {
+				$conditions = array();
+			}else {
+				$conditions = array($conditions);
+			}
+		}
+		
+		if(!array_key_exists('active',$conditions) && !isset($conditions[$this->alias.'.active'])) {
+			$conditions[$this->alias.'.active'] = 1;
+		}
+		$queryData['conditions'] = $conditions;
+		return $queryData;
+	}
+	
+	/**
 	 * Updates the total count in the user table for this particular type of item
 	 * @param created 
 	 * @return 
@@ -180,8 +204,7 @@ class Product extends AppModel {
 	public function getFeedData($model_id=null){
 		$this->recursive = 2;
 		$this->User->recursive = -1;
-		$data = $this->read(null,$model_id);	
-		
+		$data = $this->read(null,$model_id);
 		return $data;
 	}
 	

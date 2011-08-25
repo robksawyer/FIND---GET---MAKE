@@ -100,17 +100,21 @@
 		<?php 
 		if(empty($removeFlag)):
 			if($authUser['User']['id'] != $item['User']['id'] || Configure::read('FGM.allow_flagging') == 1):
-				echo $this->Popup->link('Flag item', array(
-													'class'=>'flag-item',
-													'id'=>'flag-'.strtolower($model).'-'.$item[$model]['id'],
-													'title'=>'Flag the item',
-													'element'=>'flag-item'
-													),
-													array(
-														'model'=>$model,
-														'model_id'=>$item[$model]['id']
-														)
-													);
+				if(empty($flagged)){
+					echo $this->Popup->link('Flag item', array(
+														'class'=>'flag-item',
+														'id'=>'flag-'.strtolower($model).'-'.$item[$model]['id'],
+														'title'=>'Flag the item',
+														'element'=>'flag-item'
+														),
+														array(
+															'model'=>$model,
+															'model_id'=>$item[$model]['id']
+															)
+														);
+				}else{
+					echo '<span class="flag-item" style="text-decoration: line-through;" title="You\'ve already flagged this item.">Flag item</span>';
+				}
 			endif;
 		endif;
 		?>

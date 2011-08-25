@@ -10,38 +10,68 @@
 	<div class="flags index">
 		<div class="header red">
 		<?php 
-			__('Flags ('.$total_count.')');
+			__('Flags');
 		?>
 		</div>
-		<h4>The following items have been flagged in the system.</h4>
-		<legend>
-			<div class="product-flag">products</div>
-			<div class="source-flag">source</div>
-			<div class="inspiration-flag">inspiration</div>
-			<div class="collection-flag">collection</div>
-			<div class="ufo-flag">ufo</div>
-			<div class="attachment-flag">attachment</div>
-		</legend>
+		<h4>There are currently <span class="flag-count"><?php echo $total_count; ?></span> flagged items in the system.</h4>
+		<ul class="legend">
+			Item Types:
+			<li class="product-flag flag-key">products</li>
+			<li class="source-flag flag-key">source</li>
+			<li class="inspiration-flag flag-key">inspiration</li>
+			<li class="collection-flag flag-key">collection</li>
+			<li class="ufo-flag flag-key">ufo</li>
+			<li class="attachment-flag flag-key">attachment</li>
+		</ul>
+		<!-- 
+		   Reasons:
+			'duplicate'=>'Duplicate: This is a duplicate of an existing entry. Please paste the URL of the other version below.',
+			'unrelated'=>'Unrelated: This isn\'t related to interior design at all.',
+			'incorrect'=>'Incorrect: Parts of the data associated with this entry are incorrect. Please describe what you feel should change below.',
+			'spam'=>'Spam: This is spam.',
+			'other'=>'Other: Just read my description below, you\'ll see what I\'m talking about.',
+		-->
+		<ul class="legend">
+			Reasons: 
+			<li class="duplicate-flag flag-key">duplicate</li>
+			<li class="unrelated-flag flag-key">unrelated</li>
+			<li class="incorrect-flag flag-key">incorrect</li>
+			<li class="spam-flag flag-key">spam</li>
+			<li class="other-flag flag-key">other</li>
+		</ul>
 		<table cellpadding="0" cellspacing="0">
 		<tr>
-				<th width="25%"><?php echo $this->Paginator->sort('id');?></th>
+				<!--<th width="25%"><?php //echo $this->Paginator->sort('id');?></th>-->
+				<th><?php echo $this->Paginator->sort('type');?></th>
 				<th><?php echo $this->Paginator->sort('reason');?></th>
-				<th><?php echo $this->Paginator->sort('description');?></th>
-				<th width="25%"><?php echo $this->Paginator->sort('created');?></th>
+				<th width="45%"><?php echo $this->Paginator->sort('description');?></th>
+				<th width="15%"><?php echo $this->Paginator->sort('total flags');?></th>
+				<th width="15%"><?php echo $this->Paginator->sort('created');?></th>
+				<th><?php echo $this->Paginator->sort('actions');?></th>
 		</tr>
 		<?php
 		$i = 0;
 		foreach ($flags as $flag):
 			$class = null;
-			if ($i++ % 2 == 0) {
-				$class = ' class="altrow"';
-			}
+			$class = ' class="'.$flag['Flag']['reason'].'"';
 		?>
 		<tr<?php echo $class;?>>
-			<td><?php echo $flag['Flag']['id']; ?>&nbsp;</td>
+			<!--<td><?php //echo $flag['Flag']['id']; ?>&nbsp;</td>-->
+			<td class="<?php echo strtolower($flag['Flag']['model']); ?>"><?php echo $flag['Flag']['model']; ?>&nbsp;</td>
 			<td><?php echo $flag['Flag']['reason']; ?>&nbsp;</td>
 			<td><?php echo $flag['Flag']['description']; ?>&nbsp;</td>
-			<td><?php echo $flag['Flag']['created']; ?>&nbsp;</td>
+			<?php $controller = Inflector::pluralize(strtolower($flag['Flag']['model'])); ?>
+			<td class="count"><?php echo $flag['Flag']['count']; ?>&nbsp;</td>
+			<td><?php echo $this->Time->niceShort($flag['Flag']['created']); ?>&nbsp;</td>
+			<td class="actions">
+				<?php echo $this->Html->link(__('See it', true),array(
+																			'controller'=>$controller,
+																			'action'=>'view',
+																			'admin'=>false,
+																			$flag['Flag']['model_id']
+																			),array('target'=>'_blank')); ?>
+				<?php echo $this->Html->link(__('Deactivate', true), array('action' => 'admin_deactivate_flagged_item', $flag['Flag']['id']), null, sprintf(__('Are you sure you want to deactivate this %s?', true), strtolower($flag['Flag']['model']))); ?>
+			</td>
 		</tr>
 	<?php endforeach; ?>
 		</table>

@@ -65,6 +65,13 @@ class Attachment extends AppModel {
 								'conditions' => '',
 								'dependent' => false,
 								'exclusive' => false
+						),
+						'Flag' => array(
+							'className' => 'Flag',
+							'foreignKey' => 'model_id',
+							'conditions' => array('Flag.model' => 'Attachment'),
+							'dependent' => true,
+							'exclusive' => true
 						)
 					);
 	
@@ -160,5 +167,28 @@ class Attachment extends AppModel {
 			'insertQuery' => ''
 		)
 	);
-
+	
+	/**
+	 * Don't show products that aren't active
+	 * @param Array queryData Data from the find. 
+	 * @return Array
+	 * 
+	*/
+	function beforeFind($queryData){
+		$conditions = $queryData['conditions'];
+		
+		if(!is_array($conditions)) {
+			if(!$conditions) {
+				$conditions = array();
+			}else {
+				$conditions = array($conditions);
+			}
+		}
+		
+		if(!array_key_exists('active',$conditions) && !isset($conditions[$this->alias.'.active'])) {
+			$conditions[$this->alias.'.active'] = 1;
+		}
+		$queryData['conditions'] = $conditions;
+		return $queryData;
+	}
 }

@@ -24,6 +24,7 @@
 															)
 														); ?></li>
 	</ul>
+	<?php if(Configure::read('FGM.allow_rating')==1): ?>
 	<ul class="rating-sorter">
 		<li><?php echo $this->Html->link('Top rated',array('controller'=>'products',
 															'action'=>'index',
@@ -34,4 +35,5 @@
 														); ?>
 		</li>
 	</ul>
+	<?php endif; ?>
 </div>

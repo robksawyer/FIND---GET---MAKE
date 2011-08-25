@@ -955,6 +955,106 @@ input[type="text"].phone{
 #flag-item-container fieldset{
 	border: none;
 }
+
+.flags.index h4 span.flag-count{
+	background-color: #262626;
+	padding: 3px 6px;
+	font-size: 14px;
+	color: #ffffff;
+}
+
+.flags.index ul {
+	position: relative;
+	clear: both;
+	padding: 0;
+	margin: 10px;
+}
+.flags.index ul li{
+	display: inline;
+	font-size: 13px;
+	text-transform: uppercase;
+	padding: 3px 10px;
+	margin: 0 2px;
+}
+
+.flags.index table td{
+	background: none;
+}
+
+.flags.index table td.count{
+	text-align: center;
+}
+
+.flags.index ul li.product-flag,
+.flags.index td.product{
+	background: #bed401;
+	color: #98a901;
+}
+
+.flags.index ul li.source-flag,
+.flags.index td.source{
+	background: #ffd294;
+	color: #ffa72d;
+}
+
+.flags.index ul li.inspiration-flag,
+.flags.index td.inspiration{
+	background: #ffa694;
+	color: #eb4424;
+}
+
+.flags.index ul li.collection-flag,
+.flags.index td.collection{
+	background: #00b994;
+	color: #69f6da;
+}
+
+.flags.index ul li.ufo-flag,
+.flags.index td.ufo{
+	background: #724214;
+	color: #d08d4d;
+}
+
+.flags.index ul li.attachment-flag,
+.flags.index td.attachment{
+	background: #fee51b;
+	color: #d8c210;
+}
+
+/*
+ * Reasons
+ * duplicate
+ * unrelated
+ * incorrect
+ * spam
+ * other
+ */
+.flags.index ul li.duplicate-flag,
+.flags.index tr.duplicate{
+	color: #2ac396;
+	background-color: #90FCDC !important;
+}
+.flags.index ul li.unrelated-flag,
+.flags.index tr.unrelated{
+	color: #cbd02d;
+	background-color: #FFFFA3 !important;
+}
+.flags.index ul li.incorrect-flag,
+.flags.index tr.incorrect{
+	color: #c6804b;
+	background-color: #FFAF75 !important;
+}
+.flags.index ul li.spam-flag,
+.flags.index tr.spam{
+	color: #d23431;
+	background-color: #ED7979 !important;
+}
+.flags.index ul li.other-flag,
+.flags.index tr.other{
+	color: #b08e65;
+	background-color: #FFD294 !important;
+}
+
 /** END FLAGGING **/
 
 .input.select .checkbox:first-child{

@@ -25,6 +25,7 @@ class UsersController extends AppController {
 		$this->AjaxHandler->handle('hide_welcome');
 	}
 	
+	
 	/**
 	 * Add an email field to be saved along with creation.
 	 * @param 

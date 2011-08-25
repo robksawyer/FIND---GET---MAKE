@@ -57,6 +57,13 @@ class AppController extends Controller {
 	 * Before any Controller action
 	 */
 	public function beforeFilter() {
+		
+		//Keep banned users from logging in and nonactive users
+		$this->Auth->userScope = array(
+										'User.banned'=>0,
+										'User.active'=>1
+										);
+		
 		//You have to keep view open for the photo tags to work.
 		$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
 		$this->Auth->loginRedirect = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
