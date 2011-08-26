@@ -51,9 +51,3 @@
 
 //require APP . 'plugins' . DS . 'media' . DS . 'config' . DS . 'core.php';
 Configure::load('fgm_config');
-
-App::import(array(
-	'type' => 'File', 
-	'name' => 'Forum.ForumConfig', 
-	'file' => 'config'. DS .'core.php'
-));

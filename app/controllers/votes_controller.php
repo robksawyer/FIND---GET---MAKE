@@ -3,6 +3,12 @@ class VotesController extends AppController {
 
 	var $name = 'Votes';
 	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function beforeFilter(){
 		parent::beforeFilter();
 		$this->Auth->allow('getLikes','getDislikes','getUserLikes','getUserDislikes');

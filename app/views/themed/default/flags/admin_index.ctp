@@ -47,6 +47,7 @@
 				<th><?php echo $this->Paginator->sort('type');?></th>
 				<th><?php echo $this->Paginator->sort('item id');?></th>
 				<th><?php echo $this->Paginator->sort('reason');?></th>
+				<th><?php echo $this->Paginator->sort('flagged by');?></th>
 				<th width="45%"><?php echo $this->Paginator->sort('description');?></th>
 				<th width="15%"><?php echo $this->Paginator->sort('total flags');?></th>
 				<th width="15%"><?php echo $this->Paginator->sort('created');?></th>
@@ -85,6 +86,7 @@
 			<td class="<?php echo strtolower($flag['Flag']['model']); ?>"><?php echo $flag['Flag']['model']; ?>&nbsp;</td>
 			<td><?php echo $flag['Flag']['model_id']; ?>&nbsp;</td>
 			<td><?php echo $flag['Flag']['reason']; ?>&nbsp;</td>
+			<td><?php echo $flag['User']['username']; ?>&nbsp;</td>
 			<td><?php echo $flag['Flag']['description']; ?>&nbsp;</td>
 			<?php $controller = Inflector::pluralize(strtolower($flag['Flag']['model'])); ?>
 			<td class="count"><?php echo $flag['Flag']['count']; ?>&nbsp;</td>

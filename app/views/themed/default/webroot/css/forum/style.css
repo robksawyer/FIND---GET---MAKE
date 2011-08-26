@@ -329,7 +329,7 @@ td.empty {
 
 .al { text-align: left; }
 .ac { text-align: center; }
-.ar { position: relative; text-align: left; width: 40%;}
+.ar { position: relative; text-align: left; width: auto;}
 
 .ar label{
 	display: block;

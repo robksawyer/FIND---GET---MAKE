@@ -33,30 +33,100 @@
  * @link http://book.cakephp.org/view/957/The-App-Controller
  */
 
+App::import(array(
+	'type' => 'File', 
+	'name' => 'Forum.ForumConfig', 
+	'file' => 'config'. DS .'core.php'
+));
+
 class AppController extends Controller {
 	
-	var $components = array('Auth','Forum.AutoLogin','Session',
-							'Cookie','RequestHandler','AjaxHandler', 
-							'Forum.Toolbar','String',
-							'TwitterKit.Twitter',
-							'Facebook.Connect'
-							);
-	var $helpers = array('Form', 'Html', 'Time','Session',
-						'Js' => array('Jquery'),
-						'Forum.Cupcake', 'Forum.Decoda' => array(),
-						'Popup.Popup'=>array('Jquery'),
-						'TwitterKit.Twitter','Facebook.Facebook'
+	/**
+	 * Remove parent models.
+	 *
+	 * @access public
+	 * @var array
+	 */
+	public $uses = array();
+	
+	/**
+	 * Components.
+	 *
+	 * @access public
+	 * @var array
+	 */
+	public $components = array('RequestHandler','Session','Security','Auth','AutoLogin','Cookie','AjaxHandler', 
+								'Forum.Toolbar','String','TwitterKit.Twitter','Facebook.Connect'
+								);
+
+	/**
+	 * Helpers.
+	 *
+	 * @access public
+	 * @var array
+	 */
+	public $helpers = array('Form', 'Html', 'Time','Text','Session','Js' => array('Jquery'),
+						'Popup.Popup'=>array('Jquery'),'TwitterKit.Twitter','Facebook.Facebook',
+						'Forum.Cupcake', 'Forum.Decoda' => array()
 						);
 	
-	var $view = 'Theme';
-	var $theme = 'default';
+	/**
+	 * Theming
+	 * @param 
+	 * @return 
+	 * @var string
+	 * 
+	*/
+	public $view = 'Theme';
 	
-	var $uses = array('Forum.Topic');
+	/**
+	 * The theme currently used
+	 * @param 
+	 * @return 
+	 * @var string
+	 * 
+	*/
+	public $theme = 'default';
+	
+	/**
+	 * Run auto login logic.
+	 *
+	 * @access public
+	 * @param array $user - The logged in User
+	 * @return void
+	 */
+	public function _autoLogin($user) {
+		ClassRegistry::init('User')->login($user);
+
+		$this->Session->delete('Forum');
+		$this->Toolbar->initForum();
+	}
+
+	/**
+	 * Refreshes the Auth to get new data.
+	 *
+	 * @access public
+	 * @param string $field
+	 * @param string $value
+	 * @return void
+	 */
+	public function _refreshAuth($field = '', $value = '') {
+		if (!empty($field) && !empty($value)) {
+			$this->Session->write($this->Auth->sessionKey .'.'. $field, $value);
+		} else {
+			if (isset($this->User)) {
+				$this->Auth->login($this->User->read(false, $this->Auth->user('id')));
+			} else {
+				$this->Auth->login(ClassRegistry::init('User')->findById($this->Auth->user('id')));
+			}
+		}
+	}
 	
 	/**
 	 * Before any Controller action
 	 */
 	public function beforeFilter() {
+		parent::beforeFilter();
 		
 		//Keep banned users from logging in and nonactive users
 		$this->Auth->userScope = array(
@@ -64,29 +134,65 @@ class AppController extends Controller {
 										'User.active'=>1
 										);
 		
-		//You have to keep view open for the photo tags to work.
-		$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
-		$this->Auth->loginRedirect = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
-		$this->Auth->loginAction = '/login';
-		$this->Auth->logoutAction = '/logout';
-		//$this->Auth->logoutRedirect = '/';
-		$this->Auth->autoRedirect = false;
-		
-		$this->AjaxHandler->handle('admin_hide_challenge');
-		
-		//Custom settings for AutoLogin component
-		//http://bakery.cakephp.org/articles/milesj/2009/07/05/autologin-component-an-auth-remember-me-feature
-		$this->AutoLogin->cookieName = 'TheSource';
-		$this->AutoLogin->expires = '+1 month';
+		$Config = ForumConfig::getInstance();
 
-		// AutoLogin settings
-		$this->AutoLogin->settings = array(
-			'plugin' => 'forum',
-			'controller' => 'users',
-			'loginAction' => 'login',
-			'logoutAction' => 'logout',
-			'admin'=>false
-		);
+		// Load l10n/i18n support
+		if (isset($this->Auth) && $this->Auth->user('locale')) {
+			$locale = $this->Auth->user('locale');
+		} else {
+			$locale = (isset($Config->settings['default_locale']) ? $Config->settings['default_locale'] : 'eng');
+		}
+
+		Configure::write('Config.language', $locale);
+		setlocale(LC_ALL, $locale .'UTF8', $locale .'UTF-8', $locale, 'eng.UTF8', 'eng.UTF-8', 'eng', 'en_US');
+
+		// Auth settings
+		$referer = $this->referer();
+		if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/login') {
+			//$referer = array('plugin' => 'admin', 'controller' => 'home', 'action' => 'index','admin'=>false);
+			$referer = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
+		}
+
+		if (isset($this->Auth)) {
+			$this->Auth->loginAction = '/login';
+			$this->Auth->logoutAction = '/logout';
+			//$this->Auth->loginAction = array('plugin' => 'forum', 'controller' => 'users', 'action' => 'login', 'admin' => false);
+			//You have to keep view open for the photo tags to work.
+			$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
+			//$this->Auth->loginRedirect = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
+			
+			$this->Auth->loginRedirect = $referer;
+			$this->Auth->logoutRedirect = $referer;
+			$this->Auth->autoRedirect = false;
+			$this->Auth->userModel = 'User';
+			
+			//Custom settings for AutoLogin component
+			//http://bakery.cakephp.org/articles/milesj/2009/07/05/autologin-component-an-auth-remember-me-feature
+			$this->AutoLogin->cookieName = 'TheSource';
+			$this->AutoLogin->expires = '+1 month';
+			
+			// AutoLogin settings
+			$this->AutoLogin->settings = array(
+				'plugin' => '',
+				'controller' => 'users',
+				'loginAction' => 'login',
+				'logoutAction' => 'logout',
+				'admin'=>false
+			);
+		}
+
+		$this->Cookie->key = Configure::read('Security.salt');
+
+		// Apply censored words
+		if (!empty($Config->settings['censored_words'])) {
+			$censored = explode(',', str_replace(', ', ',', $Config->settings['censored_words']));
+			$this->helpers['Forum.Decoda'] = array('censored' => $censored);
+		}
+
+		// Initialize
+		$this->Toolbar->initForum();
+	
+		$this->AjaxHandler->handle('admin_hide_challenge');
 		
 		/*
 			TODO Set up a check to see if the user has hidden the challenge.
@@ -121,6 +227,15 @@ class AppController extends Controller {
 	}
 	
 	/**
+	 * Check page title and set for 1.3.
+	 */
+	public function beforeRender() {
+		if (isset($this->pageTitle) && !empty($this->pageTitle)) {
+			$this->set('title_for_layout', $this->pageTitle);
+		}
+	}
+	
+	/**
 	 * This method sets up the challenge Session variables.
 	 * @param 
 	 * @return 
@@ -145,7 +260,7 @@ class AppController extends Controller {
 	 * 
 	*/
 	public function findChallenge(){
-		//ClassRegistry::init('Topic');
+		Controller::loadModel('Forum.Topic');
 		$latestTopic = $this->Topic->findLatestTopic(2);
 		return $latestTopic;
 	}
@@ -167,10 +282,6 @@ class AppController extends Controller {
 			$this->AjaxHandler->respond();
 			return;
 		}
-	}
-	
-	public function _autoLogin($user) {
-		// $user contains the Auth session
 	}
 	
 	public function isSlug($id = null){

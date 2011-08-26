@@ -49,7 +49,7 @@
 	Router::connect('/robots/:action/*', array('controller' => 'sitemaps', 'action' => 'robot'));
 	
 	Router::connect('/forum', array('plugin' => 'forum', 'controller' => 'home', 'action' => 'index'));
-	Router::connect('/profiles/*', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'profile'));
+	Router::connect('/profile/*', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'profile'));
 	Router::connect('/following/*', array('plugin' => '', 'controller' => 'user_followings', 'action' => 'following'));
 	Router::connect('/followers/*', array('plugin' => '', 'controller' => 'user_followings', 'action' => 'followers'));
 	
