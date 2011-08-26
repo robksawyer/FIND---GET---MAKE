@@ -1,13 +1,13 @@
 
 <div class="forumHeader">
-	<h2><?php __d('forum', 'User List'); ?></h2>
+	<h2><?php __('User List'); ?></h2>
 </div>
 
 <?php echo $this->Form->create('User', array('url' => array('controller' => 'users', 'action' => 'listing'))); ?>
 <table cellpadding="5" style="width: 100%">
 <tr>
-	<td class="ar"><?php echo $this->Form->input('username', array('div' => false, 'label' => __d('forum', 'Search Users (Username)', true) .': ')); ?></td>
-	<td style="width: 75px"><?php echo $this->Form->submit(__d('forum', 'Search', true), array('div' => false)); ?></td>
+	<td class="ar"><?php echo $this->Form->input('username', array('div' => false, 'label' => __('Search Users (Username)', true) .': ')); ?></td>
+	<td style="width: 75px"><?php echo $this->Form->submit(__('Search', true), array('div' => false)); ?></td>
 </tr>
 </table>
 <?php echo $this->Form->end(); ?>
@@ -17,11 +17,11 @@
     
     <table class="table" cellspacing="0">
     <tr>
-        <th><?php echo $paginator->sort(__d('forum', 'Username', true), 'User.username'); ?></th>
-        <th><?php echo $paginator->sort(__d('forum', 'Joined', true), 'User.created'); ?></th>
-        <th><?php echo $paginator->sort(__d('forum', 'Last Active', true), 'User.'. $this->Cupcake->columnMap['lastLogin']); ?></th>
-        <th><?php echo $paginator->sort(__d('forum', 'Topics', true), 'User.'. $this->Cupcake->columnMap['totalTopics']); ?></th>
-        <th><?php echo $paginator->sort(__d('forum', 'Posts', true), 'User.'. $this->Cupcake->columnMap['totalPosts']); ?></th>
+        <th><?php echo $paginator->sort(__('Username', true), 'User.username'); ?></th>
+        <th><?php echo $paginator->sort(__('Joined', true), 'User.created'); ?></th>
+        <th><?php echo $paginator->sort(__('Last Active', true), 'User.'. $this->Cupcake->columnMap['lastLogin']); ?></th>
+        <th><?php echo $paginator->sort(__('Topics', true), 'User.'. $this->Cupcake->columnMap['totalTopics']); ?></th>
+        <th><?php echo $paginator->sort(__('Posts', true), 'User.'. $this->Cupcake->columnMap['totalPosts']); ?></th>
     </tr>
     
     <?php if (!empty($users)) {
@@ -35,7 +35,7 @@
             <?php if (!empty($user['User'][$this->Cupcake->columnMap['lastLogin']])) {
                 echo $this->Time->relativeTime($user['User'][$this->Cupcake->columnMap['lastLogin']], array('userOffset' => $this->Cupcake->timezone()));
             } else {
-                echo '<em>'. __d('forum', 'Never', true) .'</em>';
+                echo '<em>'. __('Never', true) .'</em>';
             } ?>
         </td>
         <td class="ac"><?php echo number_format($user['User'][$this->Cupcake->columnMap['totalTopics']]); ?></td>
@@ -46,7 +46,7 @@
 	} else { ?>
     
     <tr>
-    	<td colspan="5" class="empty"><?php __d('forum', 'There are no users signed up on this forum.'); ?></td>
+    	<td colspan="5" class="empty"><?php __('There are no users signed up on this forum.'); ?></td>
    	</tr>
     <?php } ?>
     

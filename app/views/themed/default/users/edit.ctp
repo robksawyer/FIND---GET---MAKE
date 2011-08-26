@@ -3,10 +3,11 @@
 ?>
 <div id="formWrapper">
 	<div class="forumHeader">
-		<h2><?php __d('forum', 'Edit Profile'); ?></h2>
+		<h2><?php __('Edit Profile '); ?></h2>
 	</div>
 
 	<?php echo $this->Session->flash(); ?>
+	<div id="image-upload" style="margin: 10px">
 	<?php // Gravatar
 	if ($this->Cupcake->settings['enable_gravatar'] == 1) {
 		if ($avatar = $this->Cupcake->gravatar($this->data['User']['email'])) {
@@ -22,16 +23,17 @@
 		}
 	} 
 	?>
+	</div>
 	<?php echo $this->Form->create('User', array('url' => array('controller' => 'users', 'action' => 'edit'))); ?>
-	<?php echo $this->Form->input('fullname', array('label' => __d('forum', 'Full name', true),'after'=>'<div class="after">So that your friends can find you.</div>')); ?>
-	<?php echo $this->Form->input('email', array('label' => __d('forum', 'Email', true))); ?>
+	<?php echo $this->Form->input('fullname', array('label' => __('Full name', true),'after'=>'<div class="after">So that your friends can find you.</div>')); ?>
+	<?php echo $this->Form->input('email', array('label' => __('Email', true))); ?>
 	<?php 
 	if(empty($this->data['User']['url'])){
 		$urlData = 'http://';
 	}else{
 		$urlData = $this->data['User']['url'];
 	}
-	echo $this->Form->input('url', array('label' => __d('forum', 'Website', true),'value'=>$urlData)); 
+	echo $this->Form->input('url', array('label' => __('Website', true),'value'=>$urlData)); 
 	?>
 	<div class="gender">
 	<?php 
@@ -40,14 +42,14 @@
 		echo $this->Form->radio('gender', $options,$attributes); 
 	?>
 	</div>
-	<?php echo $this->Form->input('location', array('label' => __d('forum', 'Location', true))); ?>
-	<?php echo $this->Form->input('about', array('label' => __d('forum', 'Tell us about yourself.', true))); ?>
+	<?php echo $this->Form->input('location', array('label' => __('Location', true))); ?>
+	<?php echo $this->Form->input('about', array('label' => __('Tell us about yourself.', true))); ?>
 	<div id="charlimitinfo">You have 125 characters left.</div>
-	<?php echo $this->Form->input($this->Cupcake->columnMap['locale'], array('options' => $this->Cupcake->getLocales(), 'label' => __d('forum', 'Language', true))); ?>
-	<?php echo $this->Form->input($this->Cupcake->columnMap['timezone'], array('options' => $this->Cupcake->getTimezones(), 'label' => __d('forum', 'Timezone', true))); ?>
+	<?php echo $this->Form->input($this->Cupcake->columnMap['locale'], array('options' => $this->Cupcake->getLocales(), 'label' => __('Language', true))); ?>
+	<?php echo $this->Form->input($this->Cupcake->columnMap['timezone'], array('options' => $this->Cupcake->getTimezones(), 'label' => __('Timezone', true))); ?>
 
 	<div class="input textarea">
-		<?php echo $this->Form->label($this->Cupcake->columnMap['signature'], __d('forum', 'Forum Signature', true)); ?>
+		<?php echo $this->Form->label($this->Cupcake->columnMap['signature'], __('Forum Signature', true)); ?>
 
 		<div id="textarea">
 			<?php echo $this->Form->input($this->Cupcake->columnMap['signature'], array('type' => 'textarea', 'rows' => 5, 'label' => false, 'div' => false)); ?>
@@ -60,7 +62,7 @@
 		<!--
 			TODO Actually check to see if the account is linked.
 		-->
-		<?php echo $this->Form->label(__d('forum', 'Social Networks', true)); ?>
+		<?php echo $this->Form->label(__('Social Networks', true)); ?>
 		<?php if(!empty($this->data['User']['twitter_id'])): ?>
 			<span class="twitter">Your <i>Twitter</i> account is linked.</span>
 		<?php else: ?>
@@ -85,7 +87,7 @@
 		TODO Build out this section
 	-->
 	<div class="email-notifications">
-		<?php //echo $this->Form->label(__d('forum', 'Email Notifications', true)); ?>
+		<?php //echo $this->Form->label(__('Email Notifications', true)); ?>
 		<?php 
 			//echo $this->Form->input('email_on_follow',array('type'=>'checkbox','label'=>'Email when someone follows you')); 
 			//echo $this->Form->checkbox('email_on_show',array('before'=>'Email when someone shows you a product')); 
@@ -94,21 +96,21 @@
 	</div>
 		
 	<div class="feed-notifications">
-		<?php //echo $this->Form->label(__d('forum', 'Feed Notifications', true)); ?>
+		<?php //echo $this->Form->label(__('Feed Notifications', true)); ?>
 		<?php
 			//echo $this->Form->input('notify_on_add',array('label'=>'Notify when someone adds a product you found','type'=>'checkbox')); 
 			//echo $this->Form->input('notify_on_follow',array('label'=>'Notify when someone follows you','type'=>'checkbox')); 
 		?>
 	</div>
 
-	<?php echo $this->Form->end(__d('forum', 'Update Account', true)); ?>
+	<?php echo $this->Form->end(__('Update Account', true)); ?>
 	<div class="change">Click to change password</div>
 	<div id="change-password" style="display:none">
 		<?php echo $this->Form->create('User', array('url' => array('controller' => 'users', 'action' => 'edit'))); ?>
-		<?php echo $this->Form->input('oldPassword', array('type' => 'password', 'label' => __d('forum', 'Old Password', true))); ?>
-		<?php echo $this->Form->input('newPassword', array('type' => 'password', 'label' => __d('forum', 'New Password', true))); ?>
-		<?php echo $this->Form->input('confirmPassword', array('type' => 'password', 'label' => __d('forum', 'Confirm Password', true))); ?>
-		<?php echo $this->Form->end(__d('forum', 'Update Password', true)); ?>
+		<?php echo $this->Form->input('oldPassword', array('type' => 'password', 'label' => __('Old Password', true))); ?>
+		<?php echo $this->Form->input('newPassword', array('type' => 'password', 'label' => __('New Password', true))); ?>
+		<?php echo $this->Form->input('confirmPassword', array('type' => 'password', 'label' => __('Confirm Password', true))); ?>
+		<?php echo $this->Form->end(__('Update Password', true)); ?>
 	</div>
 </div>
 <?php

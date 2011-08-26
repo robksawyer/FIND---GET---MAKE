@@ -4,7 +4,7 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 <?php // User exists
 if (!empty($user)) { ?>
 <div class="header profile">
-	<button type="button" onclick="goTo('<?php echo $this->Html->url(array('action' => 'report', $user['User']['id'])); ?>');" class="fr button"><?php __d('forum', 'Report User'); ?></button>
+	<button type="button" onclick="goTo('<?php echo $this->Html->url(array('action' => 'report', $user['User']['id'])); ?>');" class="fr button"><?php __('Report User'); ?></button>
 	<?php // Gravatar
 	if ($this->Cupcake->settings['enable_gravatar'] == 1) {
 		if ($avatar = $this->Cupcake->gravatar($user['User']['email'])) {
@@ -89,15 +89,15 @@ if (!empty($user)) { ?>
 <?php // Topics
 if (!empty($topics)) { ?>
 <div class="forumWrap">
-    <h3><?php __d('forum', 'Latest Topics'); ?></h3>
+    <h3><?php __('Latest Topics'); ?></h3>
     
     <table class="table" cellspacing="0">
     <tr>
-        <th><?php __d('forum', 'Topic'); ?></th>
-        <th><?php __d('forum', 'Created'); ?></th>
-        <th><?php __d('forum', 'Posts'); ?></th>
-        <th><?php __d('forum', 'Views'); ?></th>
-        <th><?php __d('forum', 'Last Activity'); ?></th>
+        <th><?php __('Topic'); ?></th>
+        <th><?php __('Created'); ?></th>
+        <th><?php __('Posts'); ?></th>
+        <th><?php __('Views'); ?></th>
+        <th><?php __('Last Activity'); ?></th>
     </tr>
     
     <?php $counter = 0;
@@ -105,7 +105,7 @@ if (!empty($topics)) { ?>
         $lastTime = (isset($topic['LastPost']['created'])) ? $topic['LastPost']['created'] : $topic['Topic']['modified']; ?>
         
     <tr<?php if ($counter % 2) echo ' class="altRow"'; ?>>
-        <td><?php echo $this->Html->link($topic['Topic']['title'], array('controller' => 'topics', 'action' => 'view', $topic['Topic']['slug'])); ?></td>
+        <td><?php echo $this->Html->link($topic['Topic']['title'], array('plugin'=>'forum','controller' => 'topics', 'action' => 'view', $topic['Topic']['slug'])); ?></td>
         <td class="ac"><?php echo $this->Time->niceShort($topic['Topic']['created'], $this->Cupcake->timezone()); ?></td>
         <td class="ac"><?php echo number_format($topic['Topic']['post_count']); ?></td>
         <td class="ac"><?php echo number_format($topic['Topic']['view_count']); ?></td>
@@ -120,19 +120,19 @@ if (!empty($topics)) { ?>
 <?php // Posts
 if (!empty($posts)) { ?>
 <div class="forumWrap">
-    <h3><?php __d('forum', 'Latest Posts'); ?></h3>
+    <h3><?php __('Latest Posts'); ?></h3>
     
     <table class="table" cellspacing="0">
     <tr>
-        <th><?php __d('forum', 'Topic'); ?></th>
-        <th><?php __d('forum', 'Author'); ?></th>
-        <th><?php __d('forum', 'Posted On'); ?></th>
+        <th><?php __('Topic'); ?></th>
+        <th><?php __('Author'); ?></th>
+        <th><?php __('Posted On'); ?></th>
     </tr>
     
     <?php foreach($posts as $post) { ?>
     <tr class="altRow">
-        <td><strong><?php echo $this->Html->link($post['Topic']['title'], array('controller' => 'topics', 'action' => 'view', $post['Topic']['slug'])); ?></strong></td>
-        <td><?php echo $this->Html->link($post['Topic']['User']['username'], array('controller' => 'users', 'action' => 'profile', $post['Topic']['User']['id'])); ?></td>
+        <td><strong><?php echo $this->Html->link($post['Topic']['title'], array('plugin'=>'forum','controller' => 'topics', 'action' => 'view', $post['Topic']['slug'])); ?></strong></td>
+        <td><?php echo $this->Html->link($post['Topic']['User']['username'], array('plugin'=>'forum','controller' => 'users', 'action' => 'profile', $post['Topic']['User']['id'])); ?></td>
         <td class="ar"><?php echo $this->Time->relativeTime($post['Post']['created'], array('userOffset' => $this->Cupcake->timezone())); ?></td>
     </tr>
     <tr>
@@ -146,8 +146,8 @@ if (!empty($posts)) { ?>
 
 <?php } else { ?>
 
-<h2><?php __d('forum', 'Not Found'); ?></h2>
-<?php __d('forum', 'The user you are looking for does not exist.'); ?>
+<h2><?php __('Not Found'); ?></h2>
+<?php __('The user you are looking for does not exist.'); ?>
 
 <?php } ?>
 <?php

@@ -39,6 +39,7 @@
 	Router::connect('/register', array('controller' => 'users', 'action' => 'register'));
 	Router::connect('/login',array('plugin'=>'','controller'=>'users','action'=>'login')); 
 	Router::connect('/logout',array('plugin'=>'','controller'=>'users','action'=>'logout')); 
+	Router::connect('/profile/*', array('plugin' => '', 'controller' => 'users', 'action' => 'profile'));
 	Router::connect('/join',array('plugin'=>'','controller'=>'pages','action'=>'display','join')); 
 	Router::connect('/settings',array('plugin'=>'','controller'=>'users','action'=>'edit')); 
 	
@@ -49,7 +50,6 @@
 	Router::connect('/robots/:action/*', array('controller' => 'sitemaps', 'action' => 'robot'));
 	
 	Router::connect('/forum', array('plugin' => 'forum', 'controller' => 'home', 'action' => 'index'));
-	Router::connect('/profile/*', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'profile'));
 	Router::connect('/following/*', array('plugin' => '', 'controller' => 'user_followings', 'action' => 'following'));
 	Router::connect('/followers/*', array('plugin' => '', 'controller' => 'user_followings', 'action' => 'followers'));
 	

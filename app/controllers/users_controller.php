@@ -253,8 +253,8 @@ class UsersController extends AppController {
 	 */
 	public function profile($username=null) {
 		//Check to see if the id was passed
-		if(is_int($username)){
-			$id = $username;
+		if(intval($username)>0){
+			$id = intval($username);
 			$user = $this->User->getProfile($id);
 		}else{
 			$userTemp = $this->User->find('first',array('conditions'=>array('username'=>$username)));

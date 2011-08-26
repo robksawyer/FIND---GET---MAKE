@@ -18,11 +18,11 @@
 				<fieldset>
 					<legend><?php __('Login'); ?></legend>
 			
-					<?php echo $this->Form->input('username', array('label' => __d('forum', 'Username', true))); ?>
-					<?php echo $this->Form->input('password', array('label' => __d('forum', 'Password', true), 'type' => 'password')); ?>
-					<?php echo $this->Form->input('auto_login', array('type' => 'checkbox', 'label' => __d('forum', 'Remember Me?', true))); ?>
+					<?php echo $this->Form->input('username', array('label' => __('Username', true))); ?>
+					<?php echo $this->Form->input('password', array('label' => __('Password', true), 'type' => 'password')); ?>
+					<?php echo $this->Form->input('auto_login', array('type' => 'checkbox', 'label' => __('Remember Me?', true))); ?>
 				</fieldset>
-				<?php echo $this->Form->end(__d('forum', 'Login', true)); ?>
+				<?php echo $this->Form->end(__('Login', true)); ?>
 			</div>
 			<div id="join">
 				<div class="basic-group">
