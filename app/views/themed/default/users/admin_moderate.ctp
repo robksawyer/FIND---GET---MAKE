@@ -35,7 +35,7 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 		<ul class="btn-actions">
 			<li>
 				<?php echo $this->Html->link('<span>Edit profile</span>',
-											array('plugin'=>'forum','admin'=>false,'controller'=>'users','action'=>'edit'),
+											array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'edit'),
 											array(
 												'title'=>'Edit your profile.',
 												'class'=>'minibutton btn-edit-profile',
@@ -53,7 +53,7 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 					echo "<li class='name'>".$user['User']['username']."</li>";
 				}
 			?>
-			<li><?php echo $this->Html->link('View your public profile',array('plugin'=>'forum','admin'=>false,'controller'=>'users','action'=>'profile',$user['User']['username']),array('title'=>'View your public profile.')); ?></li>
+			<li><?php echo $this->Html->link('View your public profile',array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'profile',$user['User']['username']),array('title'=>'View your public profile.')); ?></li>
 			<br/>
 			<ul>
 				<li class="link">
@@ -133,12 +133,12 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 				if ($this->Cupcake->settings['enable_gravatar'] == 1) {
 					if ($avatar = $this->Cupcake->gravatar($follower['User']['email'])) {
 						echo "<div class='avatar'>";
-						echo $this->Html->link($avatar,array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$follower['User']['username']),array('title'=>$follower['User']['username'],'escape'=>false));
+						echo $this->Html->link($avatar,array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$follower['User']['username']),array('title'=>$follower['User']['username'],'escape'=>false));
 						echo "</div>";
 					}else{
 						echo "<div class='avatar'>";
 						echo $this->Html->image('no_gravatar.jpg',array(
-																					'url'=>array('admin'=>false,'plugin'=>'forum','controller'=>'users',
+																					'url'=>array('admin'=>false,'plugin'=>'','controller'=>'users',
 																										'action'=>'profile',$follower['User']['username']
 																										),
 																					'title'=>$follower['User']['username']

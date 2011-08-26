@@ -17,7 +17,8 @@ if(!empty($authUser)):
 																	array(
 																		'class'=>'btn auth follow',
 																		'title'=>'follow',
-																		'beforeSend'=>'showLoader();',
+																		'id'=>'follow-'.$user_id,
+																		'beforeSend'=>'showLoader('.$user_id.');',
 																		'success'=>'updateFollowUnfollow(data);'
 																		));
 					echo $this->Js->link('Unfollow',array(
@@ -28,9 +29,10 @@ if(!empty($authUser)):
 																	),
 																	array(
 																		'class'=>'btn auth unfollow',
+																		'id'=>'unfollow-'.$user_id,
 																		'style'=>'display:none',
 																		'title'=>'unfollow',
-																		'beforeSend'=>'showLoader();',
+																		'beforeSend'=>'showLoader('.$user_id.');',
 																		'success'=>'updateFollowUnfollow(data);'
 																		));
 			?></div>
@@ -44,8 +46,9 @@ if(!empty($authUser)):
 																	),
 																	array(
 																		'class'=>'btn auth unfollow',
+																		'id'=>'unfollow-'.$user_id,
 																		'title'=>'unfollow',
-																		'beforeSend'=>'showLoader();',
+																		'beforeSend'=>'showLoader('.$user_id.');',
 																		'success'=>'updateFollowUnfollow(data);'
 																		));
 					echo $this->Js->link('Follow',array(
@@ -56,9 +59,10 @@ if(!empty($authUser)):
 																	),
 																	array(
 																		'class'=>'btn auth follow',
+																		'id'=>'follow-'.$user_id,
 																		'style'=>'display:none',
 																		'title'=>'follow',
-																		'beforeSend'=>'showLoader();',
+																		'beforeSend'=>'showLoader('.$user_id.');',
 																		'success'=>'updateFollowUnfollow(data);'
 																		));
 				
@@ -66,7 +70,7 @@ if(!empty($authUser)):
 		<?php endif; ?>
 	<?php endif; ?>
 <?php endif; ?>
-<div id="ajax-status" style="display:none"><?php echo $this->Html->image('ajax-loader.gif',array('Loading...')); ?></div>
+<div id="ajax-status-<?php echo $user_id;?>" style="display:none"><?php echo $this->Html->image('ajax-loader.gif',array('Loading...')); ?></div>
 <?php 
 	$this->Html->script('elements/follow-unfollow',array('inline'=>false)); 
 ?>

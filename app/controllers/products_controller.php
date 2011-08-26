@@ -59,7 +59,7 @@ class ProductsController extends AppController {
 	}
 	
 	function index($filter = null) {
-		
+		$this->Product->recursive = 2;
 		// query all distinct first letters used in names
 		$letters = $this->Product->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `products` ORDER BY `name`');
 		

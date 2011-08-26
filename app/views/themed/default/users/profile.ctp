@@ -53,11 +53,11 @@ if (!empty($user)) { ?>
 			<div class="title"><?php echo $user['User']['username']."'s"; ?> totals</div>
 			<li>
 				<div class='total'>
-					<?php echo $this->Html->link($user['User']['totalFollowers'],array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'followers',$user['User']['username'])); ?>
+					<?php echo $this->Html->link($user['User']['totalFollowers'],array('plugin'=>'','admin'=>false,'controller'=>'','action'=>'followers',$user['User']['username'])); ?>
 					<span>followers</span>
 				</div> 
 				<div class='total'>
-					<?php echo $this->Html->link($user['User']['totalUsersFollowing'],array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'following',$user['User']['username'])); ?>
+					<?php echo $this->Html->link($user['User']['totalUsersFollowing'],array('plugin'=>'','admin'=>false,'controller'=>'','action'=>'following',$user['User']['username'])); ?>
 					<span>following</span>
 				</div>
 			</li>

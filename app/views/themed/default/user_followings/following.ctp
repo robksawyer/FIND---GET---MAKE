@@ -28,7 +28,7 @@
 					}
 					?>
 					<ul class="follower-details">
-						<li class="username"><?php echo $this->Html->link($follower['User']['username'],array('plugin'=>'forum','controller'=>'users','action'=>'profile',$follower['User']['username']))?></li>
+						<li class="username"><?php echo $this->Html->link($follower['User']['username'],array('plugin'=>'','controller'=>'users','action'=>'profile',$follower['User']['username']))?></li>
 						<li>Total products: <?php echo $follower['User']['totalProducts'];?></li>
 						<li>Total sources: <?php echo $follower['User']['totalSources'];?></li>
 						<li>Total collections: <?php echo $follower['User']['totalCollections'];?></li>

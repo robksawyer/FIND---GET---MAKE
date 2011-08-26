@@ -20,6 +20,7 @@ class UserFollowingsController extends AppController {
 			$this->Session->setFlash(__('This is an invalid username.', true));
 			$this->redirect('/');
 		}
+		$this->UserFollowing->User->recursive = 1;
 		$user = $this->UserFollowing->User->findByUsername($username);
 		$following = array();
 		if(!empty($user)){
@@ -95,16 +96,16 @@ class UserFollowingsController extends AppController {
 					$this->UserFollowing->set('follow_user_id',$user_id);
 					if($this->UserFollowing->save()){
 						//The save was successful
-						$following = array('following'=>1);
-						$this->AjaxHandler->response(true, $following);
+						$data = array('following'=>1,'item_id'=>$user_id);
+						$this->AjaxHandler->response(true, $data);
 					}
 				}else{
 					$this->unfollowUserID($user_id);
 				}
 			}else{
 				//The user shouldn't even see the follow button
-				$following = array('following'=>0);
-				$this->AjaxHandler->response(false, $following);
+				$data = array('following'=>0,'item_id'=>$user_id);
+				$this->AjaxHandler->response(false, $data);
 			}
 			
 			$this->AjaxHandler->respond();
@@ -147,12 +148,12 @@ class UserFollowingsController extends AppController {
 				if($userFollowID){
 					$this->UserFollowing->delete($userFollowID['UserFollowing']['id']);
 					//The auth user has successfully unfollowed the user
-					$following = array('following'=>0);
-					$this->AjaxHandler->response(true, $following);
+					$data = array('following'=>0,'item_id'=>$user_id);
+					$this->AjaxHandler->response(true, $data);
 				}else{
 					//The user shouldn't even see the follow button
-					$following = array('following'=>1);
-					$this->AjaxHandler->response(false, $following);
+					$data = array('following'=>1,'item_id'=>$user_id);
+					$this->AjaxHandler->response(false, $data);
 				}
 			}else{
 				//The user shouldn't even see the follow button
