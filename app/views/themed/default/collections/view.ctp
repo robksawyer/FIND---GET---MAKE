@@ -51,7 +51,7 @@
 																'cache'=>false
 																));
 	?>
-	<div>
+	</div>
 	<div class="clear"></div>
 	<?php echo $this->element('tags',array('model'=>$collection,'cache'=>false)); ?>
 </div>

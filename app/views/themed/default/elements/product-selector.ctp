@@ -1,6 +1,6 @@
 <?php
 	//CSS
-	echo $this->Html->css('product-selector','stylesheet',array('inline'=>false));
+	echo $this->Html->css('elements/product-selector','stylesheet',array('inline'=>false));
 	echo $this->Html->css('modal/productselector','stylesheet',array('inline'=>false));
 	//JS
 	//echo $this->Html->script('inspirations/product-selector',array('inline'=>false));

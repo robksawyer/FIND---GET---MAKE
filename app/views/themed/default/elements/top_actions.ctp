@@ -4,6 +4,15 @@
 	padding: 0;
 	margin: 0;
 }
+
+#simplemodal-container{
+	height: 500px!important;
+}
+
+#basic-modal-content .submit{
+	position: relative;
+	left: 20px;
+}
 </style>
 <?php
 	echo $this->Html->css("popup/wide",'stylesheet',array('inline'=>false));
@@ -101,7 +110,12 @@
 		if(empty($removeFlag)):
 			if($authUser['User']['id'] != $item['User']['id'] || Configure::read('FGM.allow_flagging') == 1):
 				if(empty($flagged)){
-					echo $this->Popup->link('Flag item', array(
+					echo $this->Html->link('Flag item','#',array(
+																		'class'=>'flag-item',
+																		'id'=>'flag-'.strtolower($model).'-'.$item[$model]['id'],
+																		'title'=>'Flag the item'
+																		));
+					/*echo $this->Popup->link('Flag item', array(
 														'class'=>'flag-item',
 														'id'=>'flag-'.strtolower($model).'-'.$item[$model]['id'],
 														'title'=>'Flag the item',
@@ -111,7 +125,7 @@
 															'model'=>$model,
 															'model_id'=>$item[$model]['id']
 															)
-														);
+														);*/
 				}else{
 					echo '<span class="flag-item" style="text-decoration: line-through;" title="You\'ve already flagged this item.">Flag item</span>';
 				}
@@ -123,15 +137,39 @@
 	<?php endif; ?>
 </div>
 <div class="clear"></div>
+<!-- FLAG ITEMS MODAL CONTENT -->
+<div id="basic-modal-content">
+	<div class="wrapper">
+	<?php 
+		$redirect = '/'.Inflector::pluralize(strtolower($model)).'/view/'.$item[$model]['id'];
+		echo $this->element('flag-item',array('cache'=>false,
+															'redirect'=>$redirect,
+															'model'=>$model,
+															'model_id'=>$item[$model]['id']
+															)
+														);
+		
+	?>
+	</div>
+</div>
+<!-- preload the images -->
+<div style='display:none'>
+	<?php 
+		echo $this->Html->image('/img/modal/x.png',array('alt'=>'Close')); 
+		echo $this->Html->image('/img/modal/x_on.png',array('alt'=>'Close')); 
+	?>
+</div>
 <script type="text/javascript">
-	/**
-	 * 
-	 * @param string model
-	 * @param int model_id
-	 * @return 
-	 * 
-	*/
-	function flag_item(model, model_id){
-		alert("Flagging");
-	}
+	// Load dialog on click
+	$('.flag-item').click(function (e) {
+		e.preventDefault();
+		//$(".chzn-select").trigger("liszt:updated");
+		$('#basic-modal-content').modal({
+			onShow:function(dialog){
+				// Access elements inside the dialog
+				// Useful for binding events, initializing other plugins, etc.
+				$(".chzn-select").chosen();
+			}
+		});
+	});
 </script>
