@@ -19,13 +19,15 @@
 					echo $this->Form->input('user_id',array('value'=>$authUser['User']['id'],'type'=>'hidden'));
 				}
 				echo $this->Form->input('redirect',array('value'=>'/'.Inflector::pluralize(strtolower($model)).'/view/'.$model_id,'type'=>'hidden'));
-				$options = array('duplicate'=>'Duplicate: This is a duplicate of an existing entry. Please paste the URL of the other version below.',
+				$options = array('duplicate'=>'Duplicate: This is a duplicate of an existing entry. I\'ll paste the other, more complete, version of this entry below.',
 										'unrelated'=>'Unrelated: This isn\'t related to interior design at all.',
-										'incorrect'=>'Incorrect: Parts of the data associated with this entry are incorrect. Please describe what you feel should change below.',
+										'incorrect'=>'Incorrect: Parts of the data associated with this entry are incorrect. I\'ll tell you what information is wrong below.',
 										'spam'=>'Spam: This is spam.',
 										'other'=>'Other: Just read my description below, you\'ll see what I\'m talking about.'
 										);
-				echo $this->Form->input('reason', array('type'=>'radio','options'=>$options));
+				echo $this->Form->input('reason', array('type'=>'radio','options'=>$options,'legend'=>''));
+				//$current_url = "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+				//echo $this->Form->input('url',array('value'=>$current_url,'disabled'=>'disabled','label'=>'','style'=>'color:#999;'));
 				echo $this->Form->input('description');
 				echo '<div id="charlimitinfo">You have 300 characters left.</div>';
 			?>

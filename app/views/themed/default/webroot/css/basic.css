@@ -1032,27 +1032,27 @@ input[type="text"].phone{
 .flags.index ul li.duplicate-flag,
 .flags.index tr.duplicate{
 	color: #2ac396;
-	background-color: #90FCDC !important;
+	/*background-color: #90FCDC !important;*/
 }
 .flags.index ul li.unrelated-flag,
 .flags.index tr.unrelated{
 	color: #cbd02d;
-	background-color: #FFFFA3 !important;
+	/*background-color: #FFFFA3 !important;*/
 }
 .flags.index ul li.incorrect-flag,
 .flags.index tr.incorrect{
 	color: #c6804b;
-	background-color: #FFAF75 !important;
+	/*background-color: #FFAF75 !important;*/
 }
 .flags.index ul li.spam-flag,
 .flags.index tr.spam{
 	color: #d23431;
-	background-color: #ED7979 !important;
+	/*background-color: #ED7979 !important;*/
 }
 .flags.index ul li.other-flag,
 .flags.index tr.other{
-	color: #b08e65;
-	background-color: #FFD294 !important;
+	color: #07a081;
+	/*background-color: #FFD294 !important;*/
 }
 
 /** END FLAGGING **/

@@ -4,6 +4,14 @@ class FlagsController extends AppController {
 	var $name = 'Flags';
 	var $components = array('String');
 	
+	var $paginate = array(
+						'limit'=>50,
+						'order'=>array(
+										'Flag.created'=>'desc'
+										)
+						//'group'=>array('Flag.model')
+									);
+	
 	/**
 	 * Flags the item
 	 * @param 
@@ -41,16 +49,79 @@ class FlagsController extends AppController {
 	function admin_index(){
 		$flags = $this->paginate('Flag');
 		
-		//Get the flag count for each item.
+		//Get the flag count for each item and add that to the item array [Flag]['count']
 		$counter = 0;
 		foreach($flags as $flag){
 			$flags[$counter]['Flag']['count'] = $this->Flag->getItemCount($flag['Flag']['model'],$flag['Flag']['model_id']);
 			$counter++; 
 		}
-		
 		$total_count = $this->Flag->getCount();
+		
+		//debug($flags);
+		//Group like flagged items ex. The same item that has been flagged 
+		$flags = Set::sort($flags,'{n}.Flag.model_id','desc');
+		$flags = Set::sort($flags,'{n}.Flag.model','desc');
+		
 		$this->set(compact('total_count','flags'));
 		$this->set('string', $this->String);
+	}
+	
+	/**
+	 * Process the checkbox selections on the admin_index page
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function admin_process(){
+		$this->autoRender = false;
+		if(!empty($this->data)){
+			//debug($this->data);
+			//Get all of the flag ids in an array
+			foreach($this->data['Flag']['id'] as $id => $value){
+				if($value==1){
+					$ids[]=$id;
+				}
+			}
+			
+			//debug($ids);
+			//debug($this->data['Flag']['actions']);
+			
+			/**
+			 * Action list:
+			 * 0 = Delete Flags
+			 * 1 = Deactivate Items
+			 * 2 = ??
+			 */
+			switch($this->data['Flag']['actions']){
+				case 0:
+						if($this->Flag->deleteAll(array('Flag.id'=>$ids))){
+							$this->Session->setFlash(__('The flag or flags were deleted successfully.', true));
+							$this->redirect(array('action'=>'index'));
+						}
+				  		break;
+				case 1:
+						/*
+							Traverse the selected items and update the models that need to be deactivated.
+						*/
+						foreach($ids as $id){
+							$flag = $this->Flag->read(null,$id);
+							$this->Flag->$flag['Flag']['model']->id = $flag['Flag']['model_id'];
+							$this->Flag->$flag['Flag']['model']->saveField('active',0); //Update the item record and deactivate it
+						}
+						//Delete the flags now
+						if($this->Flag->deleteAll(array('Flag.id'=>$ids))){
+							$this->Session->setFlash(__('The item(s) were deactivated successfully.', true));
+							$this->redirect(array('action'=>'index'));
+						}
+						break;
+				default:
+					$this->Session->setFlash(__('Something went wrong, please try again.', true));
+					$this->redirect(array('action'=>'index'));
+					exit();
+			}
+			
+			exit();
+		}
 	}
 	
 	/**
