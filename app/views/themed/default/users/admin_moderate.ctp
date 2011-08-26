@@ -56,7 +56,14 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 			<li><?php echo $this->Html->link('View your public profile',array('plugin'=>'forum','admin'=>false,'controller'=>'users','action'=>'profile',$user['User']['username']),array('title'=>'View your public profile.')); ?></li>
 			<br/>
 			<ul>
-				<li class="link">Website/Blog: <?php echo $this->Html->link($user['User']['url'],$user['User']['url'],array('target'=>'_blank')); ?></li>
+				<li class="link">
+					<?php if(empty($user['User']['url'])):
+						echo $this->Html->link('Add more details about yourself.','/settings'); 
+					else:
+						echo "Website/Blog:".$this->Html->link($user['User']['url'],$user['User']['url'],array('target'=>'_blank')); 
+					endif;
+					?>
+				</li>
 				<!--<li>
 					<?php 
 					//Link to the user's feed

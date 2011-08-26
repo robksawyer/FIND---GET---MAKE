@@ -33,12 +33,6 @@
  * @link http://book.cakephp.org/view/957/The-App-Controller
  */
 
-App::import(array(
-	'type' => 'File', 
-	'name' => 'Forum.ForumConfig', 
-	'file' => 'config'. DS .'core.php'
-));
-
 class AppController extends Controller {
 	
 	/**
@@ -47,7 +41,7 @@ class AppController extends Controller {
 	 * @access public
 	 * @var array
 	 */
-	public $uses = array();
+	//var $uses = array(); //WARNING: Enabling this will cancel out all models from being loaded.
 	
 	/**
 	 * Components.
@@ -55,7 +49,7 @@ class AppController extends Controller {
 	 * @access public
 	 * @var array
 	 */
-	public $components = array('RequestHandler','Session','Security','Auth','AutoLogin','Cookie','AjaxHandler', 
+	var $components = array('RequestHandler','Session','Security','Auth','AutoLogin','Cookie','AjaxHandler', 
 								'Forum.Toolbar','String','TwitterKit.Twitter','Facebook.Connect'
 								);
 
@@ -65,7 +59,7 @@ class AppController extends Controller {
 	 * @access public
 	 * @var array
 	 */
-	public $helpers = array('Form', 'Html', 'Time','Text','Session','Js' => array('Jquery'),
+	var $helpers = array('Form', 'Html', 'Time','Text','Session','Js' => array('Jquery'),
 						'Popup.Popup'=>array('Jquery'),'TwitterKit.Twitter','Facebook.Facebook',
 						'Forum.Cupcake', 'Forum.Decoda' => array()
 						);
@@ -77,7 +71,7 @@ class AppController extends Controller {
 	 * @var string
 	 * 
 	*/
-	public $view = 'Theme';
+	var $view = 'Theme';
 	
 	/**
 	 * The theme currently used
@@ -86,7 +80,7 @@ class AppController extends Controller {
 	 * @var string
 	 * 
 	*/
-	public $theme = 'default';
+	var $theme = 'default';
 	
 	/**
 	 * Run auto login logic.
@@ -134,18 +128,6 @@ class AppController extends Controller {
 										'User.active'=>1
 										);
 		
-		$Config = ForumConfig::getInstance();
-
-		// Load l10n/i18n support
-		if (isset($this->Auth) && $this->Auth->user('locale')) {
-			$locale = $this->Auth->user('locale');
-		} else {
-			$locale = (isset($Config->settings['default_locale']) ? $Config->settings['default_locale'] : 'eng');
-		}
-
-		Configure::write('Config.language', $locale);
-		setlocale(LC_ALL, $locale .'UTF8', $locale .'UTF-8', $locale, 'eng.UTF8', 'eng.UTF-8', 'eng', 'en_US');
-
 		// Auth settings
 		$referer = $this->referer();
 		if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/login') {
@@ -182,12 +164,6 @@ class AppController extends Controller {
 		}
 
 		$this->Cookie->key = Configure::read('Security.salt');
-
-		// Apply censored words
-		if (!empty($Config->settings['censored_words'])) {
-			$censored = explode(',', str_replace(', ', ',', $Config->settings['censored_words']));
-			$this->helpers['Forum.Decoda'] = array('censored' => $censored);
-		}
 
 		// Initialize
 		$this->Toolbar->initForum();

@@ -2,8 +2,10 @@
 class SourcesController extends AppController {
 
 	var $name = 'Sources';
+	
 	var $helpers = array('Tags.TagCloud');
-	var $components = array('Search.Prg','Uploader.Uploader','String');
+	
+	var $components = array('Search.Prg','Uploader.Uploader');
 
 	var $paginate = array(
 		'limit' => 25

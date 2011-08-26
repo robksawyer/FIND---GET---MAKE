@@ -34,13 +34,13 @@
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	Router::connect('/privacy', array('plugin'=>'','controller' => 'pages', 'action' => 'display','privacy'));
 	Router::connect('/terms', array('plugin'=>'','controller' => 'pages', 'action' => 'display','terms'));
-	Router::connect('/signup', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'signup'));
-	Router::connect('/forgot_password', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'forgot'));
+	Router::connect('/signup', array('plugin' => '', 'controller' => 'users', 'action' => 'signup'));
+	Router::connect('/forgot_password', array('plugin' => '', 'controller' => 'users', 'action' => 'forgot'));
 	Router::connect('/register', array('controller' => 'users', 'action' => 'register'));
-	Router::connect('/login',array('plugin'=>'forum','controller'=>'users','action'=>'login')); 
-	Router::connect('/logout',array('plugin'=>'forum','controller'=>'users','action'=>'logout')); 
+	Router::connect('/login',array('plugin'=>'','controller'=>'users','action'=>'login')); 
+	Router::connect('/logout',array('plugin'=>'','controller'=>'users','action'=>'logout')); 
 	Router::connect('/join',array('plugin'=>'','controller'=>'pages','action'=>'display','join')); 
-	Router::connect('/settings',array('plugin'=>'forum','controller'=>'users','action'=>'edit')); 
+	Router::connect('/settings',array('plugin'=>'','controller'=>'users','action'=>'edit')); 
 	
 	//Sitemap
 	Router::connect('/sitemap', array('controller' => 'sitemaps', 'action' => 'index')); 

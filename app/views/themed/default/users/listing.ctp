@@ -29,7 +29,7 @@
 		foreach ($users as $user) { ?>
         
     <tr<?php if ($counter % 2) echo ' class="altRow"'; ?>>
-        <td><?php echo $this->Html->link($user['User']['username'], array('action' => 'profile', $user['User']['id'])); ?></td>
+        <td><?php echo $this->Html->link($user['User']['username'], array('action' => 'profile', $user['User']['username'])); ?></td>
         <td class="ac"><?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></td>
         <td class="ac">
             <?php if (!empty($user['User'][$this->Cupcake->columnMap['lastLogin']])) {

@@ -1,61 +1,91 @@
-
+<?php
+$this->Html->script('jquery.masonry.min',array('inline'=>false));
+?>
 <?php // User exists
 if (!empty($user)) { ?>
-
-<div class="forumHeader">
+<div class="header profile">
 	<button type="button" onclick="goTo('<?php echo $this->Html->url(array('action' => 'report', $user['User']['id'])); ?>');" class="fr button"><?php __d('forum', 'Report User'); ?></button>
-	<h2><?php echo $user['User']['username']; ?></h2>
+	<?php // Gravatar
+	if ($this->Cupcake->settings['enable_gravatar'] == 1) {
+		if ($avatar = $this->Cupcake->gravatar($user['User']['email'])) {
+			echo "<div class='avatar'>".$avatar;
+			echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$user['User']['id']));
+			echo '<div class="clear"></div>';
+			echo "</div>";
+		}else{
+			echo "<div class='avatar'>";
+			echo $this->Html->image('no_gravatar.jpg')."<br/>";
+			echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$user['User']['id']));
+			echo '<div class="clear"></div>';
+			echo "</div>";
+		}
+	}
+	?>
+	<div class="user-details">
+		<ul>
+			<?php 
+				if(!empty($user['User']['fullname'])){
+					echo "<li class='name'>".$user['User']['fullname']; 
+					echo " <span class='serif'>a.k.a</span> ".$user['User']['username']."</li>";
+				}else{
+					echo "<li class='name'>".$user['User']['username']."</li>";
+				}
+			?>
+			<?php if (!empty($user['User']['about'])) { ?>
+			<li class="about value"><?php echo $user['User']['about']; ?></li>
+			<?php } ?>
+			<li class="link">Website/Blog: <?php echo $this->Html->link($user['User']['url'],$user['User']['url'],array('target'=>'_blank')); ?></li>
+			<li>Member since: <span class="value"><?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></span></li>
+		</ul>
+	</div>
 </div>
-
-<?php if (!empty($user['User'][$this->Cupcake->columnMap['signature']])) { ?>
-<p><?php $this->Decoda->parse($user['User'][$this->Cupcake->columnMap['signature']], false, array('b', 'i', 'u', 'img', 'url', 'align', 'color', 'size', 'code')); ?></p>
-<?php } ?>
-
-<table cellpadding="5" cellspacing="0" id="userInfo">
-<tr>
-	<td><strong><?php __d('forum', 'Joined'); ?>:</strong></td>
-    <td><?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></td>
-	<td><strong><?php __d('forum', 'Total Topics'); ?>:</strong></td>
-    <td><?php echo number_format($user['User'][$this->Cupcake->columnMap['totalTopics']]); ?></td>
-    <td><strong><?php __d('forum', 'Roles'); ?>:</strong></td>
-    <td>
-    	<?php if (!empty($user['Access'])) { 
-			$roles = array();
-			foreach ($user['Access'] as $access) {
-				$roles[] = $access['AccessLevel']['title'];
-			}
-			echo implode(', ', $roles);
-		} else {
-			echo '<em>'. __d('forum', 'N/A', true) .'</em>';
-		} ?>
-    </td>
-</tr>
-<tr>
-    <td><strong><?php __d('forum', 'Last Login'); ?>:</strong></td>
-    <td>
-		<?php if (!empty($user['User'][$this->Cupcake->columnMap['lastLogin']])) {
-			echo $this->Time->relativeTime($user['User'][$this->Cupcake->columnMap['lastLogin']], array('userOffset' => $this->Cupcake->timezone()));
-		} else {
-			echo '<em>'. __d('forum', 'Never', true) .'</em>';
-		} ?>
-    </td>
-    <td><strong><?php __d('forum', 'Total Posts'); ?>:</strong></td>
-    <td><?php echo number_format($user['User'][$this->Cupcake->columnMap['totalPosts']]); ?></td>
-    <td><strong><?php __d('forum', 'Moderates'); ?>:</strong></td>
-    <td>
-    	<?php if (!empty($user['Moderator'])) { 
-			$mods = array();
-			foreach ($user['Moderator'] as $mod) {
-				$mods[] = $this->Html->link($mod['ForumCategory']['title'], array('controller' => 'category', 'action' => 'view', $mod['ForumCategory']['id']));
-			}
-			echo implode(', ', $mods);
-		} else {
-			echo '<em>'. __d('forum', 'N/A', true) .'</em>';
-		} ?>
-    </td>
-</tr>
-</table>
-
+<div class="moderate-area">
+	<div class="left-container-with-sidebar">
+		<div class="header red"><?php 
+				__('running bond: what '.$user['User']['username'].' is posting.');
+		?></div>
+		<?php
+		echo $this->element('user-feed',array('cache'=>false,'user_id'=>$user['User']['id']));
+		?>
+	</div>
+	<div class="right-sidebar">
+		<ul class="stats">
+			<div class="title"><?php echo $user['User']['username']."'s"; ?> totals</div>
+			<li>
+				<div class='total'>
+					<?php echo $this->Html->link($user['User']['totalFollowers'],array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'followers',$user['User']['username'])); ?>
+					<span>followers</span>
+				</div> 
+				<div class='total'>
+					<?php echo $this->Html->link($user['User']['totalUsersFollowing'],array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'following',$user['User']['username'])); ?>
+					<span>following</span>
+				</div>
+			</li>
+			<li>
+				<div class='total'>
+					<?php echo $this->Html->link($user['User']['totalSources'],array('plugin'=>'','admin'=>false,'controller'=>'sources','action'=>'users',$user['User']['id'])); ?>
+					<span>sources</span>
+				</div> 
+				<div class='total'>
+					<?php echo $this->Html->link($user['User']['totalProducts'],array('plugin'=>'','admin'=>false,'controller'=>'products','action'=>'users',$user['User']['id'])); ?>
+					<span>products</span>
+				</div>
+			</li>
+			<li>
+				<div class='total'>
+					<?php echo $this->Html->link($user['User']['totalInspirations'],array('plugin'=>'','admin'=>false,'controller'=>'inspirations','action'=>'users',$user['User']['id'])); ?>
+					<span>inspirations</span>
+				</div> 
+				<div class='total'>
+					<?php echo $this->Html->link($user['User']['totalCollections'],array('plugin'=>'','admin'=>false,'controller'=>'collections','action'=>'users',$user['User']['id'])); ?>
+					<span>collections</span>
+				</div>
+			</li>
+			<div class="clear"></div>
+		</ul>
+	</div>
+</div>
+<div class="clear"></div>
 <?php // Topics
 if (!empty($topics)) { ?>
 <div class="forumWrap">
@@ -120,3 +150,7 @@ if (!empty($posts)) { ?>
 <?php __d('forum', 'The user you are looking for does not exist.'); ?>
 
 <?php } ?>
+<?php
+//If this is removed the like/dislike buttons will not work
+echo $this->Js->writeBuffer();
+?>

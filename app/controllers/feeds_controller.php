@@ -3,6 +3,8 @@ class FeedsController extends AppController {
 
 	var $name = 'Feeds';
 	
+	var $uses = array('Feed');
+	
 	var $paginate = array(
 		'Feed' => array(
 			'limit' => 25,

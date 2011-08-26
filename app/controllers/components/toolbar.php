@@ -41,7 +41,7 @@ class ToolbarComponent extends Object {
 	public function initForum() {
 		if (!$this->Session->check('Forum.isBrowsing')) {
 			$user_id = $this->Controller->Auth->user('id');
-
+				
 			// How much access we have?
 			if (!$this->Session->check('Forum.access')) {
 				$access = array('Guest' => 0);
@@ -196,7 +196,7 @@ class ToolbarComponent extends Object {
 	 */
 	public function pageTitle() {
 		$args = func_get_args();
-		array_unshift($args, __d('forum', 'Forum', true));
+		array_unshift($args, __('Forum', true));
 		
 		$this->Controller->set('title_for_layout', implode(' &raquo; ', $args));
 	}
@@ -210,22 +210,22 @@ class ToolbarComponent extends Object {
 	 * @return void
 	 */
 	public function resetPassword($user, $reset = false) {
-		$User = ClassRegistry::init('Forum.User');
+		$User = ClassRegistry::init('User');
 		$password = $User->generate();
 		$User->resetPassword($user['User']['id'], $this->Controller->Auth->password($password));
 		
 		// Send email
 		if (!$reset) {
-			$message = sprintf(__d('forum', 'You have requested the login credentials for %s, your information is listed below', true), $this->settings['site_name']) .":\n\n";
-			$subject = __d('forum', 'Forgotten Password', true);
+			$message = sprintf(__('You have requested the login credentials for %s, your information is listed below', true), $this->settings['site_name']) .":\n\n";
+			$subject = __('Forgotten Password', true);
 		} else {
-			$message = sprintf(__d('forum', 'Your password has been reset for %s, your information is listed below', true), $this->settings['site_name']) .":\n\n";
-			$subject = __d('forum', 'Reset Password', true);
+			$message = sprintf(__('Your password has been reset for %s, your information is listed below', true), $this->settings['site_name']) .":\n\n";
+			$subject = __('Reset Password', true);
 		}
 		
-		$message .= __d('forum', 'Username', true) .": ". $user['User']['username'] ."\n";
-		$message .= __d('forum', 'Password', true) .": ". $password ."\n\n";
-		$message .= __d('forum', 'Please change your password once logging in.', true);
+		$message .= __('Username', true) .": ". $user['User']['username'] ."\n";
+		$message .= __('Password', true) .": ". $password ."\n\n";
+		$message .= __('Please change your password once logging in.', true);
 		
 		$this->Controller->Email->to = $user['User']['username'] .' <'. $user['User']['email'] .'>';
 		$this->Controller->Email->from = $this->settings['site_name'] .' <'. $this->settings['site_email'] .'>';
