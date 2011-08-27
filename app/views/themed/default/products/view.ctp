@@ -55,13 +55,20 @@
 																			'cache'=>false
 																			));
 					?>
+					
+					<div class="added-by" style="text-align:center">
+						<?php
+							echo $this->element('avatar',array('cache'=>false,'user'=>$product,'height'=>'32'));
+					 		echo "Found by ".$this->Html->link($product['User']['username'],array('plugin'=>'forum','controller'=>'users','action'=>'profile',$product['User']['username']));
+						?>
+					</div>
 				</div>
 				<!--- DETAILS SECTION -->
 				<div class="details">
 					<h3 class="header"><?php 
 							__($product['Product']['name']);
 							if(!empty($product['Source']['name'])){
-								echo "<span class='light-grey'> &mdash;".$this->Html->link($product['Source']['name'], array('controller' => 'sources', 'action' => 'view', $product['Source']['id']))."</span>";
+								echo "<span class='light-grey'> &mdash; ".$this->Html->link($product['Source']['name'], array('controller' => 'sources', 'action' => 'view', $product['Source']['id']))."</span>";
 							}
 						?></h3>
 					<ul>
@@ -91,9 +98,6 @@
 							echo $this->Html->link('Buy',$product['Product']['purchase_url'],array('title'=>$product['Product']['purchase_url'],'target'=>'_blank'));
 						}
 						?>
-						</li>
-						<li class="found-by">
-							Found by <?php echo $this->Html->link($product['User']['username'],array('plugin'=>'forum','controller'=>'users','action'=>'profile',$product['User']['username'])); ?>
 						</li>
 					</ul>
 				</div>

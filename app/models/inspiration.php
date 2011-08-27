@@ -119,7 +119,6 @@ class Inspiration extends AppModel {
 	*/
 	function beforeFind($queryData){
 		$conditions = $queryData['conditions'];
-		
 		if(!is_array($conditions)) {
 			if(!$conditions) {
 				$conditions = array();
@@ -132,6 +131,7 @@ class Inspiration extends AppModel {
 			$conditions[$this->alias.'.active'] = 1;
 		}
 		$queryData['conditions'] = $conditions;
+		//$queryData['recursive'] = 1;
 		return $queryData;
 	}
 	

@@ -7,7 +7,6 @@ class InspirationsController extends AppController {
 							'Uploader.Uploader',
 							'String',
 							'RequestHandler'
-							//'Comments.Comments' => array('userModelClass' => 'Users.User')
 							);
 	
 	var $paginate = array(
@@ -89,12 +88,11 @@ class InspirationsController extends AppController {
 									'tagged',
 									'model' => 'Inspiration',
 									'by' => $this->passedArgs['by'],
-									'recursive'=>2
-									//'recursive' => 2 //Doesn't change anything
+									'recursive'=>2 //Removing this throws errors.
 								)
 							);
 			$inspirations = Set::filter($this->paginate('Tagged')); //Remove empty values
-			//debug($inspirations);
+
 			//Build a new array
 			if(!empty($inspirations)){
 				foreach($inspirations as $inspiration){

@@ -5,7 +5,7 @@
 <h2><?php 
 			__($source['Source']['name']);
 			if(!empty($source['SourceCategory']['name'])){
-				echo "<span class='light-grey'> &mdash;".$this->Html->link($source['SourceCategory']['name'],array('controller'=>'source_categories','action'=>'view',$source['SourceCategory']['id']))."</span>";
+				echo "<span class='light-grey'> &mdash; ".$this->Html->link($source['SourceCategory']['name'],array('controller'=>'source_categories','action'=>'view',$source['SourceCategory']['id']))."</span>";
 			}
 			if(!empty($source['Source']['url'])):
 				echo "<br/>&#x21B3;"."<span class='link'>".$this->Html->link($source['Source']['url'],$source['Source']['url'],array('target'=>'_blank'))."</span>";
@@ -18,6 +18,16 @@
 																'cache'=>false
 																));
 		?>
+		<?php if(!empty($source['User']['username'])): ?>
+			<div class="added-by" style="text-align:center">
+				<?php
+					echo $this->element('avatar',array('cache'=>false,'user'=>$source,'height'=>'32'));
+			 		echo "Added by ".$this->Html->link($source['User']['username'],array('plugin'=>'forum','controller'=>'users','action'=>'profile',$source['User']['username']));
+				?>
+			</div>
+		<?php else: ?>
+			<div class="added-by"><?php echo "Found by unknown"; ?></div>
+		<?php endif; ?>
 	</div>
 	<?php if(!empty($source['Source']['description'])): ?>
 	<dl class="description">
@@ -84,11 +94,6 @@
 		</dd>
 	</dl>
 	<div class="clear"></div>
-	<?php if(!empty($source['User']['username'])): ?>
-		<div class="added-by"><?php echo "Found by ".$this->Html->link($source['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$source['User']['username'])); ?></div>
-	<?php else: ?>
-		<div class="added-by"><?php echo "Found by unknown"; ?></div>
-	<?php endif; ?>
 	<?php 
 		echo $this->element('share-buttons',array('controller'=>'sources',
 																'keycode'=>$source['Source']['keycode'],

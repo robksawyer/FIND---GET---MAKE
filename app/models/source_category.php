@@ -29,6 +29,25 @@ class SourceCategory extends AppModel {
 		)
 	);
 	
+	/**
+	 * This method keeps the category from being deleted if there are sources inside.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function beforeDelete(){
+		$count = $this->Source->find("count", array(
+													"conditions" => array(
+																		"source_category_id" => $this->id
+																		)
+																	));
+		if ($count == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/** 
 	 * Returns all of the categories in the system
 	 * @param 

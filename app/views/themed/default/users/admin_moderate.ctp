@@ -129,23 +129,7 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 			echo "<span>Followers ".$authUser['User']['totalFollowers']."</span>";
 			echo "<div>";
 			foreach($followers as $follower){
-				 // Gravatar
-				if ($this->Cupcake->settings['enable_gravatar'] == 1) {
-					if ($avatar = $this->Cupcake->gravatar($follower['User']['email'])) {
-						echo "<div class='avatar'>";
-						echo $this->Html->link($avatar,array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$follower['User']['username']),array('title'=>$follower['User']['username'],'escape'=>false));
-						echo "</div>";
-					}else{
-						echo "<div class='avatar'>";
-						echo $this->Html->image('no_gravatar.jpg',array(
-																					'url'=>array('admin'=>false,'plugin'=>'','controller'=>'users',
-																										'action'=>'profile',$follower['User']['username']
-																										),
-																					'title'=>$follower['User']['username']
-																				));
-						echo "</div>";
-					} 
-				}
+				echo $this->element('avatar-follower',array('cache'=>false,'follower'=>$follower));
 			}
 			echo "</div>";
 			echo "<div class='view-all'>";

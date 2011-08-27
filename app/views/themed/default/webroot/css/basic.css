@@ -375,6 +375,20 @@ div.message {
 	margin-top: 10px;
 }
 
+.view .right-sidebar .added-by{
+	border: 1px solid #e7e7e7;
+	padding: 10px;
+	margin: 10px;
+}
+
+.view .right-sidebar .added-by img{
+	height: 48px !important;
+}
+
+.view .right-sidebar .added-by {
+	font-size: 11px;
+}
+
 .collection .product{
 	position: relative;
 	float: left;
@@ -1093,6 +1107,51 @@ h3.header{
 	position: relative;
 	margin: 0 0 10px 0;
 	float: left;
+}
+
+.left-container .find-people{
+	padding: 10px 0px;
+	margin: 10px 10px 10px 0px;
+	font-size: 14px;
+	width: 200px;
+}
+
+.left-container .find-people li,
+.left-container .find-people li:hover{
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F4F4F4), to(#ECECEC));
+	border: 1px solid #D4D4D4;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	color: #333;
+	cursor: pointer;
+	display: block;
+	overflow: visible;
+	position: relative;
+	text-shadow: #ffffff 1px 1px 0px;
+	white-space: nowrap;
+	text-decoration: none;
+	margin: 10px 0;
+	padding: 4px 9px 4px 7px;
+}
+
+.left-container .find-people li:hover{
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#599BDC), to(#3072B3));
+	border-color: #2A65A0;
+	color: #ffffff;
+	text-decoration: none;
+	text-shadow: #000000 1px 1px 0px;
+	font-weight: normal;
+}
+
+.left-container .find-people li > a{
+	display: block;
+	height: 21px;
+	line-height: 21px;
+	text-decoration: none;
+}
+
+.left-container .find-people li > a:hover{
+	color: #ffffff;
 }
 
 .right-container{
@@ -2352,6 +2411,8 @@ input, textarea {
 }
 
 .profile .avatar img{
+	width: 100px;
+	height: 100px;
 	margin: 0 15px 5px 0;
 }
 

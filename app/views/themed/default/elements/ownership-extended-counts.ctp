@@ -30,16 +30,7 @@
 		<?php 
 			foreach($haveusers as $user){
 				echo "<div class='ownership-item'>";
-				// Gravatar
-				if ($this->Cupcake->settings['enable_gravatar'] == 1) {
-					echo "<div class='avatar'>";
-					if ($avatar = $this->Cupcake->gravatar($user['User']['email'])) {
-						echo $this->Html->link($avatar,array('controller'=>'users','action'=>'profile','plugin'=>'forum',$user['User']['username']),array('escape'=>false));
-					}else{
-						echo $this->Html->image('no_gravatar.jpg',array('url'=>array('controller'=>'users','action'=>'profile','plugin'=>'forum',$user['User']['username'])));
-					}
-					echo "</div>";
-				}
+				echo $this->element('avatar',array('cache'=>false,'user'=>$user,'height'=>'64'));
 				echo $this->Html->link(__($user['User']['username'],true),array('controller'=>'users','action'=>'view',$user['User']['slug']));
 				echo "</div>";
 			}
@@ -54,16 +45,7 @@
 			//debug($wantusers); 
 			foreach($wantusers as $user){
 				echo "<div class='ownership-item'>";
-				// Gravatar
-				if ($this->Cupcake->settings['enable_gravatar'] == 1) {
-					echo "<div class='avatar'>";
-					if ($avatar = $this->Cupcake->gravatar($user['User']['email'])) {
-						echo $this->Html->link($avatar,array('controller'=>'users','action'=>'profile','plugin'=>'forum',$user['User']['id']),array('escape'=>false));
-					}else{
-						echo $this->Html->image('no_gravatar.jpg',array('url'=>array('controller'=>'users','action'=>'profile','plugin'=>'forum',$user['User']['username'])));
-					} 
-				}
-				echo "</div>";
+				echo $this->element('avatar',array('cache'=>false,'user'=>$user,'height'=>'64'));
 				echo $this->Html->link(__($user['User']['username'],true),array('controller'=>'users','action'=>'profile','plugin'=>'forum',$user['User']['id']));
 				echo "</div>";
 			}

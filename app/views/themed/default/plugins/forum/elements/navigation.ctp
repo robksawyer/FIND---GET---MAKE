@@ -6,7 +6,7 @@
 				//$links[] = $this->Html->link(__('View New Posts', true), array('controller' => 'search', 'action' => 'index', 'new_posts', 'admin' => false));
 				$links[] = $this->Html->link(__('View Your Profile', true), array('controller' => 'users', 'action' => 'profile', $this->Cupcake->user('username'), 'admin' => false));
 				if($this->params['action']!='edit'){
-					$links[] = $this->Html->link(__('Edit Profile', true), array('controller' => 'users', 'action' => 'edit', 'admin' => false));
+					$links[] = $this->Html->link(__('Edit Your Profile', true), array('controller' => 'users', 'action' => 'edit', 'admin' => false));
 				}
 				//$links[] = $this->Html->link(__('Logout', true), array('controller' => 'users', 'action' => 'logout', 'admin' => false));
 		  } else {
@@ -22,3 +22,4 @@
 	 <?php echo $this->Html->getCrumbs(' &raquo; '); ?>
 	 <span class="clear"><!-- --></span>
 </div>
+<div class="clear"></div>

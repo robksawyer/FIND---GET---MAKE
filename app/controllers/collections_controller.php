@@ -90,8 +90,8 @@ class CollectionsController extends AppController {
 								'Tagged'=>array(
 									'tagged',
 									'model' => 'Collection',
-									'by' => $this->passedArgs['by']
-									//'recursive' => 2 //Doesn't change anything
+									'by' => $this->passedArgs['by'],
+									'recursive'=>2 //Removing this throws errors.
 								)
 							);
 			$collections = Set::filter($this->paginate('Tagged')); //Remove empty values

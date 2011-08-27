@@ -15,7 +15,7 @@ class AttachmentsController extends AppController {
 		parent::beforeFilter();
 		
 		$this->Uploader->enableUpload = true;
-		$this->Uploader->maxFileSize = '75M'; // 75 Megabytes
+		$this->Uploader->maxFileSize = '10M'; // 75 Megabytes
 		//debug($controller);
 		$this->Uploader->uploadDir = "media/transfer/img/temp/";
 		//$this->Uploader->tempDir = "media/transfer/img/temp_transfer/";

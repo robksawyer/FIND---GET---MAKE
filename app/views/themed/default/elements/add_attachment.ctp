@@ -43,5 +43,5 @@ echo $this->Html->image('/img/icons/delete.gif',array('alt'=>'Cancel','url'=>'ja
 if(empty($removeTitle)) echo $this->Form->input('Attachment.title',array('label'=>'Image Title','after'=>'<div class="extra">Note: This shows up when you hover over the image.</div>'));
 if(empty($removeTitle)) echo $this->Form->input('Attachment.source_url',array('label'=>'Image Source URL','after'=>'<div class="extra">Where did you find this item? Give credit where credit is due.</div>'));
 ?>
-<div class="after">Maximum size of 700k. JPG, GIF, PNG.</div>
+<div class="after">Maximum size of 10MB. JPG, GIF, PNG.</div>
 </fieldset>

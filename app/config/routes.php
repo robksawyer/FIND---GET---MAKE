@@ -40,6 +40,7 @@
 	Router::connect('/login',array('plugin'=>'','controller'=>'users','action'=>'login')); 
 	Router::connect('/logout',array('plugin'=>'','controller'=>'users','action'=>'logout')); 
 	Router::connect('/profile/*', array('plugin' => '', 'controller' => 'users', 'action' => 'profile'));
+	Router::connect('/profile/*', array('plugin' => 'forum', 'controller' => 'users', 'action' => 'profile'));
 	Router::connect('/join',array('plugin'=>'','controller'=>'pages','action'=>'display','join')); 
 	Router::connect('/account/settings',array('plugin'=>'','controller'=>'users','action'=>'edit')); 
 	

@@ -173,6 +173,7 @@ class Product extends AppModel {
 			$conditions[$this->alias.'.active'] = 1;
 		}
 		$queryData['conditions'] = $conditions;
+		$queryData['recursive'] = 1;
 		return $queryData;
 	}
 	
@@ -262,7 +263,8 @@ class Product extends AppModel {
 	function getAll(){
 		$products = $this->find('all',
 						array(
-							'order' => array('Product.created DESC')
+							'order' => array('Product.created DESC'),
+							'recursive' => 2
 							)
 						);
 		return $products;

@@ -34,7 +34,13 @@ if (!empty($user)) { ?>
 			<?php if (!empty($user['User']['about'])) { ?>
 			<li class="about value"><?php echo $user['User']['about']; ?></li>
 			<?php } ?>
-			<li class="link">Website/Blog: <?php echo $this->Html->link($user['User']['url'],$user['User']['url'],array('target'=>'_blank')); ?></li>
+			<li class="link">Website/Blog: <?php 
+					if(empty($user['User']['url'])){
+						echo "n/a";
+					}else{
+						echo $this->Html->link($user['User']['url'],$user['User']['url'],array('target'=>'_blank')); 
+					}
+				?></li>
 			<li>Member since: <span class="value"><?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></span></li>
 		</ul>
 	</div>

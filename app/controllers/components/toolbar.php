@@ -16,7 +16,7 @@ class ToolbarComponent extends Object {
 	 * @access public
 	 * @var array
 	 */
-	public $components = array('Session');
+	public $components = array('Session','Email');
 	
 	/**
 	 * Initialize.

@@ -94,6 +94,7 @@ class Collection extends AppModel {
 			$conditions[$this->alias.'.active'] = 1;
 		}
 		$queryData['conditions'] = $conditions;
+		//$queryData['recursive'] = 2;
 		return $queryData;
 	}
 	

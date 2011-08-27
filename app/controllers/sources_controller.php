@@ -95,7 +95,7 @@ class SourcesController extends AppController {
 									'model' => 'Source',
 									'tagged',
 									'by' => $this->passedArgs['by'],
-									//'recursive' => 2 //Doesn't change anything
+									'recursive'=>2 //Removing this throws errors.
 								)
 							);
 			$sources = Set::filter($this->paginate('Tagged')); //Remove empty values

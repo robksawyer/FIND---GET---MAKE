@@ -29,5 +29,24 @@ class ContractorSpecialty extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	
+	/**
+	 * This method keeps a specialty from being deleted if there are contractors inside.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function beforeDelete(){
+		$count = $this->Contractor->find("count", array(
+													"conditions" => array(
+																		"contractor_specialty_id" => $this->id
+																		)
+																	));
+		if ($count == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }

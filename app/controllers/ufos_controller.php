@@ -44,8 +44,8 @@ class UfosController extends AppController {
 								'Tagged'=>array(
 									'model' => 'Ufo',
 									'tagged',
-									'by' => $this->passedArgs['by']
-									//'recursive' => 2 //Doesn't change anything
+									'by' => $this->passedArgs['by'],
+									'recursive'=>2 //Removing this throws errors.
 								)
 							);
 			$ufos = $this->paginate('Tagged');

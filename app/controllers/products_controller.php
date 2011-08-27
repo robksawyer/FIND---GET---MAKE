@@ -89,14 +89,12 @@ class ProductsController extends AppController {
 		}
 		
 		if (isset($this->passedArgs['by'])) {
-			$this->paginate = array(
-								'Tagged'=>array(
-									'tagged',
-									'model' => 'Product',
-									'by' => $this->passedArgs['by']
-									//'recursive' => 2 //Doesn't change anything
-								)
-							);
+			$this->paginate['Tagged'] = array(
+												'model' => 'Product',
+												'tagged',
+												'by' => $this->passedArgs['by'],
+												'recursive'=>2 //Removing this throws errors.
+											);
 			$products = Set::filter($this->paginate('Tagged')); //Remove empty values
 			//Build a new array
 			foreach($products as $product){

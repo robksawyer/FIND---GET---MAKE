@@ -156,6 +156,7 @@ class Attachment extends AppModel {
 			$conditions[$this->alias.'.active'] = 1;
 		}
 		$queryData['conditions'] = $conditions;
+		$queryData['recursive'] = 1;
 		return $queryData;
 	}
 	
@@ -242,8 +243,8 @@ class Attachment extends AppModel {
 	*/
 	public function getAvatar($attachment_id=null,$user_id=null){
 		$avatar = $this->find('first',array('conditions'=>array(
-																'id'=>$attachment_id,
-																'user_id'=>$user_id
+																'Attachment.id'=>$attachment_id,
+																'Attachment.user_id'=>$user_id
 																)));
 		if(!empty($avatar)) return $avatar; else return false;
 	}

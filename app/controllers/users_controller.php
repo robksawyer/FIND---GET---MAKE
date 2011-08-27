@@ -105,12 +105,15 @@ class UsersController extends AppController {
 		if (!empty($this->data)) {
 			$this->User->id = $user_id;
 			$this->User->set($this->data);
-			
+	
 			$errors = $this->User->invalidFields();
-			$user_by_email = $this->User->find('first',array('conditions'=>array(
-																				'email'=>mysql_real_escape_string($this->data['User']['email'])
-																				))
-																				);
+			if(!empty($this->data['User']['email'])){
+				$user_by_email = $this->User->find('first',array('conditions'=>array(
+																					'User.email'=>mysql_real_escape_string($this->data['User']['email'])
+																					))
+																					);
+			}
+			
 			if(!empty($user_by_email)){
 				if(intval($user_by_email['User']['id']) != intval($user_id)){
 					$fail = 1;
@@ -125,11 +128,13 @@ class UsersController extends AppController {
 					$this->data['User']['password'] = $this->Auth->password($this->data['User']['newPassword']);
 				}
 				//Cleanup
-				if($this->data['User']['url'] == "http://") $this->data['User']['url'] = '';
 				if(!empty($this->data['User']['url'])){
-					$this->data['User']['url'] = $this->cleanURL($this->data['User']['url']); //Clean the URL
+					if($this->data['User']['url'] == "http://") $this->data['User']['url'] = '';
+					if(!empty($this->data['User']['url'])){
+						$this->data['User']['url'] = $this->cleanURL($this->data['User']['url']); //Clean the URL
+					}
 				}
-
+		
 				$this->User->id = $user_id;
 				
 				//if ($this->User->save($this->data)){
@@ -152,6 +157,11 @@ class UsersController extends AppController {
 				$this->data['User'][$field] = $value;
 			}
 		}
+		
+		//Clear the password fields
+		$this->data['User']['oldPassword'] = '';
+		$this->data['User']['newPassword'] = '';
+		$this->data['User']['confirmPassword'] = '';
 		
 		//Check for a local avatar details
 		if(!empty($user['User']['attachment_id'])){
@@ -651,7 +661,9 @@ class UsersController extends AppController {
 		$this->set(compact('haveProducts'));*/
 		
 		//$user = $this->User->read(null,$user['User']['id']);
+		$this->User->UserFollowing->recursive = 1;
 		$followers = $this->User->UserFollowing->findFollowers($user['User']['id'],5);
+		$this->User->Ownership->recursive = 1;
 		$user_wants = $this->User->Ownership->getUserWantCount('Product',$user['User']['id']);
 		$user_haves = $this->User->Ownership->getUserHaveCount('Product',$user['User']['id']);
 		$this->set(compact('user_wants','user_haves','followers'));

@@ -29,6 +29,25 @@ class ProductCategory extends AppModel {
 		)
 	);
 	
+	/**
+	 * This method keeps the category from being deleted if there are products inside.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function beforeDelete(){
+		$count = $this->Product->find("count", array(
+													"conditions" => array(
+																		"product_category_id" => $this->id
+																		)
+																	));
+		if ($count == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/** 
 	 * Returns all of the categories in the system
 	 * @param 

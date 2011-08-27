@@ -36,6 +36,12 @@
 																	'cache'=>false
 																	));
 			?>
+			<div class="added-by" style="text-align:center">
+				<?php
+					echo $this->element('avatar',array('cache'=>false,'user'=>$inspiration,'height'=>'32'));
+			 		echo "Added by ".$this->Html->link($inspiration['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$inspiration['User']['username'])); 
+				?>
+			</div>
 		</div>
 		<!--- DETAILS SECTION -->
 		<div class="details">
@@ -48,9 +54,6 @@
 					<?php echo "Designed by ".$inspiration['Inspiration']['designer']; ?>
 				</li>
 			<?php endif; ?>
-				<li class="added-by">
-					<?php echo "Added by ".$this->Html->link($inspiration['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$inspiration['User']['username'])); ?>
-				</li>
 				<li class="address">
 					<?php
 						if(
@@ -99,6 +102,7 @@
 				</li>
 				<?php endif; ?>
 				<li class="description"><?php if(!empty($inspiration['Inspiration']['description'])) echo $inspiration['Inspiration']['description']; ?></li>
+				<div class="clear"></div>
 			</ul>
 		</div>
 		<!--- END DETAILS SECTION -->

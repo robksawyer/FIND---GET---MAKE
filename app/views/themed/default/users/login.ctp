@@ -21,6 +21,7 @@
 					<?php echo $this->Form->input('username', array('label' => __('Username', true))); ?>
 					<?php echo $this->Form->input('password', array('label' => __('Password', true), 'type' => 'password')); ?>
 					<?php echo $this->Form->input('auto_login', array('type' => 'checkbox', 'label' => __('Remember Me?', true))); ?>
+					<?php echo $this->Html->link('Forgot your password?',array('admin'=>false,'controller'=>'users','action'=>'forgot'))?>
 				</fieldset>
 				<?php echo $this->Form->end(__('Login', true)); ?>
 			</div>
@@ -63,6 +64,7 @@
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function() {
+	
 	var profiles = {
 		windowCenter:{
 			height:500,
@@ -90,7 +92,6 @@ $(document).ready(function() {
 $("#join").corner("10px");
 $(".basic").corner('10px');
 $(".basic-sign-up").corner("10px");
-$(".plus-sign-up").corner("10px");
 
 //]]>
 </script>
