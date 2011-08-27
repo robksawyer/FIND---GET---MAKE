@@ -135,8 +135,7 @@
 																				'cache'=>false
 																				));
 			}else{
-				//$this->cakeError('basic','You did not set the products or product list values.');
-				debug('ERROR: You did not set the products or product list values.');
+				$this->log('You did not set the products or product list values.');
 			}
 		?>
 		<div class="clear"></div>

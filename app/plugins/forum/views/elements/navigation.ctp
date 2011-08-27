@@ -1,4 +1,3 @@
-
 <div id="navigation">
     <span class="fr">
         <?php // User links

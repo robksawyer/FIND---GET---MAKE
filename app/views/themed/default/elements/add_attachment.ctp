@@ -40,7 +40,8 @@ function uploadViaLocal(){
 echo $this->Form->input('Attachment.file', array('type'=>'file','id'=>'attach-local','after'=>'<a href="javascript:return false;" onclick="uploadViaUrl();" class="use-url">Use a URL instead</a>','label'=>'Upload file'));
 echo $this->Form->input('Attachment.url', array('type'=>'text','id'=>'attach-url','label'=>'Upload via URL'));
 echo $this->Html->image('/img/icons/delete.gif',array('alt'=>'Cancel','url'=>'javascript:uploadViaLocal(); return false;','class'=>'cancel-url','title'=>'Cancel and add a local file.'));
-echo $this->Form->input('Attachment.title',array('label'=>'Image Title','after'=>'<div class="extra">Note: This shows up when you hover over the image.</div>'));
-echo $this->Form->input('Attachment.source_url',array('label'=>'Image Source URL','after'=>'<div class="extra">Where did you find this item? Give credit where credit is due.</div>'));
+if(empty($removeTitle)) echo $this->Form->input('Attachment.title',array('label'=>'Image Title','after'=>'<div class="extra">Note: This shows up when you hover over the image.</div>'));
+if(empty($removeTitle)) echo $this->Form->input('Attachment.source_url',array('label'=>'Image Source URL','after'=>'<div class="extra">Where did you find this item? Give credit where credit is due.</div>'));
 ?>
+<div class="after">Maximum size of 700k. JPG, GIF, PNG.</div>
 </fieldset>

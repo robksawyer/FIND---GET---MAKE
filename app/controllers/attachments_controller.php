@@ -11,12 +11,12 @@ class AttachmentsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function beforeFilter(){
+	public function beforeFilter(){
 		parent::beforeFilter();
 		
 		$this->Uploader->enableUpload = true;
 		$this->Uploader->maxFileSize = '75M'; // 75 Megabytes
-		//debug($plural_model);
+		//debug($controller);
 		$this->Uploader->uploadDir = "media/transfer/img/temp/";
 		//$this->Uploader->tempDir = "media/transfer/img/temp_transfer/";
 		
@@ -30,7 +30,7 @@ class AttachmentsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function beforeRender(){
+	public function beforeRender(){
 		//Check to see if the user has flagged the item
 		$user_id = $this->Auth->user('id');
 		$model = $this->modelClass;
@@ -39,7 +39,7 @@ class AttachmentsController extends AppController {
 	}
 	
 	
-	function index() {
+	public function index() {
 		$this->Attachment->recursive = 2;
 		$attachments = $this->paginate();
 		if(isset($this->params['requested'])) {
@@ -56,7 +56,7 @@ class AttachmentsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function view($id = null) {
+	public function view($id = null) {
 		$this->Attachment->recursive = 2;
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid attachment', true));
@@ -72,7 +72,7 @@ class AttachmentsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function key($keycode=null){
+	public function key($keycode=null){
 		$this->Attachment->recursive = 2;
 		$this->layout = 'client_review';
 		if (!$keycode && empty($this->data)) {
@@ -88,7 +88,7 @@ class AttachmentsController extends AppController {
 		$this->set('string', $this->String);
 	}
 	
-	function photo_tag_view($id = null) {
+	public function photo_tag_view($id = null) {
 		$this->Attachment->recursive = 2;
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid attachment', true));
@@ -105,14 +105,14 @@ class AttachmentsController extends AppController {
 				$id = intval($this->passedArgs['id']);
 				
 				//Pluralize the model name
-				$plural_model = strtolower($model);
-				$plural_model = Inflector::pluralize($plural_model);
+				$controller = strtolower($model);
+				$controller = Inflector::pluralize($controller);
 
 				//Find the actual record and make sure it's legit.
 				$item = $this->Attachment->$model->findById($id);
 				if(!empty($item)){
 					//Pass along the details
-					$this->set(compact('item','model','plural_model'));
+					$this->set(compact('item','model','controller'));
 				}else{
 					$this->Session->setFlash(__('This record does not exist.', true));
 					//TODO:Redirect the user or set a variable that hides the upload field.
@@ -139,14 +139,14 @@ class AttachmentsController extends AppController {
 					$url = trim($this->data['Attachment']['url']);
 					if($url){
 						unset($this->data['Attachment']['url']);
-						$this->saveURLAttachments($item,$model,$plural_model,$url, $filename);
+						$this->saveURLAttachments($item,$model,$controller,$url, $filename);
 					}
 					//debug($this->data);
 				}else if(!empty($this->data['Attachment']['file']['name'])){
 					//Save the local file
 					unset($this->data['Attachment']['url']);
 					//This is the save routine for specific models
-					$this->saveAttachments($item, $model, $plural_model);
+					$this->saveAttachments($item, $model, $controller);
 			
 				}else{
 					$this->Session->setFlash(__('You didn\'t add any attachments or the filetype is not valid. Try saving the file to your computer and trying again.', true));
@@ -224,11 +224,30 @@ class AttachmentsController extends AppController {
 		$this->set('attachment', $this->Attachment->read(null, $id));
 	}*/
 
-	function admin_delete($id = null) {
+	public function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for attachment', true));
 			$this->redirect(array('action'=>'index'));
 		}
+		//Find the attachment details and delete the attachment files (thumbs too)
+		$attachment = $this->Attachment->read(null,$id);
+		
+		//Make sure that the image isn't used anywhere else before deleting
+		$attachment_check = $this->Attachment->find('all',array('conditions'=>array(
+																	'path'=>$attachment['Attachment']['path'],
+																	'path_small'=>$attachment['Attachment']['path_small'],
+																	'path_med'=>$attachment['Attachment']['path_med'],
+																	'id !='=>$attachment['Attachment']['id'] 
+																)
+															));
+															
+		//The image isn't used anywhere else so delete the file
+		if(empty($attachment_check)){
+			$this->Uploader->delete($attachment['Attachment']['path_small']);
+			$this->Uploader->delete($attachment['Attachment']['path_med']);
+			$this->Uploader->delete($attachment['Attachment']['path']);
+		}
+		
 		if ($this->Attachment->delete($id)) {
 			$this->Session->setFlash(__('Attachment deleted', true));
 			$this->redirect(array('action'=>'index','admin'=>false));
@@ -237,20 +256,17 @@ class AttachmentsController extends AppController {
 		$this->redirect(array('action' => 'index','admin'=>false));
 	}
 	
-	function collage(){
-		$random_paths = $this->random();
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function collage(){
+		$random_paths = $this->Attachment->random();
 		$this->set(compact('random_paths'));
 	}
 	
-	function random() {
-		$random = $this->Attachment->find('all',array(
-				'conditions' => array(),
-				'fields' => array('Attachment.id','Attachment.path_med','Attachment.path_small','Attachment.title'),
-				'limit'=>100,
-				'order' => 'rand()',
-		));
-		return $random;
-	}
 	
 	/**
 	 * This method handles generating a random keycode for a attachment
@@ -259,9 +275,9 @@ class AttachmentsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function generateKeycode($id=null,$bypassRedirect=false){
+	public function generateKeycode($id=null,$bypassRedirect=false){
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid product', true));
+			$this->Session->setFlash(__('Invalid attachment', true));
 			$this->redirect('/');
 		}
 		
@@ -276,4 +292,5 @@ class AttachmentsController extends AppController {
 			$this->redirect(array('action'=>'key','admin'=>false,$keycode));
 		}
 	}
+
 }

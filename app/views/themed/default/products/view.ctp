@@ -92,7 +92,9 @@
 						}
 						?>
 						</li>
-						<li class="found-by">Found by <?php echo $this->Html->link($product['User']['username'],array('plugin'=>'forum','controller'=>'users','action'=>'profile',$product['User']['username'])); ?></li>
+						<li class="found-by">
+							Found by <?php echo $this->Html->link($product['User']['username'],array('plugin'=>'forum','controller'=>'users','action'=>'profile',$product['User']['username'])); ?>
+						</li>
 					</ul>
 				</div>
 				<!--- END DETAILS SECTION -->

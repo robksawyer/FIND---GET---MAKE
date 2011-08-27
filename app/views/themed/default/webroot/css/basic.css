@@ -437,6 +437,9 @@ div.message {
 }
 /* END COLORS */
 
+a.use-url{
+	color: #999 !important;
+}
 
 /**
  * GLOBAL PAGE STYLES
@@ -1230,6 +1233,14 @@ h3.header{
 	font-style: italic;
 }
 
+.avatar-container{
+	margin: 10px;
+	text-align: center;
+	width: 200px;
+	padding: 10px;
+	border: 1px solid #e7e7e7;
+}
+
 .gravatar{
 	color: #0075B5;
 }
@@ -1923,6 +1934,7 @@ div#attachments-small ul.wrapper li a:focus{
 	opacity:.60;
 	filter:alpha(opacity=60);
 }
+
 /* END PAGES */
 
 

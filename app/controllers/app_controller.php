@@ -390,7 +390,7 @@ class AppController extends Controller {
 	}
 	
 	/**
-	 * Helper method to upload the attachments
+	 * Helper method to upload the attachments. 
 	 * @param model The current model to attach the attachments to
 	 * @param id The id of the current item you're editing
 	 */
@@ -400,7 +400,7 @@ class AppController extends Controller {
 		if(!empty($model)){
 			$controller = Inflector::pluralize(strtolower($model));
 		}else{
-			$this->cakeError('You did not enter a model.');
+			$this->log('You did not enter a model.');
 		}
 	
 		//Find all current attachments and save them.
@@ -441,15 +441,16 @@ class AppController extends Controller {
 	 * @param filename: The name you want the file renamed to
 	 * @version 1.0
 	 * 			1.1 Updated to check for a image name that already exists
-	 * 			1.2 There was a bug overriding the currently saved attachments. T
-	 * 			This has been fixed and now the current attachments are passed along and added to the final array.
+	 * 			1.2 There was a bug overriding the currently saved attachments.
+	 * 				- This has been fixed and now the current attachments are passed along and added to the final array.
+	 *			1.3 
 	 */
 	public function saveAttachments($url = null,$model=null,$current_attachments = null){
 		
 		if(!empty($model)){
-			$plural_model = Inflector::pluralize(strtolower($model));
+			$controller = Inflector::pluralize(strtolower($model));
 		}else{
-			$this->cakeError('You did not enter a model.');
+			$this->log('You did not enter a model.');
 		}
 		
 		if(empty($this->Attachment)){
@@ -542,9 +543,9 @@ class AppController extends Controller {
 			$withoutExt = preg_replace("/\\.[^.\\s]{3,4}$/", "", $this->data['Attachment']['file']['name']);
 			
 			//FIX: The move method ads a forward slash
-			$new_path = 'media/static/img/'.$plural_model.DS.$this->data['Attachment']['file']['name'];
-			$new_small_path = 'media/filter/img/sml/'.$plural_model.DS.$withoutExt.'_small.'.$ext;
-			$new_med_path = 'media/filter/img/med/'.$plural_model.DS.$withoutExt.'_med.'.$ext;
+			$new_path = 'media/static/img/'.$controller.DS.$this->data['Attachment']['file']['name'];
+			$new_small_path = 'media/filter/img/sml/'.$controller.DS.$withoutExt.'_small.'.$ext;
+			$new_med_path = 'media/filter/img/med/'.$controller.DS.$withoutExt.'_med.'.$ext;
 			$data['path'] = substr($data['path'],1); //Remove the forward slash
 			$small_path = substr($small_path,1);
 			$med_path = substr($med_path,1);
@@ -606,7 +607,7 @@ class AppController extends Controller {
 			$controller = Inflector::pluralize(strtolower($model));
 			$name = strtolower($model);
 		}else{
-			$this->cakeError('You did not enter a model.');
+			$this->log('You did not enter a model.');
 		}
 		
 		if (!$id && empty($this->data)) {
@@ -661,12 +662,13 @@ class AppController extends Controller {
 	}
 	
 	/**
+	 * DEPRECATED: This has been moved into each item's controller
 	 * This method handles generating a random keycode for a attachment
 	 * @param int id The attachment id
 	 * @return 
 	 * 
 	*/
-	function generateKeycode($id=null){
+	/*function generateKeycode($id=null){
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid attachment', true));
 			$this->redirect('/');
@@ -676,7 +678,7 @@ class AppController extends Controller {
 		$keycode .= $id;
 		
 		return $keycode;
-	}
+	}*/
 	
 	/**
 	 * @param url: The URL to clean

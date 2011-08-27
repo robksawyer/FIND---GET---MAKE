@@ -1,39 +1,16 @@
 <?php
 	$this->Html->script('jquery.corner',array('inline'=>false));
 ?>
+<br/>
 <div id="formWrapper">
 	<div class="forumHeader">
-		<h2><?php __('Edit Profile'); ?></h2>
+		<h2><?php __('Edit Your Profile') ?></h2>
 	</div>
 
 	<?php echo $this->Session->flash(); ?>
-	<div id="image-upload" style="margin: 10px">
-	<?php
-	if(empty($authUser['Attachment']['path'])){
-		if ($this->Cupcake->settings['enable_gravatar'] == 1) {
-			 // Show the Gravatar as a backup
-			if ($avatar = $this->Cupcake->gravatar($this->data['User']['email'])) {
-				echo "<div class='avatar'>";
-				echo $avatar."<br/>";
-				echo $this->Html->link('Change your <span class="gravatar">Gravatar</span>','http://en.gravatar.com/',array('title'=>'Change your Gravatar','escape'=>false,'target'=>'_blank'));
-				echo ' or '.$this->Html->link('Upload an image',array('controller'=>'attachments','action'=>'add_attachment'));
-				echo "</div>";
-			} else{
-				echo "<div class='avatar'>";
-				echo $this->Html->image('no_gravatar.jpg')."<br/>";
-				echo $this->Html->link('Get a <span class="gravatar">Gravatar</span>','http://en.gravatar.com/',array('title'=>'Get a Gravatar','escape'=>false,'target'=>'_blank'));
-				echo ' or '.$this->Html->link('Upload an image',array('controller'=>'attachments','action'=>'add_attachment'));
-				echo "</div>";
-			}
-		} 
-	}else{
-		//Show the local avatar
-		
-	}
-	?>
-	</div>
+	<?php echo $this->element('avatar_edit',array('cache'=>false)); ?>
 	<?php echo $this->Form->create('User', array('url' => array('controller' => 'users', 'action' => 'edit'))); ?>
-	<?php echo $this->Form->input('fullname', array('label' => __('Full name', true),'after'=>'<div class="after">So that your friends can find you.</div>')); ?>
+	<?php echo $this->Form->input('fullname', array('label' => __('Full name', true),'after'=>'<div class="after">Enter your full name or usual handle so friends can find you.</div>')); ?>
 	<?php echo $this->Form->input('email', array('label' => __('Email', true))); ?>
 	<?php 
 	if(empty($this->data['User']['url'])){
@@ -119,6 +96,16 @@
 		<?php echo $this->Form->input('newPassword', array('type' => 'password', 'label' => __('New Password', true))); ?>
 		<?php echo $this->Form->input('confirmPassword', array('type' => 'password', 'label' => __('Confirm Password', true))); ?>
 		<?php echo $this->Form->end(__('Update Password', true)); ?>
+	</div>
+</div>
+<div class="right-panel">
+	<div class="section">
+		<h4>Account</h4>
+		<p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.</p>
+	</div>
+	<div class="section">
+		<h4>Tips</h4>
+		<p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
 	</div>
 </div>
 <?php

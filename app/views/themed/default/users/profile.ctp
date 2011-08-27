@@ -5,21 +5,8 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 if (!empty($user)) { ?>
 <div class="header profile">
 	<button type="button" onclick="goTo('<?php echo $this->Html->url(array('action' => 'report', $user['User']['id'])); ?>');" class="fr button"><?php __('Report User'); ?></button>
-	<?php // Gravatar
-	if ($this->Cupcake->settings['enable_gravatar'] == 1) {
-		if ($avatar = $this->Cupcake->gravatar($user['User']['email'])) {
-			echo "<div class='avatar'>".$avatar;
-			echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$user['User']['id']));
-			echo '<div class="clear"></div>';
-			echo "</div>";
-		}else{
-			echo "<div class='avatar'>";
-			echo $this->Html->image('no_gravatar.jpg')."<br/>";
-			echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$user['User']['id']));
-			echo '<div class="clear"></div>';
-			echo "</div>";
-		}
-	}
+	<?php
+		echo $this->element('avatar',array('cache'=>false,'avatar'=>$avatar));
 	?>
 	<div class="user-details">
 		<ul>

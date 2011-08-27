@@ -159,6 +159,7 @@
 		echo $this->Html->image('/img/modal/x_on.png',array('alt'=>'Close')); 
 	?>
 </div>
+<!-- END FLAG ITEMS MODAL CONTENT -->
 <script type="text/javascript">
 	// Load dialog on click
 	$('.flag-item').click(function (e) {

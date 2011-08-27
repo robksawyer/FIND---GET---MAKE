@@ -159,8 +159,7 @@
 				?>
 				<?php echo $this->Session->flash();?>
 				<?php 
-					//debug($this->params['plugin']);
-					if ($this->params['plugin'] == 'forum') {
+					if ($this->params['plugin'] == 'forum' || $this->params['controller'] =='users') {
 						echo $this->element('navigation',array('plugin' => 'forum')); 
 					}
 				?>

@@ -5,8 +5,25 @@ class User extends AppModel {
 	
 	var $displayField = 'username';
 	
-	var $actsAs = array('TwitterKit.Twitter');
-	
+	var $actsAs = array(
+						'TwitterKit.Twitter'
+						/*'Uploader.FileValidation' => array(
+							'fileName' => array(
+								'extension' => array(
+									'value' => array('gif', 'jpg', 'png', 'jpeg'),
+									'error' => 'This image type is not supported.',
+								)
+								'filesize' => array(
+									'value' => 5242880,
+									'error' => 'The filesize is incorrect. Please make sure that the file meets the specs.'
+								)
+								'optional' => array(
+									'value' => true
+								)
+							)
+						)*/
+					);
+
 	/**
 	 * Constants specific to changing the status of a user.
 	 *

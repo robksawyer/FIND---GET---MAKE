@@ -72,6 +72,13 @@ class Attachment extends AppModel {
 							'conditions' => array('Flag.model' => 'Attachment'),
 							'dependent' => true,
 							'exclusive' => true
+						),
+						'User' => array(
+							'className' => 'User',
+							'foreignKey' => 'attachment_id',
+							'conditions' => '',
+							'dependent' => false,
+							'exclusive' => false
 						)
 					);
 	
@@ -96,75 +103,35 @@ class Attachment extends AppModel {
 			'joinTable' => 'attachments_houses',
 			'foreignKey' => 'attachment_id',
 			'associationForeignKey' => 'house_id',
-			'unique' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
+			'unique' => true
 		),
 		'Source' => array(
 			'className' => 'Source',
 			'joinTable' => 'attachments_sources',
 			'foreignKey' => 'attachment_id',
 			'associationForeignKey' => 'source_id',
-			'unique' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
+			'unique' => true
 		),
 		'Client' => array(
 			'className' => 'Client',
 			'joinTable' => 'attachments_clients',
 			'foreignKey' => 'attachment_id',
 			'associationForeignKey' => 'client_id',
-			'unique' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
+			'unique' => true
 		),
 		'Inspiration' => array(
 			'className' => 'Inspiration',
 			'joinTable' => 'attachments_inspirations',
 			'foreignKey' => 'attachment_id',
 			'associationForeignKey' => 'inspiration_id',
-			'unique' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
+			'unique' => true
 		),
 		'Product' => array(
 			'className' => 'Product',
 			'joinTable' => 'attachments_products',
 			'foreignKey' => 'attachment_id',
 			'associationForeignKey' => 'product_id',
-			'unique' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
+			'unique' => true
 		)
 	);
 	
@@ -174,7 +141,7 @@ class Attachment extends AppModel {
 	 * @return Array
 	 * 
 	*/
-	function beforeFind($queryData){
+	public function beforeFind($queryData){
 		$conditions = $queryData['conditions'];
 		
 		if(!is_array($conditions)) {
@@ -190,5 +157,94 @@ class Attachment extends AppModel {
 		}
 		$queryData['conditions'] = $conditions;
 		return $queryData;
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function afterSave($created){
+		if($created){
+			//Generate and create keycode
+			$this->generateKeycode($this->id);
+		}
+	}
+	
+	/**
+	 * This method handles generating a random keycode for a attachment
+	 * @param int id The attachment id
+	 * @return 
+	 * 
+	*/
+	public function generateKeycode($id=null){
+
+		$keycode = $this->str_rand(8,'mixed');
+		$keycode .= $id;
+		
+		$this->id = $id;
+		$this->saveField('keycode',$keycode);
+		//debug($keycode);
+		return $keycode;
+	}
+	
+	public function str_rand($length = 8, $output = 'alphanum'){
+		// Possible seeds
+		$outputs['alpha'] = 'abcdefghijklmnopqrstuvwqyz';
+		$outputs['numeric'] = '0123456789';
+		$outputs['alphanum'] = 'abcdefghijklmnopqrstuvwqyz0123456789';
+		$outputs['hexadec'] = '0123456789abcdef';
+		$outputs['mixed'] = 'abcdefghijklmnopqrstuvwqyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_';
+		
+		// Choose seed
+		if (isset($outputs[$output])) {
+			$output = $outputs[$output];
+		}
+
+		// Seed generator
+		list($usec, $sec) = explode(' ', microtime());
+		$seed = (float) $sec + ((float) $usec * 100000);
+		mt_srand($seed);
+
+		// Generate
+		$str = '';
+		$output_count = strlen($output);
+		for ($i = 0; $length > $i; $i++) {
+			$str .= $output{mt_rand(0, $output_count - 1)};
+		}
+
+		return $str;
+	}
+	
+	/**
+	 * Returns a random set of attachments out of all of the attachments
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function random() {
+		$random = $this->find('all',array(
+				'conditions' => array(),
+				'fields' => array('Attachment.id','Attachment.path_med','Attachment.path_small','Attachment.title'),
+				'limit'=>100,
+				'order' => 'rand()',
+		));
+		return $random;
+	}
+	
+	/**
+	 * Searches for a local avatar
+	 * @param int attachment_id The attachment id to search for
+	 * @param int user_id The user's avatar to find
+	 * @return 
+	 * 
+	*/
+	public function getAvatar($attachment_id=null,$user_id=null){
+		$avatar = $this->find('first',array('conditions'=>array(
+																'id'=>$attachment_id,
+																'user_id'=>$user_id
+																)));
+		if(!empty($avatar)) return $avatar; else return false;
 	}
 }
