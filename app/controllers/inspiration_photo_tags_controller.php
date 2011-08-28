@@ -23,54 +23,6 @@ class InspirationPhotoTagsController extends AppController {
 		}
 		$this->set('inspirationPhotoTag', $this->InspirationPhotoTag->read(null, $id));
 	}
-
-	/*function add() {
-		if (!empty($this->data)) {
-			$this->InspirationPhotoTag->create();
-			if ($this->InspirationPhotoTag->save($this->data)) {
-				$this->Session->setFlash(__('The inspiration photo tag has been saved', true));
-				$this->redirect(array('controller'=>'inspirations','action' => 'view',$this->data['InspirationPhotoTag']['inspiration_id']));
-			} else {
-				$this->Session->setFlash(__('The inspiration photo tag could not be saved. Please, try again.', true));
-			}
-		}
-		$inspirations = $this->InspirationPhotoTag->Inspiration->find('list');
-		$this->set(compact('inspirations'));
-	}*/
-
-	/*function edit($id = null) {
-		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid inspiration photo tag', true));
-			$this->redirect(array('action' => 'index'));
-		}
-		if (!empty($this->data)) {
-			if ($this->InspirationPhotoTag->save($this->data)) {
-				$this->Session->setFlash(__('The inspiration photo tag has been saved', true));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The inspiration photo tag could not be saved. Please, try again.', true));
-			}
-		}
-		if (empty($this->data)) {
-			$this->data = $this->InspirationPhotoTag->read(null, $id);
-		}
-		$inspirations = $this->InspirationPhotoTag->Inspiration->find('list');
-		$this->set(compact('inspirations'));
-	}*/
-	
-	/*
-	function delete($id = null,$inspiration_id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for inspiration photo tag', true));
-			$this->redirect(array('controller'=>'inspirations','action'=>'view',$inspiration_id));
-		}
-		if ($this->InspirationPhotoTag->delete($id)) {
-			$this->Session->setFlash(__('Inspiration photo tag deleted', true));
-			$this->redirect(array('controller'=>'inspirations','action'=>'view',$inspiration_id));
-		}
-		$this->Session->setFlash(__('Inspiration photo tag was not deleted', true));
-		$this->redirect(array('controller'=>'inspirations','action'=>'view',$inspiration_id));
-	}*/
 	
 	function admin_index() {
 		$this->InspirationPhotoTag->recursive = 0;
@@ -144,26 +96,6 @@ class InspirationPhotoTagsController extends AppController {
 		}
 		
 	}
-
-	/*function admin_edit($id = null) {
-		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid inspiration photo tag', true));
-			$this->redirect(array('action' => 'index'));
-		}
-		if (!empty($this->data)) {
-			if ($this->InspirationPhotoTag->save($this->data)) {
-				$this->Session->setFlash(__('The inspiration photo tag has been saved', true));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The inspiration photo tag could not be saved. Please, try again.', true));
-			}
-		}
-		if (empty($this->data)) {
-			$this->data = $this->InspirationPhotoTag->read(null, $id);
-		}
-		$inspirations = $this->InspirationPhotoTag->Inspiration->find('list');
-		$this->set(compact('inspirations'));
-	}*/
 
 	function admin_delete($id = null,$inspiration_id = null) {
 		Configure::write('debug', 0); //it will avoid any extra output

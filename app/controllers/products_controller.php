@@ -31,7 +31,13 @@ class ProductsController extends AppController {
 		//$this->Uploader->mime('image', 'gif', 'image/gif');
 		//$this->Uploader->maxNameLength = 50;
 		
-		$this->Auth->allow('getProductsForSource','getProductsForInspiration','getTags','getProfileData','getCount');
+		//Make certain pages public
+		$this->Auth->allowedActions = array('index','view','key','generateKeycode','tags','getTags',
+											'getProductsForSource','getProductsForInspiration','getProfileData','getCount',
+											'userProducts'
+											);
+		
+		//$this->Auth->allow('getProductsForSource','getProductsForInspiration','getTags','getProfileData','getCount');
 	}
 	
 	/**

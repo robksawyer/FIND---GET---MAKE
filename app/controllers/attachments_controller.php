@@ -2,7 +2,9 @@
 class AttachmentsController extends AppController {
 
 	var $name = 'Attachments';
+	
 	var $components = array('Uploader.Uploader','String');
+	
 	//var $helpers = array('');
 
 	/**
@@ -13,6 +15,9 @@ class AttachmentsController extends AppController {
 	*/
 	public function beforeFilter(){
 		parent::beforeFilter();
+		
+		//Make certain pages public
+		$this->Auth->allowedActions = array('view','key','collage','generateKeycode');
 		
 		$this->Uploader->enableUpload = true;
 		$this->Uploader->maxFileSize = '10M'; // 75 Megabytes

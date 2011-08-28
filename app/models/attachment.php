@@ -243,8 +243,7 @@ class Attachment extends AppModel {
 	*/
 	public function getAvatar($attachment_id=null,$user_id=null){
 		$avatar = $this->find('first',array('conditions'=>array(
-																'Attachment.id'=>$attachment_id,
-																'Attachment.user_id'=>$user_id
+																'Attachment.id'=>$attachment_id
 																)));
 		if(!empty($avatar)) return $avatar; else return false;
 	}

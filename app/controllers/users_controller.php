@@ -36,7 +36,10 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		
-		$this->Auth->allow('login','logout','register','register_with_twitter','more_user_feed_data','index', 'forgot', 'listing', 'profile', 'signup');
+		$this->Auth->allowedActions = array('index', 'view');
+		$this->Auth->allow('login','logout','register','register_with_twitter',
+							'more_user_feed_data','index', 'forgot', 'listing', 
+							'profile', 'signup','getAvatar');
 		$this->AjaxHandler->handle('hide_welcome');
 		
 		/*if (isset($this->params['admin'])) {
@@ -78,7 +81,6 @@ class UsersController extends AppController {
 		//Logic to happen after successful facebook login.
 		$this->redirect('/signup');
 	}*/
-	
 	
 	/**************** BORROWED FROM CUPCAKE ************************/
 	/**
@@ -660,6 +662,14 @@ class UsersController extends AppController {
 		}
 		$this->set(compact('haveProducts'));*/
 		
+		//Check for a local avatar details
+		if(!empty($user['User']['attachment_id'])){
+			$avatar = $this->User->Attachment->getAvatar($user['User']['attachment_id'],$user['User']['id']);
+		}else{
+			$avatar = false;
+		}
+		$this->set('avatar',$avatar);
+		
 		//$user = $this->User->read(null,$user['User']['id']);
 		$this->User->UserFollowing->recursive = 1;
 		$followers = $this->User->UserFollowing->findFollowers($user['User']['id'],5);
@@ -1120,4 +1130,35 @@ class UsersController extends AppController {
 			$this->set(compact('avatar'));
 		}
 	}
+	
+	/**
+	 * Finds the current staff favorites
+	 * @param 
+	 * @return Array An array of the users liked by the staff.
+	 * 
+	*/
+	public function staff_favorites(){
+		return $this->User->getStaffFavorites();
+	}
+	
+	/**
+	 * Set a user as a staff favorite.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function admin_set_staff_favorite(){
+		
+	}
+	
+	/**
+	 * Removes a user from the staff favorite list
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function admin_remove_staff_favorite(){
+		
+	}
+	
 }

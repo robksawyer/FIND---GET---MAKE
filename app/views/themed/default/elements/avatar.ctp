@@ -28,6 +28,11 @@ if(empty($avatar['Attachment']['path_small'])){
 		if ($avatar = $this->Cupcake->gravatar($user['User']['email'])) {
 			echo "<div class='avatar'>";
 			echo $this->Html->link($avatar,array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$user['User']['username']),array('title'=>$user['User']['username'],'escape'=>false));
+			if(!empty($follow)){
+				if($follow == true){
+					echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$user['User']['id']));
+				}
+			}
 			echo "</div>";
 		}else{
 			echo "<div class='avatar'>";
@@ -37,6 +42,11 @@ if(empty($avatar['Attachment']['path_small'])){
 																							),
 																		'title'=>$user['User']['username']
 																	));
+			if(!empty($follow)){
+				if($follow == true){
+					echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$user['User']['id']));
+				}
+			} 
 			echo "</div>";
 		} 
 	}
@@ -50,7 +60,12 @@ if(empty($avatar['Attachment']['path_small'])){
 																												),
 																							'title'=>$user['User']['username'],
 																							'height'=>$height
-																							))."<br/>";
+																							));
+	if(!empty($follow)){
+		if($follow == true){
+			echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$user['User']['id']));
+		}
+	}
 	echo "</div>";
 }
 ?>

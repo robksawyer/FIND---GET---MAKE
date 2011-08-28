@@ -23,6 +23,12 @@ class InspirationsController extends AppController {
 	function beforeFilter(){
 		parent::beforeFilter();
 		
+		//Make certain pages public
+		$this->Auth->allowedActions = array('index','view','key','generateKeycode',
+											'tags','getTags','users','userInspirations',
+											'getProfileData'
+											);
+		
 		//$this->passedArgs['comment_view_type'] = 'flat';
 		
 		$this->Uploader->uploadDir = 'media/static/img/inspirations/';

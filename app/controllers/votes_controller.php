@@ -11,7 +11,13 @@ class VotesController extends AppController {
 	*/
 	function beforeFilter(){
 		parent::beforeFilter();
-		$this->Auth->allow('getLikes','getDislikes','getUserLikes','getUserDislikes');
+		
+		//Make certain pages public
+		$this->Auth->allowedActions = array('getLikes','getDislikes',
+											'getUserLikes','getUserDislikes'
+											);
+											
+		//$this->Auth->allow('getLikes','getDislikes','getUserLikes','getUserDislikes');
 		$this->AjaxHandler->handle('vote_up','vote_down','remove_vote');
 	}
 	

@@ -49,9 +49,17 @@
  *
  */
 
-//require APP . 'plugins' . DS . 'media' . DS . 'config' . DS . 'core.php';
+//Load the site config file
 Configure::load('fgm_config');
 
+//Load the ACL config file
+App::import(array(
+	'type' => 'File', 
+	'name' => 'Acl.AclConfig', 
+	'file' => 'config'. DS .'bootstrap.php'
+));
+
+//Load the Forum config file
 App::import(array(
 	'type' => 'File', 
 	'name' => 'Forum.ForumConfig', 

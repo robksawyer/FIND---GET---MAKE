@@ -49,7 +49,14 @@ class AppController extends Controller {
 	 * @access public
 	 * @var array
 	 */
-	var $components = array('RequestHandler','Session','Security','Auth','AutoLogin','Cookie','AjaxHandler', 
+	var $components = array('Auth'=>array(
+									'authorize'=>'actions',
+									'actionPath'=>'controllers/',
+									'loginAction'=>'/login',
+									'logoutAction'=>'/logout',
+									'allowedActions'=>array('display')
+									
+								),'Acl','RequestHandler','Session','Security','AutoLogin','Cookie','AjaxHandler', 
 								'Forum.Toolbar','String','TwitterKit.Twitter','Facebook.Connect'
 								);
 
@@ -122,26 +129,33 @@ class AppController extends Controller {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		
-		//Keep banned users from logging in and nonactive users
-		$this->Auth->userScope = array(
-										'User.banned'=>0,
-										'User.active'=>1
-										);
+		$this->Auth->allow('*');
 		
-		// Auth settings
-		$referer = $this->referer();
-		if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/login') {
-			//$referer = array('plugin' => 'admin', 'controller' => 'home', 'action' => 'index','admin'=>false);
-			$referer = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
-		}
-
-		if (isset($this->Auth)) {
-			$this->Auth->loginAction = '/login';
-			$this->Auth->logoutAction = '/logout';
-			//$this->Auth->loginAction = array('plugin' => 'forum', 'controller' => 'users', 'action' => 'login', 'admin' => false);
+		if(isset($this->Auth)) {
+			// Auth settings
+			$referer = $this->referer();
+			if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/login') {
+				//$referer = array('plugin' => 'admin', 'controller' => 'home', 'action' => 'index','admin'=>false);
+				$referer = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
+			}
+			
+			/*$this->Auth->mapActions(
+				array(
+					'create'=>array('add'),
+					'read'=>array('view'),
+					'update'=>array('edit'),
+					'delete'=>array('delete')
+				)
+			);*/
+			
+			//Keep banned users from logging in and nonactive users
+			$this->Auth->userScope = array(
+											'User.banned'=>0,
+											'User.active'=>1
+											);
+			
 			//You have to keep view open for the photo tags to work.
 			$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
-			//$this->Auth->loginRedirect = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
 			
 			$this->Auth->loginRedirect = $referer;
 			$this->Auth->logoutRedirect = $referer;
@@ -150,16 +164,16 @@ class AppController extends Controller {
 			
 			//Custom settings for AutoLogin component
 			//http://bakery.cakephp.org/articles/milesj/2009/07/05/autologin-component-an-auth-remember-me-feature
-			$this->AutoLogin->cookieName = 'TheSource';
+			$this->AutoLogin->cookieName = 'FindGetMake';
 			$this->AutoLogin->expires = '+1 month';
 			
 			// AutoLogin settings
 			$this->AutoLogin->settings = array(
+				'admin'=>false,
 				'plugin' => '',
 				'controller' => 'users',
 				'loginAction' => 'login',
-				'logoutAction' => 'logout',
-				'admin'=>false
+				'logoutAction' => 'logout'
 			);
 		}
 

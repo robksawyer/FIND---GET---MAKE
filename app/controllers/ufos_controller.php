@@ -8,7 +8,12 @@ class UfosController extends AppController {
 	function beforeFilter(){
 		parent::beforeFilter();
 		
-		$this->Auth->allow('getUfosFromUser');
+		//Make certain pages public
+		$this->Auth->allowedActions = array('index','view','tags',
+											'getUfosFromUser'
+											);
+											
+		//$this->Auth->allow('getUfosFromUser');
 	}
 	
 	/**

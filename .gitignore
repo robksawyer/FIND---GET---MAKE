@@ -5,6 +5,7 @@
 *.swo
 *.swp
 *.vi
+*.old
 *~
 .DS_Store
 .cache
@@ -16,3 +17,6 @@ tags
 app/tmp/
 _*
 config/database.php
+old
+app/webroot/files/uploads/*
+google_ad_example.txt

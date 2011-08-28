@@ -223,8 +223,7 @@ span.anchor-hover{
 	}
 a img{
 	border:none;
-	padding: 6px;
-	}
+}
 h2,
 legend{
 	color: #666 !important;
@@ -1105,8 +1104,22 @@ h3.header{
 
 .left-container{
 	position: relative;
+	display: inline-block;
 	margin: 0 0 10px 0;
+	width: 500px !important;
 	float: left;
+}
+
+.left-container .image{
+	display: inline-block;
+	width: 500px !important;
+}
+
+.left-container .image img{
+	display: inline-block;
+	max-width: 450px !important;
+	min-width: 200px !important;
+	margin: 0 15px 0 0;
 }
 
 .left-container .find-people{
@@ -1206,14 +1219,6 @@ h3.header{
 	padding: 0px 0px 0px 20px;
 	width: 100%;
 	border-left: 1px solid #a7a7a7;
-}
-
-.view .image{
-	margin: 0 15px 0 0;
-}
-
-.view .image #attachment0{
-	max-width: 600px !important;
 }
 
 .view .details{
@@ -2537,10 +2542,12 @@ span.total a:hover{
 	z-index: 2;
 	font-size: 13px;
 	vertical-align: middle;
+	text-decoration: none;
+	color: #ffffff;
 }
 
 #follow-user a:hover{
-	color: #ffffff;
+	color: #e7e7e7;
 }
 
 /** END PROFILE PAGES **/

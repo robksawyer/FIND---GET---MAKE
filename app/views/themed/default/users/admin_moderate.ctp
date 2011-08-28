@@ -16,20 +16,8 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 </div>
 <?php endif; ?>
 <div class="header profile">
-	<?php // Gravatar
-	if ($this->Cupcake->settings['enable_gravatar'] == 1) {
-		if ($avatar = $this->Cupcake->gravatar($user['User']['email'])) {
-			echo "<div class='avatar'>";
-			echo $avatar."<br/>";
-			echo $this->Html->link('Change your <span class="gravatar">Gravatar</span>','http://en.gravatar.com/',array('title'=>'Change your Gravatar','escape'=>false,'target'=>'_blank'));
-			echo "</div>";
-		}else{
-			echo "<div class='avatar'>";
-			echo $this->Html->image('no_gravatar.jpg')."<br/>";
-			echo $this->Html->link('Get a <span class="gravatar">Gravatar</span>','http://en.gravatar.com/',array('title'=>'Get a Gravatar','escape'=>false,'target'=>'_blank'));
-			echo "</div>";
-		} 
-	}
+	<?php
+		echo $this->element('avatar',array('cache'=>false,'avatar'=>$avatar,'follow'=>false));
 	?>
 	<div class="user-details">
 		<ul class="btn-actions">
@@ -128,8 +116,10 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 		<?php 
 			echo "<span>Followers ".$authUser['User']['totalFollowers']."</span>";
 			echo "<div>";
+			//Doesn't work
 			foreach($followers as $follower){
-				echo $this->element('avatar-follower',array('cache'=>false,'follower'=>$follower));
+				$avatar = $this->requestAction('/users/getAvatar/'.$follower['User']['id']);
+				echo $this->element('avatar-follower',array('cache'=>false,'follower'=>$follower,'avatar'=>$avatar));
 			}
 			echo "</div>";
 			echo "<div class='view-all'>";

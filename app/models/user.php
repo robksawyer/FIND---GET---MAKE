@@ -6,6 +6,7 @@ class User extends AppModel {
 	var $displayField = 'username';
 	
 	var $actsAs = array(
+						'Acl' => array('type'=>'requester'),
 						'Tags.Taggable',
 						'Search.Searchable',
 						'TwitterKit.Twitter'
@@ -90,7 +91,9 @@ class User extends AppModel {
 	);
 	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
+	
+	var $belongsTo = array('Group');
+	
 	var $hasMany = array(
 		'Collection' => array(
 			'className' => 'Collection',
@@ -211,6 +214,30 @@ class User extends AppModel {
 	);
 	
 	/**
+	 * The AclBehavior allows for the automagic connection of models with the Acl tables. 
+	 * Its use requires an implementation of parentNode() on your model.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function parentNode() {
+		if (!$this->id && empty($this->data)) {
+			return null;
+		}
+		if (isset($this->data['User']['group_id'])) {
+			$groupId = $this->data['User']['group_id'];
+		} else {
+			$groupId = $this->field('group_id');
+		}
+		if (!$groupId) {
+			return null;
+		} else {
+			return array('Group' => array('id' => $groupId));
+		}
+	}
+	
+	
+	/**
 	 * Extra validation checking.
 	 * 
 	 * @access public
@@ -261,9 +288,10 @@ class User extends AppModel {
 			$conditions[$this->alias.'.active'] = 1;
 		}
 		$queryData['conditions'] = $conditions;
-		$queryData['recursive'] = 1;
+		//$queryData['recursive'] = 1;
 		return $queryData;
 	}
+
 	
 	/**************** BORROWED FROM CUPCAKE ************************/
 	/**
@@ -655,5 +683,24 @@ class User extends AppModel {
 		return $this->UserFollowing->getFollowingUserIds($user_id);
 	}
 	
+	/**
+	 * Get an array of the staff's favorite users
+	 * @param 
+	 * @return Array Favorited users
+	 * 
+	*/
+	public function getStaffFavorites(){
+		$favorites = $this->find('all',array(
+											'conditions'=>array(
+																'User.staff_favorite'=>1
+											),
+											'contain'=>array(
+												'Product'
+											),
+											'recursive'=>2
+											)
+										);
+		return $favorites;
+	}
 	
 }

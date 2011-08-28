@@ -4,9 +4,9 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 <?php // User exists
 if (!empty($user)) { ?>
 <div class="header profile">
-	<button type="button" onclick="goTo('<?php echo $this->Html->url(array('action' => 'report', $user['User']['id'])); ?>');" class="fr button"><?php __('Report User'); ?></button>
+	<!--<button type="button" onclick="goTo('<?php //echo $this->Html->url(array('action' => 'report', $user['User']['id'])); ?>');" class="fr button"><?php //__('Report User'); ?></button>-->
 	<?php
-		echo $this->element('avatar',array('cache'=>false,'avatar'=>$avatar));
+		echo $this->element('avatar',array('cache'=>false,'avatar'=>$avatar,'follow'=>true));
 	?>
 	<div class="user-details">
 		<ul>

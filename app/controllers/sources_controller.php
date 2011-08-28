@@ -25,6 +25,11 @@ class SourcesController extends AppController {
 	function beforeFilter(){
 		parent::beforeFilter();
 		
+		//Make certain pages public
+		$this->Auth->allowedActions = array('index','view','key','generateKeycode','tags',
+											'getCount','getTags','getProfileData','ajax_check_name'
+											);
+											
 		$this->Uploader->uploadDir = 'media/static/img/sources/';
 		$this->Uploader->enableUpload = true;
 		$this->Uploader->maxFileSize = '75M'; // 75 Megabytes
@@ -32,7 +37,7 @@ class SourcesController extends AppController {
 		//$this->Uploader->mime('image', 'gif', 'image/gif');
 		//$this->Uploader->maxNameLength = 50;
 		
-		$this->Auth->allow('getCount','getTags','getProfileData');
+		//$this->Auth->allow('getCount','getTags','getProfileData');
 	}
 	
 	/**

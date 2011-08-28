@@ -87,10 +87,10 @@
 						<li><?php echo $this->Html->link('join','/join'); ?></li>
 				<?php 
 					endif;
-				else: 
-				?>
+				else: ?>
 				<li><?php echo $this->Html->link('join','/join'); ?></li>
 				<?php endif; ?>
+				<li><?php echo $this->Html->link('find people','/users/find'); ?></li>
 			</ul>
 		</div>
 	

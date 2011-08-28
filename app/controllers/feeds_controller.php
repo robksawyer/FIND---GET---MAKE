@@ -14,6 +14,14 @@ class FeedsController extends AppController {
 		),
 	);
 	
+	public function beforeFilter(){
+		parent::beforeFilter();
+		
+		//Make certain pages public
+		$this->Auth->allowedActions = array('user');
+		
+	}
+	
 	/**
 	 * Handles showing the feed of the user that is logged in 
 	 * @param 

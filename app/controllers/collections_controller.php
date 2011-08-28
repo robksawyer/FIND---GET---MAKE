@@ -23,6 +23,12 @@ class CollectionsController extends AppController {
 	function beforeFilter(){
 		parent::beforeFilter();
 		
+		//Make certain pages public
+		$this->Auth->allowedActions = array('index','view','key','generateKeycode',
+											'tags','getTags','users','userCollections',
+											'getProfileData'
+											);
+		
 		/*$this->Uploader->uploadDir = 'media/static/img/products/';
 		$this->Uploader->enableUpload = true;
 		$this->Uploader->maxFileSize = '75M'; // 75 Megabytes
