@@ -21,7 +21,7 @@ class ProductsController extends AppController {
 		*/
 	);
 	
-	function beforeFilter(){
+	public function beforeFilter(){
 		parent::beforeFilter();
 		
 		$this->Uploader->uploadDir = 'media/static/img/products/';
@@ -46,7 +46,7 @@ class ProductsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function beforeRender(){
+	public function beforeRender(){
 		//Check to see if the user has flagged the item
 		$user_id = $this->Auth->user('id');
 		$model = $this->modelClass;
@@ -55,7 +55,7 @@ class ProductsController extends AppController {
 	}
 	
 
-	function find() {
+	public function find() {
 		$this->Prg->commonProcess();
 		$this->paginate['conditions'] = $this->Product->parseCriteria($this->passedArgs);
 		$this->set('products', $this->paginate());
@@ -64,7 +64,7 @@ class ProductsController extends AppController {
 		$this->set(compact('productCategories'));
 	}
 	
-	function index($filter = null) {
+	public function index($filter = null) {
 		$this->Product->recursive = 2;
 		// query all distinct first letters used in names
 		$letters = $this->Product->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `products` ORDER BY `name`');
@@ -134,7 +134,7 @@ class ProductsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function users($id=null) {
+	public function users($id=null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid user id', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
@@ -159,7 +159,7 @@ class ProductsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function view($id = null) {
+	public function view($id = null) {
 		$this->Product->recursive = 2;
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid product', true));
@@ -185,7 +185,7 @@ class ProductsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function key($keycode=null){
+	public function key($keycode=null){
 		$this->Product->recursive = 2;
 		$this->layout = 'client_review';
 		if (!$keycode && empty($this->data)) {
@@ -208,7 +208,7 @@ class ProductsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function add() {
+	public function add() {
 		//Add the source to a model
 		if(isset($this->passedArgs['model'])){
 			$model = ucwords($this->passedArgs['model']);
@@ -290,7 +290,7 @@ class ProductsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function admin_add() {
+	public function admin_add() {
 		//Add the source to a model
 		if(isset($this->passedArgs['model'])){
 			$model = ucwords($this->passedArgs['model']);
@@ -366,28 +366,28 @@ class ProductsController extends AppController {
 		$this->set(compact('sources', 'collections', 'attachments','tags','productCategories'));
 	}
 	
-	function getProductsForSource($id = null){
+	public function getProductsForSource($id = null){
 		if (isset($this->params['requested'])) {  
 			$products = $this->Product->Source->find('all',array( 'order' => 'name ASC' ));
 			return $products;
 		}
 	}
 	
-	function getProductsForInspiration($id = null){
+	public function getProductsForInspiration($id = null){
 		if (isset($this->params['requested'])) {  
 			$products = $this->Product->Inspiration->find('all',array( 'order' => 'name ASC' ));
 			return $products;
 		}
 	}
 	
-	/*function getProductsCategories(){
+	/*public function getProductsCategories(){
 		if (isset($this->params['requested'])) {  
 			$productCategories = $this->Product->ProductCategory->find('list',array( 'order' => 'name ASC' ));
 			return $productCategories;
 		}
 	}
 	
-	function getSources(){
+	public function getSources(){
 		if (isset($this->params['requested'])) {  
 			$sources = $this->Product->Source->find('list',array( 'order' => 'name ASC' ));
 			return $sources;
@@ -400,7 +400,7 @@ class ProductsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid product', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
@@ -448,7 +448,7 @@ class ProductsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function admin_edit($id = null) {
+	public function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid product', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
@@ -496,7 +496,7 @@ class ProductsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for product', true));
 			$this->redirect(array('action'=>'index','admin'=>false));
@@ -529,7 +529,7 @@ class ProductsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function admin_delete($id = null) {
+	public function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for product', true));
 			$this->redirect(array('action'=>'index','admin'=>false));
@@ -561,7 +561,7 @@ class ProductsController extends AppController {
 	 * @param id The inspiration id targetting.
 	 * @param product_id The product id to remove.
 	 */
-	function removeAttachment($id=null,$attachment_id=null){
+	public function removeAttachment($id=null,$attachment_id=null){
 		$this->Product->recursive = 1;
 		$this->autoLayout = false;
 		$this->autoRender = false;
@@ -618,7 +618,7 @@ class ProductsController extends AppController {
 	 * Retrieves the items from the user id passed
 	 * @param id User id
 	 */
-	function userProducts($id = null,$limit=25){
+	public function userProducts($id = null,$limit=25){
 		$this->Product->recursive = 2;
 		if(isset($this->params['requested'])) {
 			$products = $this->Product->userProducts($id,$limit,'all');
@@ -630,7 +630,7 @@ class ProductsController extends AppController {
 	/**
 	 * Finds the tags associated with this model
 	 */
-	function tags($filter=null){
+	public function tags($filter=null){
 		$this->Product->recursive = 2;
 		
 		// query all distinct first letters used in names
@@ -680,7 +680,7 @@ class ProductsController extends AppController {
 	/**
 	 * Returns all of the tags associated with this Model. This is used by the add_tag element.
 	 */
-	function getTags(){
+	public function getTags(){
 		if(isset($this->params['requested'])) {
 			$temp_tags = $this->Product->Tagged->Tag->find('list');
 			foreach($temp_tags as $tag){
@@ -697,7 +697,7 @@ class ProductsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getProfileData($user_id=null){
+	public function getProfileData($user_id=null){
 		return $this->Product->getProfileData($user_id);
 	}
 	
@@ -706,7 +706,7 @@ class ProductsController extends AppController {
 	 * @param int user_id
 	 * @return int The total number of products added by the user
 	**/
-	function getCount($user_id=null){
+	public function getCount($user_id=null){
 		return $this->Product->getCount($user_id);
 	}
 	
@@ -717,7 +717,7 @@ class ProductsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function generateKeycode($id=null,$bypassRedirect=false){
+	public function generateKeycode($id=null,$bypassRedirect=false){
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid product', true));
 			$this->redirect('/');
@@ -733,5 +733,47 @@ class ProductsController extends AppController {
 			$this->Session->setFlash(__('The keycode has been generated.', true));
 			$this->redirect(array('action'=>'key','admin'=>false,$keycode));
 		}
+	}
+	
+	/**
+	 * This method verifies the multiple items with the same name don't get added.
+	 * If an item with the same name is found. A session is set with a check count and the
+	 * name. The user is then prompted to verify that they actually want to add the record.
+	 * @param $model The current model
+	 * @return Boolean
+	 */ 
+	public function verifyAddition($model = null){
+		$checker = $this->Session->read('Check.count');
+		$name = $this->Session->read('Check.name');
+		$passed_check = true;
+		if(empty($checker)){
+			$check_item = $this->$model->findByName($this->data[$model]['name']);
+			if(!empty($check_item)){
+				$passed_check = false;
+				$this->Session->write('Check.count', '1');
+				$this->Session->write('Check.name', $this->data[$model]['name']);
+			}else{
+				$passed_check = true;
+			}
+		}else if($this->data[$model]['name'] != $name){
+			$check_item = $this->$model->findByName($this->data[$model]['name']);
+			if(!empty($check_item)){
+				$passed_check = false;
+				$this->Session->write('Check.count', '1');
+				$this->Session->write('Check.name', $this->data[$model]['name']);
+			}else{
+				$passed_check = true;
+			}
+		}
+		
+		return $passed_check;
+	}
+	
+	/**
+	 * Clears the sessions set by the verifyAddition method.
+	 */
+	public function clearVerifySessions(){
+		$this->Session->delete('Check.count');
+		$this->Session->delete('Check.name');
 	}
 }

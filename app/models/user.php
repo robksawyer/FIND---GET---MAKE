@@ -208,7 +208,7 @@ class User extends AppModel {
 	 * @return 
 	 * 
 	*/
-	function parentNode() {
+	public function parentNode() {
 		if (!$this->id && empty($this->data)) {
 			return null;
 		}
@@ -279,7 +279,81 @@ class User extends AppModel {
 		//$queryData['recursive'] = 1;
 		return $queryData;
 	}
-
+	
+	/**
+	 * Get all my access.
+	 *
+	 * @access public
+	 * @param int $user_id
+	 * @return string The level name
+	 */
+	public function getMyAccess($user_id) {
+		$user = $this->read(null,$user_id);
+		switch($user['User']['group_id']){
+			case 1:
+				$level = 'administrator';
+				break;
+			case 2:
+				$level = 'manager';
+				break;
+			case 3:
+				$level = 'user';
+				break;
+				
+			default:
+				$level = '';
+				break;
+		}
+		return $level;
+	}
+	
+	/**
+	 * Check to see if the user has the admin role.
+	 *
+	 * @access public
+	 * @param int $user_id
+	 * @return int
+	 */
+	public function isAdmin($user_id) {
+		return $this->find('count', array(
+			'conditions' => array(
+				'User.id' => $user_id,
+				'User.group_id' => 1
+			)
+		));	
+	}
+	
+	/**
+	 * Check to see if the user has the manager role.
+	 *
+	 * @access public
+	 * @param int $user_id
+	 * @return int
+	 */
+	public function isManager($user_id) {
+		return $this->find('count', array(
+			'conditions' => array(
+				'User.id' => $user_id,
+				'User.group_id' => 2
+			)
+		));	
+	}
+	
+	/**
+	 * Check to see if the user has the user role.
+	 *
+	 * @access public
+	 * @param int $user_id
+	 * @return int
+	 */
+	public function isUser($user_id) {
+		return $this->find('count', array(
+			'conditions' => array(
+				'User.id' => $user_id,
+				'User.group_id' => 3
+			)
+		));	
+	}
 	
 	/**************** BORROWED FROM CUPCAKE ************************/
 	/**

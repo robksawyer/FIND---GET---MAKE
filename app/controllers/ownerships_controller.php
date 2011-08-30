@@ -3,7 +3,7 @@ class OwnershipsController extends AppController {
 
 	var $name = 'Ownerships';
 	
-	function beforeFilter(){
+	public function beforeFilter(){
 		parent::beforeFilter();
 		
 		//Make certain pages public
@@ -22,7 +22,7 @@ class OwnershipsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function haves($user_id=null){
+	public function haves($user_id=null){
 		if (!$user_id) {
 			$this->Session->setFlash(__('Invalid user id', true));
 			$this->redirect('/');
@@ -56,7 +56,7 @@ class OwnershipsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function wants($user_id=null){
+	public function wants($user_id=null){
 		if (!$user_id) {
 			$this->Session->setFlash(__('Invalid user id', true));
 			$this->redirect('/');
@@ -92,7 +92,7 @@ class OwnershipsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function set_ownership($model=null,$model_id=null){
+	public function set_ownership($model=null,$model_id=null){
 		Configure::write('debug', 0);
 		if(!empty($this->data)) {
 			$ownership_types = array('had_it','want_it','have_it');
@@ -205,7 +205,7 @@ class OwnershipsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getHaveCount($model=null,$model_id=null){
+	public function getHaveCount($model=null,$model_id=null){
 		$count = $this->Ownership->getHaveCount($model,$model_id);
 		return $count;
 	}
@@ -217,7 +217,7 @@ class OwnershipsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getWantCount($model=null,$model_id=null){
+	public function getWantCount($model=null,$model_id=null){
 		$count = $this->Ownership->getWantCount($model,$model_id);
 		return $count;
 	}
@@ -229,7 +229,7 @@ class OwnershipsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getHadCount($model=null,$model_id=null){
+	public function getHadCount($model=null,$model_id=null){
 		$count = $this->Ownership->getHadCount($model,$model_id);
 		return $count;
 	}
@@ -244,7 +244,7 @@ class OwnershipsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getHaveUsers($model=null,$model_id=null){
+	public function getHaveUsers($model=null,$model_id=null){
 		$data = $this->Ownership->getHaveUsers($model,$model_id);
 		return $data;
 	}
@@ -256,7 +256,7 @@ class OwnershipsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getWantUsers($model=null,$model_id=null){
+	public function getWantUsers($model=null,$model_id=null){
 		$data = $this->Ownership->getWantUsers($model,$model_id);
 		return $data;
 	}
@@ -268,7 +268,7 @@ class OwnershipsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getHadUsers($model=null,$model_id=null){
+	public function getHadUsers($model=null,$model_id=null){
 		$data = $this->Ownership->getHadUsers($model,$model_id);
 		return $data;
 	}
@@ -281,7 +281,7 @@ class OwnershipsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getType($user_id=null,$model=null,$model_id=null){
+	public function getType($user_id=null,$model=null,$model_id=null){
 		return $this->Ownership->getOwnershipType($user_id,$model,$model_id);
 	}
 	

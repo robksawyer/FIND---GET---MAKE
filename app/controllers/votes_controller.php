@@ -9,7 +9,7 @@ class VotesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function beforeFilter(){
+	public function beforeFilter(){
 		parent::beforeFilter();
 		
 		//Make certain pages public
@@ -27,7 +27,7 @@ class VotesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function likes($user_id=null){
+	public function likes($user_id=null){
 		if (!$user_id) {
 			$this->Session->setFlash(__('Invalid user id', true));
 			$this->redirect('/');
@@ -61,7 +61,7 @@ class VotesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function dislikes($user_id=null){
+	public function dislikes($user_id=null){
 		if (!$user_id) {
 			$this->Session->setFlash(__('Invalid user id', true));
 			$this->redirect('/');
@@ -94,7 +94,7 @@ class VotesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function vote_up($model,$model_id){
+	public function vote_up($model,$model_id){
 		$this->Vote->recursive = -1;
 		Configure::write('debug', 0);
 		if($this->RequestHandler->isAjax()) {
@@ -169,7 +169,7 @@ class VotesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function vote_down($model,$model_id){
+	public function vote_down($model,$model_id){
 		$this->Vote->recursive = -1;
 		Configure::write('debug', 0);
 		if($this->RequestHandler->isAjax()) {
@@ -246,7 +246,7 @@ class VotesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function remove_vote($model,$model_id){
+	public function remove_vote($model,$model_id){
 		$this->Vote->recursive = -1;
 		Configure::write('debug', 0);
 
@@ -307,7 +307,7 @@ class VotesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function setLikesDislikes($model=null,$model_id=null,$kind=null){
+	public function setLikesDislikes($model=null,$model_id=null,$kind=null){
 		//Count the likes and dislikes
 		$likes = $this->Vote->getLikes($model,$model_id);
 		$dislikes = $this->Vote->getDislikes($model,$model_id);
@@ -330,20 +330,20 @@ class VotesController extends AppController {
 	/*
 		TODO Move the following methods into the model
 	*/
-	function getLikes($model,$model_id){
+	public function getLikes($model,$model_id){
 		return $this->Vote->getLikes($model,$model_id);
 	}
 	
-	function getDislikes($model,$model_id){
+	public function getDislikes($model,$model_id){
 		return $this->Vote->getDislikes($model,$model_id);
 	}
 	
-	function getUserLikes($model,$model_id){
+	public function getUserLikes($model,$model_id){
 		$user_id = $this->Auth->user('id');
 		return $this->Vote->getUserLikes($model,$model_id,$user_id);
 	}
 	
-	function getUserDislikes($model,$model_id){
+	public function getUserDislikes($model,$model_id){
 		$user_id = $this->Auth->user('id');
 		return $this->Vote->getUserDislikes($model,$model_id,$user_id);
 	}
@@ -354,7 +354,7 @@ class VotesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getAllUserLikes($model=null){
+	public function getAllUserLikes($model=null){
 		$user_id = $this->Auth->user('id');
 		return $this->Vote->getAllUserLikes($model,$user_id);
 	}
@@ -365,7 +365,7 @@ class VotesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getAllUserDislikes($model=null){
+	public function getAllUserDislikes($model=null){
 		$user_id = $this->Auth->user('id');
 		return $this->Vote->getAllUserDislikes($model,$user_id);
 	}

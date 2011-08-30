@@ -22,7 +22,7 @@ class SourcesController extends AppController {
 		*/
 	);
 	
-	function beforeFilter(){
+	public function beforeFilter(){
 		parent::beforeFilter();
 		
 		//Make certain pages public
@@ -46,7 +46,7 @@ class SourcesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function beforeRender(){
+	public function beforeRender(){
 		//Check to see if the user has flagged the item
 		$user_id = $this->Auth->user('id');
 		$model = $this->modelClass;
@@ -54,7 +54,7 @@ class SourcesController extends AppController {
 		$this->set(compact('flagged'));
 	}
 
-	function find() {
+	public function find() {
 		$this->Prg->commonProcess();
 		$this->paginate['conditions'] = $this->Source->parseCriteria($this->passedArgs);
 		$this->set('sources', $this->paginate());
@@ -63,7 +63,7 @@ class SourcesController extends AppController {
 		$this->set(compact('sourceCategories'));
 	}
 	
-	function index($filter = null){
+	public function index($filter = null){
 		$this->Source->recursive = 2;
 		
 		// query all distinct first letters used in names
@@ -144,7 +144,7 @@ class SourcesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function users($id = null){
+	public function users($id = null){
 		$this->Source->recursive = 2;
 		
 		if (!$id) {
@@ -173,7 +173,7 @@ class SourcesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function view($id = null) {
+	public function view($id = null) {
 		$this->Source->recursive = 2;
 		//$isSlug = $this->isSlug($id);
 		if (!$id) {
@@ -204,7 +204,7 @@ class SourcesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function key($keycode=null){
+	public function key($keycode=null){
 		$this->Source->recursive = 2;
 		$this->layout = 'client_review';
 		if (!$keycode && empty($this->data)) {
@@ -233,7 +233,7 @@ class SourcesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function admin_add() {
+	public function admin_add() {
 		//Add the source to a model
 		if(isset($this->passedArgs['model'])){
 			$model = ucwords($this->passedArgs['model']);
@@ -359,7 +359,7 @@ class SourcesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function add() {
+	public function add() {
 		//Add the source to a model
 		if(isset($this->passedArgs['model'])){
 			$model = ucwords($this->passedArgs['model']);
@@ -486,7 +486,7 @@ class SourcesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function admin_edit($id = null) {
+	public function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid source', true));
 			$this->redirect(array('action' => 'index'));
@@ -535,7 +535,7 @@ class SourcesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid source', true));
 			$this->redirect(array('action' => 'index'));
@@ -584,7 +584,7 @@ class SourcesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function admin_delete($id = null) {
+	public function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for source', true));
 			$this->redirect(array('action'=>'index','admin'=>false));
@@ -619,7 +619,7 @@ class SourcesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for source', true));
 			$this->redirect(array('action'=>'index','admin'=>false));
@@ -653,7 +653,7 @@ class SourcesController extends AppController {
 	 * @param id The source id targetting.
 	 * @param product_id The product id to remove.
 	 */
-	function removeProduct($id=null,$product_id=null){
+	public function removeProduct($id=null,$product_id=null){
 		//$this->Source->recursive = 1;
 		//$this->autoLayout = false;
 		//$this->autoRender = false;
@@ -677,7 +677,7 @@ class SourcesController extends AppController {
 	 * @param id The inspiration id targetting.
 	 * @param product_id The product id to remove.
 	 */
-	function removeAttachment($id=null,$attachment_id=null){
+	public function removeAttachment($id=null,$attachment_id=null){
 		$this->Source->recursive = 1;
 		$this->autoLayout = false;
 		$this->autoRender = false;
@@ -736,7 +736,7 @@ class SourcesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function cleanAddress(){
+	public function cleanAddress(){
 		$this->data['Source']['address1'] = ucwords(strtolower($this->data['Source']['address1']));
 		$this->data['Source']['address2'] = ucwords(strtolower($this->data['Source']['address2']));
 		$this->data['Source']['city'] = ucwords(strtolower($this->data['Source']['city']));
@@ -746,7 +746,7 @@ class SourcesController extends AppController {
 	/**
 	 * Finds the tags associated with this model
 	 */
-	function tags($filter=null){
+	public function tags($filter=null){
 		/*
 			TODO The paginator is not updating based on the DISTINCT value entered. Fix this.
 		*/
@@ -802,7 +802,7 @@ class SourcesController extends AppController {
 	 * This method is used to check the name input field before submission.
 	 * @param 
 	 */ 
-	function ajax_check_name() {
+	public function ajax_check_name() {
 		$this->layout = 'ajax';
 
 		if (!empty($this->data)) {
@@ -824,7 +824,7 @@ class SourcesController extends AppController {
 	/**
 	 * Returns all of the tags associated with this Model. This is used by the add_tag element.
 	 */
-	function getTags(){
+	public function getTags(){
 		if(isset($this->params['requested'])) {
 			$temp_tags = $this->Source->Tagged->Tag->find('list');
 			foreach($temp_tags as $tag){
@@ -841,7 +841,7 @@ class SourcesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getProfileData($user_id=null){
+	public function getProfileData($user_id=null){
 		return $this->Source->getProfileData($user_id);
 	}
 	
@@ -850,7 +850,7 @@ class SourcesController extends AppController {
 	 * @param int user_id
 	 * @return int The total number of sources added by the user
 	**/
-	function getCount($user_id=null){
+	public function getCount($user_id=null){
 		return $this->Source->getCount($user_id);
 	}
 	
@@ -861,7 +861,7 @@ class SourcesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function generateKeycode($id=null,$bypassRedirect=false){
+	public function generateKeycode($id=null,$bypassRedirect=false){
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid source', true));
 			$this->redirect('/');
@@ -877,5 +877,47 @@ class SourcesController extends AppController {
 			$this->Session->setFlash(__('The keycode has been generated.', true));
 			$this->redirect(array('action'=>'key','admin'=>false,$keycode));
 		}
+	}
+	
+	/**
+	 * This method verifies the multiple items with the same name don't get added.
+	 * If an item with the same name is found. A session is set with a check count and the
+	 * name. The user is then prompted to verify that they actually want to add the record.
+	 * @param $model The current model
+	 * @return Boolean
+	 */ 
+	public function verifyAddition($model = null){
+		$checker = $this->Session->read('Check.count');
+		$name = $this->Session->read('Check.name');
+		$passed_check = true;
+		if(empty($checker)){
+			$check_item = $this->$model->findByName($this->data[$model]['name']);
+			if(!empty($check_item)){
+				$passed_check = false;
+				$this->Session->write('Check.count', '1');
+				$this->Session->write('Check.name', $this->data[$model]['name']);
+			}else{
+				$passed_check = true;
+			}
+		}else if($this->data[$model]['name'] != $name){
+			$check_item = $this->$model->findByName($this->data[$model]['name']);
+			if(!empty($check_item)){
+				$passed_check = false;
+				$this->Session->write('Check.count', '1');
+				$this->Session->write('Check.name', $this->data[$model]['name']);
+			}else{
+				$passed_check = true;
+			}
+		}
+		
+		return $passed_check;
+	}
+	
+	/**
+	 * Clears the sessions set by the verifyAddition method.
+	 */
+	public function clearVerifySessions(){
+		$this->Session->delete('Check.count');
+		$this->Session->delete('Check.name');
 	}
 }

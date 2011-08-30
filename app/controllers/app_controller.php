@@ -98,7 +98,7 @@ class AppController extends Controller {
 	 */
 	public function _autoLogin($user) {
 		ClassRegistry::init('User')->login($user);
-
+		
 		$this->Session->delete('Forum');
 		$this->Toolbar->initForum();
 	}
@@ -132,9 +132,9 @@ class AppController extends Controller {
 		if(isset($this->Auth)) {
 			// Auth settings
 			$referer = $this->referer();
-			if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/login') {
+			if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/login' || $referer == '/forum/users/login') {
 				//$referer = array('plugin' => 'admin', 'controller' => 'home', 'action' => 'index','admin'=>false);
-				$referer = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>false);
+				$referer = '/users/moderate';
 			}
 			
 			/*$this->Auth->mapActions(
@@ -145,6 +145,8 @@ class AppController extends Controller {
 					'delete'=>array('delete')
 				)
 			);*/
+			
+			$this->Auth->userModel = 'User';
 			
 			//Keep banned users from logging in and nonactive users
 			$this->Auth->userScope = array(
@@ -159,13 +161,9 @@ class AppController extends Controller {
 			$this->Auth->loginRedirect = $referer;
 			$this->Auth->logoutRedirect = $referer;
 			$this->Auth->autoRedirect = false;
-			$this->Auth->userModel = 'User';
 			
 			//Custom settings for AutoLogin component
 			//http://bakery.cakephp.org/articles/milesj/2009/07/05/autologin-component-an-auth-remember-me-feature
-			$this->AutoLogin->cookieName = 'FindGetMake';
-			$this->AutoLogin->expires = '+1 month';
-			
 			// AutoLogin settings
 			$this->AutoLogin->settings = array(
 				'admin'=>false,
@@ -174,42 +172,21 @@ class AppController extends Controller {
 				'loginAction' => 'login',
 				'logoutAction' => 'logout'
 			);
+			$this->AutoLogin->cookieName = 'FindGetMake';
+			$this->AutoLogin->expires = '+1 month';
+			
 		}
 
 		$this->Cookie->key = Configure::read('Security.salt');
 
 		// Initialize
 		$this->Toolbar->initForum();
-	
-		$this->AjaxHandler->handle('admin_hide_challenge');
-		
-		/*
-			TODO Set up a check to see if the user has hidden the challenge.
-			* This'll involve adding a new database field that will log this. Or, you 
-			* could use the deactivated Session key.
-		*/
-		$resetChallengeSession = false; //Show the challenge if it has been removed
-		if($resetChallengeSession){
-			$this->Session->write('Challenge.deactivated',false);
-		}
-		
-		//Set the challenge Session. Note: The method is inside of app_controller.php
-		$cTitle = $this->Session->read('Challenge.title');
-		$checkTitle = $this->setChallengeSession();
-		$cSlug = $this->Session->read('Challenge.slug');
-		$deactivated = $this->Session->read('Challenge.deactivated');
-		$this->set('challenge_deactivated',$deactivated);
-		if(empty($cTitle) || empty($cSlug) || $checkTitle != $cTitle){
-			if(empty($deactivated)){
-				$this->set('challenge',$this->setChallengeSession());
-			}
-		}
+
 		
 		//FACEBOOK OAUTH SETTINGS
 		$this->Connect->createUser = false;
 		$facebookUser = $this->Connect->user();
 		
-		debug($this->Auth->user());
 		/** SET GLOBAL VARIABLES **/
 		$this->set('facebookUser', $facebookUser);
 		$this->set('authUser', $this->Auth->user());
@@ -222,55 +199,6 @@ class AppController extends Controller {
 	public function beforeRender() {
 		if (isset($this->pageTitle) && !empty($this->pageTitle)) {
 			$this->set('title_for_layout', $this->pageTitle);
-		}
-	}
-	
-	/**
-	 * This method sets up the challenge Session variables.
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	protected function setChallengeSession(){
-		$challenge = $this->findChallenge();
-		if(!empty($challenge)){
-			$this->Session->write('Challenge.title',$challenge['Topic']['title']);
-			$this->Session->write('Challenge.slug',$challenge['Topic']['slug']);
-			return $challenge;
-		}else{
-			//$this->Session->setFlash(__('The challenge could not be found.', true));
-			return null;
-		}
-	}
-	
-	/**
-	 * Finds the latest challenge topic in the forum.
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	protected function findChallenge(){
-		Controller::loadModel('Forum.Topic');
-		$latestTopic = $this->Topic->findLatestTopic(2);
-		return $latestTopic;
-	}
-	
-	/**
-	 * Hides the challenge header.
-	 **/ 
-	protected function admin_hide_challenge(){
-		Configure::write('debug', 0); //it will avoid any extra output
-		if ($this->RequestHandler->isAjax()) {
-			$this->autoLayout = false;
-			$this->autoRender = false;
-			
-			$this->Session->delete('Challenge.title');
-			$this->Session->delete('Challenge.slug');
-			$this->Session->write('Challenge.deactivated',1);
-			//$this->redirect($this->referer());
-			$this->AjaxHandler->response(true,'deactivated');
-			$this->AjaxHandler->respond();
-			return;
 		}
 	}
 	
@@ -360,48 +288,7 @@ class AppController extends Controller {
 		}
 		return $day;
 	}
-	
-	/**
-	 * This method verifies the multiple items with the same name don't get added.
-	 * If an item with the same name is found. A session is set with a check count and the
-	 * name. The user is then prompted to verify that they actually want to add the record.
-	 * @param $model The current model
-	 * @return Boolean
-	 */ 
-	protected function verifyAddition($model = null){
-		$checker = $this->Session->read('Check.count');
-		$name = $this->Session->read('Check.name');
-		$passed_check = true;
-		if(empty($checker)){
-			$check_item = $this->$model->findByName($this->data[$model]['name']);
-			if(!empty($check_item)){
-				$passed_check = false;
-				$this->Session->write('Check.count', '1');
-				$this->Session->write('Check.name', $this->data[$model]['name']);
-			}else{
-				$passed_check = true;
-			}
-		}else if($this->data[$model]['name'] != $name){
-			$check_item = $this->$model->findByName($this->data[$model]['name']);
-			if(!empty($check_item)){
-				$passed_check = false;
-				$this->Session->write('Check.count', '1');
-				$this->Session->write('Check.name', $this->data[$model]['name']);
-			}else{
-				$passed_check = true;
-			}
-		}
-		
-		return $passed_check;
-	}
-	
-	/**
-	 * Clears the sessions set by the verifyAddition method.
-	 */
-	protected function clearVerifySessions(){
-		$this->Session->delete('Check.count');
-		$this->Session->delete('Check.name');
-	}
+
 	
 	/**
 	 * Helper method to upload the attachments. 

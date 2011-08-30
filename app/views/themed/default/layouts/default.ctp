@@ -121,27 +121,20 @@
 		<div id="popups" style="z-index: 1000;"></div>
 		<div id="container">
 			<div id="header">
-				<div id="login-container">
-					<?php
-						if(empty($authUser)){
-							if ($this->params['action'] != 'login') {
-								echo $this->Html->link('Login','/login',array('title'=>'Login'));
-							}
+				<?php 
+					if(!empty($authUser)){
+						if($authUser['User']['group_id'] == 1){
+							echo $this->element('admin-nav',array('cache'=>false));
+						}else if($authUser['User']['group_id'] == 2){
+							echo $this->element('manager-nav',array('cache'=>false));
 						}else{
-							if(!empty($authUser['User']['fullname'])){
-								echo "Hi, ".ucwords($authUser['User']['fullname']).". | ";
-							}else{
-								echo "Hi, ".$authUser['User']['username'].". | ";
-							}
-							echo $this->Html->link('Your Space','/users/moderate',array('title'=>'Check out your space.'))." | ";
-							if ($this->Cupcake->user() && $this->Cupcake->hasAccess('admin')):
-								echo $this->Html->link(__d('forum', 'Forum Admin', true), '/admin/forum/home')." | ";
-							endif;
-							echo $this->Html->link('Logout','/logout',array('title'=>'Logout'));
-						
+							echo $this->element('user-nav',array('cache'=>false));
 						}
-					?>
-				</div>
+					}else{
+						echo $this->element('user-nav',array('cache'=>false));
+					}
+					
+				?>
 				<div id="logo-container">
 					<div class="app-name"><?php echo $this->Html->image('/img/logo.png',array('alt'=>'FIND | GET | MAKE','url'=>'/','style'=>'position: relative; float: none; margin: 0px 0px 2px 0px; padding: 0px;','title'=>'FIND | GET | MAKE')); ?></div>
 				</div>

@@ -28,7 +28,7 @@ class FeedsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function me(){
+	public function me(){
 		$user = $this->Auth->user();
 		$user = $this->Feed->User->read(null,$user['User']['id']);
 		//debug($user['UserFollowing']);
@@ -52,7 +52,7 @@ class FeedsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function user($username=null){
+	public function user($username=null){
 		if(is_int($username)){
 			$id = $username;
 			$user = $this->Feed->User->read(null,$id);
@@ -82,7 +82,7 @@ class FeedsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function display(){
+	public function display(){
 		//Get the logged in user
 		$user = $this->Auth->user();
 		if(empty($user)){
@@ -97,7 +97,7 @@ class FeedsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getUsersFollowingFeedData($offset=0){
+	public function getUsersFollowingFeedData($offset=0){
 		$user_id = $this->Auth->user('id');
 		//$user = $this->Feed->User->read(null,$user_id);
 		$following_user_ids = $this->Feed->User->getFollowingUserIds($user_id);
@@ -111,7 +111,7 @@ class FeedsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getUsersFollowingFeedCount(){
+	public function getUsersFollowingFeedCount(){
 		$user_id = $this->Auth->user('id');
 		$following_user_ids = $this->Feed->User->getFollowingUserIds($user_id);
 		return $this->Feed->getFeedCount($following_user_ids);
@@ -124,7 +124,7 @@ class FeedsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getUserFeed($user_id=null,$offset=0){
+	public function getUserFeed($user_id=null,$offset=0){
 		$feed = $this->Feed->getUserFeedDataDetails($user_id,$offset);
 		return $feed;
 	}
@@ -135,7 +135,7 @@ class FeedsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getUserFeedCount($user_id=null){
+	public function getUserFeedCount($user_id=null){
 		return $this->Feed->getFeedCount($user_id);
 	}
 	
@@ -145,7 +145,7 @@ class FeedsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function admin_generate($username=null){
+	public function admin_generate($username=null){
 		$this->Feed->recursive = 1;
 		if (!$username) {
 			$this->Session->setFlash(__('Invalid username', true));
