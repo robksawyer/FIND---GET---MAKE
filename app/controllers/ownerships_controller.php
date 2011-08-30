@@ -12,7 +12,7 @@ class OwnershipsController extends AppController {
 											'getHadUsers','haves','wants'
 											);
 		//$this->Auth->allow('getHaveCount','getWantCount','getHadCount','getType','getHaveUsers','getWantUsers','getHadUsers');
-		$this->AjaxHandler->handle('admin_set_ownership');
+		$this->AjaxHandler->handle('set_ownership');
 	}
 	
 	
@@ -92,7 +92,7 @@ class OwnershipsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function admin_set_ownership($model=null,$model_id=null){
+	function set_ownership($model=null,$model_id=null){
 		Configure::write('debug', 0);
 		if(!empty($this->data)) {
 			$ownership_types = array('had_it','want_it','have_it');

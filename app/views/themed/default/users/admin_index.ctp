@@ -5,7 +5,7 @@
 
 <?php echo $this->Session->flash(); ?>
 
-<?php echo $this->Form->create('User', array('url' => array('controller' => 'users', 'action' => 'index', 'admin' => true))); ?>
+<?php echo $this->Form->create('User', array('url' => array('controller' => 'users', 'action' => 'index', 'admin' => false))); ?>
 <table cellpadding="5" style="width: 100%">
 <tr>
 	<td class="ar">
@@ -40,7 +40,7 @@
         
     <tr<?php if ($counter % 2) echo ' class="altRow"'; ?>>
     	<td class="ac"><?php echo $user['User']['id']; ?></td>
-        <td><?php echo $this->Html->link($user['User']['username'], array('action' => 'edit', $user['User']['id'], 'admin' => true)); ?></td>
+        <td><?php echo $this->Html->link($user['User']['username'], array('action' => 'edit', $user['User']['id'], 'admin' => false)); ?></td>
         <td><?php echo $user['User']['email']; ?></td>
         <td class="ac"><?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></td>
         <td class="ac">
@@ -53,8 +53,8 @@
         <td class="ac"><?php echo number_format($user['User']['totalTopics']); ?></td>
         <td class="ac"><?php echo number_format($user['User']['totalPosts']); ?></td>
         <td class="ac gray">
-        	<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $user['User']['id'], 'admin' => true)); ?> -
-        	<?php echo $this->Html->link(__('Reset Password', true), array('action' => 'reset', $user['User']['id'], 'admin' => true), array('confirm' => __('Are you sure you want to reset?', true))); ?> -
+        	<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $user['User']['id'], 'admin' => false)); ?> -
+        	<?php echo $this->Html->link(__('Reset Password', true), array('action' => 'reset', $user['User']['id'], 'admin' => false), array('confirm' => __('Are you sure you want to reset?', true))); ?> -
         	<?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $user['User']['id'], 'admin' => true)); ?>
         </td>
     </tr>

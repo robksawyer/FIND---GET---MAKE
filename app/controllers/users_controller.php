@@ -357,7 +357,7 @@ class UsersController extends AppController {
 			$this->Auth->login($user_data);
 			
 			//Redirect to moderate page
-			$this->redirect(array('admin'=>true,'plugin'=>'','controller'=>'users','action'=>'moderate'));
+			$this->redirect(array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'moderate'));
 		}
 		
 		if(!empty($twitterUserDetails) && empty($this->data)){
@@ -398,7 +398,7 @@ class UsersController extends AppController {
 					$this->Auth->login($this->data);
 					unset($this->data['User']);
 					$this->Session->setFlash(__('You have successfully created an account and may now start your journey.', true));
-					$this->redirect(array('plugin'=>'','controller'=>'users','action'=>'moderate','admin'=>true));
+					$this->redirect(array('plugin'=>'','controller'=>'users','action'=>'moderate','admin'=>false));
 					
 					//$this->redirect(array('plugin'=>'','controller' => 'users', 'action' => 'login', 'admin' => false));
 				}
@@ -462,7 +462,7 @@ class UsersController extends AppController {
 	 * @category Admin
 	 * @param int $id
 	 */
-	public function admin_reset($id) {
+	public function reset($id) {
 		$user = $this->User->get($id);
 		$this->Toolbar->verifyAccess(array('exists' => $user));
 		
@@ -471,7 +471,7 @@ class UsersController extends AppController {
 			$this->Session->setFlash(sprintf(__('The password for %s has been reset!', true), '<strong>'. $user['User']['username'] .'</strong>'));
 		}
 		
-		$this->redirect(array('controller' => 'users', 'action' => 'index', 'admin' => true));
+		$this->redirect(array('controller' => 'users', 'action' => 'index', 'admin' => false));
 	}
 	
 	/**
@@ -595,6 +595,52 @@ class UsersController extends AppController {
 	public function facebook_logout(){
 		
 	}
+	
+	/**
+	 *  User moderation panel
+	 *
+	 * @access public
+	 * @category Admin
+	 * @param int $id
+	 */
+	public function moderate() {
+		$this->User->recursive = 2;
+		$user = $this->Auth->user();
+	
+		if (!$user['User']['id']) {
+			$this->Session->setFlash(__('Invalid user', true));
+			$this->redirect(array('action' => 'index'));
+		}
+		
+		$user = $this->User->getProfile($user['User']['id']);
+
+		if (!empty($user)) {
+			//$this->loadModel('Forum.Topic');
+			Controller::loadModel('Topic');
+			$this->set('topics', $this->Topic->getLatestByUser($user['User']['id']));
+			$this->set('posts', $this->Topic->Post->getLatestByUser($user['User']['id']));
+		}
+		
+		//Check for a local avatar details
+		if(!empty($user['User']['attachment_id'])){
+			$avatar = $this->User->Attachment->getAvatar($user['User']['attachment_id'],$user['User']['id']);
+		}else{
+			$avatar = false;
+		}
+		$this->set('avatar',$avatar);
+		
+		//$user = $this->User->read(null,$user['User']['id']);
+		$this->User->UserFollowing->recursive = 1;
+		$followers = $this->User->UserFollowing->findFollowers($user['User']['id'],5);
+		$this->User->Ownership->recursive = 1;
+		$user_wants = $this->User->Ownership->getUserWantCount('Product',$user['User']['id']);
+		$user_haves = $this->User->Ownership->getUserHaveCount('Product',$user['User']['id']);
+		$this->set(compact('user_wants','user_haves','followers'));
+		//$this->set('user', $this->User->read(null, $user['User']['id']));
+		$this->set('user', $user);
+		$this->set('string', $this->String);
+	}
+	
 	
 	/**
 	 *  User moderation panel
@@ -1070,7 +1116,7 @@ class UsersController extends AppController {
 	 * @return 
 	 * 
 	*/
-	public function admin_use_gravatar($attachment_id=null){
+	public function use_gravatar($attachment_id=null){
 		$this->autoLayout = false;
 		$this->autoRender = false;
 		if(!$attachment_id){

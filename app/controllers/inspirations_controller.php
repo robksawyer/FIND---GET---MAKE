@@ -209,6 +209,46 @@ class InspirationsController extends AppController {
 		$this->set('string', $this->String);
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function add() {
+		if (!empty($this->data)) {
+			
+			if(!empty($this->data['Inspiration']['url'])){
+				$this->data['Inspiration']['url'] = $this->cleanURL($this->data['Inspiration']['url']); //Clean the URL
+			}
+			
+			//Upload the attachments
+			$this->uploadAttachments('Inspiration');
+			
+			$this->Inspiration->create();
+			if ($this->Inspiration->save($this->data)) {
+				$this->Session->setFlash(__('The inspiration has been saved', true));
+				$id = $this->Inspiration->getLastInsertID();
+				//Generate and create keycode
+				$this->generateKeycode($id,true);
+				$this->redirect(array('action' => 'view','admin'=>false,$id));
+			} else {
+				$this->Session->setFlash(__('The inspiration could not be saved. Please, try again.', true));
+			}
+		}
+		$countries = $this->Inspiration->Country->find('list');
+		$attachments = $this->Inspiration->Attachment->find('list');
+		$sources = $this->Inspiration->Source->find('list',array('order' => 'name ASC'));
+		$products = $this->Inspiration->Product->find('list');
+		$this->set(compact('attachments', 'sources','products','countries'));
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function admin_add() {
 		if (!empty($this->data)) {
 			
@@ -241,7 +281,7 @@ class InspirationsController extends AppController {
 	 * This is a helper method that makes it easy to add multiple products to an inspiration image.
 	 * @param id The id of the current inspiration.
 	 */
-	function admin_addProducts($id=null) {
+	function addProducts($id=null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid inspiration', true),'default',array('class'=>'error-message'));
 			//$this->redirect(array('action' => 'index','admin'=>false));
@@ -301,7 +341,50 @@ class InspirationsController extends AppController {
 			
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function edit($id = null) {
+		if (!$id && empty($this->data)) {
+			$this->Session->setFlash(__('Invalid inspiration', true));
+			$this->redirect(array('action' => 'index','admin'=>false));
+		}
+		
+		if (!empty($this->data)) {
+			
+			//Upload the attachments
+			$this->uploadAttachments('Inspiration',$id);
+			
+			
+			if ($this->Inspiration->save($this->data)) {
+				$this->Session->setFlash(__('The inspiration has been updated', true));
+				$this->redirect(array('action' => 'view','admin'=>false,$id));
+			} else {
+				$this->Session->setFlash(__('The inspiration could not be updated. Please, try again.', true));
+			}
+		}
+		
+		if (empty($this->data)) {
+			$this->data = $this->Inspiration->read(null, $id);
+		}
+		$countries = $this->Inspiration->Country->find('list');
+		$attachments = $this->Inspiration->Attachment->find('list');
+		$sources = $this->Inspiration->Source->find('list',array('order' => 'name ASC'));
+		$products = $this->Inspiration->Product->find('list',array('order' => 'name ASC'));
+		$this->set('inspiration', $this->Inspiration->read(null, $id));
+		$this->set(compact('attachments', 'sources','products','countries'));
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid inspiration', true));
@@ -333,6 +416,31 @@ class InspirationsController extends AppController {
 		$this->set(compact('attachments', 'sources','products','countries'));
 	}
 
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function delete($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid id for inspiration', true));
+			$this->redirect(array('action'=>'index','admin'=>false));
+		}
+		if ($this->Inspiration->delete($id)) {
+			$this->Session->setFlash(__('Inspiration deleted', true));
+			$this->redirect(array('action'=>'index','admin'=>false));
+		}
+		$this->Session->setFlash(__('Inspiration was not deleted', true));
+		$this->redirect(array('action' => 'index','admin'=>false));
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for inspiration', true));

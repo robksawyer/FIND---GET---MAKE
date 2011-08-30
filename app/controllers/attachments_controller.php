@@ -103,7 +103,7 @@ class AttachmentsController extends AppController {
 		$this->set('string', $this->String);
 	}
 
-	/*function admin_add() {
+	/*private function admin_add() {
 		if(isset($this->passedArgs['model'])){
 			$model = ucwords($this->passedArgs['model']);
 			if(isset($this->passedArgs['id'])){

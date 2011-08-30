@@ -83,8 +83,14 @@ class UfosController extends AppController {
 		}
 		$this->set('ufo', $this->Ufo->read(null, $id));
 	}
-
-	function admin_add() {
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function add() {
 		if (!empty($this->data)) {
 			
 			//Upload the attachments
@@ -106,6 +112,73 @@ class UfosController extends AppController {
 		$this->set(compact('attachments'));
 	}
 
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function admin_add() {
+		if (!empty($this->data)) {
+			
+			//Upload the attachments
+			$this->uploadAttachments('Ufo');
+			//debug($this->data);
+			$this->data['Ufo']['attachment_id'] = $this->data['Attachment']['Attachment'][0];
+			unset($this->data['Attachment']);
+			
+			$this->Ufo->create();
+			if ($this->Ufo->save($this->data)) {
+				$this->Session->setFlash(__('The ufo has been saved', true));
+				$id = $this->Ufo->getLastInsertID();
+				$this->redirect(array('admin'=>false,'action' => 'view',$id));
+			} else {
+				$this->Session->setFlash(__('The ufo could not be saved. Please, try again.', true));
+			}
+		}
+		$attachments = $this->Ufo->Attachment->find('list');
+		$this->set(compact('attachments'));
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function edit($id = null) {
+		if (!$id && empty($this->data)) {
+			$this->Session->setFlash(__('Invalid ufo', true));
+			$this->redirect(array('action' => 'index','admin'=>false));
+		}
+		if (!empty($this->data)) {
+			
+			//Upload the attachments
+			$this->uploadAttachments('Ufo',$id);
+			$this->data['Ufo']['attachment_id'] = $this->data['Attachment']['Attachment'][0];
+			unset($this->data['Attachment']);
+			
+			if ($this->Ufo->save($this->data)) {
+				$this->Session->setFlash(__('The ufo has been saved', true));
+				$this->redirect(array('admin'=>false,'action' => 'view',$id));
+			} else {
+				$this->Session->setFlash(__('The ufo could not be saved. Please, try again.', true));
+			}
+		}
+		
+		if (empty($this->data)) {
+			$this->data = $this->Ufo->read(null, $id);
+		}
+		$attachments = $this->Ufo->Attachment->find('list');
+		$this->set(compact('attachments'));
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid ufo', true));
@@ -132,7 +205,33 @@ class UfosController extends AppController {
 		$attachments = $this->Ufo->Attachment->find('list');
 		$this->set(compact('attachments'));
 	}
+	
 
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function delete($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid id for ufo', true));
+			$this->redirect(array('action'=>'index','admin'=>false));
+		}
+		if ($this->Ufo->delete($id)) {
+			$this->Session->setFlash(__('Ufo deleted', true));
+			$this->redirect(array('action'=>'index','admin'=>false));
+		}
+		$this->Session->setFlash(__('Ufo was not deleted', true));
+		$this->redirect(array('action' => 'index','admin'=>false));
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for ufo', true));

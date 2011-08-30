@@ -134,7 +134,7 @@ class AppController extends Controller {
 			$referer = $this->referer();
 			if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/login') {
 				//$referer = array('plugin' => 'admin', 'controller' => 'home', 'action' => 'index','admin'=>false);
-				$referer = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
+				$referer = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>false);
 			}
 			
 			/*$this->Auth->mapActions(
@@ -209,6 +209,7 @@ class AppController extends Controller {
 		$this->Connect->createUser = false;
 		$facebookUser = $this->Connect->user();
 		
+		debug($this->Auth->user());
 		/** SET GLOBAL VARIABLES **/
 		$this->set('facebookUser', $facebookUser);
 		$this->set('authUser', $this->Auth->user());
@@ -614,7 +615,7 @@ class AppController extends Controller {
 	 * @param id 
 	 * @version 1.0
 	 */
-	protected function add_attachment($id = null, $model = null){
+	public function add_attachment($id = null, $model = null){
 	
 		if(!empty($model)){
 			$controller = Inflector::pluralize(strtolower($model));

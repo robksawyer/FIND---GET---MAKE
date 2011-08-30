@@ -41,6 +41,28 @@ class UsersController extends ForumAppController {
 	);
 	
 	/**
+	 * Before filter.
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function beforeFilter() {
+		parent::beforeFilter();
+		
+		$this->Auth->allow('index', 'forgot', 'login', 'logout', 'listing', 'profile', 'signup');
+		
+		$this->Auth->loginRedirect = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>false);
+		$this->Auth->logoutRedirect = '/';
+		
+		if (isset($this->params['admin'])) {
+			$this->Toolbar->verifyAdmin();
+			$this->layout = 'admin';
+		}
+		
+		$this->set('menuTab', 'users');
+	}
+	
+	/**
 	 * Redirect.
 	 *
 	 * @access public 
@@ -284,7 +306,7 @@ class UsersController extends ForumAppController {
 			$this->Auth->login($user_data);
 			
 			//Redirect to moderate page
-			$this->redirect(array('admin'=>true,'plugin'=>'','controller'=>'users','action'=>'moderate'));
+			$this->redirect(array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'moderate'));
 		}
 		
 		if(!empty($twitterUserDetails) && empty($this->data)){
@@ -325,7 +347,7 @@ class UsersController extends ForumAppController {
 					$this->Auth->login($this->data);
 					unset($this->data['User']);
 					$this->Session->setFlash(__('You have successfully created an account and may now start your journey.', true));
-					$this->redirect(array('plugin'=>'','controller'=>'users','action'=>'moderate','admin'=>true));
+					$this->redirect(array('plugin'=>'','controller'=>'users','action'=>'moderate','admin'=>false));
 					
 					//$this->redirect(array('plugin'=>'','controller' => 'users', 'action' => 'login', 'admin' => false));
 				}
@@ -423,28 +445,6 @@ class UsersController extends ForumAppController {
 		$this->pageTitle = __d('forum', 'Delete User', true);
 		$this->set('id', $id);
 		$this->set('user', $user);
-	}
-	
-	/**
-	 * Before filter.
-	 * 
-	 * @access public
-	 * @return void
-	 */
-	public function beforeFilter() {
-		parent::beforeFilter();
-		
-		$this->Auth->allow('index', 'forgot', 'login', 'logout', 'listing', 'profile', 'signup');
-		
-		$this->Auth->loginRedirect = array('plugin'=>'','controller' => 'users', 'action' => 'moderate','admin'=>true);
-		$this->Auth->logoutRedirect = '/';
-		
-		if (isset($this->params['admin'])) {
-			$this->Toolbar->verifyAdmin();
-			$this->layout = 'admin';
-		}
-		
-		$this->set('menuTab', 'users');
 	}
 
 }

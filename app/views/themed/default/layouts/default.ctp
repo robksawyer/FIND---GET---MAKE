@@ -133,9 +133,9 @@
 							}else{
 								echo "Hi, ".$authUser['User']['username'].". | ";
 							}
-							echo $this->Html->link('Your Space','/admin/users/moderate',array('title'=>'Check out your space.'))." | ";
+							echo $this->Html->link('Your Space','/users/moderate',array('title'=>'Check out your space.'))." | ";
 							if ($this->Cupcake->user() && $this->Cupcake->hasAccess('admin')):
-								echo $this->Html->link(__d('forum', 'Admin', true), '/admin/forum/home')." | ";
+								echo $this->Html->link(__d('forum', 'Forum Admin', true), '/admin/forum/home')." | ";
 							endif;
 							echo $this->Html->link('Logout','/logout',array('title'=>'Logout'));
 						
@@ -153,13 +153,13 @@
 			</div>
 			<div id="content">
 				<?php
-					if ($this->params['action'] == 'display' || $this->params['action'] == 'admin_moderate') {
+					if ($this->params['action'] == 'display' || $this->params['action'] == 'moderate') {
 						//The challenge was here.
 					}
 				?>
 				<?php echo $this->Session->flash();?>
 				<?php 
-					if ($this->params['plugin'] == 'forum' || $this->params['controller'] =='users' && $this->params['action'] != 'admin_moderate') {
+					if ($this->params['plugin'] == 'forum' || $this->params['controller'] =='users' && $this->params['action'] != 'moderate') {
 						echo $this->element('navigation',array('plugin' => 'forum')); 
 					}
 				?>

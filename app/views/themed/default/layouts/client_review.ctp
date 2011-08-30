@@ -137,7 +137,7 @@
 							}else{
 								echo "Hi, ".$authUser['User']['username'].". | ";
 							}
-							echo $this->Html->link('Your Space','/admin/users/moderate',array('title'=>'Check out your space.'))." | ";
+							echo $this->Html->link('Your Space','/users/moderate',array('title'=>'Check out your space.'))." | ";
 							if ($this->Cupcake->user() && $this->Cupcake->hasAccess('admin')):
 								echo $this->Html->link(__d('forum', 'Admin', true), '/admin/forum/home')." | ";
 							endif;
@@ -157,7 +157,7 @@
 			</div>
 			<div id="content">
 				<?php
-					if ($this->params['action'] == 'display' || $this->params['action'] == 'admin_moderate') {
+					if ($this->params['action'] == 'display' || $this->params['action'] == 'moderate') {
 						//The competition was here.
 					}
 				?>

@@ -226,7 +226,13 @@ class SourcesController extends AppController {
 		$this->set(compact('source','contractors','inspirations','attachments','sourceCategories'));
 		$this->set('string', $this->String);
 	}
-
+	
+	/**
+	 * This is private to administrators and managers
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function admin_add() {
 		//Add the source to a model
 		if(isset($this->passedArgs['model'])){
@@ -347,7 +353,139 @@ class SourcesController extends AppController {
 		$this->set(compact('contractors', 'images','countries','tags','sourceCategories'));
 	}
 	
+	/**
+	 * This is the main add product method. It's public to users.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function add() {
+		//Add the source to a model
+		if(isset($this->passedArgs['model'])){
+			$model = ucwords($this->passedArgs['model']);
+			if(isset($this->passedArgs['id'])){
+				$id = intval($this->passedArgs['id']);
+				
+				//Pluralize the model name
+				$plural_model = strtolower($model);
+				$plural_model = Inflector::pluralize($plural_model);
+
+				//Find the actual record and make sure it's legit.
+				$item = $this->Source->$model->findById($id);
+				if(!empty($item)){
+					//Pass along the details
+					$this->set(compact('item','model','plural_model'));
+				}else{
+					$this->Session->setFlash(__('This record does not exist.', true));
+					/*
+						TODO Redirect the user or set a variable that hides the upload field.
+					*/
+					$errors['message'] = 'The item was not found in the database';
+				}
+			}
+		}
+		
+		if (!empty($this->data)) {
+			
+			$passed_check = $this->verifyAddition('Source');
+			
+			if($passed_check){
+				//Cleanup
+				if(!empty($this->data['Source']['url'])){
+					$this->data['Source']['url'] = $this->cleanURL($this->data['Source']['url']); //Clean the URL
+				}
+				$this->data['Source']['slug'] = $this->toSlug($this->data['Source']['name']);
+				
+				//Cleanup the address
+				$this->cleanAddress();
+				
+				/*
+				 * Check to see if a contractor was added. If a name was added, check the 
+				 * name against already added contractors. If the name exist, associate the contractor
+				 * id to the source. */
+				if(Configure::read('FGM.private_solution') == 1){
+					if(!empty($this->data['Contractor']['name'])){
+						$contractor = $this->Source->Contractor->findByName($this->data['Contractor']['name']);
+						if(empty($contractor)){
+							$this->Source->Contractor->create();
+							//Create a slug for it.
+							$this->data['Contractor']['slug'] = $this->toSlug($this->data['Contractor']['name']);
+							if($this->Source->Contractor->save($this->data['Contractor'])){
+								//$this->Session->setFlash(__('The contractor has been saved', true));
+								$contractor_id = $this->Source->Contractor->getLastInsertID();
+								$this->data['Contractor'][0] = $contractor_id; //Add the contractor
+							}else{
+								$this->Session->setFlash(__('The contractor could not be saved. Please, try again.', true));
+							}
+						}else{
+							//debug($contractor);
+							unset($this->data['Contractor']['name']);
+							$this->data['Contractor'][0] = $contractor['Contractor']['id'];
+						}
+					}else{
+						unset($this->data['Contractor']);
+					}
+				}else{
+					//Do nothing
+				}
+				
+				//Check for a redirect variable
+				if(!empty($this->data['Product']['redirect'])){
+					$redirect = $this->data['Product']['redirect'];
+					unset($this->data['Product']['redirect']);
+				}
+				
+				//Upload the attachments
+				$this->uploadAttachments('Source');
+				
+				$this->Source->create();
+				if ($this->Source->save($this->data)) {
+					$this->clearVerifySessions();
+					$this->Session->setFlash(__('The source has been saved', true));
+					
+					$id = $this->Source->getLastInsertID();
+					//Generate and create keycode
+					$this->generateKeycode($id,true);
+				
+					if(!empty($redirect)){
+						$this->redirect($redirect);
+					}else{
+						$this->redirect(array('action' => 'view','admin'=>false,$id));
+					}
+					
+				} else {
+					$this->clearVerifySessions();
+					$this->Session->setFlash(__('The source could not be saved. Please, try again.', true),'default', array('class' => 'error-message'));
+					if(!empty($redirect)){
+						$this->redirect($redirect);
+					}
+				}
+			}else{
+				$this->Session->setFlash(__('The source '.$this->data['Source']['name']. ' already exists. Are you sure you want to add this?', true),'default', array('class' => 'error-message'));
+				if(!empty($redirect)){
+					$this->redirect($redirect);
+				}
+			}
+			
+			//debug($this->data);
+		}else{
+			$this->set('errors', $this->Source->invalidFields());
+		}
+		//$images = $this->Source->Image->find('list');
+		$countries = $this->Source->Country->find('list');
+		$contractors = $this->Source->Contractor->find('list',array( 'order' => 'name ASC' ));
+		$sourceCategories = $this->Source->SourceCategory->find('list',array( 'order' => 'name ASC' ));
+		$tags = $this->Source->Tagged->find('cloud', array('limit' => 10));
+		$this->set(compact('contractors', 'images','countries','tags','sourceCategories'));
+	}
 	
+	
+	/**
+	 * This is private and only viewable to administrators and managers
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid source', true));
@@ -390,8 +528,98 @@ class SourcesController extends AppController {
 		$this->set('source', $this->Source->read(null, $id));
 		$this->set(compact('contractors','countries','tags','tags_cloud','sourceCategories'));
 	}
-
+	
+	/**
+	 * This is the main edit method. It's public to users.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function edit($id = null) {
+		if (!$id && empty($this->data)) {
+			$this->Session->setFlash(__('Invalid source', true));
+			$this->redirect(array('action' => 'index'));
+		}
+		if (!empty($this->data)) {
+			//Cleanup
+			if(!empty($this->data['Source']['url'])){
+				$this->data['Source']['url'] = $this->cleanURL($this->data['Source']['url']); //Clean the URL
+			}
+			$this->data['Source']['slug'] = $this->toSlug($this->data['Source']['name']);
+			
+			//Cleanup the address
+			$this->cleanAddress();
+			
+			//Upload the attachments
+			$this->uploadAttachments('Source',$id);
+			
+			//Update the inspiration photo tag name
+			$this->Source->InspirationPhotoTag->updateName($id,'Source',$this->data['Source']['name']);
+			
+			if($this->Source->saveAll($this->data)) {
+				$this->Session->setFlash(__('The source has been updated', true));
+				$this->redirect(array('action' => 'view','admin'=>false,$id));
+			} else {
+				$this->Session->setFlash(__('The source could not be updated. Please, try again.', true),'default', array('class' => 'error-message'));
+			}
+		}
+		if (empty($this->data)) {
+			$this->data = $this->Source->read(null, $id);
+		}
+		//$images = $this->Source->Image->find('list');
+		$this->Source->id = $id;
+		$countries = $this->Source->Country->find('list');
+		$contractors = $this->Source->Contractor->find('list',array( 'order' => 'name ASC' ));
+		$sourceCategories = $this->Source->SourceCategory->find('list',array( 'order' => 'name ASC' ));
+		//$images = $this->Source->Image->find('list');
+		$tags = $this->Source->Tag->find('list');
+		$tags_cloud = $this->Source->Tagged->find('cloud', array('limit' => 10));
+		$this->set('source', $this->Source->read(null, $id));
+		$this->set(compact('contractors','countries','tags','tags_cloud','sourceCategories'));
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function admin_delete($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid id for source', true));
+			$this->redirect(array('action'=>'index','admin'=>false));
+		}
+		
+		$this->data = $this->Source->read(null,$id);
+		
+		//Delete associated attachments
+		if(!empty($this->data['Attachment'])){
+			//Get all attachment ids
+			foreach($this->data['Attachment'] as $attachment){
+				$attachment_ids[] = $attachment['id'];
+			}
+			
+			//Delete all of the attachments
+			$this->Source->Attachment->deleteAll(array('Attachment.id'=>$attachment_ids));
+		}
+		
+		
+		
+		if ($this->Source->delete($id)) {
+			$this->Session->setFlash(__('Source deleted', true));
+			$this->redirect(array('action'=>'index','admin'=>false));
+		}
+		$this->Session->setFlash(__('Source was not deleted', true),'default', array('class' => 'error-message'));
+		$this->redirect(array('action' => 'index','admin'=>false));
+	}
+	
+	/**
+	 * This is the main delete method and viewable to public users.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for source', true));
 			$this->redirect(array('action'=>'index','admin'=>false));

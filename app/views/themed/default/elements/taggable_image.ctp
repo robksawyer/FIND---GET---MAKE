@@ -43,7 +43,7 @@ endif;
 		if(!empty($testing)){
 			$form_options = array(
 										'type' => 'post',
-										'url' => '/admin/inspiration_photo_tags/add/'.$inspiration['Inspiration']['id']
+										'url' => '/inspiration_photo_tags/add/'.$inspiration['Inspiration']['id']
 									);
 		}else{
 			$form_options = array(

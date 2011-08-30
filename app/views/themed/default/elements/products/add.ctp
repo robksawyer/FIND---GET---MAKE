@@ -4,7 +4,7 @@
 	//$productCategories = $this->requestAction('products/getProductsCategories');
 ?>
 <?php 
-	echo $this->Form->create('Product',array('type'=>'file','url'=>'/admin/products/add'));
+	echo $this->Form->create('Product',array('type'=>'file','url'=>'/products/add'));
 ?>
 	<fieldset>
 		<legend><?php __('Add Product'); ?></legend>
@@ -19,7 +19,7 @@
 		<?php
 		echo $this->Form->input('product_category_id',array(
 																			'empty' => '-- Choose a Category --',
-																			'after'=>'<a href="/admin/product_categories/add" class="add-specialty">Add a category</a>',
+																			'after'=>'<a href="/product_categories/add" class="add-specialty">Add a category</a>',
 																			'options'=>$productCategoryList,
 																			'class'=>'chzn-select',
 																			'style'=>'width: 500px;'
@@ -36,7 +36,7 @@
 		<div class="side-by-side clearfix"><div>
 		<?php
 		echo $this->Form->input('source_id',array('empty'=>'--- Choose a Source ---',
-																'after'=>'<a href="/admin/sources/add" class="add-specialty" title="Add a New Source">Add a New Source</a>',
+																'after'=>'<a href="/sources/add" class="add-specialty" title="Add a New Source">Add a New Source</a>',
 																'options'=>array($sourceList),
 																'class'=>'chzn-select',
 																'style'=>'width: 500px;'

@@ -37,7 +37,7 @@ class InspirationPhotoTagsController extends AppController {
 		$this->set('inspirationPhotoTag', $this->InspirationPhotoTag->read(null, $id));
 	}
 
-	function admin_add($id=null) {
+	function add($id=null) {
 		Configure::write('debug', 0); //it will avoid any extra output
 		
 		if (!empty($this->data)) {
@@ -97,7 +97,7 @@ class InspirationPhotoTagsController extends AppController {
 		
 	}
 
-	function admin_delete($id = null,$inspiration_id = null) {
+	function delete($id = null,$inspiration_id = null) {
 		Configure::write('debug', 0); //it will avoid any extra output
 		
 		if (!$id) {

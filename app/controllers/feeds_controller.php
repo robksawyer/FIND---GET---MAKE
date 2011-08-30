@@ -23,43 +23,12 @@ class FeedsController extends AppController {
 	}
 	
 	/**
-	 * Handles showing the feed of the user that is logged in 
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	/*function admin_me(){
-		//Get the logged in user
-		$user = $this->Auth->user();
-		$user = $this->Feed->User->read(null,$user['User']['id']);
-		//debug($user['UserFollowing']);
-		$user_ids = array();
-		$feed = array();
-		if(!empty($user)){
-			//$this->paginate['User'] = $this->Feed->User->getFeedDetails($user['User']['id']);
-			$this->paginate = array(
-									'recursive'=>3,
-									'limit'=>5,
-									'order'=>array('Feed.record_created'=>'desc'),
-									'conditions'=>array(
-										'Feed.user_id'=>$user['User']['id']
-									));
-			//$this->paginate = $feed['User'];
-			$feed = $this->paginate();
-			$this->set(compact('user','feed'));
-		}else{
-			$this->Session->setFlash(__('You must be logged in to access this area.', true));
-			$this->redirect('/users/login');
-		}
-	}*/
-	
-	/**
 	 * Spits out the recent additions from user passed
 	 * @param string username 
 	 * @return 
 	 * 
 	*/
-	function admin_me(){
+	function me(){
 		$user = $this->Auth->user();
 		$user = $this->Feed->User->read(null,$user['User']['id']);
 		//debug($user['UserFollowing']);
@@ -113,7 +82,7 @@ class FeedsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function admin_display(){
+	function display(){
 		//Get the logged in user
 		$user = $this->Auth->user();
 		if(empty($user)){

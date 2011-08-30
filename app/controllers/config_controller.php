@@ -103,7 +103,7 @@ class ConfigController extends AppController {
 		$this->Acl->allow($group, 'controllers/Collections/add');
 		$this->Acl->allow($group, 'controllers/Collections/edit');
 		$this->Acl->allow($group, 'controllers/Votes');
-		$this->Acl->allow($group, 'controllers/Ownerships/admin_set_ownership');
+		$this->Acl->allow($group, 'controllers/Ownerships/set_ownership');
 		$this->Acl->allow($group, 'controllers/Ownerships/haves');
 		$this->Acl->allow($group, 'controllers/Ownerships/wants');
 		$this->Acl->allow($group, 'controllers/InspirationPhotoTags/add');

@@ -6,15 +6,15 @@
 				<?php if(!empty($authUser)):?>
 				<li class='nav-browsedrop-link-1'><?php echo $this->Html->link('+ create something','#',array('id'=>'nav-browsedrop-1-link','class'=>'nav-browsedrop-lz'));?>
 						<ul id='nav-browsedrop-1' class="nav-browsedrop" style='display:none;' index='100'>
-							<li><?php echo $this->Html->link('a collection','/admin/collections/add', array('class'=>'nav-browsedrop-indy'));?></li>
-							<li><?php echo $this->Html->link('an inspiration','/admin/inspirations/add', array('class'=>'nav-browsedrop-indy'));?></li>
+							<li><?php echo $this->Html->link('a collection','/collections/add', array('class'=>'nav-browsedrop-indy'));?></li>
+							<li><?php echo $this->Html->link('an inspiration','/inspirations/add', array('class'=>'nav-browsedrop-indy'));?></li>
 						</ul>
 				</li>
 				<li class='nav-browsedrop-link-2'><?php echo $this->Html->link('+ add something','#',array('id'=>'nav-browsedrop-2-link','class'=>'nav-browsedrop-lz'));?>
 						<ul id='nav-browsedrop-2' class="nav-browsedrop" style='display:none;' index='100'>
-							<li><?php echo $this->Html->link('a product','/admin/products/add', array('class'=>'nav-browsedrop-indy'));?></li>
-							<li><?php echo $this->Html->link('a source','/admin/sources/add', array('class'=>'nav-browsedrop-indy'));?></li>
-							<li><?php echo $this->Html->link('a UFO','/admin/ufos/add', array('class'=>'nav-browsedrop-indy'));?></li>
+							<li><?php echo $this->Html->link('a product','/products/add', array('class'=>'nav-browsedrop-indy'));?></li>
+							<li><?php echo $this->Html->link('a source','/sources/add', array('class'=>'nav-browsedrop-indy'));?></li>
+							<li><?php echo $this->Html->link('a UFO','/ufos/add', array('class'=>'nav-browsedrop-indy'));?></li>
 							<!-- Note: You have to pass a client id before you can add a house. -->
 							<!--<li><?php //echo $this->Html->link('add a house',array('controller'=>'houses','action'=>'add'), array('class'=>'nav-browsedrop-indy'));?></li>-->
 						</ul>
@@ -72,8 +72,8 @@
 						echo $this->Html->link('+ rolodex','#',array('id'=>'nav-browsedrop-6-link','class'=>'nav-browsedrop-lz'));
 							echo "<ul id='nav-browsedrop-6' class='nav-browsedrop' style='display:none;' index='100'>";
 				?>	
-								<li><?php echo $this->Html->link('add a client','/admin/clients/add', array('class'=>'nav-browsedrop-indy'));?></li>
-								<li><?php echo $this->Html->link('add a contractor','/admin/contractors/add', array('class'=>'nav-browsedrop-indy'));?></li>
+								<li><?php echo $this->Html->link('add a client','/clients/add', array('class'=>'nav-browsedrop-indy'));?></li>
+								<li><?php echo $this->Html->link('add a contractor','/contractors/add', array('class'=>'nav-browsedrop-indy'));?></li>
 								<li><?php echo $this->Html->link('see contractors','/contractors', array('class'=>'nav-browsedrop-indy'));?></li>
 								<li><?php echo $this->Html->link('see clients','/clients', array('class'=>'nav-browsedrop-indy'));?></li>
 								<li><?php echo $this->Html->link('see houses','/houses', array('class'=>'nav-browsedrop-indy'));?></li>

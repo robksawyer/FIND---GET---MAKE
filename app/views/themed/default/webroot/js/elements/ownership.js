@@ -44,7 +44,7 @@ function doSubmit(model,model_id){
 	
 	$.ajax({
 		type: "post",
-		url: "/admin/ownerships/set_ownership/"+model+"/"+model_id,
+		url: "/ownerships/set_ownership/"+model+"/"+model_id,
 		target:	'.messagepop fieldset.return-type',
 		data: data,
 		dataType: "json",

@@ -185,7 +185,37 @@ class CollectionsController extends AppController {
 		$this->set('string', $this->String);
 	}
 	
-
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function add() {
+		if (!empty($this->data)) {
+			$this->Collection->create();
+			if ($this->Collection->save($this->data)) {
+				$this->Session->setFlash(__('The collection has been saved', true));
+				$id = $this->Collection->getLastInsertID();
+				//Generate and create keycode
+				$this->generateKeycode($id,true);
+				$this->redirect(array('action' => 'view','admin'=>false,$id));
+			} else {
+				$this->Session->setFlash(__('The collection could not be saved. Please, try again.', true));
+			}
+		}
+		
+		$products = $this->Collection->Product->find('list',array('order' => 'name ASC'));
+		$tags = $this->Collection->Tagged->find('cloud', array('limit' => 10));
+		$this->set(compact('products','tags'));
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function admin_add() {
 		if (!empty($this->data)) {
 			$this->Collection->create();
@@ -204,7 +234,44 @@ class CollectionsController extends AppController {
 		$tags = $this->Collection->Tagged->find('cloud', array('limit' => 10));
 		$this->set(compact('products','tags'));
 	}
-
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function edit($id = null) {
+		if (!$id && empty($this->data)) {
+			$this->Session->setFlash(__('Invalid collection', true));
+			$this->redirect(array('action' => 'index','admin'=>false));
+		}
+		if (!empty($this->data)) {
+			//Update the total products count
+			$total_products = count($this->data['Product']['Product']);
+			$this->data['Collection']['total_products'] = $total_products;
+			if ($this->Collection->save($this->data)) {
+				$this->Session->setFlash(__('The collection has been updated', true));
+				$this->redirect(array('action' => 'view','admin'=>false,$id));
+			} else {
+				$this->Session->setFlash(__('The collection could not be updated. Please, try again.', true));
+			}
+		}
+		if (empty($this->data)) {
+			$this->data = $this->Collection->read(null, $id);
+		}
+		$this->set('collection', $this->Collection->read(null, $id));
+		$tags = $this->Collection->Tagged->find('cloud', array('limit' => 10));
+		$products = $this->Collection->Product->find('list',array('order' => 'name ASC'));
+		$this->set(compact('products','tags'));
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid collection', true));
@@ -229,7 +296,32 @@ class CollectionsController extends AppController {
 		$products = $this->Collection->Product->find('list',array('order' => 'name ASC'));
 		$this->set(compact('products','tags'));
 	}
-
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function delete($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid id for collection', true));
+			$this->redirect(array('action'=>'index'));
+		}
+		if ($this->Collection->delete($id)) {
+			$this->Session->setFlash(__('Collection deleted', true));
+			$this->redirect(array('action'=>'index','admin'=>false));
+		}
+		$this->Session->setFlash(__('Collection was not deleted', true));
+		$this->redirect(array('action' => 'index','admin'=>false));
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for collection', true));
@@ -247,7 +339,7 @@ class CollectionsController extends AppController {
 	 * This is a helper method that makes it easy to add multiple products to an collection image.
 	 * @param id The id of the current collection.
 	 */
-	function admin_addProducts($id=null) {
+	function addProducts($id=null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid collection', true),'default',array('class'=>'error-message'));
 			//$this->redirect(array('action' => 'index','admin'=>false));
