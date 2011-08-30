@@ -9,7 +9,13 @@ class ConfigController extends AppController {
 	
 	var $uses = array('User');
 	
-	function version(){
+	public function beforeFilter(){
+		parent::beforeFilter();
+		
+		$this->Auth->allow('*'); //Disable this after the permissions have been setup.
+	}
+	
+	public function version(){
 		echo "<center style='position: relative; top:50px;'>Version 1.0</center>";
 		exit();
 	}
@@ -22,7 +28,7 @@ class ConfigController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function admin_setupACLUsers(){
+	public function admin_setupACLUsers(){
 		$this->autoLayout = false;
 		$this->autoRender = false;
 		$this->User->recursive = -1;
@@ -54,82 +60,246 @@ class ConfigController extends AppController {
 		debug("Completed! ".count($aro_users)." users were added to the aros table.");
 	}
 	
-	function admin_setupACLPermissions() {
+	/**
+	 * Setup Admin permissions
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function admin_setupACLAdminPermissions() {
+		$this->autoRender = false;
+		$this->autoLayout = false;
+		
 		$group =& $this->User->Group;
 		//Allow admins to everything
-		$group->id = 1;     
+		$group->id = 1;
 		$this->Acl->allow($group, 'controllers');
-
-		//allow managers to posts and widgets
+		
+		//we add an exit to avoid an ugly "missing views" error message
+		echo "Admin permissions have been setup.";
+		exit;
+	}
+	
+	/**
+	 * Setup Manager permissions
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function admin_setupACLManagerPermissions() {
+		$this->autoRender = false;
+		$this->autoLayout = false;
+		
+		$group =& $this->User->Group;
+		
+		//allow managers
 		$group->id = 2;
+		//$group = 'managers';
 		$this->Acl->deny($group, 'controllers');
-		$this->Acl->allow($group, 'controllers/Pages');
-		$this->Acl->allow($group, 'controllers/Collections');
-		$this->Acl->allow($group, 'controllers/Inspirations');
-		$this->Acl->allow($group, 'controllers/Flags');
-		$this->Acl->allow($group, 'controllers/Ufos');
-		$this->Acl->allow($group, 'controllers/Feeds');
-		$this->Acl->allow($group, 'controllers/Sources');
-		$this->Acl->allow($group, 'controllers/Votes');
-		$this->Acl->allow($group, 'controllers/Ownerships');
-		$this->Acl->allow($group, 'controllers/Products');
+		
+		$this->Acl->allow($group, 'controllers/App');
 		$this->Acl->allow($group, 'controllers/Attachments');
-		$this->Acl->allow($group, 'controllers/AttachmentTags');
+		//$this->Acl->allow($group, 'controllers/AttachmentTags'); //Not used
+		$this->Acl->deny($group, 'controllers/BetaUsers');
+		$this->Acl->allow($group, 'controllers/BetaUsers/add');
+		$this->Acl->allow($group, 'controllers/Challenges');
 		$this->Acl->allow($group, 'controllers/Clients');
-		$this->Acl->allow($group, 'controllers/Houses');
+		$this->Acl->allow($group, 'controllers/Collections');
 		$this->Acl->allow($group, 'controllers/ContractorSpecialties');
 		$this->Acl->allow($group, 'controllers/Contractors');
-		$this->Acl->allow($group, 'controllers/InspirationPhotoTags');
-		$this->Acl->allow($group, 'controllers/ProductCategories');
-		$this->Acl->allow($group, 'controllers/SourceCategories');
-		$this->Acl->allow($group, 'controllers/UserFollowings');
-		$this->Acl->allow($group, 'controllers/Tags');
-		$this->Acl->allow($group, 'controllers/Forum');
-		$this->Acl->allow($group, 'controllers/Popup');
-		$this->Acl->allow($group, 'controllers/Rating');
-		$this->Acl->allow($group, 'controllers/Twitter Kit');
-		
-
-		//allow users to only add and edit on posts and widgets
-		$group->id = 3;
-		$this->Acl->deny($group, 'controllers');        
+		$this->Acl->allow($group, 'controllers/Feeds');
+		$this->Acl->allow($group, 'controllers/Flags');
 		$this->Acl->allow($group, 'controllers/Pages');
-		$this->Acl->allow($group, 'controllers/Sources/add');
-		$this->Acl->allow($group, 'controllers/Sources/edit');  
-		$this->Acl->allow($group, 'controllers/Products/add');
-		$this->Acl->allow($group, 'controllers/Products/edit');      
-		$this->Acl->allow($group, 'controllers/Inspirations/add');
-		$this->Acl->allow($group, 'controllers/Inspirations/edit');
-		$this->Acl->allow($group, 'controllers/Collections/add');
-		$this->Acl->allow($group, 'controllers/Collections/edit');
+		$this->Acl->allow($group, 'controllers/SourceCategories');
+		$this->Acl->allow($group, 'controllers/Sources');
+		$this->Acl->allow($group, 'controllers/ProductCategories');
+		$this->Acl->allow($group, 'controllers/Products');
+		$this->Acl->allow($group, 'controllers/Houses');
+		$this->Acl->allow($group, 'controllers/InspirationPhotoTags');
+		$this->Acl->allow($group, 'controllers/Inspirations');
+		$this->Acl->allow($group, 'controllers/Ownerships');
+		$this->Acl->allow($group, 'controllers/Users');
+		$this->Acl->deny($group, 'controllers/Users/add_attachment');
+		$this->Acl->allow($group, 'controllers/Ufos');
 		$this->Acl->allow($group, 'controllers/Votes');
-		$this->Acl->allow($group, 'controllers/Ownerships/set_ownership');
-		$this->Acl->allow($group, 'controllers/Ownerships/haves');
-		$this->Acl->allow($group, 'controllers/Ownerships/wants');
+		$this->Acl->allow($group, 'controllers/UserFollowings');
+		
+		//Plugins
+		$this->Acl->allow($group, 'controllers/Forum');
+		$this->Acl->deny($group, 'controllers/Forum/Home/add_attachment');
+		$this->Acl->deny($group, 'controllers/Forum/Posts/add_attachment');
+		$this->Acl->deny($group, 'controllers/Forum/Categories/add_attachment');
+		$this->Acl->deny($group, 'controllers/Forum/Search/add_attachment');
+		$this->Acl->deny($group, 'controllers/Forum/Reports/add_attachment');
+		$this->Acl->deny($group, 'controllers/Forum/Staff/add_attachment');
+		$this->Acl->deny($group, 'controllers/Forum/Topics/add_attachment');
+		
+		$this->Acl->allow($group, 'controllers/Rating');
+		$this->Acl->allow($group, 'controllers/TwitterKit/Oauth');
+		
+		$this->Acl->deny($group, 'controllers/Config');
+		$this->Acl->deny($group, 'controllers/Acl');
+		$this->Acl->deny($group, 'controllers/Groups');
+		
+	
+		//we add an exit to avoid an ugly "missing views" error message
+		echo "Manager permissions have been setup.";
+		exit;
+	}
+	
+	
+	/**
+	 * Setup User permissions
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function admin_setupACLUserPermissions() {
+		$this->autoRender = false;
+		$this->autoLayout = false;
+		
+		$group =& $this->User->Group;
+		
+		//allow users
+		$group->id = 3;
+		//$group = 'users';
+		
+		$this->Acl->deny($group, 'controllers');        
+		$this->Acl->allow($group, 'controllers/App/add_attachment');
+		$this->Acl->allow($group, 'controllers/Attachments/view');
+		$this->Acl->allow($group, 'controllers/Attachments/photo_tag_view');
+		$this->Acl->allow($group, 'controllers/Attachments/collage');
+		$this->Acl->allow($group, 'controllers/Attachments/add_attachment');
+		$this->Acl->deny($group, 'controllers/BetaUsers');
+		$this->Acl->allow($group, 'controllers/BetaUsers/add');
+		$this->Acl->allow($group, 'controllers/Challenges');
+		
+		$this->Acl->allow($group, 'controllers/Collections/add');
+		$this->Acl->allow($group, 'controllers/Collections/add_attachment');
+		$this->Acl->allow($group, 'controllers/Collections/edit');
+		$this->Acl->allow($group, 'controllers/Collections/view');
+		$this->Acl->allow($group, 'controllers/Collections/index');
+		$this->Acl->allow($group, 'controllers/Collections/addProducts');
+		$this->Acl->allow($group, 'controllers/Collections/removeProduct');
+		$this->Acl->allow($group, 'controllers/Collections/userCollections');
+		
+		$this->Acl->allow($group, 'controllers/ContractorSpecialties/view');
+		$this->Acl->allow($group, 'controllers/Feeds/me');
+		$this->Acl->allow($group, 'controllers/Feeds/user');
+		$this->Acl->allow($group, 'controllers/Feeds/display');
+		$this->Acl->allow($group, 'controllers/Feeds/getUsersFollowingFeedData');
+		$this->Acl->allow($group, 'controllers/Feeds/getUsersFollowingFeedCount');
+		$this->Acl->allow($group, 'controllers/Feeds/getUserFeed');
+		$this->Acl->allow($group, 'controllers/Feeds/getUserFeedCount');
+		
+		$this->Acl->allow($group, 'controllers/Flags/flag_item');
 		$this->Acl->allow($group, 'controllers/InspirationPhotoTags/add');
 		$this->Acl->allow($group, 'controllers/InspirationPhotoTags/delete');
+		$this->Acl->allow($group, 'controllers/Inspirations/add');
+		$this->Acl->allow($group, 'controllers/Inspirations/add_attachment');
+		$this->Acl->allow($group, 'controllers/Inspirations/edit');
+		$this->Acl->allow($group, 'controllers/Inspirations/view');
+		$this->Acl->allow($group, 'controllers/Inspirations/index');
+		$this->Acl->allow($group, 'controllers/Inspirations/addProducts');
+		$this->Acl->allow($group, 'controllers/Inspirations/removeProduct');
+		$this->Acl->allow($group, 'controllers/Inspirations/getTags');
+		
+		$this->Acl->allow($group, 'controllers/Ownerships');
+		$this->Acl->allow($group, 'controllers/Pages');
+		
+		$this->Acl->allow($group, 'controllers/ProductCategories/view');
+		$this->Acl->allow($group, 'controllers/Products/add');
+		$this->Acl->allow($group, 'controllers/Products/add_attachment');
+		$this->Acl->allow($group, 'controllers/Products/edit');
+		$this->Acl->allow($group, 'controllers/Products/view');
+		$this->Acl->allow($group, 'controllers/Products/index');
+		$this->Acl->allow($group, 'controllers/Products/removeAttachment');
+		
+		$this->Acl->allow($group, 'controllers/SourceCategories/view');
+		$this->Acl->allow($group, 'controllers/Sources/add');
+		$this->Acl->allow($group, 'controllers/Sources/add_attachment');
+		$this->Acl->allow($group, 'controllers/Sources/edit');
+		$this->Acl->allow($group, 'controllers/Sources/view');
+		$this->Acl->allow($group, 'controllers/Sources/index');
+		$this->Acl->allow($group, 'controllers/Sources/removeAttachment');
+		$this->Acl->allow($group, 'controllers/Sources/ajax_check_name');
+		$this->Acl->allow($group, 'controllers/Sources/cleanAddress');
+	
+		$this->Acl->allow($group, 'controllers/Ufos/view');
+		$this->Acl->allow($group, 'controllers/Ufos/add');
+		$this->Acl->allow($group, 'controllers/Ufos/edit');
+		$this->Acl->allow($group, 'controllers/Ufos/delete');
+		$this->Acl->allow($group, 'controllers/Ufos/getUfosFromUser');
+		$this->Acl->allow($group, 'controllers/Ufos/add_attachment');
+		
 		$this->Acl->allow($group, 'controllers/UserFollowings');
-		$this->Acl->allow($group, 'controllers/Tags');
-		$this->Acl->allow($group, 'controllers/Popup');
-		$this->Acl->allow($group, 'controllers/Rating');
-		$this->Acl->allow($group, 'controllers/Twitter Kit');
+		$this->Acl->deny($group, 'controllers/UserFollowings/add_attachment');
+		
+		//$this->Acl->deny($group, 'controllers/Users');
+		$this->Acl->allow($group, 'controllers/Users/edit');
+		$this->Acl->allow($group, 'controllers/Users/forgot');
+		$this->Acl->allow($group, 'controllers/Users/listing');
+		$this->Acl->allow($group, 'controllers/Users/report');
+		$this->Acl->allow($group, 'controllers/Users/edit');
+		$this->Acl->allow($group, 'controllers/Users/moderate');
+		$this->Acl->allow($group, 'controllers/Users/more_feed_data');
+		$this->Acl->allow($group, 'controllers/Users/more_user_feed_data');
+		$this->Acl->allow($group, 'controllers/Users/hide_welcome');
+		$this->Acl->allow($group, 'controllers/Users/add_avatar');
+		$this->Acl->allow($group, 'controllers/Users/upload_avatar');
+		$this->Acl->allow($group, 'controllers/Users/save_avatar');
+		$this->Acl->allow($group, 'controllers/Users/use_gravatar');
+		$this->Acl->allow($group, 'controllers/Users/remove_avatar');
+		$this->Acl->allow($group, 'controllers/Users/getAvatar');
+		$this->Acl->allow($group, 'controllers/Users/staff_favorites');
+		$this->Acl->deny($group, 'controllers/Users/add_attachment');
+		
+		$this->Acl->allow($group, 'controllers/Votes');
+		$this->Acl->deny($group, 'controllers/Votes/add_attachment');
+		
+		//Plugins
+		//$this->Acl->allow($group, 'controllers/Rating');
 		$this->Acl->allow($group, 'controllers/Forum/Home/help');
 		$this->Acl->allow($group, 'controllers/Forum/Home/rules');
 		$this->Acl->allow($group, 'controllers/Forum/Home/index');
 		$this->Acl->allow($group, 'controllers/Forum/Posts/add');
 		$this->Acl->allow($group, 'controllers/Forum/Posts/edit');
+		$this->Acl->allow($group, 'controllers/Forum/Posts/delete');
+		$this->Acl->allow($group, 'controllers/Forum/Posts/report');
+		$this->Acl->allow($group, 'controllers/Forum/Posts/index');
+		$this->Acl->deny($group, 'controllers/Forum/Posts/add_attachment');
 		$this->Acl->allow($group, 'controllers/Forum/Topics/add');
 		$this->Acl->allow($group, 'controllers/Forum/Topics/edit');
+		$this->Acl->allow($group, 'controllers/Forum/Topics/view');
+		$this->Acl->allow($group, 'controllers/Forum/Topics/index');
+		$this->Acl->allow($group, 'controllers/Forum/Categories/view');
+		$this->Acl->allow($group, 'controllers/Forum/Categories/index');
 		$this->Acl->allow($group, 'controllers/Forum/Search');
 		
+		$this->Acl->deny($group, 'controllers/Forum/Home/add_attachment');
+		$this->Acl->deny($group, 'controllers/Forum/Posts/add_attachment');
+		$this->Acl->deny($group, 'controllers/Forum/Categories/add_attachment');
+		$this->Acl->deny($group, 'controllers/Forum/Search/add_attachment');
+		$this->Acl->deny($group, 'controllers/Forum/Reports/add_attachment');
+		$this->Acl->deny($group, 'controllers/Forum/Staff/add_attachment');
+		$this->Acl->deny($group, 'controllers/Forum/Topics/add_attachment');
+		
+		$this->Acl->allow($group, 'controllers/TwitterKit/Oauth');
+		
+		$this->Acl->deny($group, 'controllers/Config');
+		$this->Acl->deny($group, 'controllers/Acl');
+		$this->Acl->deny($group, 'controllers/Clients');
+		$this->Acl->deny($group, 'controllers/Houses');
+		$this->Acl->deny($group, 'controllers/Contractors');
+		$this->Acl->deny($group, 'controllers/ContractorSpecialties');
+		$this->Acl->deny($group, 'controllers/Groups');
+		
 		//we add an exit to avoid an ugly "missing views" error message
-		echo "Group permissions have been setup.";
+		echo "User permissions have been setup.";
 		exit;
 	}
 	
-	
-	
-	function admin_build_acl() {
+	protected function admin_build_acl() {
 		if (!Configure::read('debug')) {
 			return $this->_stop();
 		}
@@ -214,7 +384,7 @@ class ConfigController extends AppController {
 		}
 	}
 
-	function _getClassMethods($ctrlName = null) {
+	protected function _getClassMethods($ctrlName = null) {
 		App::import('Controller', $ctrlName);
 		if (strlen(strstr($ctrlName, '.')) > 0) {
 			// plugin's controller
@@ -236,7 +406,7 @@ class ConfigController extends AppController {
 		return $methods;
 	}
 
-	function _isPlugin($ctrlName = null) {
+	protected function _isPlugin($ctrlName = null) {
 		$arr = String::tokenize($ctrlName, '/');
 		if (count($arr) > 1) {
 			return true;
@@ -245,7 +415,7 @@ class ConfigController extends AppController {
 		}
 	}
 
-	function _getPluginControllerPath($ctrlName = null) {
+	protected function _getPluginControllerPath($ctrlName = null) {
 		$arr = String::tokenize($ctrlName, '/');
 		if (count($arr) == 2) {
 			return $arr[0] . '.' . $arr[1];
@@ -254,7 +424,7 @@ class ConfigController extends AppController {
 		}
 	}
 
-	function _getPluginName($ctrlName = null) {
+	protected function _getPluginName($ctrlName = null) {
 		$arr = String::tokenize($ctrlName, '/');
 		if (count($arr) == 2) {
 			return $arr[0];
@@ -263,7 +433,7 @@ class ConfigController extends AppController {
 		}
 	}
 
-	function _getPluginControllerName($ctrlName = null) {
+	protected function _getPluginControllerName($ctrlName = null) {
 		$arr = String::tokenize($ctrlName, '/');
 		if (count($arr) == 2) {
 			return $arr[1];
@@ -282,7 +452,7 @@ class ConfigController extends AppController {
 	 * @return array of plugin names.
 	 *
 	 */
-	function _getPluginControllerNames() {
+	protected function _getPluginControllerNames() {
 		App::import('Core', 'File', 'Folder');
 		$paths = Configure::getInstance();
 		$folder =& new Folder();

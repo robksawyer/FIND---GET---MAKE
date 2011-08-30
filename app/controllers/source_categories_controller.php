@@ -3,6 +3,12 @@ class SourceCategoriesController extends AppController {
 
 	var $name = 'SourceCategories';
 	var $components = array('String');
+	
+	public function beforeFilter(){
+		parent::beforeFilter();
+		
+		$this->Auth->allowedActions = array('view');
+	}
 
 	function index() {
 		$this->SourceCategory->recursive = 2;

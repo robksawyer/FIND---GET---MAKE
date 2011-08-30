@@ -840,7 +840,7 @@ class UsersController extends AppController {
 	 *	 @param Int $user_id User.id to activate
 	 *	 @param String $in_hash Incoming Activation Hash from the email
 	*/
-	public function activate($user_id = null, $in_hash = null) {
+	protected function activate($user_id = null, $in_hash = null) {
 		$this->User->id = $user_id;
 		if ($this->User->exists() && ($in_hash == $this->getActivationHash($user_id))){
 			// Update the active flag in the database
@@ -859,7 +859,7 @@ class UsersController extends AppController {
 	*	@param Void
 	*	@return String activation hash.
 	*/
-	public function getActivationHash($id=null){
+	protected function getActivationHash($id=null){
 		 if (!isset($id)) {
 			return false;
 		 }

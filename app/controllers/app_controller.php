@@ -54,7 +54,11 @@ class AppController extends Controller {
 									'actionPath'=>'controllers/',
 									'loginAction'=>'/login',
 									'logoutAction'=>'/logout',
-									'allowedActions'=>array('display')
+									'allowedActions'=>array('display','key','generateKeycode','users','tags',
+									'getProfileData','find','getTags','getCount','verifyAddition','clearVerifySessions',
+									'signup','login','logout','register',
+									'register_with_twitter','register_with_facebook','twitter_logout','facebook_logout'
+									)
 									
 								),'Acl','RequestHandler','Session','Security','AutoLogin','Cookie','AjaxHandler', 
 								'Forum.Toolbar','String','TwitterKit.Twitter','Facebook.Connect'

@@ -38,6 +38,8 @@ class SourcesController extends AppController {
 		//$this->Uploader->maxNameLength = 50;
 		
 		//$this->Auth->allow('getCount','getTags','getProfileData');
+		
+		$this->Auth->allowedActions = array('index','view','ajax_check_name','getTags','getProfileData','getCount');
 	}
 	
 	/**
