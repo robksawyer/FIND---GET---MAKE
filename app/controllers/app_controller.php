@@ -129,8 +129,6 @@ class AppController extends Controller {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		
-		$this->Auth->allow('*');
-		
 		if(isset($this->Auth)) {
 			// Auth settings
 			$referer = $this->referer();
@@ -155,7 +153,8 @@ class AppController extends Controller {
 											);
 			
 			//You have to keep view open for the photo tags to work.
-			$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
+			//$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
+			
 			
 			$this->Auth->loginRedirect = $referer;
 			$this->Auth->logoutRedirect = $referer;
@@ -231,7 +230,7 @@ class AppController extends Controller {
 	 * @return 
 	 * 
 	*/
-	public function setChallengeSession(){
+	protected function setChallengeSession(){
 		$challenge = $this->findChallenge();
 		if(!empty($challenge)){
 			$this->Session->write('Challenge.title',$challenge['Topic']['title']);
@@ -249,7 +248,7 @@ class AppController extends Controller {
 	 * @return 
 	 * 
 	*/
-	public function findChallenge(){
+	protected function findChallenge(){
 		Controller::loadModel('Forum.Topic');
 		$latestTopic = $this->Topic->findLatestTopic(2);
 		return $latestTopic;
@@ -258,7 +257,7 @@ class AppController extends Controller {
 	/**
 	 * Hides the challenge header.
 	 **/ 
-	public function admin_hide_challenge(){
+	protected function admin_hide_challenge(){
 		Configure::write('debug', 0); //it will avoid any extra output
 		if ($this->RequestHandler->isAjax()) {
 			$this->autoLayout = false;
@@ -274,7 +273,7 @@ class AppController extends Controller {
 		}
 	}
 	
-	public function isSlug($id = null){
+	protected function isSlug($id = null){
 		$numbers = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0", " ");
 		$slug = str_replace($numbers, '', $id);
 		if(!empty($slug)){
@@ -284,11 +283,11 @@ class AppController extends Controller {
 		}
 	}
 	
-	public function toSlug($string) {
+	protected function toSlug($string) {
 		return Inflector::slug(utf8_encode(strtolower($string)), '-');
 	}
 	
-	public function cleanURL($dirtyURL = null){
+	protected function cleanURL($dirtyURL = null){
 		$search = array(
 							'/^http:\/\//',
 							'/^https:\/\//'
@@ -306,7 +305,7 @@ class AppController extends Controller {
 		return $cleanURL;
 	}
 	
-	public function uniqueName($str){
+	protected function uniqueName($str){
 		
 		$ext_point = strripos($str,"."); // Changed to strripos to avoid issues with ‘.’ Thanks nico.
 		if ($ext_point===false) return false;
@@ -321,7 +320,7 @@ class AppController extends Controller {
 	}
 	
 	
-	public function cleanFileName( $str ) {
+	protected function cleanFileName( $str ) {
 		$cleaner = array();
 		$cleaner[] = array('expression'=>"/[àáäãâª]/",'replace'=>"a");
 		$cleaner[] = array('expression'=>"/[èéêë]/",'replace'=>"e");
@@ -341,7 +340,7 @@ class AppController extends Controller {
 	}
 	
 	
-	public function getLetterOfDay($date=null){
+	protected function getLetterOfDay($date=null){
 		if(!isset($date)){
 			$day = date("D");
 		}else{
@@ -351,7 +350,7 @@ class AppController extends Controller {
 		return $letterOfDay;
 	}
 	
-	public function getDayOfWeek($date=null){
+	protected function getDayOfWeek($date=null){
 		if(!isset($date)){
 			//$day = date("l");
 			$day = null;
@@ -368,7 +367,7 @@ class AppController extends Controller {
 	 * @param $model The current model
 	 * @return Boolean
 	 */ 
-	public function verifyAddition($model = null){
+	protected function verifyAddition($model = null){
 		$checker = $this->Session->read('Check.count');
 		$name = $this->Session->read('Check.name');
 		$passed_check = true;
@@ -398,7 +397,7 @@ class AppController extends Controller {
 	/**
 	 * Clears the sessions set by the verifyAddition method.
 	 */
-	public function clearVerifySessions(){
+	protected function clearVerifySessions(){
 		$this->Session->delete('Check.count');
 		$this->Session->delete('Check.name');
 	}
@@ -409,7 +408,7 @@ class AppController extends Controller {
 	 * @param id The id of the current item you're editing
 	 */
 	
-	public function uploadAttachments($model=null,$id = null){
+	protected function uploadAttachments($model=null,$id = null){
 		
 		if(!empty($model)){
 			$controller = Inflector::pluralize(strtolower($model));
@@ -459,7 +458,7 @@ class AppController extends Controller {
 	 * 				- This has been fixed and now the current attachments are passed along and added to the final array.
 	 *			1.3 
 	 */
-	public function saveAttachments($url = null,$model=null,$current_attachments = null){
+	protected function saveAttachments($url = null,$model=null,$current_attachments = null){
 		
 		if(!empty($model)){
 			$controller = Inflector::pluralize(strtolower($model));
@@ -615,7 +614,7 @@ class AppController extends Controller {
 	 * @param id 
 	 * @version 1.0
 	 */
-	public function add_attachment($id = null, $model = null){
+	protected function add_attachment($id = null, $model = null){
 	
 		if(!empty($model)){
 			$controller = Inflector::pluralize(strtolower($model));
@@ -697,7 +696,7 @@ class AppController extends Controller {
 	/**
 	 * @param url: The URL to clean
 	 */
-	public function simplifyFileName($url = null){
+	protected function simplifyFileName($url = null){
 		//Check to make sure that a period exists, three or four spaces from the end of the string.
 		//If it does, move along, if it doesn't try to find the period and remove everything after it.
 		//debug($this->data);

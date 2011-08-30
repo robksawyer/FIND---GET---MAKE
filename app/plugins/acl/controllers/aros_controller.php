@@ -10,7 +10,7 @@ class ArosController extends AclAppController
 
 	var $name       = 'Aros';
 	var $uses       = array('Aro');
-	var $components = array('RequestHandler');
+	var $components = array('RequestHandler','Acl.AclManager');
 	var $helpers    = array('Js' => array('Jquery'));
 	
 	var $paginate = array(
@@ -28,7 +28,7 @@ class ArosController extends AclAppController
     
 	function admin_index()
 	{
-	    
+		
 	}
 	
 	function admin_check($run = null)
@@ -221,7 +221,7 @@ class ArosController extends AclAppController
 	    
 	    $this->{$role_model_name}->recursive = -1;
 	    $roles = $this->{$role_model_name}->find('all', array('order' => $role_display_field, 'contain' => false, 'recursive' => -1));
-	 
+
 	    $actions = $this->AclReflector->get_all_actions();
 	    
 	    $methods = array();
@@ -255,6 +255,31 @@ class ArosController extends AclAppController
 	    $this->set('roles', $roles);
 	    $this->set('actions', $methods);
 	}
+	
+	/***************************** ADDITIONS ***********************************/
+	/**
+	 * Added by me
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function admin_ajax_role_permissions_actions()
+	{
+		$this->admin_ajax_role_permissions();
+	}
+	
+	/**
+	 * Added by me
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function admin_ajax_role_permissions_plugins()
+	{
+		$this->admin_ajax_role_permissions();
+	}
+	
+	/***************************** END ADDITIONS ***********************************/
 	
 	function admin_role_permissions()
 	{

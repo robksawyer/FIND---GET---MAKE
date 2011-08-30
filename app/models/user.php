@@ -5,27 +5,7 @@ class User extends AppModel {
 	
 	var $displayField = 'username';
 	
-	var $actsAs = array(
-						'Acl' => array('type'=>'requester'),
-						'Tags.Taggable',
-						'Search.Searchable',
-						'TwitterKit.Twitter'
-						/*'Uploader.FileValidation' => array(
-							'fileName' => array(
-								'extension' => array(
-									'value' => array('gif', 'jpg', 'png', 'jpeg'),
-									'error' => 'This image type is not supported.',
-								)
-								'filesize' => array(
-									'value' => 5242880,
-									'error' => 'The filesize is incorrect. Please make sure that the file meets the specs.'
-								)
-								'optional' => array(
-									'value' => true
-								)
-							)
-						)*/
-					);
+	var $actsAs = array('Acl'=>array('type'=>'requester'),'Tags.Taggable','Search.Searchable','TwitterKit.Twitter');
 	
 	var $filterArgs = array(
 				array('name' => 'fullname', 'type' => 'like'),
@@ -92,7 +72,15 @@ class User extends AppModel {
 	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 	
-	var $belongsTo = array('Group');
+	var $belongsTo = array(
+		'Group' => array(
+			'className' => 'Group',
+			'foreignKey' => 'group_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
 	
 	var $hasMany = array(
 		'Collection' => array(

@@ -22,7 +22,7 @@ class ConfigController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function setupACLUsers(){
+	function admin_setupACLUsers(){
 		$this->autoLayout = false;
 		$this->autoRender = false;
 		$this->User->recursive = -1;
@@ -54,7 +54,7 @@ class ConfigController extends AppController {
 		debug("Completed! ".count($aro_users)." users were added to the aros table.");
 	}
 	
-	function setupACLPermissions() {
+	function admin_setupACLPermissions() {
 		$group =& $this->User->Group;
 		//Allow admins to everything
 		$group->id = 1;     
@@ -115,6 +115,7 @@ class ConfigController extends AppController {
 		$this->Acl->allow($group, 'controllers/Twitter Kit');
 		$this->Acl->allow($group, 'controllers/Forum/Home/help');
 		$this->Acl->allow($group, 'controllers/Forum/Home/rules');
+		$this->Acl->allow($group, 'controllers/Forum/Home/index');
 		$this->Acl->allow($group, 'controllers/Forum/Posts/add');
 		$this->Acl->allow($group, 'controllers/Forum/Posts/edit');
 		$this->Acl->allow($group, 'controllers/Forum/Topics/add');
@@ -128,7 +129,7 @@ class ConfigController extends AppController {
 	
 	
 	
-	function build_acl() {
+	function admin_build_acl() {
 		if (!Configure::read('debug')) {
 			return $this->_stop();
 		}

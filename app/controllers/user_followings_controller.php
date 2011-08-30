@@ -5,6 +5,10 @@ class UserFollowingsController extends AppController {
 	
 	function beforeFilter(){
 		parent::beforeFilter();
+		
+		//Make certain pages public
+		$this->Auth->allowedActions = array('following','followers','isFollowing');
+											
 		$this->AjaxHandler->handle('followUserID','unfollowUserID');
 	}
 	

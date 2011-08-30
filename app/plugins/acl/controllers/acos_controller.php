@@ -12,7 +12,7 @@ class AcosController extends AclAppController {
 	 
 	function admin_index()
 	{
-	    
+	   
 	}
 	
 	function admin_empty_acos($run = null)

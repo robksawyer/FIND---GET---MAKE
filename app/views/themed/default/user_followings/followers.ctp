@@ -11,28 +11,14 @@
 		<?php foreach($followers as $follower): ?>
 			<div class="grid-item" style="width:500px !important;">
 				<div class="follower">
-					<?php // Gravatar
-					if ($this->Cupcake->settings['enable_gravatar'] == 1) {
-						if ($avatar = $this->Cupcake->gravatar($follower['User']['email'])) {
-							echo "<div class='avatar'>".$avatar;
-							echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$follower['User']['id']));
-							echo '<div class="clear"></div>';
-							echo "</div>";
-						}else{
-							echo "<div class='avatar'>";
-							echo $this->Html->image('no_gravatar.jpg')."<br/>";
-							echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$follower['User']['id']));
-							echo '<div class="clear"></div>';
-							echo "</div>";
-						}
-					}
-					?>
+					<?php echo $this->element('avatar',array('cache'=>false,'user'=>$follower)); ?>
 					<ul class="follower-details">
 						<li class="username"><?php echo $this->Html->link($follower['User']['username'],array('plugin'=>'','controller'=>'users','action'=>'profile',$follower['User']['username']))?></li>
-						<li>Total products: <?php echo $follower['User']['totalProducts'];?></li>
-						<li>Total sources: <?php echo $follower['User']['totalSources'];?></li>
-						<li>Total collections: <?php echo $follower['User']['totalCollections'];?></li>
-						<li>Total inspirations: <?php echo $follower['User']['totalInspirations'];?></li>
+						<li><?php echo $follower['User']['totalFollowers']." Followers";?></li>
+						<li><?php echo $follower['User']['totalProducts']." Products";?></li>
+						<li><?php echo $follower['User']['totalSources']." Sources";?></li>
+						<li><?php echo $follower['User']['totalCollections']." Collections";?></li>
+						<li><?php echo $follower['User']['totalInspirations']." Inspirations";?></li>
 					</ul>
 					<div class="clear"></div>
 					<div class="bottom-detail">

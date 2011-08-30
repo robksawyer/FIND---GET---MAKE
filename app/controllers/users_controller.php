@@ -36,10 +36,13 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		
-		$this->Auth->allowedActions = array('index', 'view');
-		$this->Auth->allow('login','logout','register','register_with_twitter',
+		$this->Auth->allowedActions = array('index', 'view','login','logout','register',
+											'register_with_twitter','more_user_feed_data','index', 
+											'forgot', 'listing', 'profile', 'signup','getAvatar'
+											);
+		/*$this->Auth->allow('login','logout','register','register_with_twitter',
 							'more_user_feed_data','index', 'forgot', 'listing', 
-							'profile', 'signup','getAvatar');
+							'profile', 'signup','getAvatar');*/
 		$this->AjaxHandler->handle('hide_welcome');
 		
 		/*if (isset($this->params['admin'])) {

@@ -7,7 +7,10 @@ class OwnershipsController extends AppController {
 		parent::beforeFilter();
 		
 		//Make certain pages public
-		$this->Auth->allowedActions = array('getHaveCount','getWantCount','getHadCount','getType','getHaveUsers','getWantUsers','getHadUsers');
+		$this->Auth->allowedActions = array('getHaveCount','getWantCount','getHadCount',
+											'getType','getHaveUsers','getWantUsers',
+											'getHadUsers','haves','wants'
+											);
 		//$this->Auth->allow('getHaveCount','getWantCount','getHadCount','getType','getHaveUsers','getWantUsers','getHadUsers');
 		$this->AjaxHandler->handle('admin_set_ownership');
 	}
