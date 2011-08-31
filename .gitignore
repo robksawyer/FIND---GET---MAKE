@@ -19,4 +19,5 @@ _*
 config/database.php
 old
 app/webroot/files/uploads/*
+app/webroot/media/*
 google_ad_example.txt
