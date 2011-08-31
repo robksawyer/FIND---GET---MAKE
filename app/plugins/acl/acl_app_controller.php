@@ -19,7 +19,7 @@ class AclAppController extends AppController
 	private function _check_config()
 	{
 	    $role_model_name = Configure :: read('acl.aro.role.model');
-
+	    
 		if(!empty($role_model_name))
 		{
 	    	$this->set('role_model_name',    $role_model_name);

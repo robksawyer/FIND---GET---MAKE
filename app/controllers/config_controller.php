@@ -61,23 +61,49 @@ class ConfigController extends AppController {
 	}
 	
 	/**
+	 * Setup aco->aro permissions
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function admin_setupACLPermissions() {
+		$this->autoRender = false;
+		$this->autoLayout = false;
+		
+		$group =& $this->User->Group;
+		
+		$this->admin_setupACLAdminPermissions($group);
+		$this->admin_setupACLManagerPermissions($group);
+		$this->admin_setupACLUserPermissions($group);
+		
+		//we add an exit to avoid an ugly "missing views" error message
+		echo "<br/>Permissions have been updated.";
+		exit;
+	}
+	
+	/**
 	 * Setup Admin permissions
 	 * @param 
 	 * @return 
 	 * 
 	*/
-	public function admin_setupACLAdminPermissions() {
+	public function admin_setupACLAdminPermissions($group=null) {
 		$this->autoRender = false;
 		$this->autoLayout = false;
 		
-		$group =& $this->User->Group;
+		if(empty($group)) $group =& $this->User->Group;
+		
 		//Allow admins to everything
 		$group->id = 1;
 		$this->Acl->allow($group, 'controllers');
+		$group->id = 2;
+		$this->Acl->deny($group, 'controllers');
+		$group->id = 3;
+		$this->Acl->deny($group, 'controllers');
 		
 		//we add an exit to avoid an ugly "missing views" error message
-		echo "Admin permissions have been setup.";
-		exit;
+		echo "<br/>Admin permissions have been setup.";
+		//exit;
 	}
 	
 	/**
@@ -86,11 +112,11 @@ class ConfigController extends AppController {
 	 * @return 
 	 * 
 	*/
-	public function admin_setupACLManagerPermissions() {
+	public function admin_setupACLManagerPermissions($group=null) {
 		$this->autoRender = false;
 		$this->autoLayout = false;
 		
-		$group =& $this->User->Group;
+		if(empty($group)) $group =& $this->User->Group;
 		
 		//allow managers
 		$group->id = 2;
@@ -141,10 +167,9 @@ class ConfigController extends AppController {
 		$this->Acl->deny($group, 'controllers/Acl');
 		$this->Acl->deny($group, 'controllers/Groups');
 		
-	
 		//we add an exit to avoid an ugly "missing views" error message
-		echo "Manager permissions have been setup.";
-		exit;
+		echo "<br/>Manager permissions have been setup.";
+		//exit;
 	}
 	
 	
@@ -154,11 +179,11 @@ class ConfigController extends AppController {
 	 * @return 
 	 * 
 	*/
-	public function admin_setupACLUserPermissions() {
+	public function admin_setupACLUserPermissions($group=null) {
 		$this->autoRender = false;
 		$this->autoLayout = false;
 		
-		$group =& $this->User->Group;
+		if(empty($group)) $group =& $this->User->Group;
 		
 		//allow users
 		$group->id = 3;
@@ -295,8 +320,8 @@ class ConfigController extends AppController {
 		$this->Acl->deny($group, 'controllers/Groups');
 		
 		//we add an exit to avoid an ugly "missing views" error message
-		echo "User permissions have been setup.";
-		exit;
+		echo "<br/>User permissions have been setup.";
+		//exit;
 	}
 	
 	protected function admin_build_acl() {

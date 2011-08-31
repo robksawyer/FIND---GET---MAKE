@@ -79,7 +79,7 @@ class DATABASE_CONFIG {
 		'host' => 'localhost',
 		'login' => 'user1001',
 		'password' => 'EeB8M5eVsDVrpTzJ',
-		'database' => 'sawyer-tapia',
+		'database' => 'find_get_make_local',
 		'prefix' => '',
 		'encoding' => 'UTF8'
 	);
