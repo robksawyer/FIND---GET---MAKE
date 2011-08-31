@@ -5,7 +5,7 @@ class GroupsController extends AppController {
 
 	function beforeFilter(){
 		parent::beforeFilter();
-		
+		$this->Auth->allowedActions = array('index', 'view');
 	}
 	
 	function index() {
