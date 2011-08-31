@@ -15,7 +15,7 @@ if(!empty($authUser)):
 																	'action'=>'followUserID',$user_id
 																	),
 																	array(
-																		'class'=>'btn auth follow',
+																		'class'=>'auth follow',
 																		'title'=>'follow',
 																		'id'=>'follow-'.$user_id,
 																		'beforeSend'=>'showLoader('.$user_id.');',
@@ -28,7 +28,7 @@ if(!empty($authUser)):
 																	'action'=>'unfollowUserID',$user_id
 																	),
 																	array(
-																		'class'=>'btn auth unfollow',
+																		'class'=>'auth unfollow',
 																		'id'=>'unfollow-'.$user_id,
 																		'style'=>'display:none',
 																		'title'=>'unfollow',
@@ -45,7 +45,7 @@ if(!empty($authUser)):
 																	'action'=>'unfollowUserID',$user_id
 																	),
 																	array(
-																		'class'=>'btn auth unfollow',
+																		'class'=>'auth unfollow',
 																		'id'=>'unfollow-'.$user_id,
 																		'title'=>'unfollow',
 																		'beforeSend'=>'showLoader('.$user_id.');',
@@ -58,7 +58,7 @@ if(!empty($authUser)):
 																	'action'=>'followUserID',$user_id
 																	),
 																	array(
-																		'class'=>'btn auth follow',
+																		'class'=>'auth follow',
 																		'id'=>'follow-'.$user_id,
 																		'style'=>'display:none',
 																		'title'=>'follow',

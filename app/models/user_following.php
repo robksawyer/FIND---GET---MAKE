@@ -21,12 +21,25 @@ class UserFollowing extends AppModel {
 	 * 
 	*/
 	public function findFollowing($user_id=null,$limit=10){
-		$followers = $this->find('all',array('conditions'=>array(
+		$users_following = $this->find('list',array('conditions'=>array(
 													'UserFollowing.user_id'=>$user_id
 													),
+													'fields'=>array('UserFollowing.follow_user_id'),
 													'limit'=>$limit
 													));
-		return $followers;
+		$users_following = array_values($users_following);
+		
+		$following = $this->User->find('all',array('conditions'=>array(
+													'User.id'=>$users_following
+													),
+													'contain'=>array('Attachment'=>array(
+																		'conditions'=>array('Attachment.id'=>'User.attachment_id'),
+																		'fields'=>array('Attachment.id','Attachment.path_med','Attachment.path_small')
+																		)
+																	),
+													'limit'=>$limit
+													));
+		return $following;
 	}
 	
 	/**
@@ -36,12 +49,18 @@ class UserFollowing extends AppModel {
 	 * 
 	*/
 	public function findFollowers($user_id=null,$limit=10){
-		$users_following = $this->find('all',array('conditions'=>array(
+		$followers = $this->find('all',array('conditions'=>array(
 												 	'UserFollowing.follow_user_id'=>$user_id
 													),
+													'contain'=>array('User',
+																	'User.Attachment'=>array(
+																		'conditions'=>array('Attachment.id'=>'User.attachment_id'),
+																		'fields'=>array('Attachment.id','Attachment.path_med','Attachment.path_small')
+																		)
+																	),
 													'limit'=>$limit
 													));
-		return $users_following;
+		return $followers;
 	}
 	
 	/**
@@ -108,5 +127,20 @@ class UserFollowing extends AppModel {
 			$user_emails[] = $user_data[$i]['User']['email'];
 		}
 		return $user_emails;
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function isFollowing($auth_user_id=null,$user_id=null){
+		$user_count = $this->find('count',array('conditions'=>array(
+																'UserFollowing.user_id'=>$auth_user_id,
+																'UserFollowing.follow_user_id'=>$user_id
+																)
+															));
+		return $user_count;
 	}
 }

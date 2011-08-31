@@ -3,7 +3,7 @@ class UserFollowingsController extends AppController {
 
 	var $name = 'UserFollowings';
 	
-	function beforeFilter(){
+	public function beforeFilter(){
 		parent::beforeFilter();
 		
 		//Make certain pages public
@@ -18,7 +18,7 @@ class UserFollowingsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function following($username=null){
+	public function following($username=null){
 		$this->UserFollowing->recursive = -1;
 		if (!$username) {
 			$this->Session->setFlash(__('This is an invalid username.', true));
@@ -28,12 +28,8 @@ class UserFollowingsController extends AppController {
 		$user = $this->UserFollowing->User->findByUsername($username);
 		$following = array();
 		if(!empty($user)){
-			//Find all of the followed users (with details) for this user
-			//debug($user);
-			foreach($user['UserFollowing'] as $follower){
-				$following[] = $this->UserFollowing->User->getFollowerDetails($follower['follow_user_id']);
-			}
-			//debug($followerDetails);
+			//Find all of the users the logged in user is following (with details)
+			$following = $this->UserFollowing->findFollowing($user['User']['id']);
 			$this->set(compact('following','user'));
 		}else{
 			$this->Session->setFlash(__('This is an invalid username.', true));
@@ -47,7 +43,7 @@ class UserFollowingsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function followers($username=null){
+	public function followers($username=null){
 		$this->UserFollowing->recursive = -1;
 		if (!$username) {
 			$this->Session->setFlash(__('This is an invalid username.', true));
@@ -56,12 +52,12 @@ class UserFollowingsController extends AppController {
 		$user = $this->UserFollowing->User->findByUsername($username);
 		$followers = array();
 		if(!empty($user)){
-			$users_following = $this->UserFollowing->findFollowers($user['User']['id']);
-			//debug($users_following);
+			$followers = $this->UserFollowing->findFollowers($user['User']['id']);
+			//debug($followers);
 			//Find all of the followed users (with details) for this user
-			foreach($users_following as $follower){
+			/*foreach($users_following as $follower){
 				$followers[] = $this->UserFollowing->User->getFollowerDetails($follower['UserFollowing']['user_id']);
-			}
+			}*/
 			//debug($followerDetails);
 			$this->set(compact('followers','user'));
 		}else{
@@ -76,7 +72,7 @@ class UserFollowingsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function followUserID($user_id=null){
+	public function followUserID($user_id=null){
 		$this->UserFollowing->recursive = -1;
 		Configure::write('debug', 0);
 		if($this->RequestHandler->isAjax()) {
@@ -130,7 +126,7 @@ class UserFollowingsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function unfollowUserID($user_id=null){
+	public function unfollowUserID($user_id=null){
 		$this->UserFollowing->recursive = -1;
 		Configure::write('debug', 0);
 		if($this->RequestHandler->isAjax()) {
@@ -182,17 +178,8 @@ class UserFollowingsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function isFollowing($user_id=null){
+	public function isFollowing($user_id=null){
 		$auth_user_id = $this->Auth->user('id');
-		$users_following = $this->UserFollowing->findFollowing($auth_user_id);
-		if(!empty($users_following)){
-			foreach($users_following as $follow_user){
-				//debug($follow_user['UserFollowing']);
-				if($follow_user['UserFollowing']['follow_user_id'] == $user_id){
-					return 1;
-				}
-			}
-		}
-		return 0;
+		return $this->UserFollowing->isFollowing($auth_user_id,$user_id);
 	}
 }
