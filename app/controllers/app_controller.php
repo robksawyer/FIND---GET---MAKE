@@ -49,16 +49,16 @@ class AppController extends Controller {
 	 * @access public
 	 * @var array
 	 */
-	var $components = array('Auth'=>array(
+	var $components = array('Acl','Auth'=>array(
 									'authorize'=>'actions',
 									'actionPath'=>'controllers/',
 									'loginAction'=>'/login',
 									'logoutAction'=>'/logout',
-									'allowedActions'=>array('display','key','generateKeycode','users','tags',
+									'allowedActions'=>array('add_attachment','display','key','generateKeycode','users','tags',
 									'getProfileData','find','getTags','getCount','verifyAddition','clearVerifySessions'
 									)
 									
-								),'Acl','RequestHandler','Session','Security','AutoLogin','Cookie','AjaxHandler', 
+								),'RequestHandler','Session','Security','AutoLogin','Cookie','AjaxHandler', 
 								'Forum.Toolbar','String','TwitterKit.Twitter','Facebook.Connect'
 								);
 

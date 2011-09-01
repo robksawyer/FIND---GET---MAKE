@@ -3,35 +3,6 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 ?>
 <?php // User exists
 if (!empty($user)) { ?>
-<div class="header profile">
-	<!--<button type="button" onclick="goTo('<?php //echo $this->Html->url(array('action' => 'report', $user['User']['id'])); ?>');" class="fr button"><?php //__('Report User'); ?></button>-->
-	<?php
-		echo $this->element('avatar',array('cache'=>false,'avatar'=>$avatar,'follow'=>true));
-	?>
-	<div class="user-details">
-		<ul>
-			<?php 
-				if(!empty($user['User']['fullname'])){
-					echo "<li class='name'>".$user['User']['fullname']; 
-					echo " <span class='serif'>a.k.a</span> ".$user['User']['username']."</li>";
-				}else{
-					echo "<li class='name'>".$user['User']['username']."</li>";
-				}
-			?>
-			<?php if (!empty($user['User']['about'])) { ?>
-			<li class="about value"><?php echo $user['User']['about']; ?></li>
-			<?php } ?>
-			<li class="link">Website/Blog: <?php 
-				if(empty($user['User']['url'])){
-					echo "n/a";
-				}else{
-					echo $this->Html->link($user['User']['url'],$user['User']['url'],array('target'=>'_blank')); 
-				}
-			?></li>
-			<li>Member since: <span class="value"><?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></span></li>
-		</ul>
-	</div>
-</div>
 <div class="moderate-area">
 	<div class="left-container-with-sidebar">
 		<div class="header red"><?php 
@@ -42,6 +13,36 @@ if (!empty($user)) { ?>
 		?>
 	</div>
 	<div class="right-sidebar">
+		<div class="header profile">
+			<!--<button type="button" onclick="goTo('<?php //echo $this->Html->url(array('action' => 'report', $user['User']['id'])); ?>');" class="fr button"><?php //__('Report User'); ?></button>-->
+			<?php
+				echo $this->element('avatar',array('cache'=>false,'avatar'=>$avatar,'follow'=>true));
+			?>
+			<div class="user-details">
+				<ul>
+					<?php 
+						if(!empty($user['User']['fullname'])){
+							echo "<li class='name'>".$user['User']['fullname']; 
+							echo " <span class='serif'>a.k.a</span> ".$user['User']['username']."</li>";
+						}else{
+							echo "<li class='name'>".$user['User']['username']."</li>";
+						}
+					?>
+					<li><?php echo $this->Html->link('Edit your profile',array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'edit'),array('title'=>'Edit your profile.')); ?></li>
+					<?php if (!empty($user['User']['about'])) { ?>
+					<li class="about value"><?php echo $user['User']['about']; ?></li>
+					<?php } ?>
+					<li class="link">Website/Blog: <?php 
+						if(empty($user['User']['url'])){
+							echo "n/a";
+						}else{
+							echo $this->Html->link($user['User']['url'],$user['User']['url'],array('target'=>'_blank')); 
+						}
+					?></li>
+					<li>Member since: <span class="value"><?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></span></li>
+				</ul>
+			</div>
+		</div>
 		<ul class="stats">
 			<div class="title"><?php echo $user['User']['username']."'s"; ?> totals</div>
 			<li>

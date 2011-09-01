@@ -15,75 +15,6 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 <h3>Hi <?php echo $user['User']['fullname']; ?>! Welcome to your space. Here you'll find all of the items that you've added to the system.</h3>
 </div>
 <?php endif; ?>
-<div class="header profile">
-	<?php
-		echo $this->element('avatar',array('cache'=>false,'avatar'=>$avatar,'follow'=>false));
-	?>
-	<div class="user-details">
-		<ul class="btn-actions">
-			<li>
-				<?php echo $this->Html->link('<span>Edit profile</span>',
-											array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'edit'),
-											array(
-												'title'=>'Edit your profile.',
-												'class'=>'minibutton btn-edit-profile',
-												'escape'=>false
-												)
-											); ?>
-			</li>
-		</ul>
-		<ul>
-			<?php 
-				if(!empty($user['User']['fullname'])){
-					echo "<li class='name'>".$user['User']['fullname']; 
-					echo " <span class='serif'>a.k.a</span> ".$user['User']['username']."</li>";
-				}else{
-					echo "<li class='name'>".$user['User']['username']."</li>";
-				}
-			?>
-			<li><?php echo $this->Html->link('View your public profile',array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'profile',$user['User']['username']),array('title'=>'View your public profile.')); ?></li>
-			<br/>
-			<ul>
-				<li class="link">
-					<?php if(empty($user['User']['url'])):
-						echo $this->Html->link('Add more details about yourself.','/settings'); 
-					else:
-						echo "Website/Blog:".$this->Html->link($user['User']['url'],$user['User']['url'],array('target'=>'_blank')); 
-					endif;
-					?>
-				</li>
-				<!--<li>
-					<?php 
-					//Link to the user's feed
-					//echo $this->Html->link('Feed',array('admin'=>true,'controller'=>'feeds','action'=>'display'))." | ";
-					//echo $this->Html->link($user['User']['totalUsersFollowing'].' following,',array('admin'=>false,'plugin'=>'','controller'=>'user_followings','action'=>'following',$user['User']['username'])); 
-					?>
-					<?php 
-					/*if($user['User']['totalFollowers'] > 1 || $user['User']['totalFollowers'] == 0){
-						echo $this->Html->link($user['User']['totalFollowers'].' followers',array('admin'=>false,'plugin'=>'','controller'=>'user_followings','action'=>'followers',$user['User']['username'])); 
-					}else{
-						echo $this->Html->link($user['User']['totalFollowers'].' follower',array('admin'=>false,'plugin'=>'','controller'=>'user_followings','action'=>'followers',$user['User']['username'])); 
-					}*/
-					?>
-				</li>-->
-			</ul>
-			<?php if (!empty($user['User']['about'])) { ?>
-			<li class="about value"><?php echo $user['User']['about']; ?></li>
-			<?php } ?>
-			<?php
-				/*
-					TODO Count the likes of inspiraitons, sources, products, etc.
-					Build a page that lists all the user's likes
-				*/
-				$user_likes = $user['User']['totalProductLikes'];
-				$user_dislikes = $user['User']['totalProductDislikes'];
-			
-				//debug($user['Ownership']);
-			?>
-			<li>Member since: <span class='value'><?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></span></li>
-		</ul>
-	</div>
-</div>
 <div class="moderate-area">
 	<?php
 	if(!empty($user)):
@@ -97,6 +28,62 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 		?>
 	</div>
 	<div class="right-sidebar">
+		<div class="header profile">
+			<div class="user-details">
+				<?php
+					echo $this->element('avatar',array('cache'=>false,'avatar'=>$avatar,'follow'=>false));
+				?>
+				<ul class="btn-actions">
+					<li>
+						<?php echo $this->Html->link('<span>Edit profile</span>',
+													array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'edit'),
+													array(
+														'title'=>'Edit your profile.',
+														'class'=>'minibutton btn-edit-profile',
+														'escape'=>false
+														)
+													); ?>
+					</li>
+				</ul>
+				<ul>
+					<?php 
+						if(!empty($user['User']['fullname'])){
+							echo "<li class='name'>".$user['User']['fullname']; 
+							echo " <span class='serif'>a.k.a</span> ".$user['User']['username']."</li>";
+						}else{
+							echo "<li class='name'>".$user['User']['username']."</li>";
+						}
+					?>
+					<li><?php echo $this->Html->link('View your public profile',array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'profile',$user['User']['username']),array('title'=>'View your public profile.')); ?></li>
+					<br/>
+					<ul>
+						<li class="link">
+							<?php if(empty($user['User']['url'])):
+								echo $this->Html->link('Add more details about yourself.','/settings'); 
+							else:
+								echo "Website/Blog:".$this->Html->link($user['User']['url'],$user['User']['url'],array('target'=>'_blank')); 
+							endif;
+							?>
+						</li>
+					</ul>
+					<?php if (!empty($user['User']['about'])) { ?>
+					<li class="about value"><?php echo $user['User']['about']; ?></li>
+					<?php } ?>
+					<?php
+						/*
+							TODO Count the likes of inspiraitons, sources, products, etc.
+							Build a page that lists all the user's likes
+						*/
+						$user_likes = $user['User']['totalProductLikes'];
+						$user_dislikes = $user['User']['totalProductDislikes'];
+
+						//debug($user['Ownership']);
+					?>
+					<li>Member since: <span class='value'><?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></span></li>
+				</ul>
+			</div>
+		</div>
+		<div class="clear"></div>
 		<div>
 			<?php 
 			if($authUser['User']['totalUsersFollowing'] > 1) $people = "people"; else $people = "person";

@@ -1,0 +1,160 @@
+#settings-container{
+	width: 1024px;
+	background-color: #e7e7e7;
+	padding: 15px;
+}
+
+/************ SETTING NAV *******************/
+ul.settings-nav{
+	position: relative;
+	display: block;
+	padding: 0;
+	margin: 20px 0 10px 0;
+}
+
+ul.settings-nav li{
+	display: inline !important;
+	margin: 10px 5px;
+}
+ul.settings-nav li.active a{
+	color: #000000;
+	font-weight: bold;
+	text-decoration: none;
+}
+ul.settings-nav li a:link,
+ul.settings-nav li a:active,
+ul.settings-nav li a:visited{
+	text-decoration: none;
+	background-color: #e7e7e7;
+	color: #262626;
+	padding: 4px 15px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+ul.settings-nav li a:hover{
+	color: #ffffff;
+	background-color: #EF3F23;
+}
+
+ul.settings-nav li a.active{
+	color: #ffffff;
+	background-color: #EF3F23;
+}
+/************ END SETTING NAV *******************/
+
+.header .avatar{
+	display: inline;
+	float: left;
+	margin: 0 10px 0 10px;
+}
+
+.avatar-container .avatar img{
+	width: auto;
+	height: 100px;
+}
+
+.left-panel{
+	display:inline-block;
+	float: left;
+	width: 70%;
+}
+.left-panel .full-name{
+	position: relative;
+	display: block;
+	margin: 10px 0;
+}
+.left-panel .submit{
+	position: relative;
+	top: 10px;
+}
+.left-panel #change-password{
+	margin: 10px 0;
+}
+.left-panel #change-password .input{
+	width: 230px;
+}
+.left-panel #change-password .input a.after{
+	position: relative;
+	top: 10px;
+}
+
+.left-panel #UserProfileForm .input{
+	margin: 0;
+	padding: 5px 0;
+	width: 230px;
+}
+.left-panel #UserAccountForm .input{
+	padding: 0;
+	margin: 0;
+}
+.left-panel #UserAccountForm .input input{
+	width: 230px;
+	float: left;
+	clear: none;
+}
+
+.left-panel #UserAccountForm .warning{
+	float: left;
+	clear: none;
+	padding: 0;
+	vertical-align: baseline;
+	margin: 10px 0 0 10px;
+}
+
+.left-panel #UserAccountForm .after .username-preview{
+	font-weight: bold;
+}
+
+.left-panel #UserProfileForm  .gender{
+	position: relative;
+	display: inline-block;
+	margin: 10px 0 10px 0;
+}
+.left-panel #UserProfileForm .input.textarea{
+	margin: 0;
+	padding: 0;
+	width: auto;
+	clear: both;
+}
+.left-panel #charlimitinfo{
+	clear: both;
+	margin-top: 10px;
+}
+
+/*.left-panel form label{
+	color: #333;
+	float: left;
+	font-size: 13px;
+	padding-top: 4px;
+	text-align: right;
+	width: 130px;
+}*/
+
+.right-panel{
+	display:inline-block;
+	width: 25%;
+	background-color: #ffffff;
+	padding: 5px 15px 15px 15px;
+}
+
+.right-panel h4{
+	font-size: 20px;
+	margin: 10px 0px 5px;
+	font-weight: normal;
+	line-height: 1;
+	padding: 0px;
+}
+.right-panel p{
+	color: #777;
+	margin-bottom: 5px;
+	font-size: 13px;
+	line-height: 18px;
+	margin: 0px 0px 15px;
+}
+
+.right-panel hr{
+	border: 1px;
+	border-top: 1px solid #DDD;
+	display: block;
+	margin: 20px 0px 19px !important;
+}

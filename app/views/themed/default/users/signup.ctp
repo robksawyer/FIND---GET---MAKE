@@ -30,7 +30,7 @@
 
 			<?php echo $this->Form->create('User', array('url' => array('controller' => 'users', 'action' => 'signup'))); ?>
 			<?php echo $this->Form->input('fullname', array('label' => __d('forum', 'Real Name', true))); ?>
-			<?php echo $this->Form->input('username', array('label' => __d('forum', 'Username', true),'after'=>'<div class="after">Your public profile: http://www.find-get-make.com/profiles/<span class="username-preview">'.$this->Form->value('User.username').'</span></div>')); ?>
+			<?php echo $this->Form->input('username', array('label' => __d('forum', 'Username', true),'after'=>'<div class="after">Your public profile: http://www.find-get-make.com/profile/<span class="username-preview">'.$this->Form->value('User.username').'</span></div>')); ?>
 			<?php echo $this->Form->input('location', array('label' => __d('forum', 'Location', true))); ?>
 			<?php echo $this->Form->input('email', array('label' => __d('forum', 'Email', true))); ?>
 			<?php echo $this->Form->input('newPassword', array('type' => 'password', 'label' => __d('forum', 'Password', true))); ?>

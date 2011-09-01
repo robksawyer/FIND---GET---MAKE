@@ -152,7 +152,7 @@
 				?>
 				<?php echo $this->Session->flash();?>
 				<?php 
-					if ($this->params['plugin'] == 'forum' || $this->params['controller'] =='users' && $this->params['action'] != 'moderate') {
+					if ($this->params['plugin'] == 'forum') {
 						echo $this->element('navigation',array('plugin' => 'forum')); 
 					}
 				?>
