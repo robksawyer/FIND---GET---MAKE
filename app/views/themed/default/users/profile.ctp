@@ -15,20 +15,20 @@ if (!empty($user)) { ?>
 	<div class="right-sidebar">
 		<div class="header profile">
 			<!--<button type="button" onclick="goTo('<?php //echo $this->Html->url(array('action' => 'report', $user['User']['id'])); ?>');" class="fr button"><?php //__('Report User'); ?></button>-->
-			<?php
-				echo $this->element('avatar',array('cache'=>false,'avatar'=>$avatar,'follow'=>true));
-			?>
 			<div class="user-details">
+				<?php 
+					if(!empty($user['User']['fullname'])){
+						echo "<div class='name'>".$user['User']['fullname']."</div>"; 
+						//echo " <span class='serif'>a.k.a</span> ".$user['User']['username']."</li>";
+					}else{
+						echo "<div class='name'>".$user['User']['username']."</div>";
+					}
+				?>
+				<?php
+					echo $this->element('avatar',array('cache'=>false,'avatar'=>$avatar,'follow'=>true));
+				?>
 				<ul>
-					<?php 
-						if(!empty($user['User']['fullname'])){
-							echo "<li class='name'>".$user['User']['fullname']; 
-							echo " <span class='serif'>a.k.a</span> ".$user['User']['username']."</li>";
-						}else{
-							echo "<li class='name'>".$user['User']['username']."</li>";
-						}
-					?>
-					<li><?php echo $this->Html->link('Edit your profile',array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'edit'),array('title'=>'Edit your profile.')); ?></li>
+					<!--<li><?php //echo $this->Html->link('Edit your profile',array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'edit'),array('title'=>'Edit your profile.')); ?></li>-->
 					<?php if (!empty($user['User']['about'])) { ?>
 					<li class="about value"><?php echo $user['User']['about']; ?></li>
 					<?php } ?>
@@ -39,7 +39,7 @@ if (!empty($user)) { ?>
 							echo $this->Html->link($user['User']['url'],$user['User']['url'],array('target'=>'_blank')); 
 						}
 					?></li>
-					<li>Member since: <span class="value"><?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></span></li>
+					<!--<li>Member since: <span class="value"><?php //echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></span></li>-->
 				</ul>
 			</div>
 		</div>

@@ -30,13 +30,21 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 	<div class="right-sidebar">
 		<div class="header profile">
 			<div class="user-details">
+				<?php 
+					if(!empty($user['User']['fullname'])){
+						echo "<div class='name'>".$user['User']['fullname']."</div>"; 
+						//echo " <span class='serif'>a.k.a</span> ".$user['User']['username']."</div>";
+					}else{
+						echo "<div class='name'>".$user['User']['username']."</div>";
+					}
+				?>
 				<?php
 					echo $this->element('avatar',array('cache'=>false,'avatar'=>$avatar,'follow'=>false));
 				?>
 				<ul class="btn-actions">
 					<li>
 						<?php echo $this->Html->link('<span>Edit profile</span>',
-													array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'edit'),
+													array('plugin'=>'','admin'=>false,'controller'=>'settings','action'=>'account'),
 													array(
 														'title'=>'Edit your profile.',
 														'class'=>'minibutton btn-edit-profile',
@@ -46,29 +54,22 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 					</li>
 				</ul>
 				<ul>
-					<?php 
-						if(!empty($user['User']['fullname'])){
-							echo "<li class='name'>".$user['User']['fullname']; 
-							echo " <span class='serif'>a.k.a</span> ".$user['User']['username']."</li>";
-						}else{
-							echo "<li class='name'>".$user['User']['username']."</li>";
-						}
-					?>
 					<li><?php echo $this->Html->link('View your public profile',array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'profile',$user['User']['username']),array('title'=>'View your public profile.')); ?></li>
 					<br/>
-					<ul>
+					<!--<ul>
 						<li class="link">
-							<?php if(empty($user['User']['url'])):
+							<?php 
+							/* if(empty($user['User']['url'])):
 								echo $this->Html->link('Add more details about yourself.','/settings'); 
 							else:
 								echo "Website/Blog:".$this->Html->link($user['User']['url'],$user['User']['url'],array('target'=>'_blank')); 
-							endif;
+							endif; */
 							?>
 						</li>
-					</ul>
-					<?php if (!empty($user['User']['about'])) { ?>
-					<li class="about value"><?php echo $user['User']['about']; ?></li>
-					<?php } ?>
+					</ul>-->
+					<?php //if (!empty($user['User']['about'])) { ?>
+					<!--<li class="about value"><?php //echo $user['User']['about']; ?></li>-->
+					<?php //} ?>
 					<?php
 						/*
 							TODO Count the likes of inspiraitons, sources, products, etc.
@@ -79,7 +80,7 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 
 						//debug($user['Ownership']);
 					?>
-					<li>Member since: <span class='value'><?php echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></span></li>
+					<!--<li>Member since: <span class='value'><?php //echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></span></li>-->
 				</ul>
 			</div>
 		</div>
@@ -101,15 +102,8 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 		</div>
 		<div class="followers">
 		<?php 
-			echo "<span>Followers ".$authUser['User']['totalFollowers']."</span>";
-			echo "<div>";
-			//Doesn't work
-			foreach($followers as $follower){
-				$avatar = $this->requestAction('/users/getAvatar/'.$follower['User']['id']);
-				echo $this->element('avatar-follower',array('cache'=>false,'follower'=>$follower,'avatar'=>$avatar));
-			}
-			echo "</div>";
-			echo "<div class='view-all'>";
+			echo "<span>Followers ".$authUser['User']['totalFollowers']."</span> | ";
+			echo "<span class='view-all'>";
 			echo $this->Html->link("View all &rarr;",
 										array('plugin'=>'',
 												'admin'=>false,
@@ -119,6 +113,13 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 												),
 												array('title'=>'See all of your followers','escape'=>false)
 												); 
+			echo "</span>";
+			echo "<div>";
+			//Doesn't work
+			foreach($followers as $follower){
+				$avatar = $this->requestAction('/users/getAvatar/'.$follower['User']['id']);
+				echo $this->element('avatar-follower',array('cache'=>false,'follower'=>$follower,'avatar'=>$avatar));
+			}
 			echo "</div>";
 			?>
 		</div>
