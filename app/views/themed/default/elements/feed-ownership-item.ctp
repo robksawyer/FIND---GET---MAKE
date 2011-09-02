@@ -12,12 +12,10 @@ if($feed_item[$model]['have_it'] > 0){
 
 $added_by = "Found by";
 $showLikeDislike = true; //Show the likes for the product
-
 if(!empty($feed_item['Product']['Attachment'][0])):
 $product_attachment0 = $feed_item['Product']['Attachment'][0];
-$product = $feed_item['Product'];
+$product = $feed_item;
 $controller = 'products';
-//debug($feed_item);
 ?>
 <div class='grid-item'>
 	<?php
@@ -44,7 +42,7 @@ $controller = 'products';
 	<div class="added-by"><?php echo $status_by." ".$this->Html->link($feed_item['User']['username'],array('admin'=>false,'controller'=>'users','plugin'=>'forum','action'=>'profile',$feed_item['User']['username'])); ?></div>
 	<div class="added-by"><?php echo $added_by." ".$this->Html->link($product['User']['username'],array('admin'=>false,'controller'=>'users','plugin'=>'forum','action'=>'profile',$product['User']['username'])); ?></div>
 	<div class='bottom-detail'>
-		<span class='created'><?php echo $this->Time->timeAgoInWords($product['Product']['created'],null,null); ?></span>
+		<span class='created'><?php echo $this->Time->timeAgoInWords($feed_item['Feed'][0]['modified'],null,null); ?></span>
 		<span class="tags">
 			<?php
 			//Build a tag list of only two tags.

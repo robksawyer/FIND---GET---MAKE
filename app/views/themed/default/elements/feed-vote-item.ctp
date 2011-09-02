@@ -43,7 +43,7 @@ $controller = $target_controller;
 	<div class="added-by"><?php echo "Found by ".$this->Html->link($target_item['User']['username'],array('admin'=>false,'controller'=>'users','plugin'=>'forum','action'=>'profile',$target_item['User']['username'])); ?></div>
 	<?php endif; ?>
 	<div class='bottom-detail'>
-		<span class='created'><?php echo $this->Time->timeAgoInWords($feed_item[$target_model]['created'],null,null); ?></span>
+		<span class='created'><?php echo $this->Time->timeAgoInWords($feed_item['Feed'][0]['modified'],null,null); ?></span>
 		<span class="tags">
 			<?php
 			//Build a tag list of only two tags.

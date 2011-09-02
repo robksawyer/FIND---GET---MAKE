@@ -1,7 +1,7 @@
 <?php
 	$this->Html->script('jquery.masonry.min',array('inline'=>false));
 ?>
-<div class="left-container">
+<div id="left-panel-index">
 	<?php
 		//Rating sorter
 		//echo $this->element('product-sorter',array('cache'=>false));
@@ -19,7 +19,7 @@
 		echo $this->element('index-box-ad',array('cache'=>false));
 	?>
 </div>
-<div class="right-container-index">
+<div id="right-panel">
 	<div class="products index">
 		<div class="header red"><?php 
 			__('Products that '.$user['User']['username'].' wants');
@@ -35,8 +35,8 @@
 		?>
 			<div class="grid-item">
 				<?php 
-					if(!empty($product['Attachment'][0]['path_med'])){
-						echo $this->Html->image($product['Attachment'][0]['path_med'],array('alt'=>'','url'=>array('controller'=>'products','action'=>'view',$product['Product']['id']))); 
+					if(!empty($product['Product']['Attachment'][0]['path_med'])){
+						echo $this->Html->image($product['Product']['Attachment'][0]['path_med'],array('alt'=>'','url'=>array('controller'=>'products','action'=>'view',$product['Product']['id']))); 
 					}
 				?>
 				<br/>
@@ -52,11 +52,11 @@
 						$limit = 2;
 						$counter = 0;
 						//debug($product['Tag']);
-						if(!empty($product['Tag'])){
-							foreach($product['Tag'] as $tag){
+						if(!empty($product['Product']['Tag'])){
+							foreach($product['Product']['Tag'] as $tag){
 								if($counter == $limit) break;
 						
-								if($counter == ($limit - 1) || count($product['Tag']) < 2){
+								if($counter == ($limit - 1) || count($product['Product']['Tag']) < 2){
 									echo $this->Html->link($tag['name'],array('controller'=>'products','action'=>'index/by:'.$tag['keyname']));
 								}else{
 									echo $this->Html->link($tag['name'],array('controller'=>'products','action'=>'index/by:'.$tag['keyname'])).", ";

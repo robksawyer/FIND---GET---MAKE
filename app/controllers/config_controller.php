@@ -151,6 +151,23 @@ class ConfigController extends AppController {
 		$this->Acl->allow($group, 'controllers/UserFollowings');
 		$this->Acl->allow($group, 'controllers/Settings');
 		
+		//App controller
+		$this->Acl->allow($group, 'controllers/Inspirations/uploadAttachments');
+		$this->Acl->allow($group, 'controllers/Inspirations/toSlug');
+		$this->Acl->allow($group, 'controllers/Inspirations/cleanURL');
+		$this->Acl->allow($group, 'controllers/Collections/uploadAttachments');
+		$this->Acl->allow($group, 'controllers/Collections/toSlug');
+		$this->Acl->allow($group, 'controllers/Collections/cleanURL');
+		$this->Acl->allow($group, 'controllers/Products/toSlug');
+		$this->Acl->allow($group, 'controllers/Products/cleanURL');
+		$this->Acl->allow($group, 'controllers/Products/uploadAttachments');
+		$this->Acl->allow($group, 'controllers/Sources/toSlug');
+		$this->Acl->allow($group, 'controllers/Sources/cleanURL');
+		$this->Acl->allow($group, 'controllers/Sources/uploadAttachments');
+		$this->Acl->allow($group, 'controllers/Ufos/toSlug');
+		$this->Acl->allow($group, 'controllers/Ufos/cleanURL');
+		$this->Acl->allow($group, 'controllers/Ufos/uploadAttachments');
+		
 		//Plugins
 		$this->Acl->allow($group, 'controllers/Forum');
 		$this->Acl->deny($group, 'controllers/Forum/Home/add_attachment');
@@ -301,6 +318,23 @@ class ConfigController extends AppController {
 		$this->Acl->allow($group, 'controllers/Forum/Categories/index');
 		$this->Acl->allow($group, 'controllers/Forum/Search');
 		$this->Acl->allow($group, 'controllers/Settings');
+		
+		//App controller methods
+		$this->Acl->allow($group, 'controllers/Inspirations/uploadAttachments');
+		$this->Acl->allow($group, 'controllers/Inspirations/toSlug');
+		$this->Acl->allow($group, 'controllers/Inspirations/cleanURL');
+		$this->Acl->allow($group, 'controllers/Collections/uploadAttachments');
+		$this->Acl->allow($group, 'controllers/Collections/toSlug');
+		$this->Acl->allow($group, 'controllers/Collections/cleanURL');
+		$this->Acl->allow($group, 'controllers/Products/toSlug');
+		$this->Acl->allow($group, 'controllers/Products/cleanURL');
+		$this->Acl->allow($group, 'controllers/Products/uploadAttachments');
+		$this->Acl->allow($group, 'controllers/Sources/toSlug');
+		$this->Acl->allow($group, 'controllers/Sources/cleanURL');
+		$this->Acl->allow($group, 'controllers/Sources/uploadAttachments');
+		$this->Acl->allow($group, 'controllers/Ufos/toSlug');
+		$this->Acl->allow($group, 'controllers/Ufos/cleanURL');
+		$this->Acl->allow($group, 'controllers/Ufos/uploadAttachments');
 		
 		$this->Acl->deny($group, 'controllers/Forum/Home/add_attachment');
 		$this->Acl->deny($group, 'controllers/Forum/Posts/add_attachment');

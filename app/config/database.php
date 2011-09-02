@@ -80,8 +80,8 @@ class DATABASE_CONFIG {
 		'login' => 'user1001',
 		'password' => 'EeB8M5eVsDVrpTzJ',
 		'database' => 'find_get_make_local',
-		'prefix' => '',
-		'encoding' => 'UTF8'
+		'prefix' => ''
+		//'encoding' => 'UTF8'
 	);
 	
 	/**

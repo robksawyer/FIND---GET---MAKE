@@ -50,7 +50,7 @@
 				echo "<li>".$this->Html->image('icons/edit.gif', array(
 																					'alt' => 'Edit',
 																					'title' => 'Edit',
-																					'url'=>array('action' => 'edit', $item[$model]['id'],'admin'=>true)
+																					'url'=>array('action' => 'edit', $item[$model]['id'],'admin'=>false)
 																					)
 												)."</li>";
 			else:
@@ -61,7 +61,7 @@
 														'icons/edit.gif', array(
 																							'alt' => 'Edit',
 																							'title' => 'Edit',
-																							'url'=>array('action' => 'edit', $item[$model]['id'],'admin'=>true)
+																							'url'=>array('action' => 'edit', $item[$model]['id'],'admin'=>false)
 																							)
 														)."</li>";
 					}
@@ -81,7 +81,7 @@
 																						"alt" => "Delete",
 																						"title" => "Delete"
 																						)),
-							array('action' => 'delete','admin'=>true, $item[$model]['id']),
+							array('action' => 'delete','admin'=>false, $item[$model]['id']),
 							array('escape'=>false),
 							sprintf(__('Are you sure you want to delete %s?', true), $item[$model]['name'])
 					)."</li>";
@@ -94,7 +94,7 @@
 																							"alt" => "Delete",
 																							"title" => "Delete"
 																							)),
-								array('action' => 'delete','admin'=>true, $item[$model]['id']),
+								array('action' => 'delete','admin'=>false, $item[$model]['id']),
 								array('escape'=>false),
 								sprintf(__('Are you sure you want to delete %s?', true), $item[$model]['name'])
 						)."</li>";

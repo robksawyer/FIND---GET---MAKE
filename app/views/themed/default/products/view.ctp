@@ -59,7 +59,7 @@
 					<div class="added-by" style="text-align:center">
 						<?php
 							echo $this->element('avatar',array('cache'=>false,'user'=>$product,'height'=>'32'));
-					 		echo "Found by ".$this->Html->link($product['User']['username'],array('plugin'=>'forum','controller'=>'users','action'=>'profile',$product['User']['username']));
+					 		echo "Found by ".$this->Html->link($product['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$product['User']['username']));
 						?>
 					</div>
 				</div>

@@ -147,20 +147,20 @@ class SourcesController extends AppController {
 	 * 
 	*/
 	public function users($id = null){
-		$this->Source->recursive = 2;
+		$this->Source->recursive = 1;
 		
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid user id', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}
-		$user = $this->Source->User->find('first',array('conditions'=>array('User.id'=>$id)));
+		$this->Source->User->recursive = 1;
+		$user = $this->Source->User->read(null,$id);
 		if(empty($user)){
 			$this->Session->setFlash(__('Invalid user id', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}
 		
 		$sourceCategories = $this->Source->SourceCategory->getAll();
-		
 		$sources = $this->paginate('Source',array(
 										   'Source.user_id' => $id
 										));
@@ -235,6 +235,7 @@ class SourcesController extends AppController {
 	 * 
 	*/
 	public function admin_add() {
+		$this->Source->recursive = 1;
 		//Add the source to a model
 		if(isset($this->passedArgs['model'])){
 			$model = ucwords($this->passedArgs['model']);
@@ -361,6 +362,7 @@ class SourcesController extends AppController {
 	 * 
 	*/
 	public function add() {
+		$this->Source->recursive = 1;
 		//Add the source to a model
 		if(isset($this->passedArgs['model'])){
 			$model = ucwords($this->passedArgs['model']);
@@ -488,6 +490,7 @@ class SourcesController extends AppController {
 	 * 
 	*/
 	public function admin_edit($id = null) {
+		$this->Source->recursive = 1;
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid source', true));
 			$this->redirect(array('action' => 'index'));
@@ -537,6 +540,8 @@ class SourcesController extends AppController {
 	 * 
 	*/
 	public function edit($id = null) {
+		$this->Source->recursive = 1;
+		//debug($this->data);
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid source', true));
 			$this->redirect(array('action' => 'index'));
@@ -547,6 +552,7 @@ class SourcesController extends AppController {
 				$this->data['Source']['url'] = $this->cleanURL($this->data['Source']['url']); //Clean the URL
 			}
 			$this->data['Source']['slug'] = $this->toSlug($this->data['Source']['name']);
+			
 			
 			//Cleanup the address
 			$this->cleanAddress();
@@ -567,10 +573,10 @@ class SourcesController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Source->read(null, $id);
 		}
-		//$images = $this->Source->Image->find('list');
+		
 		$this->Source->id = $id;
 		$countries = $this->Source->Country->find('list');
-		$contractors = $this->Source->Contractor->find('list',array( 'order' => 'name ASC' ));
+		if(Configure::read('FGM.private_solution') == 1) $contractors = $this->Source->Contractor->find('list',array( 'order' => 'name ASC' ));
 		$sourceCategories = $this->Source->SourceCategory->find('list',array( 'order' => 'name ASC' ));
 		//$images = $this->Source->Image->find('list');
 		$tags = $this->Source->Tag->find('list');

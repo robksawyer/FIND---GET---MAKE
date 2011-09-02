@@ -30,8 +30,8 @@
 		<?php 
 			foreach($haveusers as $user){
 				echo "<div class='ownership-item'>";
-				echo $this->element('avatar',array('cache'=>false,'user'=>$user,'height'=>'64'));
-				echo $this->Html->link(__($user['User']['username'],true),array('controller'=>'users','action'=>'view',$user['User']['slug']));
+				echo $this->element('avatar',array('cache'=>false,'user'=>$user,'height'=>'64','follow'=>true));
+				//echo $this->Html->link(__($user['User']['username'],true),array('controller'=>'users','action'=>'view',$user['User']['slug']));
 				echo "</div>";
 			}
 		?>
@@ -44,10 +44,7 @@
 		<?php 
 			//debug($wantusers); 
 			foreach($wantusers as $user){
-				echo "<div class='ownership-item'>";
-				echo $this->element('avatar',array('cache'=>false,'user'=>$user,'height'=>'64'));
-				echo $this->Html->link(__($user['User']['username'],true),array('controller'=>'users','action'=>'profile','plugin'=>'forum',$user['User']['id']));
-				echo "</div>";
+				echo $this->element('want-have-user-block',array('cache'=>false,'user'=>$user,'follow'=>true));
 			}
 		?>
 	</div>

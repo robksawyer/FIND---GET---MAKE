@@ -36,7 +36,7 @@
 	</div>
 	<?php endif; ?>
 	<div class="added-by">
-		<?php echo "Added by ".$this->Html->link($collection['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$collection['User']['username'])); ?>
+		<?php echo "Added by ".$this->Html->link($collection['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$collection['User']['username'])); ?>
 	</div>
 	<br/>
 	<div class="sharing">

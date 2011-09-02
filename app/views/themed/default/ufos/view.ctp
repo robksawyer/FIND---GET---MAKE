@@ -49,5 +49,5 @@
 </div>
 <div class="clear"></div>
 <?php endif; ?>
-<div class="added-by"><?php echo "Found by ".$this->Html->link($ufo['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$ufo['User']['username'])); ?></div>
+<div class="added-by"><?php echo "Found by ".$this->Html->link($ufo['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$ufo['User']['username'])); ?></div>
 <?php echo $this->element('comments',array('cache'=>false,'disable'=>false)); ?>

@@ -15,16 +15,29 @@
 .ownership-button a{color:#ffffff;text-decoration:none;}
 .ownership-button a:hover{text-decoration:none;color:#ffffff;}
 .ownerships-section{position:relative;margin-top:25px;margin-left:0px;padding:0;}
+
 .ownerships-section .ownership-item{ 
 	float: left;
-	width: 64px;
+	width: 300px;
+	background-color: none;
 	height: auto;
 	margin: 5px;
+	border-left: 1px solid #e7e7e7;
+	padding-left: 5px;
 }
-.ownerships-section .ownership-item img{
+.ownerships-section .ownership-item .ownership-details{
+	color: #999;
+	font-size: 11px;
+}
+.ownerships-section .ownership-item .avatar{
+	width: 75px;
+	float: left;
+	clear: none;
+}
+.ownerships-section .ownership-item .avatar img{
 	width: 64px;
 	height: 64px;
-	margin: -5px;
+	display: inline-block;
 }
 .ownerships-section .ownership-item a{
 	font-size: 11px;

@@ -39,7 +39,7 @@
 			<div class="added-by" style="text-align:center">
 				<?php
 					echo $this->element('avatar',array('cache'=>false,'user'=>$inspiration,'height'=>'32'));
-			 		echo "Added by ".$this->Html->link($inspiration['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$inspiration['User']['username'])); 
+			 		echo "Added by ".$this->Html->link($inspiration['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$inspiration['User']['username'])); 
 				?>
 			</div>
 		</div>

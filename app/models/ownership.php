@@ -38,22 +38,22 @@ class Ownership extends AppModel {
 	);
 	
 	/**
+	 * BUG: This is not firing when using AJAX calls. This is handled in the controller.
 	 * Updates the total count in the user table for this particular type of item
 	 * @param created 
 	 * @return 
 	 * 
 	*/	
-	public function afterSave($created){
+	/*public function afterSave($created){
 		if($created){
 			//Update the total count for the user
 			$last = $this->read(null,$this->id);
 			if(!empty($last['User']['id'])){
-				
 				//Add the feed data to the feed
 				$this->Feed->addFeedData('Ownership',$last);
 			}
 		}
-	}
+	}*/
 	
 	/**
 	 * Returns the needed feed data for a specific record
@@ -81,9 +81,9 @@ class Ownership extends AppModel {
 	*/
 	function getFirst($user_id=null,$model=null,$model_id=null){
 		$data = $this->find('first',array('conditions'=>array(
-															"model_id"=>$model_id,
+															"Ownership.model_id"=>$model_id,
 															'Ownership.user_id'=>$user_id,
-															'model'=>$model
+															'Ownership.model'=>$model
 															)
 														));
 		return $data;

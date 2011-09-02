@@ -80,7 +80,7 @@ $(".chzn-select").chosen();
 
 $('#SourceDescription').keyup(function(){
 	limitChars('SourceDescription', 300, 'charlimitinfo');
-})
+});
 
 function limitChars(textid, limit, infodiv) {
 	var text = $('#'+textid).val(); 

@@ -22,7 +22,7 @@
 			<div class="added-by" style="text-align:center">
 				<?php
 					echo $this->element('avatar',array('cache'=>false,'user'=>$source,'height'=>'32'));
-			 		echo "Added by ".$this->Html->link($source['User']['username'],array('plugin'=>'forum','controller'=>'users','action'=>'profile',$source['User']['username']));
+			 		echo "Added by ".$this->Html->link($source['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$source['User']['username']));
 				?>
 			</div>
 		<?php else: ?>
@@ -37,8 +37,8 @@
 	<?php endif; ?>
 	<?php echo $this->element('tags',array('model'=>$source,'cache'=>false)); ?>
 	<dl>
-		<h3 class="lime"><?php echo __('Address',true); ?></h3>
-		<div class="border lime"></div>
+		<h3><?php echo __('Address',true); ?></h3>
+		<div class="border"></div>
 		<dt><?php __('Address1'); ?></dt>
 		<dd>
 			<?php echo $source['Source']['address1']; ?>
@@ -73,8 +73,8 @@
 		</dd>
 	</dl>
 	<dl>
-		<h3 class="teal"><?php echo __('Contact',true); ?></h3>
-		<div class="border teal"></div>
+		<h3><?php echo __('Contact',true); ?></h3>
+		<div class="border"></div>
 		<dt><?php __('Phone'); ?></dt>
 		<dd>
 			<?php echo $source['Source']['phone']; ?>

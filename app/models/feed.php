@@ -53,6 +53,13 @@ class Feed extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'Ufo' => array(
+			'className' => 'Ufo',
+			'foreignKey' => 'model_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 	
@@ -67,7 +74,11 @@ class Feed extends AppModel {
 		if($model && $data){
 			$this->set('model',$model);
 			$this->set('name',strtolower($model));
-			$this->set('user_id',$data['User']['id']);
+			if(empty($data['User']['id'])){
+				$this->set('user_id',$data[$model]['user_id']); //This is a special case for ownerships
+			}else{
+				$this->set('user_id',$data['User']['id']);
+			}
 			$this->set('model_id',$data[$model]['id']);
 			$this->set('record_created',$data[$model]['created']);
 		
@@ -126,14 +137,15 @@ class Feed extends AppModel {
 	 * 
 	*/
 	public function getUserFeedData($user_id=null,$offset=0){
-		$this->recursive = 1;
+		$this->recursive = -1;
 		$data = $this->find('all',array('conditions'=>array(
 															'Feed.user_id'=>$user_id
 															),
-															'order'=>array('Feed.record_created'=>'desc'),
+															'order'=>array('Feed.created'=>'desc'),
 															'offset'=>$offset,
 															'limit'=>10
 															));
+		//debug($data);
 		return $data;
 	}
 	
@@ -150,12 +162,33 @@ class Feed extends AppModel {
 		$user_feed = $this->getUserFeedData($user_id,$offset);
 		$user_feed_data = array();
 		foreach($user_feed as $feed_item){
-			if($feed_item['Feed']['model'] == "Vote"){
+			/*if($feed_item['Feed']['model'] == "Vote"){
 				$this->$feed_item['Feed']['model']->recursive = 2;
 			}else{
 				$this->$feed_item['Feed']['model']->recursive = 1;
+			}*/
+			//$temp_data = $this->$feed_item['Feed']['model']->read(null,$feed_item['Feed']['model_id']);
+			$the_model = $feed_item['Feed']['model'];
+			if($the_model == 'Ownership' || $the_model == 'Vote'){
+				$temp_data = $this->$the_model->find('first',array(
+																'conditions'=>array(
+																		$the_model.'.id'=>$feed_item['Feed']['model_id']
+																),
+																'contain'=>array(
+																				'Product'=>array('Tag','Attachment','User'),
+																				'User','Feed'=>array('conditions'=>array('Feed.id'=>$feed_item['Feed']['id']))
+																				)
+																)
+															);
+			}else{
+				$temp_data = $this->$the_model->find('first',array(
+																'conditions'=>array(
+																		$the_model.'.id'=>$feed_item['Feed']['model_id']
+																),
+																'contain'=>array('Tag','Attachment','User','Feed')
+																)
+															);
 			}
-			$temp_data = $this->$feed_item['Feed']['model']->read(null,$feed_item['Feed']['model_id']);
 			if(!empty($temp_data)){
 				$user_feed_data[] = $temp_data;
 			}
@@ -172,16 +205,35 @@ class Feed extends AppModel {
 	*/
 	public function getUsersFollowingFeedData($user_ids=null,$offset=0){
 		$this->recursive = -1;
-		$user_feeds = $this->getUserFeedData($user_ids,$offset);
-		
+		$user_feed = $this->getUserFeedData($user_ids,$offset);
 		$user_feed_data = array();
-		foreach($user_feeds as $feed_item){
-			if($feed_item['Feed']['model'] == "Vote"){
-				$this->$feed_item['Feed']['model']->recursive = 2;
+		foreach($user_feed as $feed_item){
+			/*if($feed_item['Feed']['model'] == "Vote"){
+				$this->$the_model->recursive = 2;
 			}else{
-				$this->$feed_item['Feed']['model']->recursive = 1;
+				$this->$the_model->recursive = 1;
+			}*/
+			$the_model = $feed_item['Feed']['model'];
+			if($the_model == 'Ownership' || $the_model == 'Vote'){
+				$temp_data = $this->$the_model->find('first',array(
+																'conditions'=>array(
+																		$the_model.'.id'=>$feed_item['Feed']['model_id']
+																),
+																'contain'=>array(
+																				'Product'=>array('Tag','Attachment','User'),
+																				'User','Feed'=>array('conditions'=>array('Feed.id'=>$feed_item['Feed']['id']))
+																				)
+																)
+															);
+			}else{
+				$temp_data = $this->$the_model->find('first',array(
+																'conditions'=>array(
+																		$the_model.'.id'=>$feed_item['Feed']['model_id']
+																),
+																'contain'=>array('Tag','Attachment','User','Feed')
+																)
+															);
 			}
-			$temp_data = $this->$feed_item['Feed']['model']->read(null,$feed_item['Feed']['model_id']);
 			if(!empty($temp_data)){
 				$user_feed_data[] = $temp_data;
 			}

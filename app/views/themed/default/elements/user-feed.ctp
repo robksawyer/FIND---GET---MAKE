@@ -1,7 +1,9 @@
 <?php
 	//$user_id is passed in from the view
 	$feed = $this->requestAction('/feeds/getUserFeed/'.$user_id);
+	//debug($feed);
 	$num_items = $this->requestAction('/feeds/getUserFeedCount/'.$user_id);
+	//debug($feed);
 	$limit = 10;
 ?>
 <div id="user-feed">

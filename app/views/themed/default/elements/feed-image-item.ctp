@@ -38,7 +38,7 @@ if($model == "Product"){
 																												$model_id)); ?></div>
 	<div class="added-by"><?php echo $added_by.$this->Html->link($feed_item['User']['username'],array('admin'=>false,'controller'=>'users','plugin'=>'forum','action'=>'profile',$feed_item['User']['username'])); ?></div>
 	<div class='bottom-detail'>
-		<span class='created'><?php echo $this->Time->timeAgoInWords($feed_item[$model]['created'],null,null); ?></span>
+		<span class='created'><?php echo $this->Time->timeAgoInWords($feed_item['Feed'][0]['modified'],null,null); ?></span>
 		<span class="tags">
 			<?php
 			//Build a tag list of only two tags.

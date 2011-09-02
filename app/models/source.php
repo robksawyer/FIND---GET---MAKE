@@ -65,6 +65,13 @@ class Source extends AppModel {
 			'dependent' => true,
 			'exclusive' => true
 		),
+		'Vote' => array(
+			'className' => 'Vote',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Vote.model' => 'Product'),
+			'dependent' => true,
+			'exclusive' => true
+		),
 		'InspirationPhotoTag' => array(
 			'className' => 'InspirationPhotoTag',
 			'foreignKey' => 'model_id',

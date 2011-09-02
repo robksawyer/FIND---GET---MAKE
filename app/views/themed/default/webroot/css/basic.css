@@ -25,7 +25,6 @@ html{
 	line-height: 55px;
 	padding: 25px 0 0 25px;
 }
-
 #logo-container .app-name a:link,
 #logo-container .app-name a:active,
 #logo-container .app-name a:visited{
@@ -911,8 +910,12 @@ th {
 	border-bottom: 1px solid #CCC;
 }
 
-
-span.link{
+h2 span.link{
+	position: relative;
+	top: -5px;
+	font-size: 18px;
+}
+/*span.link{
 	font-size: 18px;
 	color: #ef3f23;
 }
@@ -921,12 +924,12 @@ span.link a:hover{
 	background: none;
 	color: #ef3f23;
 	border-bottom: 2px dotted #ef3f23;
-}
+}*/
 
 dl {
 	position: relative;
 	float: left;
-	width: 640px;
+	width: 500px;
 }
 dl dd{
 	color: #acacac;
@@ -1107,7 +1110,7 @@ h3.header{
 #right-panel{
 	position: relative;
 	float: left;
-	width: 600px;
+	width: 750px;
 }
 #left-panel{
 	position: relative;
@@ -1454,6 +1457,11 @@ ul.inline-list li img{ }
 	border-bottom: 4px solid #9bc204;
 }
 
+.border{
+	width: 450px;
+	border-top: 3px solid #e7e7e7;
+}
+
 .border.pink{
 	width: 450px;
 	border-top: 3px solid #CE368A;
@@ -1572,7 +1580,7 @@ ul.tags li{margin: 0;padding:0;}
 ul.tags li:hover{}
 ul.tags a:link,
 ul.tags a:active,
-ul.tags a:visited{padding: 0; font-weight: normal; color: #666; border-bottom:1px solid #666;}
+ul.tags a:visited{padding: 0; font-weight: normal; color: #666; text-decoration: underline;}
 ul.tags a:hover{text-decoration:none;background:none; color: #000; border-bottom: none;}
 
 
@@ -1585,6 +1593,7 @@ ul.tags a:hover{text-decoration:none;background:none; color: #000; border-bottom
 	margin: 10px;
 	float: left;
 	clear: none;
+	text-decoration: none;
 }
 
 #tags .tag a:hover{
@@ -1935,6 +1944,9 @@ div.ufos .images img{
 	margin: 10px;
 }
 
+#attach-local{
+	width: 100%;
+}
 div.attachments.view{
 	/*text-align: center;*/
 }
@@ -1958,6 +1970,10 @@ div#attachments{
 	border: 1px solid #e7e7e7;
 }
 
+div#attachments img{
+	float: right;
+}
+
 div#attachments ul.wrapper {
 	display: block;
 	/* Max width here, for users without Javascript */
@@ -1978,15 +1994,15 @@ div#attachments ul.wrapper li{
 }
 
 div#attachments ul.wrapper ul li a {
-    text-decoration: none;
-    color: #000;
-    background: #D9E4FF;
-    border: 1px solid #D9E4FF;
+	text-decoration: none;
+	color: #000;
+	background: #D9E4FF;
+	border: 1px solid #D9E4FF;
 	border-radius: 4px;
-    -moz-border-radius: 4px;
-    display: block;
-    margin: 5px 2px;
-    padding: 2px;
+	-moz-border-radius: 4px;
+	display: block;
+	margin: 5px 2px;
+	padding: 2px;
 }
 
 div#attachments ul.wrapper li a:hover,
@@ -2050,7 +2066,7 @@ div#attachments-small ul.wrapper li a:focus{
 .top-actions ul li{
 	position: relative;
 	padding: 0;
-	margin: 0;
+	margin: 0 5px;
 	float: left;
 	text-align: right;
 }
@@ -2069,8 +2085,11 @@ div#attachments-small ul.wrapper li a:focus{
 
 .top-actions .flag-item{
 	position: relative;
-	top: 3px;
+	top: -2px;
+	left: 5px;
 	font-size: 11px;
+	vertical-align: baseline;
+	text-decoration: none;
 }
 /* END TOP ACTIONS */
 

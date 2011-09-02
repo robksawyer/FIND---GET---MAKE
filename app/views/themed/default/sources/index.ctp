@@ -11,7 +11,7 @@ if(!empty($this->Paginator->params['paging']['Tagged'])){
 }
 ?>
 
-<div class="left-container">
+<div id="left-panel-index">
 	<?php
 		//Index Box Ad (300x250)
 		echo $this->element('index-box-ad',array('cache'=>false));
@@ -29,7 +29,7 @@ if(!empty($this->Paginator->params['paging']['Tagged'])){
 		//echo $this->element('designer-sorter',array('cache'=>false));
 	?>
 </div>
-<div class="right-container-index">
+<div id="right-panel">
 	<div class="sources index">
 		<div class="header red">
 		<?php 

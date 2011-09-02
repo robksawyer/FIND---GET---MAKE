@@ -3,7 +3,7 @@
 	$this->Paginator->params['paging']['Tagged']['count'] = $tag_count;
 	$this->Paginator->params['paging']['Tagged']['pageCount'] = $page_count+1;
 ?>
-<div class="left-container">
+<div id="left-panel-index">
 	<?php
 		//Index Box Ad (300x250)
 		echo $this->element('index-box-ad',array('cache'=>false));
@@ -21,7 +21,7 @@
 		//echo $this->element('designer-sorter',array('cache'=>false));
 	?>
 </div>
-<div class="right-container-index">
+<div id="right-panel">
 	<div class="index">
 		<div id="tags" class="tags view">
 			<?php

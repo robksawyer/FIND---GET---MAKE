@@ -1,6 +1,3 @@
-<?php
-	echo $this->Html->script('sources/check_source_name',array('inline'=>false));
-?>
 <div id="flashMessage" style="display:none;"></div>
 <div class="sources form">
 <?php 
@@ -86,6 +83,9 @@
 	<?php endif; ?>
 <?php echo $this->Form->end(__('Submit', true));?>
 </div>
+<?php
+	echo $this->Html->script('sources/check_source_name',array('inline'=>false));
+?>
 <script type="text/javascript">
 $(".chzn-select").chosen();
 

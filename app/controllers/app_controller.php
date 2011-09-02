@@ -214,11 +214,11 @@ class AppController extends Controller {
 		}
 	}
 	
-	protected function toSlug($string) {
+	public function toSlug($string) {
 		return Inflector::slug(utf8_encode(strtolower($string)), '-');
 	}
 	
-	protected function cleanURL($dirtyURL = null){
+	public function cleanURL($dirtyURL = null){
 		$search = array(
 							'/^http:\/\//',
 							'/^https:\/\//'
@@ -298,7 +298,7 @@ class AppController extends Controller {
 	 * @param id The id of the current item you're editing
 	 */
 	
-	protected function uploadAttachments($model=null,$id = null){
+	public function uploadAttachments($model=null,$id = null){
 		
 		if(!empty($model)){
 			$controller = Inflector::pluralize(strtolower($model));

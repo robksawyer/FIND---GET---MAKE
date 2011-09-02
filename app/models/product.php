@@ -173,7 +173,7 @@ class Product extends AppModel {
 			$conditions[$this->alias.'.active'] = 1;
 		}
 		$queryData['conditions'] = $conditions;
-		$queryData['recursive'] = 1;
+		//$queryData['recursive'] = 1;
 		return $queryData;
 	}
 	

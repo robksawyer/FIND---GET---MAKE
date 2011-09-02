@@ -27,25 +27,20 @@ class OwnershipsController extends AppController {
 			$this->Session->setFlash(__('Invalid user id', true));
 			$this->redirect('/');
 		}
-		$user = $this->Ownership->User->find('first',array('conditions'=>array('User.id'=>$user_id)));
-		if(empty($user)){
-			$this->Session->setFlash(__('Invalid user id', true));
-			$this->redirect('/');
-		}
-										
 		$products = array();	
 		$product_ids = array();
-		foreach($user['Ownership'] as $inspiration){
-			//Find likes only
-			if($inspiration['model'] == 'Product' && $inspiration['have_it']==1){
-				$product_ids[] = $inspiration['model_id'];
-			}
-		}
+		$user = $this->Ownership->User->read(null,$user_id);
 		
-		$products = $this->paginate('Product',array(
-									   'Product.id' => $product_ids
-									));
-									
+		$this->Ownership->recursive = 1;
+		$this->paginate = array(
+								'conditions'=>array(
+													'Ownership.user_id'=>$user_id,
+													'Ownership.have_it'=>1,
+													'Ownership.model'=>'Product'
+													),
+								'contain'=>array('Product'=>array('Attachment','Tag','User'))
+								);
+		$products = $this->paginate('Ownership');
 		$this->set(compact('user','products'));
 	}
 	
@@ -61,24 +56,20 @@ class OwnershipsController extends AppController {
 			$this->Session->setFlash(__('Invalid user id', true));
 			$this->redirect('/');
 		}
-		$user = $this->Ownership->User->find('first',array('conditions'=>array('User.id'=>$user_id)));
-		if(empty($user)){
-			$this->Session->setFlash(__('Invalid user id', true));
-			$this->redirect('/');
-		}
-		
+
 		$products = array();	
 		$product_ids = array();
-		foreach($user['Ownership'] as $inspiration){
-			//Find dislikes only
-			if($inspiration['model'] == 'Product' && $inspiration['want_it']==1){
-				$product_ids[] = $inspiration['model_id'];
-			}
-		}
+		$user = $this->Ownership->User->read(null,$user_id);
 		
-		$products = $this->paginate('Product',array(
-									   'Product.id' => $product_ids
-									));
+		$this->paginate = array(
+								'conditions'=>array(
+													'Ownership.user_id'=>$user_id,
+													'Ownership.want_it'=>1,
+													'Ownership.model'=>'Product'
+													),
+								'contain'=>array('Product'=>array('Attachment','Tag','User'))
+								);
+		$products = $this->paginate('Ownership');
 									
 		$this->set(compact('user','products'));
 	}
@@ -121,21 +112,29 @@ class OwnershipsController extends AppController {
 					//Make sure the user only has one want it, had it, or have it.
 					if(!empty($data)){
 						//Update an existing ownership for this user
-						$this->Ownership->read(null,$data['Ownership']['id']);
 						$this->Ownership->id = $data['Ownership']['id'];
+						
 						foreach($ownership_types as $type){
 							if($this->data['Ownership']['ownership'] == $type){
-								$this->Ownership->saveField('name',strtolower($model));
-								$this->Ownership->saveField('model',$model);
-								$this->Ownership->saveField('model_id',$model_id);
-								$this->Ownership->saveField($type,1);
+								$this->Ownership->set('name',strtolower($model));
+								$this->Ownership->set('model',$model);
+								$this->Ownership->set('model_id',$model_id);
+								$this->Ownership->set($type,1);
 							}else{
-								$this->Ownership->saveField('name',strtolower($model));
-								$this->Ownership->saveField('model',$model);
-								$this->Ownership->saveField('model_id',$model_id);
-								$this->Ownership->saveField($type,0);
+								$this->Ownership->set('name',strtolower($model));
+								$this->Ownership->set('model',$model);
+								$this->Ownership->set('model_id',$model_id);
+								$this->Ownership->set($type,0);
 							}
 						}
+						
+						if($this->Ownership->save()){
+							
+						}else{
+							$this->AjaxHandler->response(false, 'There was a problem saving your request. Please, try again.', 0);
+						}
+						//$this->Ownership->Feed->addFeedData('Ownership',$last);
+						
 						//$this->Ownership->read(null,$data['Ownership']['id']);
 						//debug($this->data);
 					}else{
@@ -154,7 +153,7 @@ class OwnershipsController extends AppController {
 							}
 						}
 						if($this->Ownership->save()){
-							//$this->Ownership->read(null,$this->Ownership->getLastInsertID());
+							
 						}else{
 							$this->AjaxHandler->response(false, 'There was a problem saving your request. Please, try again.', 0);
 						}
@@ -180,10 +179,18 @@ class OwnershipsController extends AppController {
 										'total_who_had'=>$total_who_had,
 										'ownership_type'=>$type_niceName
 										);
-
+									
 					//return json_encode($return_data);
 					$this->AjaxHandler->response(true, $return_data);
 					$this->AjaxHandler->respond();
+					
+					if(!empty($data['Ownership']['id'])){
+						$last = $this->Ownership->read(null,$data['Ownership']['id']);
+					}else{
+						$last = $this->Ownership->read(null,$this->Ownership->getLastInsertID());
+					}
+					$this->Ownership->Feed->addFeedData('Ownership',$last);
+					
 					return;
 				}
 			}else{
