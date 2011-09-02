@@ -3,7 +3,7 @@ class ProductsController extends AppController {
 
 	var $name = 'Products';
 	var $helpers = array('Tags.TagCloud');
-	var $components = array('Search.Prg','Uploader.Uploader','String');
+	var $components = array('Search.Prg','Uploader.Uploader');
 
 	var $paginate = array(
 		'limit' => 25
@@ -59,7 +59,7 @@ class ProductsController extends AppController {
 		$this->Prg->commonProcess();
 		$this->paginate['conditions'] = $this->Product->parseCriteria($this->passedArgs);
 		$this->set('products', $this->paginate());
-		$this->set('string', $this->String);
+		
 		$productCategories = $this->Product->ProductCategory->find('list',array( 'order' => 'name ASC' ));
 		$this->set(compact('productCategories'));
 	}
@@ -125,7 +125,7 @@ class ProductsController extends AppController {
 		
 		$total_count = $this->Product->find('count');
 		$this->set(compact('products','filter','links','total_count','productCategories'));
-		$this->set('string', $this->String);
+		
 	}
 	
 	/**
@@ -150,7 +150,7 @@ class ProductsController extends AppController {
 										));
 		$total_count = $this->Product->find('count',array('conditions'=>array('Product.user_id'=>$id)));
 		$this->set(compact('products','total_count','productCategories','user'));
-		$this->set('string', $this->String);
+		
 	}
 	
 	/**
@@ -165,13 +165,14 @@ class ProductsController extends AppController {
 			$this->Session->setFlash(__('Invalid product', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}else{
-			$product = $this->Product->read(null,$id);
+			//$product = $this->Product->read(null,$id);
+			$product = $this->Product->getViewData($id);
 			if(empty($product)){
 				$this->Session->setFlash(__('Invalid product', true));
 				$this->redirect(array('action' => 'index','admin'=>false));
 			}
 			$this->set('product', $product);
-			$this->set('string', $this->String);
+			
 		}
 		
 		/*$products = $this->Product->getAll();
@@ -198,7 +199,7 @@ class ProductsController extends AppController {
 			$this->redirect('/');
 		}
 		$this->set(compact('product'));
-		$this->set('string', $this->String);
+		
 	}
 	
 	
@@ -280,7 +281,7 @@ class ProductsController extends AppController {
 		$tags = $this->Product->Tagged->find('cloud', array('limit' => 10));
 		$collections = $this->Product->Collection->find('list',array( 'order' => 'name ASC' ));
 		$attachments = $this->Product->Attachment->find('list');
-		$this->set('string', $this->String);
+		
 		$this->set(compact('sources', 'collections', 'attachments','tags','productCategories'));
 	}
 	
@@ -362,7 +363,7 @@ class ProductsController extends AppController {
 		$tags = $this->Product->Tagged->find('cloud', array('limit' => 10));
 		$collections = $this->Product->Collection->find('list',array( 'order' => 'name ASC' ));
 		$attachments = $this->Product->Attachment->find('list');
-		$this->set('string', $this->String);
+		
 		$this->set(compact('sources', 'collections', 'attachments','tags','productCategories'));
 	}
 	
@@ -438,7 +439,7 @@ class ProductsController extends AppController {
 		$attachments = $this->Product->Attachment->find('list');
 		$tags = $this->Product->Tagged->find('cloud', array('limit' => 10));
 		$this->set('product', $this->Product->read(null, $id));
-		$this->set('string', $this->String);
+		
 		$this->set(compact('sources', 'collections', 'attachments','tags','productCategories'));
 	}
 	
@@ -486,7 +487,7 @@ class ProductsController extends AppController {
 		$attachments = $this->Product->Attachment->find('list');
 		$tags = $this->Product->Tagged->find('cloud', array('limit' => 10));
 		$this->set('product', $this->Product->read(null, $id));
-		$this->set('string', $this->String);
+		
 		$this->set(compact('sources', 'collections', 'attachments','tags','productCategories'));
 	}
 	
@@ -660,21 +661,21 @@ class ProductsController extends AppController {
 											));
 			
 		}
-		
-		$this->paginate = array(
-							'Tagged'=>array(
-											'conditions'=>array('Tagged.model'=>'Product'),
-											'fields' => array('DISTINCT Tag.name,Tag.keyname'),
-											'limit' => 75,
-											'order' => array('Tag.name ASC')
-											));
-		
+	
+		$this->Product->Tagged->recursive = 2;
+		$this->paginate['conditions']['Tagged.model'] = 'Product';
+		$this->paginate['fields'] = 'DISTINCT Tag.name,Tag.keyname,Tagged.model';
+		$this->paginate['limit'] = 50;
+		//debug($this->paginate['count']);
+		$tag_count = count($this->Product->Tagged->find('tagged',array('conditions'=>array('Tagged.model'=>'Product'),'fields'=>'DISTINCT Tag.name')));
+		$page_count = $tag_count/50;
 		$tags = $this->paginate('Tagged');
-		$this->set(compact('tags'));
+
+		$this->set(compact('tags','tag_count','page_count'));
 		$productCategories = $this->Product->ProductCategory->getAll();
 		$total_count = $this->Product->find('count');
 		$this->set(compact('products','filter','links','total_count','productCategories'));
-		$this->set('string', $this->String);
+		
 	}
 	
 	/**

@@ -73,7 +73,7 @@ class UfosController extends AppController {
 		}
 		
 		$this->set(compact('ufos','filter','links'));
-		$this->set('string', $this->String);
+		
 	}
 
 	function view($id = null) {
@@ -263,14 +263,15 @@ class UfosController extends AppController {
 	 */
 	function tags(){
 		$this->Ufo->recursive = 2;
-		$this->paginate = array(
-							'Tagged'=>array(
-											'conditions'=>array('Tagged.model'=>'Ufo'),
-											'limit' => 25,
-											'order' => array('Tag.name ASC')
-											));
-		
+		$this->Ufo->Tagged->recursive = 2;
+		$this->paginate['conditions']['Tagged.model'] = 'Ufo';
+		$this->paginate['fields'] = 'DISTINCT Tag.name,Tag.keyname,Tagged.model';
+		$this->paginate['limit'] = 50;
+		//debug($this->paginate['count']);
+		$tag_count = count($this->Ufo->Tagged->find('tagged',array('conditions'=>array('Tagged.model'=>'Ufo'),'fields'=>'DISTINCT Tag.name')));
+		$page_count = $tag_count/50;
 		$tags = $this->paginate('Tagged');
-		$this->set(compact('tags'));
+
+		$this->set(compact('tags','tag_count','page_count'));
 	}
 }

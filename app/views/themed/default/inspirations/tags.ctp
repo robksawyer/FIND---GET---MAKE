@@ -1,3 +1,8 @@
+<?php
+	//Replace the Source paging array if a Tagged array exists
+	$this->Paginator->params['paging']['Tagged']['count'] = $tag_count;
+	$this->Paginator->params['paging']['Tagged']['pageCount'] = $page_count+1;
+?>
 <div class="left-container">
 	<?php
 		//Index Box Ad (300x250)

@@ -42,8 +42,8 @@
 			<td width="40%"><?php echo $this->Html->link(__($product['Product']['name'], true), array('action' => 'view', $product['Product']['id']),array('title'=>$product['Product']['description'])); ?>&nbsp;</td>
 			<td><?php echo $product['ProductCategory']['name'] ?></td>
 			<td><?php echo $product['Product']['designer'] ?></td>
-			<td><?php echo $string->truncate($product['Product']['description'],100); ?></td>
-			<td><?php echo $this->Html->link($string->truncate($product['Product']['source_url']),$product['Product']['source_url'],array('target'=>'_blank')); ?></td>
+			<td><?php echo $this->String->truncate($product['Product']['description'],100); ?></td>
+			<td><?php echo $this->Html->link($this->String->truncate($product['Product']['source_url']),$product['Product']['source_url'],array('target'=>'_blank')); ?></td>
 		</tr>
 		<?php endforeach; ?>
 		</table>

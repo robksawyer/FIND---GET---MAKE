@@ -1104,6 +1104,33 @@ h3.header{
 	border-bottom: 1px solid #efefef;
 }
 
+#right-panel{
+	position: relative;
+	float: left;
+	width: 600px;
+}
+#left-panel{
+	position: relative;
+	float: left;
+	width: 300px;
+	padding-right: 5px;
+	margin-right: 10px;
+	border-right: 1px solid #e7e7e7;
+}
+
+#left-panel-index{
+	position: relative;
+	float: left;
+	width: 300px;
+	padding-right: 5px;
+	margin-right: 25px;
+}
+
+
+#left-panel .profile{
+	border-bottom: none;
+}
+
 .left-container{
 	position: relative;
 	display: inline-block;

@@ -19,6 +19,8 @@ class UsersController extends AppController {
 	 */
 	var $components = array('Email','Search.Prg','Uploader.Uploader');
 	
+	var $helpers = array('NumberToText');
+	
 	var $paginate = array(
 		'User' => array(
 			'limit' => 20,
@@ -557,7 +559,7 @@ class UsersController extends AppController {
 		$this->set(compact('user_wants','user_haves','followers'));
 		//$this->set('user', $this->User->read(null, $user['User']['id']));
 		$this->set('user', $user);
-		$this->set('string', $this->String);
+		
 	}
 	
 	
@@ -647,7 +649,7 @@ class UsersController extends AppController {
 		$this->set(compact('user_wants','user_haves','followers'));
 		//$this->set('user', $this->User->read(null, $user['User']['id']));
 		$this->set('user', $user);
-		$this->set('string', $this->String);
+		
 	}
 	
 	

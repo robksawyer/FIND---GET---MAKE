@@ -2,16 +2,22 @@
 /** 
  * string.php
  *
- * A CakePHP Component that handles multiple string related 
+ * A CakePHP Helper that helps manipulate strings
  *
  * @author 				Rob Sawyer - www.robksawyer.com
  * @copyright			Copyright 2010
  * @license 			http://www.opensource.org/licenses/mit-license.php - Licensed under The MIT License
- * @package				AutoLogin Component
+ * @package				N/A
  * @version 			1.0
- * @fullname parser		http://code.google.com/p/php-name-parser/source/checkout
  */
-class StringComponent extends Object{
+class StringHelper extends AppHelper{
+	
+	function __construct($options = null) {
+		parent::__construct($options);
+		
+		//$this->_original = trim($number);
+		//$this->parse();
+	}
 	
 	/***
 		split full names into the following parts:
@@ -21,7 +27,7 @@ class StringComponent extends Object{
 		- surname / last name
 		- suffix (II, Phd, Jr, etc) 
 	*/
-	function split_full_name($full_name) {
+	public function split_full_name($full_name) {
 		 $full_name = trim($full_name);
 		 
 		 $fname = '';
@@ -117,7 +123,7 @@ class StringComponent extends Object{
 	}
 
 	//	 detect and format common suffixes
-	function is_suffix($word) {
+	public function is_suffix($word) {
 		 // ignore periods
 		 $word = str_replace('.','',$word);
 		 // these are some common suffixes - what am I missing?
@@ -130,7 +136,7 @@ class StringComponent extends Object{
 	}
 
 	// detect compound last names like "Von Fange"
-	function is_compound_lname($word) {
+	public function is_compound_lname($word) {
 		 $word = strtolower($word);
 		 // these are some common prefixes that identify a compound last names - what am I missing?
 		 $words = array('vere','von','van','de','del','della','di','da','pietro','vanden','du','st.','st','la','ter');
@@ -138,13 +144,13 @@ class StringComponent extends Object{
 	}
 
 	// single letter, possibly followed by a period
-	function is_initial($word) {
+	public function is_initial($word) {
 		 return ((strlen($word) == 1) || (strlen($word) == 2 && $word{1} == "."));
 	}
 
 	// detect mixed case words like "McDonald"
 	// returns false if the string is all one case
-	function is_camel_case($word) {
+	public function is_camel_case($word) {
 		 if (preg_match("|[A-Z]+|s", $word) && preg_match("|[a-z]+|s", $word))
 			  return true;
 		 return false;
@@ -152,7 +158,7 @@ class StringComponent extends Object{
 
 	// ucfirst words split by dashes or periods
 	// ucfirst all upper/lower strings, but leave camelcase words alone
-	function fix_case($word) {
+	public function fix_case($word) {
 		 // uppercase words split by dashes, like "Kimura-Fay"
 		 $word = $this->safe_ucfirst("-",$word);
 		 // uppercase words split by periods, like "J.P."
@@ -161,7 +167,7 @@ class StringComponent extends Object{
 	}
 
 	// helper function for fix_case
-	function safe_ucfirst($seperator, $word) {
+	public function safe_ucfirst($seperator, $word) {
 		 // uppercase words split by the seperator (ex. dashes or periods)
 		 $parts = explode($seperator,$word);
 		 foreach ($parts as $word) {
@@ -173,7 +179,7 @@ class StringComponent extends Object{
 	/**
 	 * Cleans up a url and adds the http:// if it doesn't exist
 	 */
-	function makeURL($str=''){
+	public function makeURL($str=''){
 		if(!empty($str)){
 			//Check the first 7 characters to see if they are http://
 			if(substr($str,0,7)=='http://' || substr($str,0,7)=='https://'){
@@ -189,7 +195,7 @@ class StringComponent extends Object{
 	* slug()
 	* creates a slug from a string
 	*/
-	function slug($str) {
+	public function slug($str) {
 		// replace spaces with dash, all to lowercase
 		$str = trim($str);
 		$str = strtolower(str_replace(' ', '-', $str));
@@ -208,7 +214,7 @@ class StringComponent extends Object{
 	}
 	
 	
-	function str_rand($length = 8, $output = 'alphanum'){
+	public function str_rand($length = 8, $output = 'alphanum'){
 		// Possible seeds
 		$outputs['alpha'] = 'abcdefghijklmnopqrstuvwqyz';
 		$outputs['numeric'] = '0123456789';
@@ -236,7 +242,7 @@ class StringComponent extends Object{
 		return $str;
 	}
 	
-	function generateUniqueFilename($fileName, $path='') { 
+	public function generateUniqueFilename($fileName, $path='') { 
 		$path = empty($path) ? WWW_ROOT.'/files/' : $path; 
 		$no = 1; 
 		$newFileName = $fileName; 
@@ -247,7 +253,7 @@ class StringComponent extends Object{
 		return $newFileName; 
 	}
 	
-	function generateUniqueImagename($fileName, $path='') { 
+	public function generateUniqueImagename($fileName, $path='') { 
 		$path = empty($path) ? WWW_ROOT.'/img/' : $path; 
 		$no = 1; 
 		$newFileName = $fileName; 
@@ -267,7 +273,7 @@ class StringComponent extends Object{
 	 * @return string
 	 * @author David Duong
 	 **/
-	function truncate ($string = '', $max = 50, $rep = '...') {
+	public function truncate ($string = '', $max = 50, $rep = '...') {
 	    $leave = $max - strlen($rep);
 		if(empty($string)){
 			return '';

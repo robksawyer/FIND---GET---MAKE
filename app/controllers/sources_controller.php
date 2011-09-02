@@ -60,7 +60,7 @@ class SourcesController extends AppController {
 		$this->Prg->commonProcess();
 		$this->paginate['conditions'] = $this->Source->parseCriteria($this->passedArgs);
 		$this->set('sources', $this->paginate());
-		$this->set('string', $this->String);
+		
 		$sourceCategories = $this->Source->SourceCategory->find('list',array( 'order' => 'name ASC' ));
 		$this->set(compact('sourceCategories'));
 	}
@@ -137,7 +137,7 @@ class SourcesController extends AppController {
 		//$sources = $this->paginate();
 		$total_count = $this->Source->find('count');
 		$this->set(compact('total_count','filter','links','sources','sourceCategories'));
-		$this->set('string', $this->String);
+		
 	}
 	
 	/**
@@ -166,7 +166,7 @@ class SourcesController extends AppController {
 										));
 		$total_count = $this->Source->find('count');
 		$this->set(compact('total_count','sources','sourceCategories','user'));
-		$this->set('string', $this->String);
+		
 	}
 	
 	/**
@@ -182,13 +182,12 @@ class SourcesController extends AppController {
 			$this->Session->setFlash(__('Invalid source', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}else{
-			$source = $this->Source->read(null, $id);
+			$source = $this->Source->getViewData($id);
 			if(empty($source)){
 				$this->Session->setFlash(__('Invalid source', true));
 				$this->redirect(array('action' => 'index','admin'=>false));
 			}
 		}
-		
 		$contractors = $this->Source->Contractor->find('list');
 		$inspirations = $this->Source->Inspiration->find('list');
 		$attachments = $this->Source->Attachment->find('list');
@@ -197,7 +196,7 @@ class SourcesController extends AppController {
 		$this->set('tags', $this->Source->Tagged->find('cloud', array('limit' => 10)));
 		$this->set('source', $source);
 		$this->set(compact('contractors','inspirations','attachments','sourceCategories'));
-		$this->set('string', $this->String);
+		
 	}
 	
 	/**
@@ -226,7 +225,7 @@ class SourcesController extends AppController {
 		
 		$this->set('tags', $this->Source->Tagged->find('cloud', array('limit' => 10)));
 		$this->set(compact('source','contractors','inspirations','attachments','sourceCategories'));
-		$this->set('string', $this->String);
+		
 	}
 	
 	/**
@@ -782,22 +781,22 @@ class SourcesController extends AppController {
 			
 		}
 		
-		$this->paginate = array(
-							'Tagged'=>array(
-											'conditions'=>array(
-												'Tagged.model'=>'Source'
-												),
-											'fields'=>'DISTINCT Tag.name,Tag.keyname',
-											'limit' => 75,
-											'order' => array('Tag.name ASC')
-											));
-		
+		$this->Source->Tagged->recursive = 2;
+		$this->paginate['conditions']['Tagged.model'] = 'Source';
+		$this->paginate['fields'] = 'DISTINCT Tag.name,Tag.keyname,Tagged.model';
+		$this->paginate['limit'] = 50;
+		//debug($this->paginate['count']);
+		$tag_count = count($this->Source->Tagged->find('tagged',array('conditions'=>array('Tagged.model'=>'Source'),'fields'=>'DISTINCT Tag.name')));
+		$page_count = $tag_count/50;
 		$tags = $this->paginate('Tagged');
+
+		$this->set(compact('tags','tag_count','page_count'));
+
 		$this->set(compact('tags'));
 		$sourceCategories = $this->Source->SourceCategory->getAll();
 		$total_count = $this->Source->find('count');
 		$this->set(compact('total_count','filter','links','sources','sourceCategories'));
-		$this->set('string', $this->String);
+		
 	}
 	
 	/**

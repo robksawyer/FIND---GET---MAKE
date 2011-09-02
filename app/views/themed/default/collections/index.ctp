@@ -82,7 +82,7 @@
 				?>
 				<br/>
 				<div class="title"><?php echo $this->Html->link($collection['Collection']['name'],array('controller'=>'collections','action'=>'view',$collection['Collection']['id'])); ?></div>
-				<div class="description"><?php echo $string->truncate($collection['Collection']['description'],350); ?></div>
+				<div class="description"><?php echo $this->String->truncate($collection['Collection']['description'],350); ?></div>
 				<?php if(!empty($collection['Collection']['credit'])) echo "<div class='designer'>Credit: ".$collection['Collection']['credit']."</div>"; ?>
 					<div class="designer"><?php echo "Added by ".$this->Html->link($collection['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$collection['User']['username'])); ?></div>
 				<div class="bottom-detail">

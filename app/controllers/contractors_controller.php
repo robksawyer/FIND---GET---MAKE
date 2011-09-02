@@ -41,7 +41,7 @@ class ContractorsController extends AppController {
 				$contractors = $this->paginate();
 			}
 			$this->set('contractors', $contractors);
-			$this->set('string', $this->String);
+			
 		}
 	}
 
@@ -57,7 +57,7 @@ class ContractorsController extends AppController {
 			$tags_cloud = $this->Contractor->Tagged->find('cloud', array('limit' => 10));
 			$this->set('contractor', $this->Contractor->read(null, $id));
 			$this->set(compact('countries', 'tags', 'sources','tags_cloud','contractorSpecialties'));
-			$this->set('string', $this->String);
+			
 		}else{
 			$this->Session->setFlash(__('You have to upgrade to access this.', true));
 			$this->redirect(array('controller'=>'pages','plugin'=>'','action'=>'display','admin'=>false,'upgrade'));

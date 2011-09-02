@@ -157,7 +157,7 @@ class Source extends AppModel {
 			$conditions[$this->alias.'.active'] = 1;
 		}
 		$queryData['conditions'] = $conditions;
-		$queryData['recursive'] = 1;
+		//$queryData['recursive'] = 1;
 		return $queryData;
 	}
 	
@@ -268,6 +268,30 @@ class Source extends AppModel {
 										)
 									);
 		return $items;
+	}
+	
+	/**
+	 * Returns the necessary data for the view actions
+	 * @param int id The id of the source item that you're trying to locate
+	 * @return 
+	 * 
+	*/
+	function getViewData($id=null){
+		$data = $this->find('first',array(
+										'conditions'=>array('Source.id'=>$id),
+										'recursive' => 2,
+										'contain'=>array('Attachment',
+														'Product'=>array(
+															'Attachment'
+														),
+														'SourceCategory',
+														'User','Tag',
+														'Country','Vote'
+														)
+										)
+									);
+		//debug($data);
+		return $data;
 	}
 	
 	/*

@@ -63,7 +63,7 @@ class FlagsController extends AppController {
 		$flags = Set::sort($flags,'{n}.Flag.model','desc');
 		
 		$this->set(compact('total_count','flags'));
-		$this->set('string', $this->String);
+		
 	}
 	
 	/**

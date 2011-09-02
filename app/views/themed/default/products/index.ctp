@@ -12,7 +12,7 @@
 	
 	echo $this->Html->script('jquery.masonry.min',array('inline'=>false));
 ?>
-<div class="left-container">
+<div id="left-panel-index">
 	<?php
 		//Index Box Ad (300x250)
 		echo $this->element('index-box-ad',array('cache'=>false));
@@ -30,7 +30,7 @@
 		//echo $this->element('designer-sorter',array('cache'=>false));
 	?>
 </div>
-<div class="right-container-index">
+<div id="right-panel">
 	<div class="products index">
 		<div class="header red"><?php 
 			if(empty($this->params['named']['by'])){
@@ -57,7 +57,7 @@
 					}
 				?>
 				<div class="title"><?php echo $this->Html->link($product['Product']['name'],array('controller'=>'products','action'=>'view',$product['Product']['id'])); ?></div>
-				<div class="description"><?php echo $string->truncate($product['Product']['description'],250); ?></div>
+				<div class="description"><?php echo $this->String->truncate($product['Product']['description'],250); ?></div>
 				<?php if(!empty($product['Product']['designer'])) echo "<div class='designer'>Designed by ".$product['Product']['designer']."</div>"; ?>
 				<div class="designer"><?php echo "Found by ".$this->Html->link($product['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$product['User']['username'])); ?></div>
 				<div class="bottom-detail">

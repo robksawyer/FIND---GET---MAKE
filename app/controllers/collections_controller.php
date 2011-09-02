@@ -118,7 +118,7 @@ class CollectionsController extends AppController {
 
 		$this->set(compact('collections','filter','links'));
 		//$this->set('collections', $this->paginate());
-		$this->set('string', $this->String);
+		
 	}
 
 	/**
@@ -147,7 +147,7 @@ class CollectionsController extends AppController {
 		
 		$this->set(compact('productCategoryList','sourceList','products','productList'));
 		$this->set('collection', $this->Collection->read(null, $id));
-		$this->set('string', $this->String);
+		
 		
 	}
 	
@@ -182,7 +182,7 @@ class CollectionsController extends AppController {
 		$products = $this->Collection->Product->getAll();
 		
 		$this->set(compact('collection','productCategoryList','sourceList','products','productList'));
-		$this->set('string', $this->String);
+		
 	}
 	
 	/**
@@ -419,7 +419,7 @@ class CollectionsController extends AppController {
 										
 		$total_count = $this->Collection->find('count');
 		$this->set(compact('collections','total_count','user','links'));
-		$this->set('string', $this->String);
+		
 	}
 	
 	/** 
@@ -502,19 +502,20 @@ class CollectionsController extends AppController {
 			
 		}
 		
-		$this->paginate = array(
-							'Tagged'=>array(
-											'conditions'=>array('Tagged.model'=>'Collection'),
-											'fields' => array('DISTINCT Tag.name,Tag.keyname'),
-											'limit' => 75,
-											'order' => array('Tag.name ASC')
-											));
-		
+		$this->Collection->Tagged->recursive = 2;
+		$this->paginate['conditions']['Tagged.model'] = 'Collection';
+		$this->paginate['fields'] = 'DISTINCT Tag.name,Tag.keyname,Tagged.model';
+		$this->paginate['limit'] = 50;
+		//debug($this->paginate['count']);
+		$tag_count = count($this->Collection->Tagged->find('tagged',array('conditions'=>array('Tagged.model'=>'Collection'),'fields'=>'DISTINCT Tag.name')));
+		$page_count = $tag_count/50;
 		$tags = $this->paginate('Tagged');
+
+		$this->set(compact('tags','tag_count','page_count'));
 		$this->set(compact('tags'));
 		$total_count = $this->Collection->find('count');
 		$this->set(compact('collections','filter','links','total_count'));
-		$this->set('string', $this->String);
+		
 	}
 	
 	/**

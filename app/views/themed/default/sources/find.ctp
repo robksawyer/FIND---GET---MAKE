@@ -40,8 +40,8 @@
 			<td style="display:none"><?php echo $source['Source']['id']; ?>&nbsp;</td>
 			<td width="40%"><?php echo $this->Html->link(__($source['Source']['name'], true), array('action' => 'view', $source['Source']['id']),array('title'=>$source['Source']['description'])); ?>&nbsp;</td>
 			<td><?php echo $source['SourceCategory']['name'] ?></td>
-			<td><?php echo $string->truncate($source['Source']['description'],100); ?></td>
-			<td><?php echo $this->Html->link($string->truncate($source['Source']['url']),$source['Source']['url'],array('target'=>'_blank')); ?></td>
+			<td><?php echo $this->String->truncate($source['Source']['description'],100); ?></td>
+			<td><?php echo $this->Html->link($this->String->truncate($source['Source']['url']),$source['Source']['url'],array('target'=>'_blank')); ?></td>
 		</tr>
 		<?php endforeach; ?>
 		</table>

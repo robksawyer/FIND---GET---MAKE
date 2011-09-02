@@ -55,7 +55,7 @@
 					}
 				?>
 				<div class="title"><?php echo $this->Html->link($inspiration['Inspiration']['name'],array('controller'=>'inspirations','action'=>'view',$inspiration['Inspiration']['id'])); ?></div>
-				<div class="description"><?php echo $string->truncate($inspiration['Inspiration']['description'],250); ?></div>
+				<div class="description"><?php echo $this->String->truncate($inspiration['Inspiration']['description'],250); ?></div>
 				<?php 
 				if(!empty($inspiration['Inspiration']['designer'])){
 					echo "<div class='designer'>Designed by ".$inspiration['Inspiration']['designer']."</div>"; 

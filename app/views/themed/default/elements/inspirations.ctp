@@ -38,7 +38,7 @@
 			<td><?php //echo $product['zip'];?></td>
 			<td><?php //echo $product['Country']['name'];?></td>-->
 			<td><?php echo $inspiration['designer']; ?></td>
-			<td><?php echo $this->Html->link($string->truncate($inspiration['source_url']),$inspiration['source_url'],array('target'=>'_blank', 'title'=>$inspiration['source_url']));?></td>
+			<td><?php echo $this->Html->link($this->String->truncate($inspiration['source_url']),$inspiration['source_url'],array('target'=>'_blank', 'title'=>$inspiration['source_url']));?></td>
 		</tr>
 	<?php endforeach; ?>
 	</table>

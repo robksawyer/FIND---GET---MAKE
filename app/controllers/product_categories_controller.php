@@ -97,7 +97,7 @@ class ProductCategoriesController extends AppController {
 		$this->set('productCategory', $productCategory);
 		$total_count = $this->ProductCategory->Product->find('count');
 		$this->set(compact('filter','links','total_count','productCategories'));
-		$this->set('string', $this->String);
+		
 	}
 
 	function admin_add() {

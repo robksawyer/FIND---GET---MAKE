@@ -47,7 +47,7 @@ class HousesController extends AppController {
 			}
 
 			$this->set('houses', $houses);
-			$this->set('string', $this->String);
+			
 		}else{
 			$this->Session->setFlash(__('You have to upgrade to access this.', true));
 			$this->redirect(array('controller'=>'pages','plugin'=>'','action'=>'display','admin'=>false,'upgrade'));
@@ -62,7 +62,7 @@ class HousesController extends AppController {
 				$this->redirect(array('action' => 'index','admin'=>false));
 			}
 			$this->set('house', $this->House->read(null, $id));
-			$this->set('string', $this->String);
+			
 		}
 	}
 	

@@ -48,7 +48,7 @@
 					}
 				?>
 				<div class="title"><?php echo $this->Html->link($productCategory['name'],array('controller'=>'products','action'=>'view',$productCategory['id'])); ?></div>
-				<div class="description"><?php echo $string->truncate($productCategory['description'],250); ?></div>
+				<div class="description"><?php echo $this->String->truncate($productCategory['description'],250); ?></div>
 				<?php if(!empty($productCategory['designer'])) echo "<div class='designer'>Designed by ".$productCategory['designer']."</div>"; ?>
 				<div class="designer"><?php echo "Found by ".$this->Html->link($productCategory['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$productCategory['User']['username'])); ?></div>
 				<?php if(!empty($productCategory['designer'])) echo "Designed by ".$productCategory['designer']; ?><br/>

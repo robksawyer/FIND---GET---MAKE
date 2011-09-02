@@ -61,7 +61,7 @@ class SourceCategoriesController extends AppController {
 		$this->set('sourceCategory', $this->SourceCategory->read(null, $id));
 		$total_count = $this->SourceCategory->Source->find('count');
 		$this->set(compact('filter','links','total_count','sourceCategories'));
-		$this->set('string', $this->String);
+		
 	}
 
 	function admin_add() {

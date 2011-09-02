@@ -318,5 +318,27 @@ class Product extends AppModel {
 		$count = $this->find('count',array( 'conditions' => array('Product.user_id'=>$user_id)));
 		return $count;
 	}
+	
+	/**
+	 * Returns the necessary data for the view actions
+	 * @param int id The id of the source item that you're trying to locate
+	 * @return 
+	 * 
+	*/
+	function getViewData($id=null){
+		$data = $this->find('first',array(
+										'conditions'=>array('Product.id'=>$id),
+										'recursive' => 2,
+										'contain'=>array('Attachment',
+														'Source',
+														'ProductCategory',
+														'User','Tag',
+														'Ownership','Vote'
+														)
+										)
+									);
+		//debug($data);
+		return $data;
+	}
 
 }

@@ -56,7 +56,7 @@
 				<br/>
 				<span class="title"><?php echo $this->Html->link($product['Product']['name'],array('controller'=>'products','action'=>'view',$product['Product']['id'])); ?></span>
 				<br/>
-				<p class="description"><?php echo $string->truncate($product['Product']['description'],250); ?></p>
+				<p class="description"><?php echo $this->String->truncate($product['Product']['description'],250); ?></p>
 				<br/>
 				<?php if(!empty($product['Product']['designer'])) echo "Designed by ".$product['Product']['designer']; ?><br/>
 				<div class="bottom-detail">

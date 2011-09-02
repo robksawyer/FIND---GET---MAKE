@@ -46,7 +46,7 @@
 			<?php if(!empty($ufo['Ufo']['name'])): ?>
 			<div class="title"><?php echo $this->Html->link($ufo['Ufo']['name'],array('controller'=>'ufos','action'=>'view',$ufo['Ufo']['id'])); ?></div>
 			<?php endif; ?>
-			<div class="description"><?php echo $string->truncate($ufo['Ufo']['description'],250); ?></div>
+			<div class="description"><?php echo $this->String->truncate($ufo['Ufo']['description'],250); ?></div>
 			<div class="added-by"><?php echo "Found by ".$this->Html->link($ufo['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$ufo['User']['username'])); ?></div>
 			<div class="bottom-detail">
 				<span class="date"><?php 

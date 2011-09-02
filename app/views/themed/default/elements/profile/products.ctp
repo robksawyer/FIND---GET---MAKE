@@ -21,7 +21,7 @@
 			?>
 			<br/>
 			<div class="title"><?php echo $this->Html->link($product['Product']['name'],array('plugin'=>'','admin'=>false,'controller'=>'products','action'=>'view',$product['Product']['id'])); ?></div>
-			<div class="description"><?php echo $string->truncate($product['Product']['description'],250); ?></div>
+			<div class="description"><?php echo $this->String->truncate($product['Product']['description'],250); ?></div>
 			<br/>
 			<?php if(!empty($product['Product']['designer'])) echo "<div class='designer'>Designed by ".$product['Product']['designer']."</div>"; ?>
 			<div class="bottom-detail">

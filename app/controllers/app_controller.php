@@ -59,7 +59,7 @@ class AppController extends Controller {
 									)
 									
 								),'RequestHandler','Session','Security','AutoLogin','Cookie','AjaxHandler', 
-								'Forum.Toolbar','String','TwitterKit.Twitter','Facebook.Connect'
+								'Forum.Toolbar','TwitterKit.Twitter','Facebook.Connect'
 								);
 
 	/**
@@ -70,7 +70,7 @@ class AppController extends Controller {
 	 */
 	var $helpers = array('Form', 'Html', 'Time','Text','Session','Js' => array('Jquery'),
 						'Popup.Popup'=>array('Jquery'),'TwitterKit.Twitter','Facebook.Facebook',
-						'Forum.Cupcake', 'Forum.Decoda' => array()
+						'Forum.Cupcake', 'Forum.Decoda' => array(),'String'
 						);
 	
 	/**
@@ -192,7 +192,7 @@ class AppController extends Controller {
 		/** SET GLOBAL VARIABLES **/
 		$this->set('facebookUser', $facebookUser);
 		$this->set('authUser', $this->Auth->user());
-		$this->set('string', $this->String);
+		
 	}
 	
 	/**

@@ -52,7 +52,7 @@ class AttachmentsController extends AppController {
 		}else{
 			$this->set('attachments', $this->paginate());
 		}
-		$this->set('string', $this->String);
+		
 	}
 
 	/**
@@ -68,7 +68,7 @@ class AttachmentsController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 		$this->set('attachment', $this->Attachment->read(null, $id));
-		$this->set('string', $this->String);
+		
 	}
 	
 	/**
@@ -90,7 +90,7 @@ class AttachmentsController extends AppController {
 			$this->redirect('/');
 		}
 		$this->set(compact('attachment'));
-		$this->set('string', $this->String);
+		
 	}
 	
 	public function photo_tag_view($id = null) {
@@ -100,7 +100,7 @@ class AttachmentsController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 		$this->set('attachment', $this->Attachment->read(null, $id));
-		$this->set('string', $this->String);
+		
 	}
 
 	/*private function admin_add() {
