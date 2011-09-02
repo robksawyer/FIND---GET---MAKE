@@ -2,7 +2,7 @@
 <?php
 	echo $this->element('top_actions',array('item'=>$source,'model'=>'Source','removeEdit'=>true,'cache'=>false));
 ?>
-<?php echo $this->Form->create('Source');?>
+<?php echo $this->Form->create('Source',array('type' => 'file'));?>
 	<fieldset>
 		<legend><?php __('Edit Source'); ?></legend>
 	<?php
@@ -16,6 +16,7 @@
 		//echo '<a href="/admin/source_categories/add" class="add-specialty" style="float: left;">Add a category</a>';
 		echo '</div></div>';
 		?>
+		<?php if(!empty($source['Attachment'])): ?>
 		<fieldset>
 			<legend>Current Attachments</legend>
 			<?php
@@ -24,6 +25,7 @@
 			}
 			?>
 		</fieldset>
+		<?php endif; ?>
 		<?php
 		echo $this->element('add_attachment',array('cache'=>false));
 		echo $this->Form->input('slug',array('type' => 'hidden'));

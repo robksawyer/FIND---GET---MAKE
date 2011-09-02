@@ -541,7 +541,6 @@ class SourcesController extends AppController {
 	*/
 	public function edit($id = null) {
 		$this->Source->recursive = 1;
-		//debug($this->data);
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid source', true));
 			$this->redirect(array('action' => 'index'));
@@ -570,19 +569,23 @@ class SourcesController extends AppController {
 				$this->Session->setFlash(__('The source could not be updated. Please, try again.', true),'default', array('class' => 'error-message'));
 			}
 		}
+		
+		$source = $this->Source->read(null, $id);
 		if (empty($this->data)) {
-			$this->data = $this->Source->read(null, $id);
+			$this->data = $source;
 		}
 		
+		if(Configure::read('FGM.private_solution') == 1){
+			$contractors = $this->Source->Contractor->find('list',array( 'order' => 'name ASC' ));
+			$this->set(compact('contractors'));
+		}
 		$this->Source->id = $id;
 		$countries = $this->Source->Country->find('list');
-		if(Configure::read('FGM.private_solution') == 1) $contractors = $this->Source->Contractor->find('list',array( 'order' => 'name ASC' ));
 		$sourceCategories = $this->Source->SourceCategory->find('list',array( 'order' => 'name ASC' ));
-		//$images = $this->Source->Image->find('list');
 		$tags = $this->Source->Tag->find('list');
 		$tags_cloud = $this->Source->Tagged->find('cloud', array('limit' => 10));
-		$this->set('source', $this->Source->read(null, $id));
-		$this->set(compact('contractors','countries','tags','tags_cloud','sourceCategories'));
+
+		$this->set(compact('source','countries','tags','tags_cloud','sourceCategories'));
 	}
 	
 	/**

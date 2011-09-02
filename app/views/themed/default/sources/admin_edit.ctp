@@ -2,7 +2,7 @@
 <?php
 	echo $this->element('top_actions',array('item'=>$source,'model'=>'Source','removeEdit'=>true,'cache'=>false));
 ?>
-<?php echo $this->Form->create('Source');?>
+<?php echo $this->Form->create('Source',array('type' => 'file'));?>
 	<fieldset>
 		<legend><?php __('Edit Source'); ?></legend>
 	<?php
