@@ -5,7 +5,6 @@ class InspirationsController extends AppController {
 	var $helpers = array('Tags.TagCloud');
 	var $components = array('Search.Prg',
 							'Uploader.Uploader',
-							'String',
 							'RequestHandler'
 							);
 	
@@ -652,7 +651,7 @@ class InspirationsController extends AppController {
 			$this->redirect('/');
 		}
 		//$inspiration = $this->Inspiration->read(null,$id);
-		$keycode = $this->String->str_rand(8,'mixed');
+		$keycode = $this->str_rand(8,'mixed');
 		$keycode .= $id;
 		
 		$this->Inspiration->id = $id;

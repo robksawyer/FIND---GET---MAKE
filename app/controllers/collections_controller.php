@@ -531,7 +531,7 @@ class CollectionsController extends AppController {
 			$this->redirect('/');
 		}
 		
-		$keycode = $this->String->str_rand(8,'mixed');
+		$keycode = $this->str_rand(8,'mixed');
 		$keycode .= $id;
 		
 		$this->Collection->id = $id;

@@ -877,7 +877,7 @@ class SourcesController extends AppController {
 			$this->redirect('/');
 		}
 		
-		$keycode = $this->String->str_rand(8,'mixed');
+		$keycode = $this->str_rand(8,'mixed');
 		$keycode .= $id;
 		
 		$this->Source->id = $id;
