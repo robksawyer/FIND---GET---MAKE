@@ -9,8 +9,7 @@ class InspirationsController extends AppController {
 							);
 	
 	var $paginate = array(
-		'limit' => 25,
-		'order' => 'Inspiration.created DESC'
+		'limit' => 25
 	);
 	
 	/**
@@ -56,7 +55,7 @@ class InspirationsController extends AppController {
 	
 	
 	function index($filter = null) {
-		$this->Inspiration->recursive = 2;
+		$this->Inspiration->recursive = 1;
 		
 		// query all distinct first letters used in names
 		$letters = $this->Inspiration->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `inspirations` ORDER BY `name`');
@@ -86,7 +85,7 @@ class InspirationsController extends AppController {
 			
 		}
 		
-		//debug($inspirations);
+		//Find tagged items
 		if (isset($this->passedArgs['by'])) {
 			$this->paginate = array(
 								'Tagged'=>array(
@@ -96,25 +95,24 @@ class InspirationsController extends AppController {
 									'recursive'=>2 //Removing this throws errors.
 								)
 							);
-			$inspirations = Set::filter($this->paginate('Tagged')); //Remove empty values
-
+			$inspirations = Set::filter($this->paginate('Tagged')); //Remove empty values	
+			$total_count = count($inspirations);
+			$page_count = $total_count/25;
+			
 			//Build a new array
 			if(!empty($inspirations)){
-				foreach($inspirations as $inspiration){
-					$clean_inspirations[] = $inspiration;
-				}
-				
-				if(!empty($clean_inspirations)){
-					$inspirations = $clean_inspirations;
-				}
-
 				$counter = 0;
 				foreach($inspirations as $inspiration){
 					//Find attachments
 					if(!empty($inspiration['Inspiration']['id'])){
-						$temp_att = $this->Inspiration->read(null,$inspiration['Inspiration']['id']);
+						$temp_att = $this->Inspiration->find('first',array('conditions'=>array(
+																					'Inspiration.id'=>$inspiration['Inspiration']['id']
+																				),
+																			'contain'=>array('User','Attachment','Tag')
+																			)
+																		);
 						//debug($temp_att);
-						$inspirations[$counter]['Attachment'] = $temp_att['Attachment'];
+						$inspirations[$counter] = $temp_att;
 
 						$counter++;
 					}else{
@@ -123,8 +121,8 @@ class InspirationsController extends AppController {
 				}
 			}
 		}
-		
-		$total_count = $this->Inspiration->find('count');
+			
+		//$total_count = $this->Inspiration->find('count');
 		$this->set(compact('inspirations','filter','total_count','links'));
 		
 	}
@@ -557,7 +555,7 @@ class InspirationsController extends AppController {
 		/*
 			TODO The paginator is not updating based on the DISTINCT value entered. Fix this.
 		*/
-		$this->Inspiration->recursive = 2;
+		$this->Inspiration->recursive = 1;
 		
 		// query all distinct first letters used in names
 		$letters = $this->Inspiration->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `inspirations` ORDER BY `name`');
@@ -570,7 +568,7 @@ class InspirationsController extends AppController {
 
 		$this->paginate['Inspiration'] = array(
 										'order' => array(
-											'Inspiration.created' => 'desc'
+											'Inspiration.name' => 'asc'
 											)
 										);
 
@@ -597,6 +595,7 @@ class InspirationsController extends AppController {
 		$tags = $this->paginate('Tagged');
 
 		$this->set(compact('tags','tag_count','page_count'));
+		
 		$total_count = $this->Inspiration->find('count');
 		$this->set(compact('total_count','filter','links','inspirations'));
 		

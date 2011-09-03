@@ -632,7 +632,7 @@ class ProductsController extends AppController {
 	 * Finds the tags associated with this model
 	 */
 	public function tags($filter=null){
-		$this->Product->recursive = 2;
+		$this->Product->recursive = 1;
 		
 		// query all distinct first letters used in names
 		$letters = $this->Product->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `products` ORDER BY `name`');

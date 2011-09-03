@@ -760,7 +760,7 @@ class SourcesController extends AppController {
 		/*
 			TODO The paginator is not updating based on the DISTINCT value entered. Fix this.
 		*/
-		$this->Source->recursive = 2;
+		$this->Source->recursive = 1;
 		
 		// query all distinct first letters used in names
 		$letters = $this->Source->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `sources` ORDER BY `name`');
@@ -773,7 +773,7 @@ class SourcesController extends AppController {
 
 		$this->paginate['Source'] = array(
 										'order' => array(
-											'Source.created' => 'desc'
+											'Source.name' => 'asc'
 											)
 										);
 
