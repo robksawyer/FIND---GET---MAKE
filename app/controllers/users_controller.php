@@ -49,6 +49,7 @@ class UsersController extends AppController {
 							);*/
 		$this->AjaxHandler->handle('hide_welcome');
 		
+		
 		/*if (isset($this->params['admin'])) {
 			$this->Toolbar->verifyAdmin();
 			$this->layout = 'admin';
@@ -128,13 +129,35 @@ class UsersController extends AppController {
 	public function login() {
 		$this->set('title_for_layout','Login');
 		$this->layout = 'clean';
-		
 		$user = $this->Auth->user();
 		if($user && empty($this->data)){
 			$this->User->login($user);
 			$this->Session->delete('Forum');
 			$this->redirect($this->Auth->loginRedirect);
 		}
+		
+		//Check for a Facebook user
+		$facebookUser = $this->Connect->user();
+		if(!empty($facebookUser) && empty($this->data)){
+			$userCheck = $this->User->findByFacebookId($facebookUser['id']);
+			if(empty($userCheck)){
+				$this->redirect('/signup');
+			}else{
+				//Try to log the user in.
+				$loginUser['User']['username'] = $userCheck['User']['username'];
+				$loginUser['User']['password'] = $userCheck['User']['password'];
+				
+				$this->Auth->login($loginUser);
+				$this->Session->delete('Forum');
+				$this->redirect($this->Auth->loginRedirect);
+				
+				//Save the user's facebook_id (This is automatically handled)
+				//$this->User->saveField('facebook_id',$facebookUser['id']);
+				
+				exit();
+			}
+		}
+		
 		if (!empty($this->data)) {
 			$this->User->set($this->data);
 			$this->User->action = 'login';
@@ -269,6 +292,8 @@ class UsersController extends AppController {
 		//Check to make sure the user hasn't already linked their account with Twitter
 		$twitterUserDetails = $this->Session->read('TwitterUserDetails');
 		$user = $this->User->find('first',array('conditions'=>array('twitter_id'=>$twitterUserDetails['id'])));
+		
+		
 		if(!empty($user) && empty($this->data)){
 			//Build an array of information to login with
 			$user_data['User'] = array(
@@ -486,7 +511,6 @@ class UsersController extends AppController {
 			
 			//Redirect to the signup page (This is handled by the popup unload method.)
 			//$this->redirect(array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'signup'));
-			
 		}else{
 			$this->flash(__('The Twitter authorization failed. Please try again later.', true), 'default', 'error-message');
 			return;

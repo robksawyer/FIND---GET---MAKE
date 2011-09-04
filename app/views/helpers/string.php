@@ -281,6 +281,26 @@ class StringHelper extends AppHelper{
 			return substr_replace($string, $rep, $leave);	
 		}
 	}
+	
+	/**
+	 * Returns the current web address
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function getCurrentURL(){
+		return "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+	}
+	
+	/**
+	 * Returns the current site address minus the page
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function getCurrentSiteAddress(){
+		return "http://".$_SERVER['SERVER_NAME'];
+	}
 }
 
 ?>

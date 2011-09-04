@@ -71,7 +71,12 @@ $(document).ready(function(){
 	
 });
 
-
+/**
+ * 
+ * @param 
+ * @return 
+ * 
+*/
 function showContainer(){
 	if(showingContainer == false){
 		showingContainer = true;
@@ -82,6 +87,16 @@ function showContainer(){
 		$("#add-container a.show-container").text('Show the Add Form');
 		$("#add-container #inner-container").fadeOut(400);
 	}
+}
+
+/**
+ * 
+ * @param 
+ * @return 
+ * 
+*/
+function refresh_page(o){
+	window.location.reload();
 }
 
 

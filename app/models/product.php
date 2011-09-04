@@ -264,11 +264,31 @@ class Product extends AppModel {
 		$products = $this->find('all',
 						array(
 							'order' => array('Product.created DESC'),
-							'recursive' => 2
+							'recursive' => 1,
+							'contain'=>array('User','Attachment')
 							)
 						);
 		return $products;
 	}
+	
+	/**
+	 * Get all of the data needed for the product selector
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function getProductSelectorData(){
+		$products = $this->find('all',
+						array(
+							'order' => array('Product.created DESC'),
+							'recursive' => 1,
+							'contain'=>array('Attachment')
+							)
+						);
+		return $products;
+	}
+	
+	
 	
 	/**
 	 * Get all of the products in the system in list form
@@ -278,7 +298,8 @@ class Product extends AppModel {
 	*/
 	function getList(){
 		$products = $this->find('list',array(
-											'order' => array('Product.created DESC')
+											'order' => array('Product.created DESC'),
+											'recursive'=>1
 											)
 										);
 		return $products;
@@ -289,6 +310,7 @@ class Product extends AppModel {
 	 * @param 
 	 */
 	function getCategories(){
+		$this->ProductCategory->recursive = 1;
 		$categories = $this->ProductCategory->getList();
 		return $categories;
 	}
@@ -300,6 +322,7 @@ class Product extends AppModel {
 	 * 
 	*/
 	function getProfileData($user_id=null,$limit=10){
+		$this->recursive = 1;
 		$items = $this->find('list',
 									array(
 										'conditions'=>array('Product.user_id' => $user_id),
@@ -315,6 +338,7 @@ class Product extends AppModel {
 	 * @param int user_id
 	 **/
 	function getCount($user_id=null){
+		$this->recursive = 1;
 		$count = $this->find('count',array( 'conditions' => array('Product.user_id'=>$user_id)));
 		return $count;
 	}

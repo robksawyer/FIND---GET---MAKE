@@ -52,6 +52,10 @@
 //Load the site config file
 Configure::load('fgm_config');
 
+//Load the Facebook config file
+Configure::load('facebook');
+
+
 //Load the ACL config file
 require_once('acl_config.php');
 

@@ -7,7 +7,7 @@
 		$this->Paginator->params['paging']['Collection'] = $this->Paginator->params['paging']['Tagged'];
 	}
 ?>
-<div class="left-container">
+<div id="left-panel-index">
 	<?php
 		//Index Box Ad (300x250)
 		echo $this->element('index-box-ad',array('cache'=>false));
@@ -22,7 +22,7 @@
 		//echo $this->element('designer-sorter',array('cache'=>false));
 	?>
 </div>
-<div class="right-container-index">
+<div id="right-panel">
 	<div class="collections index">
 		<div class="header red"><?php 
 			if(empty($this->params['named']['by'])){

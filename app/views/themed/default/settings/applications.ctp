@@ -66,7 +66,8 @@ $(document).ready(function() {
 		}
 	}
 	
-	$.getJSON('http://www.find-get-make.com/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
+	var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
+	$.getJSON(currentSiteAddress+'/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
    	$('#twitter-login-wrap #btn-twitter').attr('href', data.url);
 		$('#twitter-login-wrap #btn-twitter').attr('rel','windowCenter');
 		$('#twitter-login-wrap #btn-twitter').show();

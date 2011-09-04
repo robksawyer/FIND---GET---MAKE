@@ -143,7 +143,7 @@ class CollectionsController extends AppController {
 		$sourceList = ClassRegistry::init('Source')->getList(); 
 		
 		$productList = $this->Collection->Product->getList();
-		$products = $this->Collection->Product->getAll();
+		$products = $this->Collection->Product->getProductSelectorData();
 		
 		$this->set(compact('productCategoryList','sourceList','products','productList'));
 		$this->set('collection', $this->Collection->read(null, $id));

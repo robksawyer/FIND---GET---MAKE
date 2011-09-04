@@ -161,20 +161,31 @@ class InspirationsController extends AppController {
 	 * 
 	*/
 	function view($id = null) {
-		$this->Inspiration->recursive = 2;
+		$this->Inspiration->recursive = 1;
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid inspiration', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}
 		
-		$this->set('inspiration', $this->Inspiration->read(null, $id));
+		$inspiration = $this->Inspiration->find('first', array(
+															'conditions'=>array(
+																			'Inspiration.id'=>$id
+																			),
+															'contain'=>array(
+																			'User','Attachment','InspirationPhotoTag',
+																			'Tag','Source',
+																			'Product'=>array('Attachment')
+																			)
+															)
+														);
+		
 		$countries = $this->Inspiration->Country->find('list');
 		$sources = $this->Inspiration->Source->find('list');
 		$products = $this->Inspiration->Product->getList();
-		$productsAll = $this->Inspiration->Product->getAll();
+		$productsAll = $this->Inspiration->Product->getProductSelectorData();
 		//$productList = $this->Inspiration->Product->getList();
 
-		$this->set(compact('sources','products','countries','productsAll'));
+		$this->set(compact('inspiration','sources','products','countries','productsAll'));
 		
 	}
 
@@ -185,7 +196,7 @@ class InspirationsController extends AppController {
 	 * 
 	*/
 	function key($keycode=null){
-		$this->Inspiration->recursive = 2;
+		$this->Inspiration->recursive = 1;
 		$this->layout = 'client_review';
 		if (!$keycode && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid keycode', true));

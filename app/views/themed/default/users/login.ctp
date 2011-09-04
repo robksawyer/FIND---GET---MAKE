@@ -1,16 +1,24 @@
+<?php
+?>
 <div id="login-wrapper">
 	<div class="wrapper">
 		<div class="users form">
 			<div id="social-login">
 				<h3>Log in to <b>FIND | GET | MAKE</b> with Twitter.</h3>
-				<span id="twitter-login-wrap">
+				<div id="twitter-login-wrap">
 				<?php 
 					//$linkOptions['login'] = 'Sign in with Twitter';
 					//echo $this->Twitter->oauthLink($linkOptions); 
-					echo "<span class='loading'>Loading...</span>";
+					echo "<span class='loading'></span>";
 					echo $this->Html->link('Connect with Twitter','',array('id'=>'btn-twitter','class'=>'popupwindow','style'=>'display:none'));
 				?>
-				</span>
+				</div>
+				<div id="facebook-login-wrap">
+				<?php 
+					//echo $this->Html->link('Sign in with Facebook','',array('id'=>'btn-facebook','class'=>'popupwindow','style'=>'display:none')); 
+					echo $this->Facebook->login(array('perms'=>'offline_access,publish_stream','onlogin'=>'facebook_login();'),'Sign in with Facebook');
+				?>
+				</div>
 			</div>
 			<div id="login">
 				<?php echo $this->Session->flash(); ?>
@@ -75,7 +83,8 @@ $(document).ready(function() {
 		}
 	}
 	
-	$.getJSON('http://www.find-get-make.com/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
+	var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
+	$.getJSON(currentSiteAddress+'/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
    	$('#twitter-login-wrap #btn-twitter').attr('href', data.url);
 		$('#twitter-login-wrap #btn-twitter').attr('rel','windowCenter');
 		$('#twitter-login-wrap #btn-twitter').show();
@@ -88,6 +97,17 @@ $(document).ready(function() {
 		window.location="/signup";
 	}
 });
+
+/**
+ * The user accepted the requirements. Log them in
+ * @param 
+ * @return 
+ * 
+*/
+function facebook_login(){
+	var loginURL = "<?php echo $loginURL; ?>";
+	window.location.href = loginURL;
+}
 
 $("#join").corner("10px");
 $(".basic").corner('10px');

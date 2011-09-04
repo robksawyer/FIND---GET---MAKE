@@ -88,8 +88,9 @@ html{
 }
 
 #btn-facebook{
-	position: relative;
-	margin: 10px 0;
+	margin: 0;
+	padding: 0;
+	display: block;
 }
 
 .users #login{
@@ -137,12 +138,30 @@ html{
 	padding: 0;
 }
 
-#social-login {
-	margin: 10px 0;
-	
+a.fb_button_medium:hover{
+	background-position: 0% -210px;
+	font-size: 11px;
+	line-height: 14px;
 }
 
-#social-login span{
+/*a.fb_button:hover{
+	background: #29447E url(http://static.ak.fbcdn.net/rsrc.php/v1/yL/r/FGFbc80dUKj.png) no-repeat;
+	background-repeat: no-repeat;
+}*/
+
+.fb_button:hover, 
+.fb_button_rtl:hover{
+	background: #29447E url(http://static.ak.fbcdn.net/rsrc.php/v1/yL/r/FGFbc80dUKj.png) no-repeat;
+	background-repeat: no-repeat;
+	cursor: pointer;
+	display: inline-block;
+	outline: none;
+	padding: 0px 0px 0px 1px;
+	text-decoration: none;
+}
+
+
+#social-login div{
 	margin: 10px;
 	
 }

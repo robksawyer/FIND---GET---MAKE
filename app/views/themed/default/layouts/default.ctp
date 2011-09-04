@@ -83,7 +83,7 @@
 			
 			echo $this->Html->script('elements/nav')."\n";
 			echo $this->Html->script('common')."\n"; //Common helper scripts
-			echo $this->Html->script('/rating/js/rating_jquery_min')."\n";
+			if(Configure::read('FGM.allow_rating') == 1) echo $this->Html->script('/rating/js/rating_jquery_min')."\n";
 			echo $this->Html->script('jquery.form')."\n";
 			echo $this->Html->script('jquery.autocomplete.min')."\n";
 			echo $this->Html->script('jquery.jeditable.mini')."\n";

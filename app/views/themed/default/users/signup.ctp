@@ -12,6 +12,8 @@
 	}*/
 	
 	$twitterDetails = $session->read('TwitterUserDetails');
+	
+	debug($facebookUser);
 ?>
 <div id="signup-wrapper">
 	<div class="wrapper">

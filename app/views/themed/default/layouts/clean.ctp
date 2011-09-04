@@ -54,6 +54,7 @@
 				echo '//]]>'."\n";
 				echo '</script>'."\n";
 			}
+			echo $this->Html->script('common')."\n"; //Common helper scripts
 			
 			echo $scripts_for_layout;
 		?>

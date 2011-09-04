@@ -21,7 +21,7 @@
 		echo $this->element('inspiration-sorter',array('cache'=>false));
 		
 		//Alphabet sorter
-		echo $this->element('alphabet-sorter',array('cache'=>false));
+		//echo $this->element('alphabet-sorter',array('cache'=>false));
 		
 		//Designer sorter
 		//echo $this->element('designer-sorter',array('cache'=>false));

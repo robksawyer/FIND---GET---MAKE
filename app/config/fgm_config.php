@@ -52,7 +52,7 @@
  * 1: Show ads
  * 
 */
-	$config['FGM']['advertising'] = 1;
+	$config['FGM']['advertising'] = 0;
 
 /**
  * 

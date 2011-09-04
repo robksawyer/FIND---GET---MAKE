@@ -1,24 +1,23 @@
 <?php 
-//debug($facebookUser); 
+debug($facebookUser); 
 //debug($registrationData);
 ?>
 <div id="register">
 	<div class="social-register">
 		<h1>Register now and start posting.</h1>
 			<!--<a id="btn_twitter" class="btn_oauth_login" data-requires-credential="twitter" href="/auth/register_with_twitter">Sign in with Twitter</a>-->
-		<span id="twitter-login-wrap">
+		<div id="twitter-login-wrap">
 		<?php 
 			//$linkOptions['login'] = 'Sign in with Twitter';
 			//echo $this->Twitter->oauthLink($linkOptions); 
-			echo "<span class='loading'>Loading...</span>";
+			echo "<span class='loading'></span>";
 			echo $this->Html->link('Connect with Twitter','',array('id'=>'btn-twitter','class'=>'popupwindow','style'=>'display:none'));
 		?>
-		</span>
-		<?php //echo $this->Html->link('Sign in with Twitter','/auth/register_with_twitter',array('id'=>'btn-twitter')); ?>
+		</div>
 		<!--<a id="btn_facebook" class="btn_oauth_login" data-requires-credential="facebook" href="/auth/facebook_connect">Login with Facebook</a>-->
-		<!--<div id="btn-facebook">-->
-		<?php //echo $this->Facebook->login(array('perms' => 'email'),'Connect with Facebook'); ?>
-		<!--</div>-->
+		<div id="btn-facebook">
+		<?php echo $this->Facebook->login(array('perms' => 'offline_access,publish_stream','onlogin'=>'Facebook.login()'),'Connect with Facebook'); ?>
+		</div>
 		<div id="not-social">
 		<?php echo "Not social? Sign up the ".$this->Html->link('old fashioned way.','/signup',array('title'=>'Signup the old fashioned way.')); ?>
 		</div>
@@ -45,7 +44,8 @@ $(document).ready(function() {
 		}
 	}
 	
-	$.getJSON('http://www.find-get-make.com/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
+	var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
+	$.getJSON(currentSiteAddress+'/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
    	$('#twitter-login-wrap #btn-twitter').attr('href', data.url);
 		$('#twitter-login-wrap #btn-twitter').attr('rel','windowCenter');
 		$('#twitter-login-wrap #btn-twitter').show();
