@@ -207,7 +207,9 @@ class Ownership extends AppModel {
 															'want_it'=>1,
 															"Ownership.user_id"=>$user_id,
 															'model'=>$model
-															)));
+															),
+										'contain'=>array('Product'=>array('Attachment'))	
+										));
 		return $data;
 	}
 	
@@ -223,7 +225,9 @@ class Ownership extends AppModel {
 															'have_it'=>1,
 															"Ownership.user_id"=>$user_id,
 															'model'=>$model
-															)));
+															),
+										'contain'=>array('Product'=>array('Attachment'))	
+										));
 		return $data;
 	}
 	

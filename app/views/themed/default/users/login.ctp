@@ -78,7 +78,7 @@ $(document).ready(function() {
 			height:500,
 			width:800, 
 			center:1, 
-			onUnload:unloadedPopup,
+			onUnload:unloadedTwitterPopup,
 			center: 1
 		}
 	}
@@ -92,9 +92,9 @@ $(document).ready(function() {
 		$('.popupwindow').popupwindow(profiles);
    });
 
-	function unloadedPopup(){
+	function unloadedTwitterPopup(){
 		//Redirect the user to the signup page and continue the process
-		window.location="/signup";
+		window.location="/users/twitter_signup";
 	}
 });
 

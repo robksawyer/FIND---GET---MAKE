@@ -135,9 +135,9 @@ class AppController extends Controller {
 		if(isset($this->Auth)) {
 			// Auth settings
 			$referer = $this->referer();
-			if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/login' || $referer == '/forum/users/login') {
+			if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/login' || $referer == '/forum/users/login' || $referer == '/users/moderate') {
 				//$referer = array('plugin' => 'admin', 'controller' => 'home', 'action' => 'index','admin'=>false);
-				$referer = '/users/moderate';
+				$referer = '/';
 			}
 			
 			/*$this->Auth->mapActions(
@@ -159,12 +159,7 @@ class AppController extends Controller {
 			
 			//You have to keep view open for the photo tags to work.
 			//$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
-			
-			if($referer == "/"){
-				$login_referer = "/users/moderate";
-			}else{
-				$login_referer = $referer;
-			}
+			$this->Auth->authError = __('You do not have permission to access the page you just selected.', true);
 			$this->Auth->loginRedirect = $login_referer;
 			$this->Auth->logoutRedirect = $referer;
 			$this->Auth->autoRedirect = false;
@@ -191,18 +186,10 @@ class AppController extends Controller {
 
 		
 		//FACEBOOK OAUTH SETTINGS
-		/*$facebookUser = $this->Facebook->getMyDetails();
-		if($facebookUser['status']== 0) {
-			//$this->redirect($facebookUser['object']);
-		}else {
-			$facebookUser = json_decode(file_get_contents($facebookUser['object']),true);
-		}*/
-		
 		$Facebook = new FB();
 		$loginURL = $Facebook->getLoginUrl(array('req_perms'=>'offline_access,publish_stream','next'=>'/signup')); //Get the login url to use
 		//$accessToken = $Facebook->getAccessToken(); //Get the access token
-		//debug($loginURL);
-		//debug($accessToken);
+
 		$this->Connect->createUser = false;
 		$facebookUser = $this->Connect->user();
 		/** SET GLOBAL VARIABLES **/

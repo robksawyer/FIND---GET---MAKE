@@ -40,7 +40,7 @@ class UsersController extends AppController {
 		
 		$this->Auth->allowedActions = array('more_user_feed_data', 'forgot', 'listing', 'profile','getAvatar',
 											'signup','login','logout','register','register_with_twitter','register_with_facebook',
-											'twitter_logout','facebook_logout','hide_welcome','staff_favorites'
+											'twitter_logout','facebook_logout','hide_welcome','staff_favorites','facebook_signup','twitter_signup'
 											);
 		
 		/*$this->Auth->allow('login','logout','register','register_with_twitter','register_with_facebook',
@@ -136,12 +136,30 @@ class UsersController extends AppController {
 			$this->redirect($this->Auth->loginRedirect);
 		}
 		
+		//Check for a Twitter user
+		$twitterUserDetails = $this->Session->read('TwitterUserDetails');
+		if(!empty($twitterUserDetails) && empty($this->data)){
+			$userCheck = $this->User->findByTwitterId($twitterUserDetails['id']);
+			if(empty($userCheck)){
+				$this->redirect('/users/twitter_signup');
+			}else{
+				//Try to log the user in.
+				$loginUser['User']['username'] = $userCheck['User']['username'];
+				$loginUser['User']['password'] = $userCheck['User']['password'];
+				
+				$this->Auth->login($loginUser);
+				$this->Session->delete('Forum');
+				$this->redirect($this->Auth->loginRedirect);
+				
+				exit();
+			}
+		}
 		//Check for a Facebook user
 		$facebookUser = $this->Connect->user();
 		if(!empty($facebookUser) && empty($this->data)){
 			$userCheck = $this->User->findByFacebookId($facebookUser['id']);
 			if(empty($userCheck)){
-				$this->redirect('/signup');
+				$this->redirect('/users/facebook_signup');
 			}else{
 				//Try to log the user in.
 				$loginUser['User']['username'] = $userCheck['User']['username'];
@@ -288,12 +306,32 @@ class UsersController extends AppController {
 	public function signup() {
 		$this->set('title_for_layout','Sign Up');
 		$this->layout = 'clean';
+		$twitter_link = false; //Used to link an existing account
+		$facebook_link = false; //Used to link an existing account
 		
 		//Check to make sure the user hasn't already linked their account with Twitter
 		$twitterUserDetails = $this->Session->read('TwitterUserDetails');
-		$user = $this->User->find('first',array('conditions'=>array('twitter_id'=>$twitterUserDetails['id'])));
+		//debug($twitterUserDetails);
+		if(!empty($twitterUserDetails)){
+			$twitter_user = $this->User->findByTwitterId($twitterUserDetails['id']);
+			if(!empty($twitter_user)) $twitter_link = true;
+		}
 		
+		//Check to make sure the user hasn't already linked their account with Facebook
+		$facebookUserDetails = $this->Connect->user();
+		if(!empty($facebookUserDetails)){
+			$facebook_user = $this->User->findByFacebookId($facebookUserDetails['id']);
+			if(!empty($facebook_user)) $facebook_link = true;
+		}
 		
+		//The user already has an account
+		if($twitter_link == true){
+			$user = $twitter_user;
+		}else if($facebook_link == true){
+			$user = $facebook_user;
+		}
+		
+		//Log the user in with Twitter or Facebook the user data
 		if(!empty($user) && empty($this->data)){
 			//Build an array of information to login with
 			$user_data['User'] = array(
@@ -306,11 +344,82 @@ class UsersController extends AppController {
 			$this->redirect(array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'moderate'));
 		}
 		
-		if(!empty($twitterUserDetails) && empty($this->data)){
-			//Load the data array with Twitter data
-			$this->data['User']['fullname'] = $twitterUserDetails['name'];
-			$this->data['User']['username'] = $twitterUserDetails['screen_name'];
-			$this->data['User']['location'] = $twitterUserDetails['location'];
+		/*if (!empty($this->data)) {
+			$this->User->create();
+			$this->User->set($this->data);
+			$this->User->action = 'signup';
+			
+			if ($this->User->validates()) {
+				$this->data['User']['username'] = strip_tags($this->data['User']['username']);
+				$this->data['User']['fullname'] = strip_tags($this->data['User']['fullname']);
+				$this->data['User']['location'] = strip_tags($this->data['User']['location']);
+				$this->data['User']['password'] = $this->Auth->password($this->data['User']['newPassword']);
+				$this->data['User'][$this->User->columnMap['locale']] = $this->Toolbar->settings['default_locale'];
+				$this->data['User']['slug'] = $this->toSlug($this->data['User']['username']);
+				
+				if(empty($this->data['User']['twitter_id'])) $this->data['User']['twitter_id'] = 0;
+				
+				if ($this->User->save($this->data, false, array('username', 'email', 'location','fullname','twitter_id','password','slug', $this->User->columnMap['locale']))) {
+					//$this->Session->setFlash(__('You have successfully signed up, you may now login and start your journey.', true));
+					// Send email
+					$message  = sprintf(__('Thank you for signing up on %s, your information is listed below', true), $this->Toolbar->settings['site_name']) .":\n\n";
+					$message .= __('Username', true) .": ". $this->data['User']['username'] ."\n";
+					$message .= __('Password', true) .": ". $this->data['User']['newPassword'] ."\n\n";
+					$message .= __('Enjoy!', true);
+					
+					$this->Email->to = $this->data['User']['email'];
+					$this->Email->from = $this->Toolbar->settings['site_name'] .' <'. $this->Toolbar->settings['site_email'] .'>';
+					$this->Email->subject = $this->Toolbar->settings['site_name'] .' - '. __('Sign Up Confirmation', true);
+					$this->Email->send($message);
+					
+					$this->Auth->login($this->data);
+					unset($this->data['User']);
+					$this->Session->setFlash(__('You have successfully created an account and may now start your journey.', true));
+					$this->redirect(array('plugin'=>'','controller'=>'users','action'=>'moderate','admin'=>false));
+					
+					//$this->redirect(array('plugin'=>'','controller' => 'users', 'action' => 'login', 'admin' => false));
+				}
+			}
+		}*/
+		
+		//$this->Toolbar->pageTitle(__('Sign Up', true));
+	}
+	
+	/**
+	 * Facebook Signup.
+	 *
+	 * @access public
+	 */
+	public function facebook_signup() {
+		$this->set('title_for_layout','Sign Up');
+		$this->layout = 'clean';
+		
+		$facebook_link = false; //Used to link an existing account
+	
+		
+		//Check to make sure the user hasn't already linked their account with Facebook
+		$facebookUserDetails = $this->Connect->user();
+		if(!empty($facebookUserDetails)){
+			$facebook_user = $this->User->findByFacebookId($facebookUserDetails['id']);
+			if(!empty($facebook_user)) $facebook_link = true;
+		}
+		
+		//The user already has an account
+		if($facebook_link == true){
+			$user = $facebook_user;
+		}
+		
+		//Log the user in with Twitter or Facebook the user data
+		if(!empty($user) && empty($this->data)){
+			//Build an array of information to login with
+			$user_data['User'] = array(
+				'username' => $user['User']['username'],
+				'password' => $user['User']['password']
+			);
+			$this->Auth->login($user_data);
+			
+			//Redirect to moderate page
+			$this->redirect(array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'moderate'));
 		}
 		
 		if (!empty($this->data)) {
@@ -349,6 +458,130 @@ class UsersController extends AppController {
 					//$this->redirect(array('plugin'=>'','controller' => 'users', 'action' => 'login', 'admin' => false));
 				}
 			}
+		}
+		
+		//Add the data to the fields
+		if(!empty($facebookUserDetails) && empty($this->data)){
+			//Load the data array with Twitter data
+			$this->data['User']['fullname'] = $facebookUserDetails['name'];
+			$this->data['User']['username'] = $facebookUserDetails['username'];
+			$this->data['User']['location'] = $facebookUserDetails['location'];
+		}
+		
+		//$this->Toolbar->pageTitle(__('Sign Up', true));
+	}
+	
+	/**
+	 * Twitter Signup.
+	 *
+	 * @access public
+	 */
+	public function twitter_signup() {
+		$this->set('title_for_layout','Sign Up');
+		$this->layout = 'clean';
+		$twitter_link = false; //Used to link an existing account
+		$facebook_link = false; //Used to link an existing account
+		
+		//Check to make sure the user hasn't already linked their account with Twitter
+		$twitterUserDetails = $this->Session->read('TwitterUserDetails');
+		//debug($twitterUserDetails);
+		if(!empty($twitterUserDetails)){
+			$twitter_user = $this->User->findByTwitterId($twitterUserDetails['id']);
+			if(!empty($twitter_user)) $twitter_link = true;
+		}
+		
+		//The user already has an account
+		if($twitter_link == true){
+			$user = $twitter_user;
+		}
+		
+		//Log the user in with Twitter or Facebook the user data
+		if(!empty($user) && empty($this->data)){
+			//Build an array of information to login with
+			$user_data['User'] = array(
+				'username' => $user['User']['username'],
+				'password' => $user['User']['password']
+			);
+			$this->Auth->login($user_data);
+			
+			//Redirect to moderate page
+			$this->redirect(array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'moderate'));
+		}
+		
+		if (!empty($this->data)) {
+			$this->User->create();
+			$this->User->set($this->data);
+			$this->User->action = 'signup';
+			
+			//Check to see if the user's email matches another user in the system. If it does, add the new information to that user's account.
+			if ($this->User->validates()) {
+				$this->User->recursive = -1;
+				$emailUserCheck = $this->User->find('first',array('condtions'=>array('User.email'=>$this->data['User']['email'])));
+				//debug($emailUserCheck);
+				if(!empty($emailUserCheck)){
+					//The user already has an account. (Add the twitter_id to the account)
+					$this->User->id = $emailUserCheck['User']['id'];
+					//Check to see if the user has a profile image attached. If not, add the Twitter profile image.
+					$check = array();
+					if(empty($emailUserCheck['User']['attachment_id']) && empty($emailUserCheck['User']['profile_image_url'])){
+						//Add the user's Twitter profile image
+						$check[] = $this->User->saveField('profile_image_url',$twitterUserDetails['profile_image_url']);
+					}	
+					$check[] = $this->User->saveField('twitter_id',$twitterUserDetails['id']);
+					if(!empty($check)){
+						//The user was updated and the account was linked
+						//Log the user in.
+						$this->Auth->login($this->User);
+						//Redirect to moderate page
+						$this->redirect(array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'moderate'));
+					}else{
+						//There was a problem saving the twitter_id
+						$this->flash(__('There was a problem linking your account. Please try again later.', true), 'default', 'error-message');
+					}
+				}else{
+					//The user doesn't have an account, create one.
+					$this->data['User']['username'] = strip_tags($this->data['User']['username']);
+					$this->data['User']['fullname'] = strip_tags($this->data['User']['fullname']);
+					$this->data['User']['location'] = strip_tags($this->data['User']['location']);
+					$this->data['User']['about'] = $twitterUserDetails['description'];
+					$this->data['User']['profile_image_url'] = $twitterUserDetails['profile_image_url']; //Add the user's profile image
+					
+					$this->data['User']['password'] = $this->Auth->password($this->data['User']['newPassword']);
+					$this->data['User'][$this->User->columnMap['locale']] = $this->Toolbar->settings['default_locale'];
+					$this->data['User']['slug'] = $this->toSlug($this->data['User']['username']);
+
+					if ($this->User->save($this->data, false, array('username', 'email', 'location','fullname','twitter_id','password','slug', $this->User->columnMap['locale']))) {
+						//$this->Session->setFlash(__('You have successfully signed up, you may now login and start your journey.', true));
+						// Send email
+						$message  = sprintf(__('Thank you for signing up on %s, your information is listed below', true), $this->Toolbar->settings['site_name']) .":\n\n";
+						$message .= __('Username', true) .": ". $this->data['User']['username'] ."\n";
+						$message .= __('Password', true) .": ". $this->data['User']['newPassword'] ."\n\n";
+						$message .= __('Enjoy!', true);
+
+						$this->Email->to = $this->data['User']['email'];
+						$this->Email->from = $this->Toolbar->settings['site_name'] .' <'. $this->Toolbar->settings['site_email'] .'>';
+						$this->Email->subject = $this->Toolbar->settings['site_name'] .' - '. __('Sign Up Confirmation', true);
+						$this->Email->send($message);
+
+						$this->Auth->login($this->data);
+						unset($this->data['User']);
+						$this->Session->setFlash(__('You have successfully created an account and may now start your journey.', true));
+						$this->redirect(array('plugin'=>'','controller'=>'users','action'=>'moderate','admin'=>false));
+
+						//$this->redirect(array('plugin'=>'','controller' => 'users', 'action' => 'login', 'admin' => false));
+					}
+				}
+			}
+		}
+		
+		//Be sure to add the data after the empty check
+		//The user doesn't have an account
+		if(!empty($twitterUserDetails) && empty($this->data)){
+			//Load the data array with Twitter data
+			$this->data['User']['fullname'] = $twitterUserDetails['name'];
+			$this->data['User']['username'] = $twitterUserDetails['screen_name'];
+			$this->data['User']['location'] = $twitterUserDetails['location'];
+			$this->data['User']['twitter_id'] = $twitterUserDetails['id'];
 		}
 		
 		//$this->Toolbar->pageTitle(__('Sign Up', true));
@@ -611,50 +844,6 @@ class UsersController extends AppController {
 			$this->set('topics', $this->Topic->getLatestByUser($user['User']['id']));
 			$this->set('posts', $this->Topic->Post->getLatestByUser($user['User']['id']));
 		}
-		
-		//Update the total counts
-		/*$this->User->updateTotalInspirations($user['User']['id']);
-		$this->User->updateTotalCollections($user['User']['id']);
-		$this->User->updateTotalProducts($user['User']['id']);
-		$this->User->updateTotalSources($user['User']['id']);*/
-		//Update follow related counts
-		//$this->User->updateTotalFollowCount($user['User']['id']);
-		//$this->User->updateTotalFollowerCount($user['User']['id']);
-		
-		//Request data for the elements
-		/*$userSources = $this->User->Source->userSources($user['User']['id']);
-		$this->set(compact('userSources'));
-		
-		$userProducts = $this->User->Product->userProducts($user['User']['id'],10,'all');
-		$this->set(compact('userProducts'));
-		
-		$userInspirations = $this->User->Inspiration->userInspirations($user['User']['id'],10,'all');
-		$this->set(compact('userInspirations'));
-		
-		$userCollections = $this->User->Collection->userCollections($user['User']['id'],10,'all');
-		$this->set(compact('userCollections'));
-		
-		$userUfos = $this->User->Ufo->userUfos($user['User']['id']);
-		$this->set(compact('userUfos'));*/
-		
-		/*$wantedProductsTemp = $this->User->Ownership->getUserWants('Product',$user['User']['id']);
-		$wantedProducts = array();
-		//Find the full product details
-		if(!empty($wantedProductsTemp)){
-			foreach($wantedProductsTemp as $product){
-				$wantedProducts[] = $this->User->Product->read(null,$product['Product']['id']);
-			}	
-		}
-		$this->set(compact('wantedProducts'));
-		
-		$haveProductsTemp = $this->User->Ownership->getUserHaves('Product',$user['User']['id']);
-		$haveProducts = array();
-		if(!empty($haveProductsTemp)){
-			foreach($haveProductsTemp as $product){
-				$haveProducts[] = $this->User->Product->read(null,$product['Product']['id']);
-			}
-		}
-		$this->set(compact('haveProducts'));*/
 		
 		//Check for a local avatar details
 		if(!empty($user['User']['attachment_id'])){

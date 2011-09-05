@@ -20,6 +20,63 @@ class ConfigController extends AppController {
 		exit();
 	}
 	
+	/**
+	 * Updates the totals for sources, products, inspirations, collections, etc.
+	 * @param int user_id The user id to update
+	 * @return 
+	 * 
+	*/
+	public function admin_updateTotalCounts($user_id=null){
+		$this->autoLayout = false;
+		$this->autoRender = false;
+		
+		if(!$user_id){
+			$this->flash(__('You have to enter a user id.', true), 'default', 'error-message');
+			$this->redirect('/');
+			exit;
+		}
+		
+		//Update the total counts
+		$this->User->updateTotalInspirations($user_id);
+		$this->User->updateTotalCollections($user_id);
+		$this->User->updateTotalProducts($user_id);
+		$this->User->updateTotalSources($user_id);
+		
+		//Update follow related counts
+		$this->User->updateTotalFollowCount($user_id);
+		$this->User->updateTotalFollowerCount($user_id);
+		
+		$the_user = $this->read(null,$user_id);
+		
+		//Request data for the elements
+		//$userSources = $this->User->Source->userSources($user_id);
+		echo "<h3>The user has added ".$the_user['User']['totalSources']." sources.</h3>";
+		//$this->set(compact('userSources'));
+		
+		//$userProducts = $this->User->Product->userProducts($user_id,10,'all');
+		echo "<h3>The user has added ".$the_user['User']['totalProducts']." products.</h3>";
+		//$this->set(compact('userProducts'));
+		
+		//$userInspirations = $this->User->Inspiration->userInspirations($user_id,10,'all');
+		echo "<h3>The user has created ".$the_user['User']['totalInspirations']." inspirations.</h3>";
+		//$this->set(compact('userInspirations'));
+		
+		//$userCollections = $this->User->Collection->userCollections($user_id,10,'all');
+		echo "<h3>The user has created ".$the_user['User']['totalCollections']." collections.</h3>";
+		//$this->set(compact('userCollections'));
+		
+		//$userUfos = $this->User->Ufo->userUfos($user_id);
+		echo "<h3>The user has created ".$the_user['User']['totalUfos']." ufos.</h3>";
+		//$this->set(compact('userUfos'));
+		
+		$wantedProducts = $this->User->Ownership->getUserWants('Product',$user_id);
+		echo "<h3>The user wants ".count($wantedProducts)." products.</h3>";
+		
+		$haveProducts = $this->User->Ownership->getUserHaves('Product',$user_id);
+		echo "<h3>The user has ".count($haveProducts)." products.</h3>";
+		//$this->set(compact('haveProducts'));
+	}
+	
 	/**************** ACL METHODS ************************/
 	
 	/**
