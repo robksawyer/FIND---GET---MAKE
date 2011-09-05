@@ -352,4 +352,7 @@ Cache::config('very_long', array(
 	'serialize' => true)
 );*/
 
+# Change DbAcl to db_cached_acl
+Configure::write('Acl.classname', 'Cached_Acl.Db_Cached_Acl');
+
 Cache::config('default', array('engine' => 'File'));
