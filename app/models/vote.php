@@ -214,6 +214,4 @@ class Vote extends AppModel {
 													)));
 		return $count;
 	}
-	
 }
-?>

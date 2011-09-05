@@ -59,4 +59,5 @@ class CountriesController extends AppController {
 		$this->Session->setFlash(__('Country was not deleted', true));
 		$this->redirect(array('action' => 'index','admin'=>false));
 	}
+	
 }

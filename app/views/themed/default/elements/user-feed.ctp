@@ -51,8 +51,8 @@
 	?>
 </div>
 <script type="text/javascript">
-var num_items = <?=$num_items?>;
-var limit = <?=$limit?>;
+var num_items = <?php echo $num_items; ?>;
+var limit = <?php echo $limit; ?>;
 var previous_loaded = limit;
 var loading = false;
 var showing_end = false;

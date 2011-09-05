@@ -24,20 +24,15 @@ class ProductsController extends AppController {
 	public function beforeFilter(){
 		parent::beforeFilter();
 		
+		//Make certain pages public
+		$this->Auth->allowedActions = array('index','view','verifyAddition','clearVerifySessions','getProductsForSource','getProductsForInspiration','userProducts');
+		
 		$this->Uploader->uploadDir = 'media/static/img/products/';
 		$this->Uploader->enableUpload = true;
 		$this->Uploader->maxFileSize = '75M'; // 75 Megabytes
 		$this->Uploader->tempDir = 'media/transfer/img/products/';
 		//$this->Uploader->mime('image', 'gif', 'image/gif');
 		//$this->Uploader->maxNameLength = 50;
-		
-		//Make certain pages public
-		$this->Auth->allowedActions = array('index','view','key','generateKeycode','tags','getTags',
-											'getProductsForSource','getProductsForInspiration','getProfileData','getCount',
-											'userProducts'
-											);
-		
-		//$this->Auth->allow('getProductsForSource','getProductsForInspiration','getTags','getProfileData','getCount');
 	}
 	
 	/**
@@ -51,7 +46,8 @@ class ProductsController extends AppController {
 		$user_id = $this->Auth->user('id');
 		$model = $this->modelClass;
 		$flagged = $this->$model->Flag->hasUserFlagged($user_id,$model,$this->$model->id);
-		$this->set(compact('flagged'));
+		$staff_favorite = $this->$model->StaffFavorite->hasUserFavorited($user_id,$model,$this->$model->id);
+		$this->set(compact('flagged','staff_favorite'));
 	}
 	
 
@@ -620,7 +616,7 @@ class ProductsController extends AppController {
 	 * @param id User id
 	 */
 	public function userProducts($id = null,$limit=25){
-		$this->Product->recursive = 2;
+		$this->Product->recursive = 1;
 		if(isset($this->params['requested'])) {
 			$products = $this->Product->userProducts($id,$limit,'all');
 			return $products;

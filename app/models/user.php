@@ -198,6 +198,12 @@ class User extends AppModel {
 			'foreignKey' => 'user_id',
 			'dependent' => true,
 			'exclusive' => true
+		),
+		'StaffFavorite' => array(
+			'className' => 'StaffFavorite',
+			'foreignKey' => 'user_id',
+			'dependent' => true,
+			'exclusive' => true
 		)
 	);
 	

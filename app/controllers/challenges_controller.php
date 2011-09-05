@@ -87,5 +87,5 @@ class ChallengeController extends AppController {
 			return;
 		}
 	}
+	
 }
-?>

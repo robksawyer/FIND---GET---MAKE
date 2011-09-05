@@ -372,4 +372,3 @@ class VotesController extends AppController {
 	
 	
 }
-?>

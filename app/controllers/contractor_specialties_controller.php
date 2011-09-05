@@ -78,4 +78,5 @@ class ContractorSpecialtiesController extends AppController {
 		$this->Session->setFlash(__('Contractor specialty was not deleted', true));
 		$this->redirect(array('action' => 'index','admin'=>false));
 	}
+	
 }

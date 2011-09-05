@@ -314,4 +314,3 @@ class Ownership extends AppModel {
 		}
 	}
 }
-?>

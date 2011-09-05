@@ -101,6 +101,13 @@ class Product extends AppModel {
 			'conditions' => array('Flag.model' => 'Product'),
 			'dependent' => true,
 			'exclusive' => true
+		),
+		'StaffFavorite' => array(
+			'className' => 'StaffFavorite',
+			'foreignKey' => 'model_id',
+			'conditions' => array('StaffFavorite.model' => 'Product'),
+			'dependent' => true,
+			'exclusive' => true
 		)
 	);
 
@@ -197,19 +204,6 @@ class Product extends AppModel {
 	}
 	
 	/**
-	 * Returns the needed feed data for a specific record
-	 * @param int model_id
-	 * @return 
-	 * 
-	*/
-	public function getFeedData($model_id=null){
-		$this->recursive = 2;
-		$this->User->recursive = -1;
-		$data = $this->read(null,$model_id);
-		return $data;
-	}
-	
-	/**
 	 * @param 
 	 * @return 
 	 * 
@@ -278,11 +272,12 @@ class Product extends AppModel {
 	 * 
 	*/
 	function getProductSelectorData(){
+		$this->recursive = 1;
 		$products = $this->find('all',
 						array(
 							'order' => array('Product.created DESC'),
-							'recursive' => 1,
 							'contain'=>array('Attachment')
+							//'limit'=>25
 							)
 						);
 		return $products;
@@ -344,15 +339,15 @@ class Product extends AppModel {
 	}
 	
 	/**
-	 * Returns the necessary data for the view actions
-	 * @param int id The id of the source item that you're trying to locate
+	 * Returns the needed feed data for a specific record
+	 * @param int model_id
 	 * @return 
 	 * 
 	*/
-	function getViewData($id=null){
+	public function getFeedData($model_id=null){
+		$this->recursive = 1;
 		$data = $this->find('first',array(
-										'conditions'=>array('Product.id'=>$id),
-										'recursive' => 2,
+										'conditions'=>array('Product.id'=>$model_id),
 										'contain'=>array('Attachment',
 														'Source',
 														'ProductCategory',
@@ -361,8 +356,50 @@ class Product extends AppModel {
 														)
 										)
 									);
+		return $data;
+	}
+	
+	/**
+	 * Returns the necessary data for the key action
+	 * @param int keycode The keycode of the item to fetch
+	 * @return 
+	 * 
+	*/
+	function getKeyData($keycode=null){
+		$data = $this->find('first',array(
+										'conditions'=>array('Product.keycode'=>$keycode),
+										'recursive' => 1,
+										'contain'=>array('Attachment',
+														'Source',
+														'ProductCategory',
+														'User','Tag',
+														'Ownership','Vote','Inspiration','Collection'
+														)
+										)
+									);
 		//debug($data);
 		return $data;
 	}
-
+	
+	/**
+	 * Returns the necessary data for the view actions
+	 * @param int id The id of the source item that you're trying to locate
+	 * @return 
+	 * 
+	*/
+	function getViewData($id=null){
+		$data = $this->find('first',array(
+										'conditions'=>array('Product.id'=>$id),
+										'recursive' => 1,
+										'contain'=>array('Attachment',
+														'Source',
+														'ProductCategory',
+														'User','Tag',
+														'Ownership','Vote','Inspiration','Collection'
+														)
+										)
+									);
+		//debug($data);
+		return $data;
+	}
 }

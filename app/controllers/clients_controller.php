@@ -277,4 +277,5 @@ class ClientsController extends AppController {
 			$this->set(compact('tags'));
 		}
 	}
+	
 }

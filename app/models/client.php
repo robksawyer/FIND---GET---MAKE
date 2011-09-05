@@ -73,5 +73,4 @@ class Client extends AppModel {
 			'insertQuery' => ''
 		)
 	);
-
 }

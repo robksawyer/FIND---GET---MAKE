@@ -364,7 +364,6 @@ class SettingsController extends AppController {
 				$this->Session->setFlash(__('You didn\'t add an image, or the filetype is not valid. Try saving the file to your computer and trying again.', true));
 				$this->redirect('/account/settings');
 			}
-			exit();
 		}
 		
 		$this->set('user', $this->User->read(null, $user));
@@ -614,4 +613,3 @@ class SettingsController extends AppController {
 		}
 	}	
 }
-?>

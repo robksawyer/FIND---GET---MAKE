@@ -128,4 +128,5 @@ class InspirationPhotoTagsController extends AppController {
 		}
 		
 	}
+	
 }

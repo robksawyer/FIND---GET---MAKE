@@ -117,10 +117,7 @@ class FlagsController extends AppController {
 				default:
 					$this->Session->setFlash(__('Something went wrong, please try again.', true));
 					$this->redirect(array('action'=>'index'));
-					exit();
 			}
-			
-			exit();
 		}
 	}
 	
@@ -178,7 +175,5 @@ class FlagsController extends AppController {
 	/*function deleteFlaggedItem($id=null){
 		//Find the item based on the flag id and delete it.
 	}*/
-	
-	
-	
+		
 }

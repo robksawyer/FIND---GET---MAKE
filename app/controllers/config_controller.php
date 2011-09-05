@@ -17,7 +17,6 @@ class ConfigController extends AppController {
 	
 	public function version(){
 		echo "<center style='position: relative; top:50px;'>Version 1.0</center>";
-		exit();
 	}
 	
 	
@@ -113,6 +112,9 @@ class ConfigController extends AppController {
 		$haveProducts = $this->User->Ownership->getUserHaves('Product',$user_id);
 		echo "<h3>The user has ".count($haveProducts)." products.</h3>";
 		//$this->set(compact('haveProducts'));
+		
+		//Refresh the logged in user
+		$this->_refreshAuth();
 	}
 	
 	/**************** ACL METHODS ************************/
@@ -203,6 +205,7 @@ class ConfigController extends AppController {
 		$this->Acl->allow($group, 'controllers/Votes');
 		$this->Acl->allow($group, 'controllers/UserFollowings');
 		$this->Acl->allow($group, 'controllers/Settings');
+		$this->Acl->allow($group, 'controllers/StaffFavorites');
 		
 		//App controller
 		$this->Acl->allow($group, 'controllers/Inspirations/uploadAttachments');
@@ -271,7 +274,7 @@ class ConfigController extends AppController {
 		$this->Acl->allow($group, 'controllers/Challenges');
 		
 		$this->Acl->allow($group, 'controllers/Collections/add');
-		$this->Acl->allow($group, 'controllers/Collections/add_attachment');
+		$this->Acl->deny($group, 'controllers/Collections/add_attachment');
 		$this->Acl->allow($group, 'controllers/Collections/edit');
 		$this->Acl->allow($group, 'controllers/Collections/view');
 		$this->Acl->allow($group, 'controllers/Collections/index');
@@ -289,6 +292,7 @@ class ConfigController extends AppController {
 		$this->Acl->allow($group, 'controllers/Feeds/getUserFeedCount');
 		
 		$this->Acl->allow($group, 'controllers/Flags/flag_item');
+		
 		$this->Acl->allow($group, 'controllers/InspirationPhotoTags/add');
 		$this->Acl->allow($group, 'controllers/InspirationPhotoTags/delete');
 		$this->Acl->allow($group, 'controllers/Inspirations/add');
@@ -320,7 +324,7 @@ class ConfigController extends AppController {
 		$this->Acl->allow($group, 'controllers/Sources/removeAttachment');
 		$this->Acl->allow($group, 'controllers/Sources/ajax_check_name');
 		$this->Acl->allow($group, 'controllers/Sources/cleanAddress');
-	
+		
 		$this->Acl->allow($group, 'controllers/Ufos/view');
 		$this->Acl->allow($group, 'controllers/Ufos/add');
 		$this->Acl->allow($group, 'controllers/Ufos/edit');
@@ -348,6 +352,8 @@ class ConfigController extends AppController {
 		$this->Acl->allow($group, 'controllers/Users/getAvatar');
 		$this->Acl->allow($group, 'controllers/Users/staff_favorites');
 		$this->Acl->deny($group, 'controllers/Users/add_attachment');
+		
+		$this->Acl->deny($group, 'controllers/StaffFavorites');
 		
 		$this->Acl->allow($group, 'controllers/Votes');
 		$this->Acl->deny($group, 'controllers/Votes/add_attachment');
@@ -604,7 +610,6 @@ class ConfigController extends AppController {
 		}
 		return $arr;
 	}
-	
 	/**************** END ACL ************************/
+	
 }
-?>

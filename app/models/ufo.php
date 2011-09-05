@@ -47,6 +47,20 @@ class Ufo extends AppModel {
 			'conditions' => array('Flag.model' => 'Ufo'),
 			'dependent' => true,
 			'exclusive' => true
+		),
+		'Vote' => array(
+			'className' => 'Vote',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Vote.model' => 'Ufo'),
+			'dependent' => true,
+			'exclusive' => true
+		),
+		'StaffFavorite' => array(
+			'className' => 'StaffFavorite',
+			'foreignKey' => 'model_id',
+			'conditions' => array('StaffFavorite.model' => 'Ufo'),
+			'dependent' => true,
+			'exclusive' => true
 		)
 	);
 	

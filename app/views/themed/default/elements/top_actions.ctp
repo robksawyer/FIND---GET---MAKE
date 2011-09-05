@@ -16,6 +16,7 @@
 </style>
 <?php
 	echo $this->Html->css("popup/wide",'stylesheet',array('inline'=>false));
+	$controller = Inflector::pluralize(strtolower($model));
 ?>
 <div class="top-actions">
 	<?php if(!empty($authUser)): ?>
@@ -46,7 +47,7 @@
 		<?php 
 		if(empty($removeEdit)):
 			//Check the logged in user to make sure that the user who created the item matches before showing.
-			if($authUser['User']['id'] == $item['User']['id'] || Configure::read('FGM.group_change') == 1):
+			if($authUser['User']['id'] == $item['User']['id'] || Configure::read('FGM.group_change') == 1 || $isAdmin):
 				echo "<li>".$this->Html->image('icons/edit.gif', array(
 																					'alt' => 'Edit',
 																					'title' => 'Edit',
@@ -75,7 +76,7 @@
 		<?php 
 		if(empty($removeDelete)): 
 			//Check the logged in user to make sure that the user who created the item matches before showing.
-			if($authUser['User']['id'] == $item['User']['id'] || Configure::read('FGM.group_delete') == 1):
+			if($authUser['User']['id'] == $item['User']['id'] || Configure::read('FGM.group_delete') == 1 || $isAdmin):
 					echo "<li>".$this->Html->link(
 							$this->Html->image("icons/delete.gif", array(
 																						"alt" => "Delete",
@@ -133,6 +134,23 @@
 		endif;
 		?>
 		<!-- END FLAG ITEM -->
+		
+		<!-- STAFF FAVORITE -->
+		<?php 
+		//Don't allow the staff to like their own items
+		if($authUser['User']['id'] != $item['User']['id'] && $isAdmin || $isManager):
+			if(empty($staff_favorite)){
+				echo $this->Html->link('Staff favorite','#',array(
+																	'class'=>'staff-favorite',
+																	'id'=>'staff-fav-'.strtolower($model).'-'.$item[$model]['id'],
+																	'title'=>'Add this item to the staff favorites.'
+																	));
+			}else{
+				echo '<span class="staff-favorite" style="text-decoration: line-through;" title="You\'ve already added this item to the staff favorites.">Staff favorite</span>';
+			}
+		endif;
+		?>
+		<!-- END STAFF FAVORITE -->
 	</ul>
 	<?php endif; ?>
 </div>
@@ -141,7 +159,7 @@
 <div id="basic-modal-content">
 	<div class="wrapper">
 	<?php 
-		$redirect = '/'.Inflector::pluralize(strtolower($model)).'/view/'.$item[$model]['id'];
+		$redirect = '/'.$controller.'/view/'.$item[$model]['id'];
 		echo $this->element('flag-item',array('cache'=>false,
 															'redirect'=>$redirect,
 															'model'=>$model,

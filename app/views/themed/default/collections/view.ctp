@@ -81,7 +81,7 @@ if(!empty($authUser)):
 ?>	
 		<div class="actions">
 			<ul>
-				<li><?php echo $this->Html->link(__('Add Product', true),'javascript:return false;',array('class'=>'basic-modal-button'));?> </li>
+				<li><?php echo $this->Html->link(__('Add Product', true),'javascript:return false;',array('class'=>'add-product-modal-button'));?> </li>
 				<li><?php echo $this->Html->link(__('Add Existing Product', true),'javascript:return false;',array('class'=>'product-selector-modal-button')); ?></li>
 			</ul>
 		</div>
@@ -103,7 +103,7 @@ echo $this->element('product-selector',array(
 														));
 ?>
 <!-- ADD PRODUCTS MODAL CONTENT -->
-<div id="basic-modal-content">
+<div id="add-product-modal-button" style="display:none">
 	<div class="wrapper">
 	<?php 
 		$redirect = '/collections/view/'.$collection['Collection']['id'];
@@ -130,10 +130,10 @@ echo $this->element('product-selector',array(
 <?php endif; ?>
 <script type="text/javascript">
 	// Load dialog on click
-	$('.basic-modal-button').click(function (e) {
+	$('.add-product-modal-button').click(function (e) {
 		
 		//$(".chzn-select").trigger("liszt:updated");
-		$('#basic-modal-content').modal({
+		$('#add-product-modal-button').modal({
 			onShow:function(dialog){
 				// Access elements inside the dialog
 				// Useful for binding events, initializing other plugins, etc.

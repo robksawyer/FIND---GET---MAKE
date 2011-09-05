@@ -36,18 +36,18 @@
   $library = isset($library) ? $library : 'Prototype';
   $onclick_pre = ($library == 'Prototype') ? '' : '#';
 ?>
-<div id="<?= $id; ?>" style="display:none;">
+<div id="<?php $id; ?>" style="display:none;">
   <div class="hideshow">
     <div class="fade"></div>
-    <div id="drag-<?= $id ?>" class="popup_block">
+    <div id="drag-<?php $id ?>" class="popup_block">
       <div class="popup">
-        <a href="#" onclick="$('<?= $onclick_pre . $id; ?>').hide(); return false;"><?= $html->image('/popup/img/icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
-        <div id="popup-content"><?= $popcont; ?></div>
+        <a href="#" onclick="$('<?php $onclick_pre . $id; ?>').hide(); return false;"><?php $html->image('/popup/img/icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
+        <div id="popup-content"><?php $popcont; ?></div>
       </div>
     </div>
   </div>
 </div>
 
 <? if($draggable && $library == 'Prototype'): ?>
-  <?= $html->scriptBlock("new Draggable('drag-$id');"); ?>
+  <?php $html->scriptBlock("new Draggable('drag-$id');"); ?>
 <?endif;?>

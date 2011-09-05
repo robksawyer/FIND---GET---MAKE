@@ -3,7 +3,7 @@ class UfosController extends AppController {
 
 	var $name = 'Ufos';
 	var $helpers = array('Tags.TagCloud');
-	var $components = array('Uploader.Uploader','String');
+	var $components = array('Uploader.Uploader');
 	
 	function beforeFilter(){
 		parent::beforeFilter();
@@ -27,7 +27,8 @@ class UfosController extends AppController {
 		$user_id = $this->Auth->user('id');
 		$model = $this->modelClass;
 		$flagged = $this->$model->Flag->hasUserFlagged($user_id,$model,$this->$model->id);
-		$this->set(compact('flagged'));
+		$staff_favorite = $this->$model->StaffFavorite->hasUserFavorited($user_id,$model,$this->$model->id);
+		$this->set(compact('flagged','staff_favorite'));
 	}
 	
 	

@@ -119,7 +119,7 @@ function setProducts(model, controller, id,products,productOptions){
 	products_form += this.productOptions;
 	products_form += '</div></div>';
 	
-	products_form += '<form id="'+this.model+'AdminAddForm" enctype="multipart/form-data" method="post" action="/'+this.controller+'/addProducts/'+this.item_id+'" accept-charset="utf-8">';
+	products_form += '<form id="'+this.model+'AddProductsForm" enctype="multipart/form-data" method="post" action="/'+this.controller+'/addProducts/'+this.item_id+'" accept-charset="utf-8">';
 	products_form += '<input type="hidden" name="data['+this.model+'][id]" value="'+this.item_id+'" id="'+this.model+'Id" />';
 	products_form += '<select type="hidden" name="data[Product][Product][]" multiple="multiple" id="ProductProduct" style="display:none;">';
 	for(var i=0;i<this.products.length;i++){

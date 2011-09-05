@@ -41,7 +41,7 @@ class UsersController extends AppController {
 		$this->Auth->allowedActions = array('more_user_feed_data', 'forgot', 'listing', 'profile','getAvatar',
 											'signup','login','logout','register','register_with_twitter','register_with_facebook',
 											'twitter_logout','facebook_logout','hide_welcome','staff_favorites',
-											'facebook_signup','twitter_signup'
+											'facebook_signup','twitter_signup','check'
 											);
 		
 		/*$this->Auth->allow('login','logout','register','register_with_twitter','register_with_facebook',
@@ -152,8 +152,6 @@ class UsersController extends AppController {
 				$this->Auth->login($loginUser);
 				$this->Session->delete('Forum');
 				$this->redirect($this->Auth->loginRedirect);
-				
-				exit();
 			}
 		}
 		//Check for a Facebook user
@@ -173,8 +171,6 @@ class UsersController extends AppController {
 				
 				//Save the user's facebook_id (This is automatically handled)
 				//$this->User->saveField('facebook_id',$facebookUser['id']);
-				
-				exit();
 			}
 		}
 		
@@ -195,6 +191,84 @@ class UsersController extends AppController {
 	}
 	
 	/**
+	 * Another attempt to do some ACL checking
+	 * Check to see if the user has permission
+	 * @param string controller The controller to check permissions on
+	 * @param string action The action to check permissions on
+	 * @return 
+	 * 
+	*/
+	/*public function check($controller='',$action='*'){
+		if(!empty($this->params['requested'])) {
+			$user = $this->Auth->user();
+			if(!empty($user)){
+				if(empty($controller)){
+					//$checker = $this->Acl->check(array('model' => 'Group', 'foreign_key' => $user['User']['group_id']));
+					return false;
+				}else if(empty($action)){
+					$checker = $this->Acl->check(array('model' => 'Group', 'foreign_key' => $user['User']['group_id']), $controller);
+				}else {
+					$checker = $this->Acl->check(array('model' => 'Group', 'foreign_key' => $user['User']['group_id']), $controller, $action);
+				}
+				if(!empty($checker)){ 
+					return true;
+				}else{
+					return false;
+				}
+			}else{
+				return false;
+			}
+		}
+	}*/
+	
+	/**
+	 * I think this is generally a bad a idea because it'll bloat the session with tons of data.
+	 * A helper method to build a permissions Session
+	 * http://bakery.cakephp.org/articles/thanos/2011/01/17/acl_checking_permissions_in_views
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	/*protected function createPermissionSession($user=null){
+		$userGroup = $this->User->Group->findById($user['User']['group_id']);
+		$aro = $this->Acl->Aro->find('first', array(
+			'conditions' => array(
+				'Aro.model' => 'Group',
+				'Aro.foreign_key' => $this->_user['User']['group_id'],
+			),
+	 	));
+		$acos = $this->Acl->Aco->children();
+		foreach($acos as $aco){
+			$permission = $this->Acl->Aro->Permission->find('first', array(
+																	'conditions' => array(
+																		'Permission.aro_id' => $aro['Aro']['id'],
+																		'Permission.aco_id' => $aco['Aco']['id'],
+																	),
+																));
+	 		if(isset($permission['Permission']['id'])){
+				if ($permission['Permission']['_create'] == 1 ||
+					$permission['Permission']['_read'] == 1 ||
+					$permission['Permission']['_update'] == 1 ||
+					$permission['Permission']['_delete'] == 1) {
+					$this->Session->write('Auth.Permissions.'.$permission['Aco']['alias'],true);
+					if(!empty($permission['Aco']['parent_id'])){
+						$parentAco = $this->Acl->Aco->find('first', array(
+								'conditions' => array(
+									 'id' => $permission['Aco']['parent_id']
+								)	
+						));
+						$this->Session->write(
+								'Auth.Permissions.'.$permission['Aco']['alias']
+								.'.'.$parentAco['Aco']['alias'], 
+								true
+						);
+					}
+				}
+			}
+		}
+	}*/
+	
+	/**
 	 * Logout.
 	 *
 	 * @access public
@@ -209,6 +283,9 @@ class UsersController extends AppController {
 		}
 		if($this->Session->check('User')) {
 			$this->Session->delete('User');
+		}
+		if($this->Session->check('Auth.Permissions')){
+			$this->Session->delete('Auth.Permissions');
 		}
 		$this->Session->destroy();
 		
@@ -993,6 +1070,5 @@ class UsersController extends AppController {
 	*/
 	public function admin_remove_staff_favorite(){
 		
-	}
-	
+	}	
 }

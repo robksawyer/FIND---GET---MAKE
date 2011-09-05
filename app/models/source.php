@@ -92,6 +92,13 @@ class Source extends AppModel {
 			'conditions' => array('Flag.model' => 'Source'),
 			'dependent' => true,
 			'exclusive' => true
+		),
+		'StaffFavorite' => array(
+			'className' => 'StaffFavorite',
+			'foreignKey' => 'model_id',
+			'conditions' => array('StaffFavorite.model' => 'Source'),
+			'dependent' => true,
+			'exclusive' => true
 		)
 	);
 
@@ -293,61 +300,12 @@ class Source extends AppModel {
 														),
 														'SourceCategory',
 														'User','Tag',
-														'Country','Vote'
+														'Country','Vote','Inspiration'
 														)
 										)
 									);
 		//debug($data);
 		return $data;
 	}
-	
-	/*
-		TODO Get the tagging DISTINCT working for pagintation. The following are failed attempts
-	*/
-	/**
-	 * This fixes the pagination problem when searching for DISTINCT items
-	 */ 
-	/*public function paginateCount($conditions = null, $recursive = 0, $extra = array()) {
-		$parameters = compact('conditions', 'recursive');
-
-		if (isset($extra['group'])) {
-			$parameters['fields'] = $extra['group'];
-
-			if (is_string($parameters['fields'])) {
-				// pagination with single GROUP BY field
-				if (substr($parameters['fields'], 0, 9) != 'DISTINCT ') {
-					$parameters['fields'] = 'DISTINCT ' . $parameters['fields'];
-				}
-				unset($extra['group']);
-				$count = $this->find('count', array_merge($parameters, $extra));
-			} else {
-				// resort to inefficient method for multiple GROUP BY fields
-				$count = $this->find('count', array_merge($parameters, $extra));
-				$count = $this->getAffectedRows();
-			}
-		} else {
-			// regular pagination
-			$count = $this->find('count', array_merge($parameters, $extra));
-		}
-		return $count;
-	}*/
-	
-	/*function paginateCount($conditions = null, $recursive = 0, $extra = array()) {
-		$parameters = compact('conditions');
-		$this->recursive = $recursive;
-		$count = $this->find('count', array_merge($parameters, $extra));
-		if (isset($extra['group'])) {
-			$count = $this->getAffectedRows();
-		}
-		return $count;
-	}*/
-	
-	/*function paginateCount($conditions = null, $recursive = 0, $extra = array()){
-		$count = $this->find('count', array(
-			'fields' => 'DISTINCT Tag.name',
-			'conditions' => $conditions
-		));
-		return $count;
-	}*/
 	
 }

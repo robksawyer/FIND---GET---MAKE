@@ -22,10 +22,12 @@ class InspirationsController extends AppController {
 		parent::beforeFilter();
 		
 		//Make certain pages public
-		$this->Auth->allowedActions = array('index','view','key','generateKeycode',
-											'tags','getTags','users','userInspirations',
-											'getProfileData'
-											);
+		$this->Auth->allowedActions = array('index','view','userInspirations');
+		
+		//Disable the Security component for certain actions
+		if(isset($this->Security) && $this->action == 'addProducts'){
+			$this->Security->enabled = false;
+		}
 		
 		//$this->passedArgs['comment_view_type'] = 'flat';
 		
@@ -50,7 +52,8 @@ class InspirationsController extends AppController {
 		$user_id = $this->Auth->user('id');
 		$model = $this->modelClass;
 		$flagged = $this->$model->Flag->hasUserFlagged($user_id,$model,$this->$model->id);
-		$this->set(compact('flagged'));
+		$staff_favorite = $this->$model->StaffFavorite->hasUserFavorited($user_id,$model,$this->$model->id);
+		$this->set(compact('flagged','staff_favorite'));
 	}
 	
 	
@@ -167,17 +170,7 @@ class InspirationsController extends AppController {
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}
 		
-		$inspiration = $this->Inspiration->find('first', array(
-															'conditions'=>array(
-																			'Inspiration.id'=>$id
-																			),
-															'contain'=>array(
-																			'User','Attachment','InspirationPhotoTag',
-																			'Tag','Source',
-																			'Product'=>array('Attachment')
-																			)
-															)
-														);
+		$inspiration = $this->Inspiration->getViewData($id);
 		
 		$countries = $this->Inspiration->Country->find('list');
 		$sources = $this->Inspiration->Source->find('list');
@@ -202,7 +195,8 @@ class InspirationsController extends AppController {
 			$this->Session->setFlash(__('Invalid keycode', true));
 			$this->redirect('/');
 		}
-		$inspiration = $this->Inspiration->find('first',array('conditions'=>array('Inspiration.keycode'=>$keycode)));
+		$inspiration = $this->Inspiration->getKeyData($keycode);
+		
 		if(empty($inspiration)){
 			$this->Session->setFlash(__('Invalid keycode', true));
 			$this->redirect('/');
@@ -289,12 +283,11 @@ class InspirationsController extends AppController {
 	 * This is a helper method that makes it easy to add multiple products to an inspiration image.
 	 * @param id The id of the current inspiration.
 	 */
-	function addProducts($id=null) {
+	public function addProducts($id=null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid inspiration', true),'default',array('class'=>'error-message'));
 			//$this->redirect(array('action' => 'index','admin'=>false));
 		}
-		
 		if (!empty($this->data)) {
 			//Save the input data
 			$data = $this->data;

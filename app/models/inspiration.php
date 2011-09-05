@@ -60,6 +60,20 @@ class Inspiration extends AppModel {
 			'conditions' => array('Flag.model' => 'Inspiration'),
 			'dependent' => true,
 			'exclusive' => true
+		),
+		'Vote' => array(
+			'className' => 'Vote',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Vote.model' => 'Inspiration'),
+			'dependent' => true,
+			'exclusive' => true
+		),
+		'StaffFavorite' => array(
+			'className' => 'StaffFavorite',
+			'foreignKey' => 'model_id',
+			'conditions' => array('StaffFavorite.model' => 'Inspiration'),
+			'dependent' => true,
+			'exclusive' => true
 		)
 	);
 	
@@ -155,15 +169,70 @@ class Inspiration extends AppModel {
 	}
 	
 	/**
+	 * Returns the necessary data for the view
+	 * @param int id Id of the item to fetch
+	 * @return 
+	 * 
+	*/
+	public function getViewData($id=null){
+		$this->recursive = 1;
+		$data = $this->find('first', array(
+										'conditions'=>array(
+														'Inspiration.id'=>$id
+														),
+										'contain'=>array(
+														'User','Attachment','InspirationPhotoTag',
+														'Tag','Source','Vote','Country',
+														'Product'=>array('Attachment')
+														)
+										)
+									);
+														
+		return $data;
+	}
+	
+	/**
+	 * Returns the necessary data for the keyed area
+	 * @param int keycode keycode of the item to fetch
+	 * @return 
+	 * 
+	*/
+	public function getKeyData($keycode=null){
+		$this->recursive = 1;
+		$data = $this->find('first', array(
+										'conditions'=>array(
+														'Inspiration.keycode'=>$keycode
+														),
+										'contain'=>array(
+														'User','Attachment','InspirationPhotoTag',
+														'Tag','Source','Vote','Country',
+														'Product'=>array('Attachment')
+														)
+										)
+									);
+														
+		return $data;
+	}
+	
+	/**
 	 * Returns the needed feed data for a specific record
 	 * @param int model_id
 	 * @return 
 	 * 
 	*/
 	public function getFeedData($model_id=null){
-		$this->recursive = 2;
-		$this->User->recursive = -1;
-		$data = $this->read(null,$model_id);	
+		$this->recursive = 1;
+		$data = $this->find('first', array(
+										'conditions'=>array(
+														'Inspiration.id'=>$model_id
+														),
+										'contain'=>array(
+														'User','Attachment',
+														'Tag','Vote','Country'
+														//'InspirationPhotoTag','Source','Product'=>array('Attachment')
+														)
+										)
+									);
 		
 		return $data;
 	}

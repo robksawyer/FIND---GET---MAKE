@@ -57,8 +57,7 @@ class AppController extends Controller {
 									'logoutAction'=>'/logout',
 									'allowedActions'=>array(
 															'display','key','generateKeycode','users','tags',
-															'getProfileData','find','getTags',
-															'getCount','verifyAddition','clearVerifySessions'
+															'getProfileData','find','getTags','getCount'
 									)
 									
 								),'RequestHandler','Session','Security','AutoLogin','Cookie',
@@ -134,6 +133,8 @@ class AppController extends Controller {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		
+		$this->Security->blackHoleCallback = 'submit_fail';
+		
 		if(isset($this->Auth)) {
 			// Auth settings
 			
@@ -197,14 +198,41 @@ class AppController extends Controller {
 		$Facebook = new FB();
 		$loginURL = $Facebook->getLoginUrl(array('req_perms'=>'offline_access,publish_stream','next'=>'/facebook_signup')); //Get the login url to use
 		//$accessToken = $Facebook->getAccessToken(); //Get the access token
-
+		
+		/** SET GLOBAL VARIABLES **/
+		
 		$this->Connect->createUser = false;
 		$facebookUser = $this->Connect->user();
-		/** SET GLOBAL VARIABLES **/
-		$this->set(compact('facebookUser','loginURL'));
-		$this->set('authUser', $this->Auth->user());
+		$authUser = $this->Auth->user();
+		
+		//Check to see about permissions
+		$isAdmin = false;
+		$isManager = false;
+		$isUser = false;
+		if(!empty($authUser)){
+			if($authUser['User']['group_id']==1){
+				$isAdmin = true;
+			}else if($authUser['User']['group_id']==2){
+				$isManager = true;
+			}else{
+				$isUser = true;
+			}
+		}
+	
+		$this->set(compact('authUser','facebookUser','loginURL','isAdmin','isManager','isUser'));
 		
 		//$this->Auth->allow('*');
+	}
+	
+	/**
+	 * This is the black hole method called by the Security component if tampering is found.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function submit_fail(){
+		$this->Session->setFlash(__('Please, do not tamper with the forms.', true),'default',array('class'=>'error-message'));
+		$this->redirect('/');
 	}
 	
 	/**
@@ -216,6 +244,12 @@ class AppController extends Controller {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	protected function isSlug($id = null){
 		$numbers = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0", " ");
 		$slug = str_replace($numbers, '', $id);
@@ -226,10 +260,22 @@ class AppController extends Controller {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	public function toSlug($string) {
 		return Inflector::slug(utf8_encode(strtolower($string)), '-');
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	public function cleanURL($dirtyURL = null){
 		$search = array(
 							'/^http:\/\//',

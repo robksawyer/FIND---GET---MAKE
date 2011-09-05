@@ -20,14 +20,16 @@ class CollectionsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function beforeFilter(){
+	public function beforeFilter(){
 		parent::beforeFilter();
-		
+	
 		//Make certain pages public
-		$this->Auth->allowedActions = array('index','view','key','generateKeycode',
-											'tags','getTags','users','userCollections',
-											'getProfileData'
-											);
+		$this->Auth->allowedActions = array('index','view','userCollections');
+		
+		//Disable the Security component for certain actions
+		if(isset($this->Security) && $this->action == 'addProducts'){
+			$this->Security->enabled = false;
+		}
 		
 		/*$this->Uploader->uploadDir = 'media/static/img/products/';
 		$this->Uploader->enableUpload = true;
@@ -35,8 +37,6 @@ class CollectionsController extends AppController {
 		$this->Uploader->tempDir = 'media/transfer/img/products/';*/
 		//$this->Uploader->mime('image', 'gif', 'image/gif');
 		//$this->Uploader->maxNameLength = 50;
-		
-		$this->Auth->allow('userCollections');
 	}
 	
 	/**
@@ -45,23 +45,36 @@ class CollectionsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function beforeRender(){
+	public function beforeRender(){
 		//Check to see if the user has flagged the item
 		$user_id = $this->Auth->user('id');
 		$model = $this->modelClass;
 		$flagged = $this->$model->Flag->hasUserFlagged($user_id,$model,$this->$model->id);
-		$this->set(compact('flagged'));
+		$staff_favorite = $this->$model->StaffFavorite->hasUserFavorited($user_id,$model,$this->$model->id);
+		$this->set(compact('flagged','staff_favorite'));
 	}
 	
 	
-	function find() {
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function find() {
 		$this->Prg->commonProcess();
 		$this->paginate['conditions'] = $this->Collection->parseCriteria($this->passedArgs);
 		$this->set('collections', $this->paginate());
 	}
 	
-	function index($filter=null) {
-		$this->Collection->recursive = 2;
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function index($filter=null) {
+		$this->Collection->recursive = 1;
 		
 		// query all distinct first letters used in names
 		$letters = $this->Collection->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `collections` ORDER BY `name`');
@@ -71,11 +84,13 @@ class CollectionsController extends AppController {
 		foreach ($letters as $row) {
 			array_push($links, current($row[0]));
 		}
-
+		
+		//Only show the necessary data. This'll speed things up in the end.
 		$this->paginate['Collection'] = array(
 										'order' => array(
 											'Collection.name' => 'asc'
-											)
+											),
+										'contain'=>array('Product'=>array('Attachment'),'User')
 										);
 
 		if($filter == 'number'){
@@ -127,8 +142,8 @@ class CollectionsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function view($id = null) {
-		$this->Collection->recursive = 2;
+	public function view($id = null) {
+		$this->Collection->recursive = 1;
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid collection', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
@@ -144,11 +159,8 @@ class CollectionsController extends AppController {
 		
 		$productList = $this->Collection->Product->getList();
 		$products = $this->Collection->Product->getProductSelectorData();
-		
-		$this->set(compact('productCategoryList','sourceList','products','productList'));
-		$this->set('collection', $this->Collection->read(null, $id));
-		
-		
+		$collection = $this->Collection->getViewData($id);
+		$this->set(compact('collection','productCategoryList','sourceList','products','productList'));
 	}
 	
 	/**
@@ -157,15 +169,16 @@ class CollectionsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function key($keycode=null){
-		$this->Collection->recursive = 2;
+	public function key($keycode=null){
+		$this->Collection->recursive = 1;
 		$this->layout = 'client_review';
 		if (!$keycode && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid keycode', true));
 			$this->redirect('/');
 		}
 		
-		$collection = $this->Collection->find('first',array('conditions'=>array('Collection.keycode'=>$keycode)));
+		$collection = $this->Collection->getKeyData($keycode);
+		
 		if(empty($collection)){
 			$this->Session->setFlash(__('Invalid keycode', true));
 			$this->redirect('/');
@@ -191,7 +204,8 @@ class CollectionsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function add() {
+	public function add() {
+		$this->Collection->recursive = 1;
 		if (!empty($this->data)) {
 			$this->Collection->create();
 			if ($this->Collection->save($this->data)) {
@@ -216,7 +230,8 @@ class CollectionsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function admin_add() {
+	public function admin_add() {
+		$this->Collection->recursive = 1;
 		if (!empty($this->data)) {
 			$this->Collection->create();
 			if ($this->Collection->save($this->data)) {
@@ -241,7 +256,7 @@ class CollectionsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid collection', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
@@ -272,7 +287,7 @@ class CollectionsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function admin_edit($id = null) {
+	public function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid collection', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
@@ -303,7 +318,7 @@ class CollectionsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for collection', true));
 			$this->redirect(array('action'=>'index'));
@@ -322,7 +337,7 @@ class CollectionsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function admin_delete($id = null) {
+	public function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for collection', true));
 			$this->redirect(array('action'=>'index'));
@@ -334,21 +349,24 @@ class CollectionsController extends AppController {
 		$this->Session->setFlash(__('Collection was not deleted', true));
 		$this->redirect(array('action' => 'index','admin'=>false));
 	}
-	
+		
 	/** 
 	 * This is a helper method that makes it easy to add multiple products to an collection image.
 	 * @param id The id of the current collection.
 	 */
-	function addProducts($id=null) {
+	public function addProducts($id = null) {
+		$this->Collection->recursive = 1;
+		$this->autoLayout = false;
+		$this->autoRender = true;
+		
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid collection', true),'default',array('class'=>'error-message'));
-			//$this->redirect(array('action' => 'index','admin'=>false));
+			$this->redirect(array('action' => 'index','admin'=>false));
 		}
 		
 		if (!empty($this->data)) {
 			//Save the input data
 			$data = $this->data;
-			
 			//Add the attachments to the current collection image.
 			$this->data = $this->Collection->read(null,$id);
 			
@@ -389,8 +407,7 @@ class CollectionsController extends AppController {
 			}else{
 				$this->Session->setFlash(__('You didn\'t select any products.', true),'default', array('class'=>'error-message'));
 				$this->redirect(array('action' => 'view','admin'=>false,$id));
-			}
-			
+			}	
 		}
 	}
 	
@@ -400,7 +417,7 @@ class CollectionsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function users($id = null) {
+	public function users($id = null) {
 		$this->Collection->recursive = 2;
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid user id', true));
@@ -427,7 +444,7 @@ class CollectionsController extends AppController {
 	 * @param id The collection id targeting.
 	 * @param product_id The product id to remove.
 	 */
-	function removeProduct($id=null,$product_id=null){
+	public function removeProduct($id=null,$product_id=null){
 		$this->Collection->recursive = 1;
 		$this->autoLayout = false;
 		$this->autoRender = false;
@@ -461,6 +478,8 @@ class CollectionsController extends AppController {
 			
 			if ($this->Collection->save($this->data)) {
 				$this->Session->setFlash(__('The collection has been updated', true));
+				$this->Collection->updateTotalCount($id,1); //Remove an item
+				
 				$this->redirect(array('action' => 'view','admin'=>false,$id));
 			} else {
 				$this->Session->setFlash(__('The collection could not be updated. Please, try again.', true));
@@ -470,8 +489,11 @@ class CollectionsController extends AppController {
 	
 	/**
 	 * Finds the tags associated with this model
-	 */
-	function tags($filter=null){
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function tags($filter=null){
 		$this->Collection->recursive = 2;
 		
 		// query all distinct first letters used in names
@@ -525,7 +547,7 @@ class CollectionsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function generateKeycode($id=null,$bypassRedirect = false){
+	public function generateKeycode($id=null,$bypassRedirect = false){
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid collection', true));
 			$this->redirect('/');
@@ -549,7 +571,7 @@ class CollectionsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function getProfileData($user_id=null){
+	public function getProfileData($user_id=null){
 		return $this->Collection->getProfileData($user_id);
 	}
 	
@@ -557,8 +579,8 @@ class CollectionsController extends AppController {
 	 * Retrieves the items from the user id passed
 	 * @param id User id
 	 */
-	function userCollections($id = null,$limit=25){
-		$this->Collection->recursive = 2;
+	public function userCollections($id = null,$limit=25){
+		$this->Collection->recursive = 1;
 		if(isset($this->params['requested'])) {
 			$collections = $this->Collection->userCollections($id,$limit,'all');
 			return $collections;

@@ -130,4 +130,5 @@ class AttachmentTagsController extends AppController {
 		$this->Session->setFlash(__('Attachment tag was not deleted', true));
 		$this->redirect(array('action' => 'index'));
 	}
+	
 }

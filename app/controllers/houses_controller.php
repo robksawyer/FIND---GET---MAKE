@@ -293,4 +293,5 @@ class HousesController extends AppController {
 			$this->set(compact('tags'));
 		}
 	}
+	
 }

@@ -48,5 +48,4 @@ class ContractorSpecialty extends AppModel {
 			return false;
 		}
 	}
-
 }

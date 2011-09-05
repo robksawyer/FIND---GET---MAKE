@@ -60,6 +60,13 @@ class Feed extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'StaffFavorite' => array(
+			'className' => 'StaffFavorite',
+			'foreignKey' => 'model_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 	
@@ -293,5 +300,4 @@ class Feed extends AppModel {
 		}
 		return $user_feed_data;
 	}
-	
 }

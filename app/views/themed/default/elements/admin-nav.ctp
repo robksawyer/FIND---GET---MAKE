@@ -13,14 +13,13 @@
 			}else{
 				echo "Hi, ".$authUser['User']['username'].". | ";
 			}
-			echo $this->Html->link('Your Space','/users/moderate',array('title'=>'Check out your space.'))." | ";
-			if ($authUser['User']['group_id'] == 1){
-				echo $this->Html->link(__('ACL Management', true), '/admin/acl/')." | ";
-			}
+			echo $this->Html->link('Your Space','/users/moderate',array('title'=>'Check out your space.'))."<br/>";
+			echo $this->Html->link(__('ACL Management', true), '/admin/acl/')." | ";
 			if ($this->Cupcake->user() && $this->Cupcake->hasAccess('admin')):
 				echo $this->Html->link(__('Forum Admin', true), '/admin/forum/home')." | ";
 			endif;
-				echo $this->Html->link('Logout','/logout',array('title'=>'Logout'));
+			echo $this->Html->link('Flag Management','/admin/flags',array('title'=>'Manage the items that people have flagged.'))." | ";
+			echo $this->Html->link('Logout','/logout',array('title'=>'Logout'));
 		}
 	?>
 </div>

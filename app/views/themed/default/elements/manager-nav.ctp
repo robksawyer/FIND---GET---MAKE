@@ -14,6 +14,7 @@
 				echo "Hi, ".$authUser['User']['username'].". | ";
 			}
 			echo $this->Html->link('Your Space','/users/moderate',array('title'=>'Check out your space.'))." | ";
+			echo $this->Html->link('Flag Management','/admin/flags',array('title'=>'Manage the items that people have flagged.'))." | ";
 			if ($this->Cupcake->user() && $this->Cupcake->hasAccess('admin')):
 				echo $this->Html->link(__d('forum', 'Forum Admin', true), '/admin/forum/home')." | ";
 			endif;

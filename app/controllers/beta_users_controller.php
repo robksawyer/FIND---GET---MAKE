@@ -66,4 +66,5 @@ class BetaUsersController extends AppController {
 		$this->Session->setFlash(__('Beta user was not deleted', true));
 		$this->redirect(array('action' => 'index'));
 	}
+	
 }

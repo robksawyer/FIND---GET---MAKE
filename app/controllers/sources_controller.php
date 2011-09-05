@@ -26,9 +26,7 @@ class SourcesController extends AppController {
 		parent::beforeFilter();
 		
 		//Make certain pages public
-		$this->Auth->allowedActions = array('index','view','key','generateKeycode','tags',
-											'getCount','getTags','getProfileData','ajax_check_name'
-											);
+		$this->Auth->allowedActions = array('index','view','verifyAddition','clearVerifySessions','ajax_check_name');
 											
 		$this->Uploader->uploadDir = 'media/static/img/sources/';
 		$this->Uploader->enableUpload = true;
@@ -36,10 +34,6 @@ class SourcesController extends AppController {
 		$this->Uploader->tempDir = 'media/transfer/img/sources/';
 		//$this->Uploader->mime('image', 'gif', 'image/gif');
 		//$this->Uploader->maxNameLength = 50;
-		
-		//$this->Auth->allow('getCount','getTags','getProfileData');
-		
-		$this->Auth->allowedActions = array('index','view','ajax_check_name','getTags','getProfileData','getCount');
 	}
 	
 	/**
@@ -53,7 +47,8 @@ class SourcesController extends AppController {
 		$user_id = $this->Auth->user('id');
 		$model = $this->modelClass;
 		$flagged = $this->$model->Flag->hasUserFlagged($user_id,$model,$this->$model->id);
-		$this->set(compact('flagged'));
+		$staff_favorite = $this->$model->StaffFavorite->hasUserFavorited($user_id,$model,$this->$model->id);
+		$this->set(compact('flagged','staff_favorite'));
 	}
 
 	public function find() {

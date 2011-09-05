@@ -61,7 +61,6 @@ class SitemapsController extends AppController{
 		header('Cache-Control: max-age='.$expire.', s-maxage='.$expire.', must-revalidate, proxy-revalidate'); 
 		header('Pragma: nocache'); 
 		echo 'User-Agent: *'."\n".'Allow: /'."\n".'Sitemap: ' . FULL_BASE_URL . $this->sitemap_url; 
-		exit(); 
 	} 
 
 	/*	
@@ -197,7 +196,6 @@ class SitemapsController extends AppController{
 		$url = 'http://www.google.com/webmasters/tools/ping'; 
 		$params = 'sitemap=' . urlencode(FULL_BASE_URL . $this->sitemap_url); 
 		echo $this->__ajaxresponse($this->__check_ok_google( $this->__ping_site($url, $params) ));		   
-		exit(); 
 	} 
 	 
 	/*	
@@ -225,7 +223,6 @@ class SitemapsController extends AppController{
 		$url = 'http://submissions.ask.com/ping'; 
 		$params = 'sitemap=' .	urlencode(FULL_BASE_URL . $this->sitemap_url); 
 		echo $this->__ajaxresponse($this->__check_ok_ask( $this->__ping_site($url, $params) )); 
-		exit(); 
 	} 
 	 
 	/*	
@@ -253,7 +250,6 @@ class SitemapsController extends AppController{
 		$url = 'http://search.yahooapis.com/SiteExplorerService/V1/updateNotification'; 
 		$params = 'appid='.$this->yahoo_key.'&url=' . urlencode(FULL_BASE_URL . $this->sitemap_url); 
 		echo $this->__ajaxresponse($this->__check_ok_yahoo( $this->__ping_site($url, $params) )); 
-		exit(); 
 	} 
 	 
 	/*	
@@ -280,8 +276,7 @@ class SitemapsController extends AppController{
 		Configure::write('debug', 0); 
 		$url = 'http://www.bing.com/webmaster/ping.aspx'; 
 		$params = '&siteMap=' . urlencode(FULL_BASE_URL . $this->sitemap_url); 
-		echo $this->__ajaxresponse($this->__check_ok_bing( $this->__ping_site($url, $params) )); 
-		exit(); 
+		echo $this->__ajaxresponse($this->__check_ok_bing( $this->__ping_site($url, $params) ));  
 	} 
 	 
 	/*	
@@ -300,5 +295,4 @@ class SitemapsController extends AppController{
 		} 
 		return false; 
 	} 
-}  
-?>
+}

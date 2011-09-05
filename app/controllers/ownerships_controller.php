@@ -293,4 +293,3 @@ class OwnershipsController extends AppController {
 	}
 	
 }
-?>

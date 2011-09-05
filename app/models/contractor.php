@@ -82,5 +82,4 @@ class Contractor extends AppModel {
 			'insertQuery' => ''
 		)
 	);
-
 }

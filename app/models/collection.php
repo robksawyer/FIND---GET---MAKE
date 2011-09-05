@@ -2,7 +2,8 @@
 class Collection extends AppModel {
 	var $name = 'Collection';
 	var $displayField = 'name';
-	var $validate = array(
+	
+	/*var $validate = array(
 		'name' => array(
 			'notempty' => array(
 				'rule' => array('notempty')
@@ -13,12 +14,12 @@ class Collection extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-	);
+	);*/
 	
 	var $actsAs = array(
 					'Tags.Taggable',
 					'Search.Searchable'
-			);
+					);
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 	
 	var $hasMany = array(
@@ -40,6 +41,20 @@ class Collection extends AppModel {
 			'className' => 'Flag',
 			'foreignKey' => 'model_id',
 			'conditions' => array('Flag.model' => 'Collection'),
+			'dependent' => true,
+			'exclusive' => true
+		),
+		'Vote' => array(
+			'className' => 'Vote',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Vote.model' => 'Collection'),
+			'dependent' => true,
+			'exclusive' => true
+		),
+		'StaffFavorite' => array(
+			'className' => 'StaffFavorite',
+			'foreignKey' => 'model_id',
+			'conditions' => array('StaffFavorite.model' => 'Collection'),
 			'dependent' => true,
 			'exclusive' => true
 		)
@@ -79,7 +94,7 @@ class Collection extends AppModel {
 	 * @return Array
 	 * 
 	*/
-	function beforeFind($queryData){
+	public function beforeFind($queryData){
 		$conditions = $queryData['conditions'];
 		
 		if(!is_array($conditions)) {
@@ -104,10 +119,13 @@ class Collection extends AppModel {
 	 * @return 
 	 * 
 	*/	
-	 function afterSave($created){
+	 public function afterSave($created){
 		if($created){
 			//Update the total count for the user
 			$last = $this->read(null,$this->id);
+			
+			$this->updateTotalCount($this->id); //Update the total products count
+			
 			if(!empty($last['User']['id'])){
 				$this->User->updateTotalCollections($last['User']['id']);
 				//Add the feed data to the feed
@@ -124,13 +142,42 @@ class Collection extends AppModel {
 	*/
 	public function getFeedData($model_id=null){
 		$this->recursive = 1;
-		$data = $this->read(null,$model_id);
-		for($i=0;$i<count($data['Product']);$i++){
-			if(!empty($data['Product'][$i]['id'])){
-				$product = $this->Product->read(null,$data['Product'][$i]['id']);
-				$data['Product'][$i] = $product;
-			}
-		}
+		$data = $this->find('first',array(
+									'conditions'=>array('Collection.id'=>$model_id),
+									'contain'=>array('Product'=>array('Attachment'),'User','Tag','Ownership','UserFollowing','Vote')
+								)
+							);
+		return $data;
+	}
+	
+	/**
+	 * The data needed for the key view
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function getKeyData($keycode=null){
+		$data = $this->find('first',array(
+										'conditions'=>array('Collection.keycode'=>$keycode),
+										'contain'=>array('Vote','User','Tag','Product'=>array('Attachment'))
+										)
+									);
+		return $data;
+	}
+	
+	/**
+	 * Returns the needed data for the view
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	public function getViewData($model_id=null){
+		$this->recursive = 1;
+		$data = $this->find('first',array(
+									'conditions'=>array('Collection.id'=>$model_id),
+									'contain'=>array('Vote','Product'=>array('Attachment'),'User','Tag')
+								)
+							);
 		
 		return $data;
 	}
@@ -142,8 +189,8 @@ class Collection extends AppModel {
 	 * @param int $limit The number of results to return
 	 * @return Array
 	 **/
-	function userCollections($user_id=null,$limit=10,$type=null){
-		$this->recursive = 2;
+	public function userCollections($user_id=null,$limit=10,$type=null){
+		$this->recursive = 1;
 		if(empty($type)){
 			$items = $this->find('list',
 										array(
@@ -157,7 +204,8 @@ class Collection extends AppModel {
 										array(
 											'conditions'=>array('Collection.user_id' => $user_id),
 											'limit' => $limit,
-											'order' => array('Collection.created DESC')
+											'order' => array('Collection.created DESC'),
+											'contain'=>array('Product'=>array('Attachment'),'User','Ownership','Tag')
 											)
 										);
 		}
@@ -171,7 +219,7 @@ class Collection extends AppModel {
 	 * @return 
 	 * 
 	*/
-	function getProfileData($user_id=null,$limit=10){
+	public function getProfileData($user_id=null,$limit=10){
 		$items = $this->find('list',
 									array(
 										'conditions'=>array('Collection.user_id' => $user_id),
@@ -186,7 +234,7 @@ class Collection extends AppModel {
 	 * Update the total product count
 	 * @param id The id of the collection you're trying to update.
 	 */
-	function updateTotalCount($id = null,$removeCount = null){
+	public function updateTotalCount($id = null,$removeCount = null){
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid collection', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
@@ -201,5 +249,5 @@ class Collection extends AppModel {
 		$this->id = $id;
 		$this->saveField('total_products', $total_products);
 	}
-
+	
 }

@@ -71,5 +71,4 @@ class Country extends AppModel {
 			'counterQuery' => ''
 		)
 	);
-
 }
