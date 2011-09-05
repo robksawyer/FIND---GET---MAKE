@@ -56,9 +56,6 @@ Configure::load('fgm_config');
 Configure::load('facebook');
 
 
-//Load the ACL config file
-require_once('acl_config.php');
-
 //Load the Forum config file
 App::import(array(
 	'type' => 'File', 

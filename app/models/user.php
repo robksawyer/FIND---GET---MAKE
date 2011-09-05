@@ -709,6 +709,7 @@ class User extends AppModel {
 	 * 
 	*/
 	public function findByUsername($username=null){
+		$this->recursive = 1;
 		$user = $this->find('first',array('conditions'=>array('User.username'=>$username)));
 		return $user;
 	}
@@ -742,6 +743,7 @@ class User extends AppModel {
 	 * 
 	*/
 	public function getFollowingUserIds($user_id=null){
+		$this->recursive = 1;
 		return $this->UserFollowing->getFollowingUserIds($user_id);
 	}
 	
@@ -752,6 +754,7 @@ class User extends AppModel {
 	 * 
 	*/
 	public function getStaffFavorites(){
+		$this->recursive = 1;
 		$favorites = $this->find('all',array(
 											'conditions'=>array(
 																'User.staff_favorite'=>1

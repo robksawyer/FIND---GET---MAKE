@@ -701,6 +701,11 @@ ul.btn-actions li{
 	padding: 5px 0;
 }
 
+.ajax-status-small img{
+	width: 16px !important;
+	height: 11px !important;
+}
+
 span.includes{
 	font-style: italic;
 	color: #999;

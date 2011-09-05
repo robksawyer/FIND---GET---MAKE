@@ -70,7 +70,7 @@ if(!empty($authUser)):
 		<?php endif; ?>
 	<?php endif; ?>
 <?php endif; ?>
-<div id="ajax-status-<?php echo $user_id;?>" style="display:none"><?php echo $this->Html->image('ajax-loader.gif',array('Loading...')); ?></div>
+<div id="ajax-status-<?php echo $user_id;?>" style="display:none" class="ajax-status-small"><?php echo $this->Html->image('ajax-loader.gif',array('Loading...')); ?></div>
 <?php 
 	$this->Html->script('elements/follow-unfollow',array('inline'=>false)); 
 ?>

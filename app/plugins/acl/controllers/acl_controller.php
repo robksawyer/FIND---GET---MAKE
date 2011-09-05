@@ -1,32 +1,30 @@
 <?php
-/**
- *
- * @author   Nicolas Rod <nico@alaxos.com>
- * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
- * @link     http://www.alaxos.ch
- */
-class AclController extends AclAppController {
 
+/* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
+
+class AclController extends AclAppController {
 	var $name = 'Acl';
-	var $uses = null;
-	
-	function beforeFilter()
-	{
-	    parent :: beforeFilter();
-	    
-		$this->Auth->allow('*');
+
+	var $uses = array('Acl.AclAco', 'Acl.AclAro');
+
+	var $helpers = array('Html', 'Javascript');
+
+	function admin_index() {
+
 	}
-	
-	
-	function index()
-	{
-	    $this->redirect('/admin/acl/aros');
+
+	function admin_aros() {
+
 	}
-	
-	function admin_index()
-	{
-	    $this->redirect('/admin/acl/acos');
+
+	function admin_acos() {
+
 	}
-	
+
+	function admin_permissions() {
+
+	}
+
 }
+
 ?>

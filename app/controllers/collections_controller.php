@@ -3,7 +3,7 @@ class CollectionsController extends AppController {
 
 	var $name = 'Collections';
 	var $helpers = array('Tags.TagCloud');
-	var $components = array('Search.Prg','String');
+	var $components = array('Search.Prg');
 	
 	var $paginate = array(
 		'limit' => 25

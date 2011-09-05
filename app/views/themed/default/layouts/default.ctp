@@ -150,13 +150,12 @@
 						//The challenge was here.
 					}
 				?>
-				<?php echo $this->Session->flash();?>
 				<?php 
 					if ($this->params['plugin'] == 'forum') {
 						echo $this->element('navigation',array('plugin' => 'forum')); 
 					}
 				?>
-				
+				<?php echo $this->Session->flash(); ?>
 				<?php echo $content_for_layout;?>
 
 			</div>

@@ -40,7 +40,8 @@ class UsersController extends AppController {
 		
 		$this->Auth->allowedActions = array('more_user_feed_data', 'forgot', 'listing', 'profile','getAvatar',
 											'signup','login','logout','register','register_with_twitter','register_with_facebook',
-											'twitter_logout','facebook_logout','hide_welcome','staff_favorites','facebook_signup','twitter_signup'
+											'twitter_logout','facebook_logout','hide_welcome','staff_favorites',
+											'facebook_signup','twitter_signup'
 											);
 		
 		/*$this->Auth->allow('login','logout','register','register_with_twitter','register_with_facebook',
@@ -89,6 +90,7 @@ class UsersController extends AppController {
 		//Logic to happen after successful facebook login.
 		$this->redirect('/signup');
 	}*/
+	
 	
 	/**************** BORROWED FROM CUPCAKE ************************/
 	/**
@@ -536,7 +538,7 @@ class UsersController extends AppController {
 						$this->redirect(array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'moderate'));
 					}else{
 						//There was a problem saving the twitter_id
-						$this->flash(__('There was a problem linking your account. Please try again later.', true), 'default', 'error-message');
+						$this->Session->setFlash(__('There was a problem linking your account. Please try again later.', true), 'default', 'error-message');
 					}
 				}else{
 					//The user doesn't have an account, create one.
@@ -711,7 +713,7 @@ class UsersController extends AppController {
 		
 		// check params
 		if (empty($this->params['url']['oauth_token']) || empty($this->params['url']['oauth_verifier'])) {
-			$this->flash(__('Invalid access.', true), ' / ', 5);
+			$this->Session->setFlash(__('Invalid access.', true), ' / ', 5);
 			return;
 		}
 		
@@ -722,7 +724,7 @@ class UsersController extends AppController {
 		//debug($this->Twitter->getAnywhereIdentity());
 		
 		if (is_string($token)) {
-			$this->flash(__('Failed to get the access token.', true) . $token, ' / ', 5);
+			$this->Session->setFlash(__('Failed to get the access token.', true) . $token, ' / ', 5);
 			return;
 		}
 		
@@ -745,7 +747,7 @@ class UsersController extends AppController {
 			//Redirect to the signup page (This is handled by the popup unload method.)
 			//$this->redirect(array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'signup'));
 		}else{
-			$this->flash(__('The Twitter authorization failed. Please try again later.', true), 'default', 'error-message');
+			$this->Session->setFlash(__('The Twitter authorization failed. Please try again later.', true), 'default', 'error-message');
 			return;
 		}
 	}

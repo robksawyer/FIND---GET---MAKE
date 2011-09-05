@@ -1,12 +1,10 @@
 <?php
-/**
- *
- * @author   Nicolas Rod <nico@alaxos.com>
- * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
- * @link     http://www.alaxos.ch
- */
-class AclAppModel extends AppModel {
 
+/* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
+
+class AclAppModel extends Model {
+	
+	var $actsAs = array('Containable');	
 }
 
 ?>

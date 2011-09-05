@@ -55,12 +55,14 @@ class AppController extends Controller {
 									'actionPath'=>'controllers/',
 									'loginAction'=>'/login',
 									'logoutAction'=>'/logout',
-									'allowedActions'=>array('add_attachment','display','key','generateKeycode','users','tags',
-									'getProfileData','find','getTags','getCount','verifyAddition','clearVerifySessions'
+									'allowedActions'=>array(
+															'display','key','generateKeycode','users','tags',
+															'getProfileData','find','getTags',
+															'getCount','verifyAddition','clearVerifySessions'
 									)
 									
-								),'RequestHandler','Session','Security','AutoLogin','Cookie','AjaxHandler', 
-								'Forum.Toolbar','TwitterKit.Twitter','Facebook.Connect'
+								),'RequestHandler','Session','Security','AutoLogin','Cookie',
+								'AjaxHandler', 'Forum.Toolbar','TwitterKit.Twitter','Facebook.Connect'
 								);
 
 	/**
@@ -134,11 +136,6 @@ class AppController extends Controller {
 		
 		if(isset($this->Auth)) {
 			// Auth settings
-			$referer = $this->referer();
-			if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/login' || $referer == '/forum/users/login' || $referer == '/users/moderate') {
-				//$referer = array('plugin' => 'admin', 'controller' => 'home', 'action' => 'index','admin'=>false);
-				$referer = '/';
-			}
 			
 			/*$this->Auth->mapActions(
 				array(
@@ -160,6 +157,18 @@ class AppController extends Controller {
 			//You have to keep view open for the photo tags to work.
 			//$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
 			$this->Auth->authError = __('You do not have permission to access the page you just selected.', true);
+			
+			$referer = $this->referer();
+			if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' 
+				|| $referer == '/login' || $referer == '/users/moderate') {
+				$referer = '/';
+			}
+			
+			if(empty($referer) || $referer == '/login' || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/'){
+				$login_referer = '/users/moderate';
+			}else{
+				$login_referer = $referer;
+			}
 			$this->Auth->loginRedirect = $login_referer;
 			$this->Auth->logoutRedirect = $referer;
 			$this->Auth->autoRedirect = false;
@@ -183,11 +192,10 @@ class AppController extends Controller {
 
 		// Initialize
 		$this->Toolbar->initForum();
-
 		
 		//FACEBOOK OAUTH SETTINGS
 		$Facebook = new FB();
-		$loginURL = $Facebook->getLoginUrl(array('req_perms'=>'offline_access,publish_stream','next'=>'/signup')); //Get the login url to use
+		$loginURL = $Facebook->getLoginUrl(array('req_perms'=>'offline_access,publish_stream','next'=>'/facebook_signup')); //Get the login url to use
 		//$accessToken = $Facebook->getAccessToken(); //Get the access token
 
 		$this->Connect->createUser = false;
@@ -196,6 +204,7 @@ class AppController extends Controller {
 		$this->set(compact('facebookUser','loginURL'));
 		$this->set('authUser', $this->Auth->user());
 		
+		//$this->Auth->allow('*');
 	}
 	
 	/**

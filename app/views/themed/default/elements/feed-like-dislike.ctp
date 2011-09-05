@@ -54,7 +54,7 @@
 			?>
 		</li>
 		<?php endif; ?>
-		<div id="ajax-status-<?php echo $model_id; ?>" style="display:none"><?php echo $this->Html->image('ajax-loader.gif',array('Loading...')); ?></div>
+		<div id="ajax-status-<?php echo $model_id; ?>" style="display:none" class="ajax-status-small"><?php echo $this->Html->image('ajax-loader.gif',array('Loading...')); ?></div>
 	</ul>
 	<div class="clear"></div>
 </div>

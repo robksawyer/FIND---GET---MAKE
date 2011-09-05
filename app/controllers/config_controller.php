@@ -20,6 +20,44 @@ class ConfigController extends AppController {
 		exit();
 	}
 	
+	
+	/**
+	 * Helps to setup the AROS if users already exist
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function admin_setupACLUsers(){
+		$this->autoLayout = false;
+		$this->autoRender = false;
+		$this->User->recursive = -1;
+		$aro = new Aro();
+		//Here are our user records, ready to be linked up to new ARO records
+		$users = $this->User->find('all');
+		
+		//debug($users);
+		//Build the aro data
+		$counter = 0;
+		foreach($users as $user){
+			$aro_users[$counter]['alias'] = $user['User']['username'];
+			$aro_users[$counter]['parent_id'] = $user['User']['group_id'];
+			$aro_users[$counter]['model'] = 'User';
+			$aro_users[$counter]['foreign_key'] = $user['User']['id'];
+			$counter++;
+		}
+		
+		//debug($aro_users);
+		//Iterate and create AROs (as children)
+		foreach($aro_users as $data){
+			//Remember to call create() when saving in loops...
+			$aro->create();
+			//Save data
+			$aro->save($data);
+		}
+		
+		debug("Completed! ".count($aro_users)." users were added to the aros table.");
+	}
+	
 	/**
 	 * Updates the totals for sources, products, inspirations, collections, etc.
 	 * @param int user_id The user id to update
@@ -31,7 +69,7 @@ class ConfigController extends AppController {
 		$this->autoRender = false;
 		
 		if(!$user_id){
-			$this->flash(__('You have to enter a user id.', true), 'default', 'error-message');
+			$this->Session->setFlash(__('You have to enter a user id.', true), 'default', 'error-message');
 			$this->redirect('/');
 			exit;
 		}
@@ -46,7 +84,7 @@ class ConfigController extends AppController {
 		$this->User->updateTotalFollowCount($user_id);
 		$this->User->updateTotalFollowerCount($user_id);
 		
-		$the_user = $this->read(null,$user_id);
+		$the_user = $this->User->read(null,$user_id);
 		
 		//Request data for the elements
 		//$userSources = $this->User->Source->userSources($user_id);
@@ -78,44 +116,6 @@ class ConfigController extends AppController {
 	}
 	
 	/**************** ACL METHODS ************************/
-	
-	/**
-	 * Helps to setup the AROS if users already exist
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	public function admin_setupACLUsers(){
-		$this->autoLayout = false;
-		$this->autoRender = false;
-		$this->User->recursive = -1;
-		$aro = new Aro();
-		//Here are our user records, ready to be linked up to new ARO records
-		$users = $this->User->find('all');
-		
-		//debug($users);
-		//Build the aro data
-		$counter = 0;
-		foreach($users as $user){
-			$aro_users[$counter]['alias'] = $user['User']['username'];
-			$aro_users[$counter]['parent_id'] = 3; //Add the users to the default users ACL group
-			$aro_users[$counter]['model'] = 'User';
-			$aro_users[$counter]['foreign_key'] = $user['User']['id'];
-			$counter++;
-		}
-		
-		//debug($aro_users);
-		
-		//Iterate and create AROs (as children)
-		foreach($aro_users as $data){
-			//Remember to call create() when saving in loops...
-			$aro->create();
-			//Save data
-			$aro->save($data);
-		}
-		
-		debug("Completed! ".count($aro_users)." users were added to the aros table.");
-	}
 	
 	/**
 	 * Setup aco->aro permissions
@@ -153,10 +153,6 @@ class ConfigController extends AppController {
 		//Allow admins to everything
 		$group->id = 1;
 		$this->Acl->allow($group, 'controllers');
-		$group->id = 2;
-		$this->Acl->deny($group, 'controllers');
-		$group->id = 3;
-		$this->Acl->deny($group, 'controllers');
 		
 		//we add an exit to avoid an ugly "missing views" error message
 		echo "<br/>Admin permissions have been setup.";

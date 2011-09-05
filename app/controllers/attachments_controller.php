@@ -3,7 +3,7 @@ class AttachmentsController extends AppController {
 
 	var $name = 'Attachments';
 	
-	var $components = array('Uploader.Uploader','String');
+	var $components = array('Uploader.Uploader');
 	
 	//var $helpers = array('');
 
