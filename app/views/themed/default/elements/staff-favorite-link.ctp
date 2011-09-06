@@ -1,5 +1,6 @@
 <?php 
 	$staff_favorite = $this->requestAction("/staff_favorites/isFavorited/$model/$model_id");
+	debug($staff_favorite);
 	if(empty($staff_favorite)){
 		echo $this->Js->link('Staff favorite',array(
 																'plugin'=>'',

@@ -500,7 +500,7 @@ class UsersController extends AppController {
 			$this->User->action = 'signup';
 			
 			//Check to see if the user exists
-			$emailUserCheck = $this->User->find('first',array('condtions'=>array('User.email'=>$this->data['User']['email'])));
+			$emailUserCheck = $this->User->find('first',array('conditions'=>array('User.email'=>$this->data['User']['email'])));
 			if(!empty($emailUserCheck)){
 				//Make sure that the user's current password matches the entered password
 				//The user already has an account. (Add the twitter_id to the account)
@@ -628,7 +628,7 @@ class UsersController extends AppController {
 			$this->User->action = 'signup';
 			
 			//Check to see if the user's email matches another user in the system. If it does, add the new information to that user's account.
-			$emailUserCheck = $this->User->find('first',array('condtions'=>array('User.email'=>$this->data['User']['email'])));
+			$emailUserCheck = $this->User->find('first',array('conditions'=>array('User.email'=>$this->data['User']['email'])));
 			if(!empty($emailUserCheck)){
 				//The user already has an account. (Add the twitter_id to the account)
 				$this->User->id = $emailUserCheck['User']['id'];

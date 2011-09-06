@@ -7,7 +7,7 @@ class StaffFavoritesController extends AppController {
 		parent::beforeFilter();
 		
 		//Make certain pages public
-		$this->Auth->allowedActions = array('index','view');
+		$this->Auth->allowedActions = array('index','view','isFavorited','getTenUsers');
 		
 		$this->AjaxHandler->handle('add','remove');
 	}
@@ -102,7 +102,7 @@ class StaffFavoritesController extends AppController {
 	 * 
 	*/
 	public function isFavorited($model='',$model_id=null){
-		return $this->hasItemBeenFavorited($model,$model_id);
+		return $this->StaffFavorite->hasItemBeenFavorited($model,$model_id);
 	}
 	
 	/**

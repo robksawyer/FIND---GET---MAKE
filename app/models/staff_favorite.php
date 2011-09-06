@@ -103,12 +103,12 @@ class StaffFavorite extends AppModel {
 	*/
 	public function hasItemBeenFavorited($model='',$model_id=null){
 		$this->recursive = -1;
-		$check = $this->find('first',array(
-			'condtions'=>array(
-					'StaffFavorite.model'=>$model,
-					'StaffFavorite.model_id'=>$model_id,
-					)
-		));
+		//debug($model . " : ". $model_id);
+		$check = $this->find('count',array('conditions'=>array(
+												'StaffFavorite.model'=>$model,
+												'StaffFavorite.model_id'=>$model_id,
+												)
+											));
 		return $check;
 	}
 	
@@ -123,7 +123,7 @@ class StaffFavorite extends AppModel {
 	public function hasUserFavorited($user_id=null,$model='',$model_id=null){
 		$this->recursive = -1;
 		$check = $this->find('first',array(
-			'condtions'=>array(
+			'conditions'=>array(
 					'StaffFavorite.user_id'=>$user_id,
 					'StaffFavorite.model'=>$model,
 					'StaffFavorite.model_id'=>$model_id,
