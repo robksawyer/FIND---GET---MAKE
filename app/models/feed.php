@@ -167,6 +167,7 @@ class Feed extends AppModel {
 	public function getUserFeedDataDetails($user_id=null,$offset=0){
 		$this->recursive = -1;
 		$user_feed = $this->getUserFeedData($user_id,$offset);
+		
 		$user_feed_data = array();
 		foreach($user_feed as $feed_item){
 			/*if($feed_item['Feed']['model'] == "Vote"){
@@ -176,26 +177,30 @@ class Feed extends AppModel {
 			}*/
 			//$temp_data = $this->$feed_item['Feed']['model']->read(null,$feed_item['Feed']['model_id']);
 			$the_model = $feed_item['Feed']['model'];
-			if($the_model == 'Ownership' || $the_model == 'Vote'){
-				$temp_data = $this->$the_model->find('first',array(
-																'conditions'=>array(
-																		$the_model.'.id'=>$feed_item['Feed']['model_id']
-																),
-																'contain'=>array(
-																				'Product'=>array('Tag','Attachment','User'),
-																				'User','Feed'=>array('conditions'=>array('Feed.id'=>$feed_item['Feed']['id']))
-																				)
-																)
-															);
-			}else{
-				$temp_data = $this->$the_model->find('first',array(
-																'conditions'=>array(
-																		$the_model.'.id'=>$feed_item['Feed']['model_id']
-																),
-																'contain'=>array('Tag','Attachment','User','Feed')
-																)
-															);
+			switch($the_model){
+				
+				case "Ownership":
+					$temp_data = $this->getOwnershipFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+				
+				case "Vote":
+					$temp_data = $this->getVoteFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+					
+				case "Collection":
+					$temp_data = $this->getCollectionFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+				
+				case "Ufo":
+					$temp_data = $this->getUfoFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+					
+				default:
+					$temp_data = $this->getStandardFeedData($the_model,$feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+	
 			}
+			
 			if(!empty($temp_data)){
 				$user_feed_data[] = $temp_data;
 			}
@@ -213,40 +218,152 @@ class Feed extends AppModel {
 	public function getUsersFollowingFeedData($user_ids=null,$offset=0){
 		$this->recursive = -1;
 		$user_feed = $this->getUserFeedData($user_ids,$offset);
+		
 		$user_feed_data = array();
 		foreach($user_feed as $feed_item){
-			/*if($feed_item['Feed']['model'] == "Vote"){
-				$this->$the_model->recursive = 2;
-			}else{
-				$this->$the_model->recursive = 1;
-			}*/
+
 			$the_model = $feed_item['Feed']['model'];
-			if($the_model == 'Ownership' || $the_model == 'Vote'){
-				$temp_data = $this->$the_model->find('first',array(
-																'conditions'=>array(
-																		$the_model.'.id'=>$feed_item['Feed']['model_id']
-																),
-																'contain'=>array(
-																				'Product'=>array('Tag','Attachment','User'),
-																				'User','Feed'=>array('conditions'=>array('Feed.id'=>$feed_item['Feed']['id']))
-																				)
-																)
-															);
-			}else{
-				$temp_data = $this->$the_model->find('first',array(
-																'conditions'=>array(
-																		$the_model.'.id'=>$feed_item['Feed']['model_id']
-																),
-																'contain'=>array('Tag','Attachment','User','Feed')
-																)
-															);
+			
+			switch($the_model){
+				
+				case "Ownership":
+					$temp_data = $this->getOwnershipFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+				
+				case "Vote":
+					$temp_data = $this->getVoteFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+					
+				case "Collection":
+					$temp_data = $this->getCollectionFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+				
+				case "Ufo":
+					$temp_data = $this->getUfoFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+					
+				default:
+					$temp_data = $this->getStandardFeedData($the_model,$feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+	
 			}
+
 			if(!empty($temp_data)){
 				$user_feed_data[] = $temp_data;
 			}
 		}
 		//debug($user_feed_data);
 		return $user_feed_data;
+	}
+	
+	/**
+	 * Find the data associated with a certain item.
+	 * @param string the_model The model to target
+	 * @param int feed_id The feed item id
+	 * @param int model_id The item id
+	 * @return 
+	 * 
+	*/
+	public function getStandardFeedData($the_model='',$feed_id=null,$model_id=null){
+		$data = $this->$the_model->find('first',array(
+														'conditions'=>array(
+																$the_model.'.id'=>$model_id
+														),
+														'contain'=>array('Tag',
+																		'Product'=>array('Attachment'),
+																		'Attachment','User',
+																		'Feed'=>array('conditions'=>array('Feed.id'=>$feed_id)
+																		)
+																	)
+														)
+													);
+		return $data;
+	}
+	
+	/**
+	 * Find the data associated with a certain item.
+	 * @param int feed_id The feed item id
+	 * @param int model_id The item id
+	 * @return 
+	 * 
+	*/
+	public function getUfoFeedData($feed_id=null,$model_id=null){
+		$data = $this->Ufo->find('first',array(
+														'conditions'=>array(
+																'Ufo.id'=>$model_id
+														),
+														'contain'=>array('Tag','User',
+																		'Feed'=>array('conditions'=>array('Feed.id'=>$feed_id)),
+																		'Vote'
+																		)
+														)
+													);
+		return $data;
+	}
+	
+	/**
+	 * Find the data associated with a certain item.
+	 * @param int feed_id The feed item id
+	 * @param int model_id The item id
+	 * @return 
+	 * 
+	*/
+	public function getCollectionFeedData($feed_id=null,$model_id=null){
+		$data = $this->Collection->find('first',array(
+														'conditions'=>array(
+																'Collection.id'=>$model_id
+														),
+														'contain'=>array('Tag',
+																		'Product'=>array('Attachment','User'),
+																		'User',
+																		'Feed'=>array('conditions'=>array('Feed.id'=>$feed_id)),
+																		'Vote'
+																	)
+														)
+													);
+		return $data;
+	}
+	
+	/**
+	 * Find the data associated with a certain item.
+	 * @param int feed_id The feed item id
+	 * @param int model_id The item id
+	 * @return 
+	 * 
+	*/
+	public function getOwnershipFeedData($feed_id=null,$model_id=null){
+		$data = $this->Ownership->find('first',array(
+													'conditions'=>array(
+															'Ownership.id'=>$model_id
+													),
+													'contain'=>array(
+																	'Product'=>array('Tag','Attachment','User'),
+																	'User','Feed'=>array('conditions'=>array('Feed.id'=>$feed_id))
+																	)
+													)
+												);
+		return $data;
+	}
+	
+	/**
+	 * Find the data associated with a certain item.
+	 * @param int feed_id The feed item id
+	 * @param int model_id The item id
+	 * @return 
+	 * 
+	*/
+	public function getVoteFeedData($feed_id=null,$model_id=null){
+		$data = $this->Vote->find('first',array(
+													'conditions'=>array(
+															'Vote.id'=>$model_id
+													),
+													'contain'=>array(
+																	'Product'=>array('Tag','Attachment','User'),
+																	'User','Feed'=>array('conditions'=>array('Feed.id'=>$feed_id))
+																	)
+													)
+												);
+		return $data;
 	}
 	
 	/**

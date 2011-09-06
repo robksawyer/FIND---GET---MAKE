@@ -144,7 +144,7 @@ class Collection extends AppModel {
 		$this->recursive = 1;
 		$data = $this->find('first',array(
 									'conditions'=>array('Collection.id'=>$model_id),
-									'contain'=>array('Product'=>array('Attachment'),'User','Tag','Ownership','UserFollowing','Vote')
+									'contain'=>array('Product'=>array('Attachment'),'User','Tag','UserFollowing','Vote')
 								)
 							);
 		return $data;
