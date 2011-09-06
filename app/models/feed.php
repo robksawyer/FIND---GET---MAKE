@@ -242,6 +242,10 @@ class Feed extends AppModel {
 					$temp_data = $this->getUfoFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
 					break;
 					
+				case "Product":
+					$temp_data = $this->getProductFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+					
 				default:
 					$temp_data = $this->getStandardFeedData($the_model,$feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
 					break;
@@ -287,6 +291,27 @@ class Feed extends AppModel {
 	 * @return 
 	 * 
 	*/
+	public function getProductFeedData($feed_id=null,$model_id=null){
+		$data = $this->Product->find('first',array(
+												'conditions'=>array(
+														'Product.id'=>$model_id
+												),
+												'contain'=>array('Tag','User','Attachment',
+																'Feed'=>array('conditions'=>array('Feed.id'=>$feed_id)),
+																'Vote','Ownership'
+																)
+												)
+											);
+		return $data;
+	}
+	
+	/**
+	 * Find the data associated with a certain item.
+	 * @param int feed_id The feed item id
+	 * @param int model_id The item id
+	 * @return 
+	 * 
+	*/
 	public function getUfoFeedData($feed_id=null,$model_id=null){
 		$data = $this->Ufo->find('first',array(
 														'conditions'=>array(
@@ -315,8 +340,7 @@ class Feed extends AppModel {
 														),
 														'contain'=>array('Tag',
 																		'Product'=>array('Attachment','User'),
-																		'User',
-																		'Feed'=>array('conditions'=>array('Feed.id'=>$feed_id)),
+																		'User','Feed'=>array('conditions'=>array('Feed.id'=>$feed_id)),
 																		'Vote'
 																	)
 														)

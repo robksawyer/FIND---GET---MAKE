@@ -18,8 +18,12 @@
 	<div class="right-panel">
 		<div class="section">
 			<h4>Password</h4>
-			<p>Be tricky! Your password should be at least 6 characters and not a dictionary word or common name. Change your password on occasion.
-			<b>Note:</b> If you have trusted a third-party Twitter service or software with your password and you change it here, you'll need to re-authenticate to make that software work. (Never enter your password in a third-party service or software that looks suspicious.)</p>
+			<p>Your password should be at least 6 characters and try not to use a dictionary word or a common name.</p>
+		</div>
+		<hr/>
+		<div class="section">
+			<h4>Tips</h4>
+			<p>Change your password often.</p>
 		</div>
 	</div>
 	<div class="clear"></div>

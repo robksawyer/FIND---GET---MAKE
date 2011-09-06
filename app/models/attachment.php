@@ -229,7 +229,7 @@ class Attachment extends AppModel {
 				'conditions' => array(),
 				'fields' => array('Attachment.id','Attachment.path_med','Attachment.path_small','Attachment.title'),
 				'limit'=>100,
-				'order' => 'rand()',
+				'order' => 'rand()'
 		));
 		return $random;
 	}

@@ -16,7 +16,8 @@
 	echo $this->element('top_actions',array('item'=>$collection,'model'=>'Collection','rate'=>true,'cache'=>false));
 ?>
 <h2><?php  
-		__($collection['Collection']['name']." <span class='includes'>includes ".$collection['Collection']['total_products']." product(s)</span>");
+		if($collection['Collection']['total_products'] > 1) $ending = "products."; else $ending = "product.";
+		__($collection['Collection']['name']." <span class='includes'>includes ".$collection['Collection']['total_products']." ".$ending."</span>");
 		if(!empty($collection['Collection']['credit'])){
 			echo "<div class='credit'>&mdash;".$collection['Collection']['credit']."</div>";
 		}

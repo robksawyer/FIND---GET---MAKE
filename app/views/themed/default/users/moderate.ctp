@@ -90,7 +90,7 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 			if($authUser['User']['totalUsersFollowing'] > 1) $people = "people"; else $people = "person";
 			echo $this->Html->link("Following ".$authUser['User']['totalUsersFollowing']." $people",
 			array('controller'=>'user_followings','action'=>'following','admin'=>false,'plugin'=>'',$authUser['User']['username']),
-			array('title'=>'The user\'s you are following','class'=>'simple-btn')); ?>
+			array('title'=>'The users you are following','class'=>'simple-btn')); ?>
 		</div>
 		<div>
 		<?php 

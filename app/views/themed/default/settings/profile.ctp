@@ -36,12 +36,12 @@
 	<div class="right-panel">
 		<div class="section">
 			<h4>Profile</h4>
-			<p>This information appears on your public profile, search results, and beyond.<br/>It helps instantly identify you to those following you, and tells those who aren't more about you.</p>
+			<p>Filling out this section will help others find you based on your city or name. The more information you include, the better chance a friend has of finding you.</p>
 		</div>
 		<hr>
 		<div class="section">
 			<h4>Tips</h4>
-			<p>Filling in your profile information will help people find you on Twitter. For example, you'll be more likely to turn up in a Twitter search if you've added your location or your real name.<br/>Your Twitter profile picture helps instantly identify you to those following you—and tells those who aren't more about you.</p>
+			<p>You'll be more likely to turn up in a user search if you've added your location or your real name.<br/>Your profile picture helps instantly identify you to those following you—and tells those who aren't more about you.</p>
 		</div>
 	</div>
 	<div class="clear"></div>

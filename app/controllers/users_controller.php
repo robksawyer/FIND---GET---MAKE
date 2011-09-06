@@ -423,7 +423,7 @@ class UsersController extends AppController {
 			$this->redirect(array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'moderate'));
 		}
 		
-		/*if (!empty($this->data)) {
+		if (!empty($this->data)) {
 			$this->User->create();
 			$this->User->set($this->data);
 			$this->User->action = 'signup';
@@ -441,15 +441,7 @@ class UsersController extends AppController {
 				if ($this->User->save($this->data, false, array('username', 'email', 'location','fullname','twitter_id','password','slug', $this->User->columnMap['locale']))) {
 					//$this->Session->setFlash(__('You have successfully signed up, you may now login and start your journey.', true));
 					// Send email
-					$message  = sprintf(__('Thank you for signing up on %s, your information is listed below', true), $this->Toolbar->settings['site_name']) .":\n\n";
-					$message .= __('Username', true) .": ". $this->data['User']['username'] ."\n";
-					$message .= __('Password', true) .": ". $this->data['User']['newPassword'] ."\n\n";
-					$message .= __('Enjoy!', true);
-					
-					$this->Email->to = $this->data['User']['email'];
-					$this->Email->from = $this->Toolbar->settings['site_name'] .' <'. $this->Toolbar->settings['site_email'] .'>';
-					$this->Email->subject = $this->Toolbar->settings['site_name'] .' - '. __('Sign Up Confirmation', true);
-					$this->Email->send($message);
+					$this->sendSignupEmail();
 					
 					$this->Auth->login($this->data);
 					unset($this->data['User']);
@@ -459,7 +451,7 @@ class UsersController extends AppController {
 					//$this->redirect(array('plugin'=>'','controller' => 'users', 'action' => 'login', 'admin' => false));
 				}
 			}
-		}*/
+		}
 		
 		//$this->Toolbar->pageTitle(__('Sign Up', true));
 	}
@@ -472,15 +464,16 @@ class UsersController extends AppController {
 	public function facebook_signup() {
 		$this->set('title_for_layout','Sign Up');
 		$this->layout = 'clean';
-		
 		$facebook_link = false; //Used to link an existing account
-	
 		
 		//Check to make sure the user hasn't already linked their account with Facebook
 		$facebookUserDetails = $this->Connect->user();
 		if(!empty($facebookUserDetails)){
 			$facebook_user = $this->User->findByFacebookId($facebookUserDetails['id']);
+			$facebook_profile_url = 'https://graph.facebook.com/'.$facebookUserDetails['id'].'/picture?type=large';
 			if(!empty($facebook_user)) $facebook_link = true;
+		}else{
+			$this->redirect('/login');
 		}
 		
 		//The user already has an account
@@ -506,34 +499,70 @@ class UsersController extends AppController {
 			$this->User->set($this->data);
 			$this->User->action = 'signup';
 			
+			//Check to see if the user exists
+			$emailUserCheck = $this->User->find('first',array('condtions'=>array('User.email'=>$this->data['User']['email'])));
+			if(!empty($emailUserCheck)){
+				//Make sure that the user's current password matches the entered password
+				//The user already has an account. (Add the twitter_id to the account)
+				$this->User->id = $emailUserCheck['User']['id'];
+				//Check to see if the user has a profile image attached. If not, add the Twitter profile image.
+				$check = array();
+				//Set data that may not be there.
+				if(empty($emailUserCheck['User']['location'])){
+					$check[] = $this->User->saveField('location',$this->data['User']['location']);
+				}	
+				if(empty($emailUserCheck['User']['birthday'])){
+					$check[] = $this->User->saveField('birthday',$this->data['User']['birthday']);
+				}
+				if(empty($emailUserCheck['User']['gender'])){
+					$check[] = $this->User->saveField('gender',$this->data['User']['gender']);
+				}
+				if(empty($emailUserCheck['User']['attachment_id']) && empty($emailUserCheck['User']['profile_image_url'])){
+					//Add the user's Twitter profile image
+					$check[] = $this->User->saveField('profile_image_url',$facebook_profile_url);
+				}
+				
+				$check[] = $this->User->saveField('facebook_id',$this->data['User']['facebook_id']);
+				if(!empty($check)){
+					//The user was updated and the account was linked
+					//Log the user in.
+					$this->Auth->login($this->User);
+					//Redirect to moderate page
+					$this->redirect(array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'moderate'));
+					exit;
+				}else{
+					//There was a problem saving the twitter_id
+					$this->Session->setFlash(__('There was a problem linking your account. Please try again later.', true), 'default', 'error-message');
+					exit;
+				}
+			}
+			
 			if ($this->User->validates()) {
+				$this->User->recursive = -1;
+				//The user doesn't have an account, create one.
 				$this->data['User']['username'] = strip_tags($this->data['User']['username']);
 				$this->data['User']['fullname'] = strip_tags($this->data['User']['fullname']);
 				$this->data['User']['location'] = strip_tags($this->data['User']['location']);
+				$this->data['User']['birthday'] = strip_tags($this->data['User']['birthday']);
+				$this->data['User']['gender'] = strip_tags($this->data['User']['gender']);
+				
+				//$this->data['User']['about'] = $facebookUserDetails['description'];
+				$this->data['User']['profile_image_url'] = $facebook_profile_url; //Add the user's profile image
+				
 				$this->data['User']['password'] = $this->Auth->password($this->data['User']['newPassword']);
 				$this->data['User'][$this->User->columnMap['locale']] = $this->Toolbar->settings['default_locale'];
 				$this->data['User']['slug'] = $this->toSlug($this->data['User']['username']);
-				
-				if(empty($this->data['User']['twitter_id'])) $this->data['User']['twitter_id'] = 0;
-				
-				if ($this->User->save($this->data, false, array('username', 'email', 'location','fullname','twitter_id','password','slug', $this->User->columnMap['locale']))) {
+
+				if ($this->User->save($this->data, false, array('username', 'email', 'gender','location','fullname','facebook_id','birthday','password','slug', $this->User->columnMap['locale']))) {
 					//$this->Session->setFlash(__('You have successfully signed up, you may now login and start your journey.', true));
 					// Send email
-					$message  = sprintf(__('Thank you for signing up on %s, your information is listed below', true), $this->Toolbar->settings['site_name']) .":\n\n";
-					$message .= __('Username', true) .": ". $this->data['User']['username'] ."\n";
-					$message .= __('Password', true) .": ". $this->data['User']['newPassword'] ."\n\n";
-					$message .= __('Enjoy!', true);
-					
-					$this->Email->to = $this->data['User']['email'];
-					$this->Email->from = $this->Toolbar->settings['site_name'] .' <'. $this->Toolbar->settings['site_email'] .'>';
-					$this->Email->subject = $this->Toolbar->settings['site_name'] .' - '. __('Sign Up Confirmation', true);
-					$this->Email->send($message);
-					
+					$this->sendSignupEmail();
+
 					$this->Auth->login($this->data);
 					unset($this->data['User']);
 					$this->Session->setFlash(__('You have successfully created an account and may now start your journey.', true));
 					$this->redirect(array('plugin'=>'','controller'=>'users','action'=>'moderate','admin'=>false));
-					
+
 					//$this->redirect(array('plugin'=>'','controller' => 'users', 'action' => 'login', 'admin' => false));
 				}
 			}
@@ -544,7 +573,12 @@ class UsersController extends AppController {
 			//Load the data array with Twitter data
 			$this->data['User']['fullname'] = $facebookUserDetails['name'];
 			$this->data['User']['username'] = $facebookUserDetails['username'];
-			$this->data['User']['location'] = $facebookUserDetails['location'];
+			$this->data['User']['location'] = $facebookUserDetails['location']['name']; //Get the location
+			$this->data['User']['facebook_id'] = $facebookUserDetails['id'];
+			$this->data['User']['email'] = $facebookUserDetails['email'];
+			$this->data['User']['birthday'] = $facebookUserDetails['birthday'];
+			$this->data['User']['gender'] = strtoupper($facebookUserDetails['gender'][0]);
+			
 		}
 		
 		//$this->Toolbar->pageTitle(__('Sign Up', true));
@@ -559,14 +593,15 @@ class UsersController extends AppController {
 		$this->set('title_for_layout','Sign Up');
 		$this->layout = 'clean';
 		$twitter_link = false; //Used to link an existing account
-		$facebook_link = false; //Used to link an existing account
-		
+	
 		//Check to make sure the user hasn't already linked their account with Twitter
 		$twitterUserDetails = $this->Session->read('TwitterUserDetails');
 		//debug($twitterUserDetails);
 		if(!empty($twitterUserDetails)){
 			$twitter_user = $this->User->findByTwitterId($twitterUserDetails['id']);
 			if(!empty($twitter_user)) $twitter_link = true;
+		}else{
+			$this->redirect('/login');
 		}
 		
 		//The user already has an account
@@ -593,62 +628,55 @@ class UsersController extends AppController {
 			$this->User->action = 'signup';
 			
 			//Check to see if the user's email matches another user in the system. If it does, add the new information to that user's account.
+			$emailUserCheck = $this->User->find('first',array('condtions'=>array('User.email'=>$this->data['User']['email'])));
+			if(!empty($emailUserCheck)){
+				//The user already has an account. (Add the twitter_id to the account)
+				$this->User->id = $emailUserCheck['User']['id'];
+				//Check to see if the user has a profile image attached. If not, add the Twitter profile image.
+				$check = array();
+				if(empty($emailUserCheck['User']['attachment_id']) && empty($emailUserCheck['User']['profile_image_url'])){
+					//Add the user's Twitter profile image
+					$check[] = $this->User->saveField('profile_image_url',$twitterUserDetails['profile_image_url']);
+				}	
+				$check[] = $this->User->saveField('twitter_id',$twitterUserDetails['id']);
+				if(!empty($check)){
+					//The user was updated and the account was linked
+					//Log the user in.
+					$this->Auth->login($this->User);
+					//Redirect to moderate page
+					$this->redirect(array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'moderate'));
+					exit;
+				}else{
+					//There was a problem saving the twitter_id
+					$this->Session->setFlash(__('There was a problem linking your account. Please try again later.', true), 'default', 'error-message');
+					exit;
+				}
+			}
+			
 			if ($this->User->validates()) {
 				$this->User->recursive = -1;
-				$emailUserCheck = $this->User->find('first',array('condtions'=>array('User.email'=>$this->data['User']['email'])));
-				//debug($emailUserCheck);
-				if(!empty($emailUserCheck)){
-					//The user already has an account. (Add the twitter_id to the account)
-					$this->User->id = $emailUserCheck['User']['id'];
-					//Check to see if the user has a profile image attached. If not, add the Twitter profile image.
-					$check = array();
-					if(empty($emailUserCheck['User']['attachment_id']) && empty($emailUserCheck['User']['profile_image_url'])){
-						//Add the user's Twitter profile image
-						$check[] = $this->User->saveField('profile_image_url',$twitterUserDetails['profile_image_url']);
-					}	
-					$check[] = $this->User->saveField('twitter_id',$twitterUserDetails['id']);
-					if(!empty($check)){
-						//The user was updated and the account was linked
-						//Log the user in.
-						$this->Auth->login($this->User);
-						//Redirect to moderate page
-						$this->redirect(array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'moderate'));
-					}else{
-						//There was a problem saving the twitter_id
-						$this->Session->setFlash(__('There was a problem linking your account. Please try again later.', true), 'default', 'error-message');
-					}
-				}else{
-					//The user doesn't have an account, create one.
-					$this->data['User']['username'] = strip_tags($this->data['User']['username']);
-					$this->data['User']['fullname'] = strip_tags($this->data['User']['fullname']);
-					$this->data['User']['location'] = strip_tags($this->data['User']['location']);
-					$this->data['User']['about'] = $twitterUserDetails['description'];
-					$this->data['User']['profile_image_url'] = $twitterUserDetails['profile_image_url']; //Add the user's profile image
-					
-					$this->data['User']['password'] = $this->Auth->password($this->data['User']['newPassword']);
-					$this->data['User'][$this->User->columnMap['locale']] = $this->Toolbar->settings['default_locale'];
-					$this->data['User']['slug'] = $this->toSlug($this->data['User']['username']);
+				//The user doesn't have an account, create one.
+				$this->data['User']['username'] = strip_tags($this->data['User']['username']);
+				$this->data['User']['fullname'] = strip_tags($this->data['User']['fullname']);
+				$this->data['User']['location'] = strip_tags($this->data['User']['location']);
+				$this->data['User']['about'] = $twitterUserDetails['description'];
+				$this->data['User']['profile_image_url'] = $twitterUserDetails['profile_image_url']; //Add the user's profile image
+				
+				$this->data['User']['password'] = $this->Auth->password($this->data['User']['newPassword']);
+				$this->data['User'][$this->User->columnMap['locale']] = $this->Toolbar->settings['default_locale'];
+				$this->data['User']['slug'] = $this->toSlug($this->data['User']['username']);
 
-					if ($this->User->save($this->data, false, array('username', 'email', 'location','fullname','twitter_id','password','slug', $this->User->columnMap['locale']))) {
-						//$this->Session->setFlash(__('You have successfully signed up, you may now login and start your journey.', true));
-						// Send email
-						$message  = sprintf(__('Thank you for signing up on %s, your information is listed below', true), $this->Toolbar->settings['site_name']) .":\n\n";
-						$message .= __('Username', true) .": ". $this->data['User']['username'] ."\n";
-						$message .= __('Password', true) .": ". $this->data['User']['newPassword'] ."\n\n";
-						$message .= __('Enjoy!', true);
+				if ($this->User->save($this->data, false, array('username', 'email', 'location','fullname','twitter_id','password','slug', $this->User->columnMap['locale']))) {
+					//$this->Session->setFlash(__('You have successfully signed up, you may now login and start your journey.', true));
+					// Send email
+					$this->sendSignupEmail();
 
-						$this->Email->to = $this->data['User']['email'];
-						$this->Email->from = $this->Toolbar->settings['site_name'] .' <'. $this->Toolbar->settings['site_email'] .'>';
-						$this->Email->subject = $this->Toolbar->settings['site_name'] .' - '. __('Sign Up Confirmation', true);
-						$this->Email->send($message);
+					$this->Auth->login($this->data);
+					unset($this->data['User']);
+					$this->Session->setFlash(__('You have successfully created an account and may now start your journey.', true));
+					$this->redirect(array('plugin'=>'','controller'=>'users','action'=>'moderate','admin'=>false));
 
-						$this->Auth->login($this->data);
-						unset($this->data['User']);
-						$this->Session->setFlash(__('You have successfully created an account and may now start your journey.', true));
-						$this->redirect(array('plugin'=>'','controller'=>'users','action'=>'moderate','admin'=>false));
-
-						//$this->redirect(array('plugin'=>'','controller' => 'users', 'action' => 'login', 'admin' => false));
-					}
+					//$this->redirect(array('plugin'=>'','controller' => 'users', 'action' => 'login', 'admin' => false));
 				}
 			}
 		}
@@ -664,6 +692,24 @@ class UsersController extends AppController {
 		}
 		
 		//$this->Toolbar->pageTitle(__('Sign Up', true));
+	}
+	
+	/**
+	 * Sends the user an email after they signup.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	protected function sendSignupEmail(){
+		$message  = sprintf(__('Thank you for signing up on %s, your information is listed below', true), $this->Toolbar->settings['site_name']) .":\n\n";
+		$message .= __('Username', true) .": ". $this->data['User']['username'] ."\n";
+		$message .= __('Password', true) .": ". $this->data['User']['newPassword'] ."\n\n";
+		$message .= __('Enjoy!', true);
+		
+		$this->Email->to = $this->data['User']['email'];
+		$this->Email->from = $this->Toolbar->settings['site_name'] .' <'. $this->Toolbar->settings['site_email'] .'>';
+		$this->Email->subject = $this->Toolbar->settings['site_name'] .' - '. __('Sign Up Confirmation', true);
+		$this->Email->send($message);
 	}
 	
 	/**
@@ -850,7 +896,19 @@ class UsersController extends AppController {
 	 * 
 	*/
 	public function facebook_logout(){
-		
+		$Facebook = new FB();
+		//debug($Facebook->api('/me'));
+		$absURL = Router::url("/logout", true);
+		$logoutURL = $Facebook->getLogoutUrl(array('next'=>$absURL));
+		if($this->Session->check('FB.Me')){
+			$this->Session->delete('FB.Me');
+			$this->Session->delete('FB');
+		}
+		if(!empty($this->facebookUser)){
+			$this->facebookUser = null;
+		}
+		$this->redirect($logoutURL);
+		//Deauthorize the facebook account
 	}
 	
 	/**

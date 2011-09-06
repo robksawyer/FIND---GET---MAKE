@@ -196,7 +196,7 @@ class AppController extends Controller {
 		
 		//FACEBOOK OAUTH SETTINGS
 		$Facebook = new FB();
-		$loginURL = $Facebook->getLoginUrl(array('req_perms'=>'offline_access,publish_stream','next'=>'/facebook_signup')); //Get the login url to use
+		$loginURL = $Facebook->getLoginUrl(array('req_perms'=>'user_about_me,user_birthday,email,offline_access,publish_stream','next'=>'/facebook_signup')); //Get the login url to use
 		//$accessToken = $Facebook->getAccessToken(); //Get the access token
 		
 		/** SET GLOBAL VARIABLES **/

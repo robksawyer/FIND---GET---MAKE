@@ -16,7 +16,7 @@
 				<div id="facebook-login-wrap">
 				<?php 
 					//echo $this->Html->link('Sign in with Facebook','',array('id'=>'btn-facebook','class'=>'popupwindow','style'=>'display:none')); 
-					echo $this->Facebook->login(array('perms'=>'offline_access,publish_stream','onlogin'=>'facebook_login();'),'Sign in with Facebook');
+					echo $this->Facebook->login(array('perms'=>'user_about_me,user_birthday,email,offline_access,publish_stream','onlogin'=>'facebook_login();'),'Sign in with Facebook');
 				?>
 				</div>
 			</div>

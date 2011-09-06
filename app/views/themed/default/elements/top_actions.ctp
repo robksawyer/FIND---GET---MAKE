@@ -137,18 +137,10 @@
 		
 		<!-- STAFF FAVORITE -->
 		<?php 
-		//Don't allow the staff to like their own items
-		if($authUser['User']['id'] != $item['User']['id'] && $isAdmin || $isManager):
-			if(empty($staff_favorite)){
-				echo $this->Html->link('Staff favorite','#',array(
-																	'class'=>'staff-favorite',
-																	'id'=>'staff-fav-'.strtolower($model).'-'.$item[$model]['id'],
-																	'title'=>'Add this item to the staff favorites.'
-																	));
-			}else{
-				echo '<span class="staff-favorite" style="text-decoration: line-through;" title="You\'ve already added this item to the staff favorites.">Staff favorite</span>';
+			//Don't allow the staff to like their own items
+			if($authUser['User']['id'] != $item['User']['id'] && $isAdmin || $isManager){
+				echo $this->element('staff-favorite-link',array('cache'=>false,'item'=>$item,'model'=>$model)); 
 			}
-		endif;
 		?>
 		<!-- END STAFF FAVORITE -->
 	</ul>

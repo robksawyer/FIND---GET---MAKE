@@ -27,9 +27,9 @@ $(document).ready(function(){
 	});
 	
 	//Add external links icon
-	$('a[target="_blank"]').filter(function() {
+	/*$('a[target="_blank"]').filter(function() {
 		return this.hostname && this.hostname !== location.hostname;
-	}).after(' <img src="/img/icons/external.png" alt="" class="external"/>');
+	}).after(' <img src="/img/icons/external.png" alt="" class="external"/>');*/
 	
 	
 	

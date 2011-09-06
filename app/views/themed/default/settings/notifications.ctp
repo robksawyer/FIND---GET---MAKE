@@ -33,11 +33,11 @@
 	<div class="right-panel">
 		<div class="section">
 			<h4>Notifications</h4>
-			<p>These settings control when and how often Find|Get|Make communicates with you.</p>
+			<p>How often, and through what means, do you want to be contacted by this site? As always, we won't share your information with third parties.</p>
 		</div>
 		<hr>
 		<div class="section">
-			<h4>Tips</h4>
+			<h4>Notes</h4>
 			<p>Be sure your email is correct in <?php echo $this->Html->link('account settings','/settings/account',array());?> to receive emails.</p>
 		</div>
 	</div>

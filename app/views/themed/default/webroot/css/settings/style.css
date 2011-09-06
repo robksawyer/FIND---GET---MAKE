@@ -158,3 +158,13 @@ ul.settings-nav li a.active{
 	display: block;
 	margin: 20px 0px 19px !important;
 }
+
+.social-networks .item{
+	position: relative;
+	display: block;
+	margin: 10px 5px;
+}
+
+.social-networks .item a.revoke{
+	margin-left: 20px;
+}

@@ -87,6 +87,32 @@ html{
 	background: url('img/connect_twitter.png') 0 0 no-repeat;
 }
 
+#facebook-user-found{
+	margin: 10px 0;
+	padding: 10px 0;
+	background: #323232;
+	width: 400px;
+	border: 1px solid #777777;
+	color: #ffffff;
+	line-height: 15px;
+	font-weight: normal;
+}
+
+#facebook-user-found img{
+	margin: 0px 10px 10px 10px;
+	float: left;
+}
+
+#facebook-user-found ul{
+	margin-left: 0px;
+	float: left;
+}
+
+#facebook-user-found a{
+	color: #ffffff;
+	line-height: 17px;
+}
+
 #btn-facebook{
 	margin: 0;
 	padding: 0;
@@ -477,6 +503,14 @@ a.use-url{
  * GLOBAL PAGE STYLES
  * 
 */
+
+a.facebook{
+	color: #36579a;
+}
+
+a.twitter{
+	color: #53d4ff;
+}
 
 .link a{
 	color: #4287b1;
@@ -1172,22 +1206,22 @@ h3.header{
 	width: 500px !important;
 }
 
-.left-container .image img{
+.left-panel .image img{
 	display: inline-block;
 	max-width: 450px !important;
 	min-width: 200px !important;
 	margin: 0 15px 0 0;
 }
 
-.left-container .find-people{
+#left-panel-index .find-people{
 	padding: 10px 0px;
 	margin: 10px 10px 10px 0px;
 	font-size: 14px;
 	width: 200px;
 }
 
-.left-container .find-people li,
-.left-container .find-people li:hover{
+#left-panel-index .find-people li,
+#left-panel-index .find-people li:hover{
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F4F4F4), to(#ECECEC));
 	border: 1px solid #D4D4D4;
 	border-radius: 3px;
@@ -1204,24 +1238,24 @@ h3.header{
 	padding: 4px 9px 4px 7px;
 }
 
-.left-container .find-people li:hover{
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#599BDC), to(#3072B3));
-	border-color: #2A65A0;
-	color: #ffffff;
+#left-panel-index .find-people li:hover{
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f7f7f7), to(#e8e8e8));
+	border-color: #777777;
+	color: #262626;
 	text-decoration: none;
-	text-shadow: #000000 1px 1px 0px;
+	text-shadow: #ffffff 1px 1px 0px;
 	font-weight: normal;
 }
 
-.left-container .find-people li > a{
+#left-panel-index .find-people li > a{
 	display: block;
 	height: 21px;
 	line-height: 21px;
 	text-decoration: none;
 }
 
-.left-container .find-people li > a:hover{
-	color: #ffffff;
+#left-panel-index .find-people li > a:hover{
+	color: #262626;
 }
 
 .right-container{
@@ -2127,6 +2161,7 @@ div#attachments-small ul.wrapper li a:focus{
 	font-size: 11px;
 	vertical-align: baseline;
 	text-decoration: none;
+	cursor: pointer;
 }
 /* END TOP ACTIONS */
 

@@ -21,8 +21,13 @@
 			<?php echo $this->Form->input('username', array('label' => __('Username', true),'after'=>'<div class="after">Your public profile: http://www.find-get-make.com/profile/<span class="username-preview">'.$this->Form->value('User.username').'</span></div>')); ?>
 			<?php echo $this->Form->input('location', array('label' => __('Location', true))); ?>
 			<?php echo $this->Form->input('email', array('label' => __('Email', true))); ?>
-			<?php echo $this->Form->input('newPassword', array('type' => 'password', 'label' => __('Password', true))); ?>
-			<?php echo $this->Form->input('confirmPassword', array('type' => 'password', 'label' => __('Confirm Password', true))); ?>
+			<?php 
+				//Only show the password if the user isn't already logged in. This allows me to use this form from the settings/applications page.
+				if(empty($authUser)){
+					echo $this->Form->input('newPassword', array('type' => 'password', 'label' => __('Password', true)));
+					echo $this->Form->input('confirmPassword', array('type' => 'password', 'label' => __('Confirm Password', true)));
+				}
+			?>
 			<?php
 			//Only show the security questions when not using oauth service
 			if(empty($twitterDetails)){

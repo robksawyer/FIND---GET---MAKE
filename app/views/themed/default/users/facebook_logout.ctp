@@ -1,3 +1,8 @@
 <?php
-	echo $this->Facebook->logout(array('redirect'=>'/register'));
+	
 ?>
+<script type="text/javascript">
+/*FB.logout(function(response) {
+  // user is now logged out
+});*/
+</script>

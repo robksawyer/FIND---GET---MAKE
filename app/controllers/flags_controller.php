@@ -2,7 +2,7 @@
 class FlagsController extends AppController {
 
 	var $name = 'Flags';
-	var $components = array('String');
+	//var $components = array();
 	
 	var $paginate = array(
 						'limit'=>50,

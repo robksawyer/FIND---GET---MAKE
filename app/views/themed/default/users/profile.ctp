@@ -2,7 +2,7 @@
 $this->Html->script('jquery.masonry.min',array('inline'=>false));
 ?>
 <?php // User exists
-if (!empty($user)) { ?>
+if (!empty($user)): ?>
 <div class="moderate-area">
 	<div class="left-container-with-sidebar">
 		<div class="header red"><?php 
@@ -80,71 +80,87 @@ if (!empty($user)) { ?>
 	</div>
 </div>
 <div class="clear"></div>
-<?php // Topics
-if (!empty($topics)) { ?>
-<div class="forumWrap">
-    <h3><?php __('Latest Topics'); ?></h3>
-    
-    <table class="table" cellspacing="0">
-    <tr>
-        <th><?php __('Topic'); ?></th>
-        <th><?php __('Created'); ?></th>
-        <th><?php __('Posts'); ?></th>
-        <th><?php __('Views'); ?></th>
-        <th><?php __('Last Activity'); ?></th>
-    </tr>
-    
-    <?php $counter = 0;
-    foreach ($topics as $topic) {
-        $lastTime = (isset($topic['LastPost']['created'])) ? $topic['LastPost']['created'] : $topic['Topic']['modified']; ?>
-        
-    <tr<?php if ($counter % 2) echo ' class="altRow"'; ?>>
-        <td><?php echo $this->Html->link($topic['Topic']['title'], array('plugin'=>'forum','controller' => 'topics', 'action' => 'view', $topic['Topic']['slug'])); ?></td>
-        <td class="ac"><?php echo $this->Time->niceShort($topic['Topic']['created'], $this->Cupcake->timezone()); ?></td>
-        <td class="ac"><?php echo number_format($topic['Topic']['post_count']); ?></td>
-        <td class="ac"><?php echo number_format($topic['Topic']['view_count']); ?></td>
-        <td><?php echo $this->Time->relativeTime($lastTime, array('userOffset' => $this->Cupcake->timezone())); ?></td>
-    </tr>
-    <?php ++$counter; } ?>
-    
-    </table>
-</div>    
-<?php } ?>
-
-<?php // Posts
-if (!empty($posts)) { ?>
-<div class="forumWrap">
-    <h3><?php __('Latest Posts'); ?></h3>
-    
-    <table class="table" cellspacing="0">
-    <tr>
-        <th><?php __('Topic'); ?></th>
-        <th><?php __('Author'); ?></th>
-        <th><?php __('Posted On'); ?></th>
-    </tr>
-    
-    <?php foreach($posts as $post) { ?>
-    <tr class="altRow">
-        <td><strong><?php echo $this->Html->link($post['Topic']['title'], array('plugin'=>'forum','controller' => 'topics', 'action' => 'view', $post['Topic']['slug'])); ?></strong></td>
-        <td><?php echo $this->Html->link($post['Topic']['User']['username'], array('plugin'=>'forum','controller' => 'users', 'action' => 'profile', $post['Topic']['User']['id'])); ?></td>
-        <td class="ar"><?php echo $this->Time->relativeTime($post['Post']['created'], array('userOffset' => $this->Cupcake->timezone())); ?></td>
-    </tr>
-    <tr>
-        <td colspan="3"><?php echo $this->Decoda->parse($post['Post']['content']); ?></td>
-    </tr>
-    <?php } ?>
-    
-    </table>
-</div>    
-<?php } ?>
-
-<?php } else { ?>
-
-<h2><?php __('Not Found'); ?></h2>
-<?php __('The user you are looking for does not exist.'); ?>
-
-<?php } ?>
 <?php
+$showForumDetails = false;
+
+//Enable/Disable the forum data on the profile
+if($showForumDetails):
+	// Topics
+	if (!empty($topics)): 
+	?>
+	<div class="forumWrap">
+		 <h3><?php __('Latest Topics'); ?></h3>
+	 
+		 <table class="table" cellspacing="0">
+			 <tr>
+				  <th><?php __('Topic'); ?></th>
+				  <th><?php __('Created'); ?></th>
+				  <th><?php __('Posts'); ?></th>
+				  <th><?php __('Views'); ?></th>
+				  <th><?php __('Last Activity'); ?></th>
+			 </tr>
+	 
+			 <?php $counter = 0;
+			 foreach ($topics as $topic):
+				  $lastTime = (isset($topic['LastPost']['created'])) ? $topic['LastPost']['created'] : $topic['Topic']['modified']; ?>
+		  
+				 <tr<?php if($counter % 2) echo ' class="altRow"'; ?>>
+					  <td><?php echo $this->Html->link($topic['Topic']['title'], array('plugin'=>'forum','controller' => 'topics', 'action' => 'view', $topic['Topic']['slug'])); ?></td>
+					  <td class="ac"><?php echo $this->Time->niceShort($topic['Topic']['created'], $this->Cupcake->timezone()); ?></td>
+					  <td class="ac"><?php echo number_format($topic['Topic']['post_count']); ?></td>
+					  <td class="ac"><?php echo number_format($topic['Topic']['view_count']); ?></td>
+					  <td><?php echo $this->Time->relativeTime($lastTime, array('userOffset' => $this->Cupcake->timezone())); ?></td>
+				 </tr>
+				 <?php 
+					++$counter;
+				endforeach;
+			 ?>
+		 </table>
+	</div>	 
+	<?php 
+	endif; 
+	?>
+
+	<?php 
+	// Posts
+	if (!empty($posts)): 
+	?>
+	<div class="forumWrap">
+		 <h3><?php __('Latest Posts'); ?></h3>
+	 
+		 <table class="table" cellspacing="0">
+				<tr>
+					<th><?php __('Topic'); ?></th>
+					<th><?php __('Author'); ?></th>
+					<th><?php __('Posted On'); ?></th>
+				</tr>
+	 
+			 <?php foreach($posts as $post): ?>
+		 			<tr class="altRow">
+						<td><strong><?php echo $this->Html->link($post['Topic']['title'], array('plugin'=>'forum','controller' => 'topics', 'action' => 'view', $post['Topic']['slug'])); ?></strong></td>
+						<td><?php echo $this->Html->link($post['Topic']['User']['username'], array('plugin'=>'forum','controller' => 'users', 'action' => 'profile', $post['Topic']['User']['id'])); ?></td>
+						<td class="ar"><?php echo $this->Time->relativeTime($post['Post']['created'], array('userOffset' => $this->Cupcake->timezone())); ?></td>
+					</tr>
+					<tr>
+						<td colspan="3"><?php echo $this->Decoda->parse($post['Post']['content']); ?></td>
+					</tr>
+			 <?php endforeach; ?>
+	 
+		 </table>
+	</div>	 
+	<?php 
+		endif; 
+	endif; //End the forum details
+	?>
+	
+<?php else: ?>
+
+	<h2><?php __('Not Found'); ?></h2>
+	<?php __('The user you are looking for does not exist.'); ?>
+	
+<?php
+endif; //End user check
+
 //If this is removed the like/dislike buttons will not work
 echo $this->Js->writeBuffer();
 ?>

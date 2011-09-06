@@ -21,7 +21,11 @@
 	<div class="right-panel">
 		<div class="section">
 			<h4>Account</h4>
-			<p>Use this panel to change your account settings.</p>
+			<p>Use this panel to change account settings such as your email address or your username. Please note that these are important settings, so be sure to double check your spelling.</p>
+		</div>
+		<div class="section">
+			<h4>Notes</h4>
+			<p>If you change your username, all further feed info will contain this name. Also, be sure to notify your followers that your name changed.</p>
 		</div>
 	</div>
 	<div class="clear"></div>

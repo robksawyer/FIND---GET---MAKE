@@ -25,12 +25,12 @@
 	<div class="right-panel">
 		<div class="section">
 			<h4>Forum</h4>
-			<p>Sed eget rutrum tortor. Quisque dolor magna, vulputate et cursus at, aliquet id odio. Maecenas nisi tellus, volutpat sit amet aliquam sed, sollicitudin vitae eros. Praesent nec pretium augue. Vestibulum faucibus viverra diam, non bibendum mi lobortis et. Vestibulum suscipit placerat est a tempus.</p>
+			<p>Here you can add a signature that lets people know what you're about. This'll show up on every post you make in the forum&mdash;so make it good.</p>
 		</div>
 		<hr>
 		<div class="section">
 			<h4>Tips</h4>
-			<p>Nulla facilisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam vehicula sapien a tellus sollicitudin lobortis.h</p>
+			<p>Setting your timezone will ensure that your forum posts contain the proper time.</p>
 		</div>
 	</div>
 	<div class="clear"></div>

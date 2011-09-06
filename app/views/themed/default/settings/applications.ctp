@@ -12,25 +12,29 @@
 				TODO Actually check to see if the account is linked. Add a revoke link.
 			-->
 			<?php echo $this->Form->label(__('Social Networks', true)); ?>
-			<?php if(!empty($this->data['User']['twitter_id'])): ?>
-				<span class="twitter">Your <i>Twitter</i> account is linked.</span>
+			<div class="item">
+			<?php if(!empty($authUser['User']['twitter_id'])): ?>
+				<span class="twitter">Your <?php echo $this->Html->link('twitter','http://twitter.com/settings/applications',array('target'=>'_blank','class'=>'twitter')); ?> account is linked.</span>
 			<?php else: ?>
 				<span id="twitter-login-wrap">
 				<?php 
-					echo "<span class='loading'>Loading...</span>";
+					echo "<span class='loading'></span>";
 					echo $this->Html->link('Connect with Twitter','',array('id'=>'btn-twitter','class'=>'popupwindow','style'=>'display:none'));
 				?>
 				</span>
 			<?php endif; ?>
-			<!--
-			<?php //if(!empty($this->data['User']['facebook_id'])): ?>
-				<span class="twitter">Your <i>Facebook</i> account is linked.</span>
-			<?php //else: ?>
-				<div id="btn-facebook">
-				<?php // echo $this->Facebook->login(array('perms' => 'email','redirect-uri' => '/register'),'Connect with Facebook'); ?>
+			</div>
+			<div class="item">
+			<?php if(!empty($authUser['User']['facebook_id'])): ?>
+				<span class="twitter">Your <?php echo $this->Html->link('facebook','http://www.facebook.com/settings?tab=applications',array('target'=>'_blank','class'=>'facebook'));?> account is linked.</span>
+			<?php else: ?>
+				<div id="facebook-login-wrap">
+				<?php 
+					echo $this->Facebook->login(array('perms'=>'user_about_me,user_birthday,email,offline_access,publish_stream','onlogin'=>'facebook_login();'),'Sign in with Facebook');
+				?>
 				</div>
-			<?php //endif; ?>
-			-->
+			<?php endif; ?>
+			</div>
 		</div>
 		
 		<?php //echo $this->Form->end('Save'); ?>
@@ -38,12 +42,12 @@
 	<div class="right-panel">
 		<div class="section">
 			<h4>Applications</h4>
-			<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+			<p>Linking your favorite social services, allows you to share your data easily and sign in quickly.</p>
 		</div>
-		<hr>
+		<hr/>
 		<div class="section">
 			<h4>Tips</h4>
-			<p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+			<p>If you've linked a service, try clicking on the respective service button on the login page to bypass entering your user/pass combo during your next login.</p>
 		</div>
 	</div>
 	<div class="clear"></div>
@@ -52,7 +56,7 @@
 	echo $this->Html->script('jquery.popupwindow',array('inline'=>false));
 	echo $this->Html->script('jquery.corner',array('inline'=>false));
 ?>
-<script language="javascript">
+<script type="text/javascript">
 //<![CDATA[
 $(document).ready(function() {
 	
@@ -61,7 +65,7 @@ $(document).ready(function() {
 			height:500,
 			width:800, 
 			center:1, 
-			onUnload:unloadedPopup,
+			onUnload:unloadedTwitterPopup,
 			center: 1
 		}
 	}
@@ -75,11 +79,22 @@ $(document).ready(function() {
 		$('.popupwindow').popupwindow(profiles);
    });
 
-	function unloadedPopup(){
+	function unloadedTwitterPopup(){
 		//Redirect the user to the signup page and continue the process
-		window.location="/signup";
+		window.location="/users/twitter_signup";
 	}
 });
+
+/**
+ * The user accepted the requirements. Log them in
+ * @param 
+ * @return 
+ * 
+*/
+function facebook_login(){
+	var loginURL = "<?php echo $loginURL; ?>";
+	window.location.href = loginURL;
+}
 
 $("#settings-container").corner("10px");
 $("#settings-container .right-panel").corner("10px");
