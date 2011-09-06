@@ -41,14 +41,15 @@ class UsersController extends AppController {
 		$this->Auth->allowedActions = array('more_user_feed_data', 'forgot', 'listing', 'profile','getAvatar',
 											'signup','login','logout','register','register_with_twitter','register_with_facebook',
 											'twitter_logout','facebook_logout','hide_welcome','staff_favorites',
-											'facebook_signup','twitter_signup','check'
+											'facebook_signup','twitter_signup','check',
+											'find','find_via_twitter','find_via_facebook','find_users'
 											);
 		
 		/*$this->Auth->allow('login','logout','register','register_with_twitter','register_with_facebook',
 							'more_user_feed_data', 'forgot', 'listing','twitter_logout','facebook_logout', 
 							'profile', 'signup','getAvatar','hide_welcome'
 							);*/
-		$this->AjaxHandler->handle('hide_welcome');
+		$this->AjaxHandler->handle('hide_welcome','find_users');
 		
 		
 		/*if (isset($this->params['admin'])) {
@@ -1055,6 +1056,51 @@ class UsersController extends AppController {
 	*/
 	function find(){
 		
+	}
+	
+	
+	/**
+	 * Handles finding a user's Twitter friends that are also users of the site
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function find_via_twitter(){
+		//1. Handle authenticating the user if they don't already have their account linked.
+		//2. Scan the user's Twitter friends (the user's they are following)
+		//3. Check to see if any of the usernames match any of the user's in our system. Maybe check by twitter id vs. User.twitter_id
+	}
+	
+	/**
+	 * Handles finding a user's Facebook friends that are also users of the site
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function find_via_facebook(){
+		//1. Handle authenticating the user if they don't already have their account linked.
+		//2. Scan the user's Facebook friends (the user's they are following)
+		//3. Check to see if any of the usernames match any of the user's in our system. Maybe check by facebook id vs. User.facebook_id
+	}
+	
+	/**
+	 * Handles finding a user. This is triggered by the search box
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function find_users(){
+		if($this->RequestHandler->isAjax()) {
+			$this->autoLayout = false;
+			$this->autoRender = false;
+			$response = array('success' => false);
+			$this->Prg->commonProcess();
+			//Search for the username
+			$results = $this->User->parseCriteria($this->passedArgs);
+			$this->AjaxHandler->response(true, $results);
+			$this->AjaxHandler->respond();
+			return;
+		}
 	}
 	
 	/**

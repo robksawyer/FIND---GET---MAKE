@@ -1,9 +1,5 @@
 <div id="left-panel-index">
-	<ul class="find-people">
-		<li><?php echo $this->Html->link('Staff favorites',array('admin'=>false,'controller'=>'users','action'=>'find','staff-favorites')); ?></li>
-		<li>Facebook</li>
-		<li>Twitter</li>
-		<li>Search</li>
+	<?php echo $this->element('find-people-nav',array('cache'=>false,'selected'=>'staff_favorites')); ?>
 </div>
 <div id="right-panel">
 	<div class="find-people">

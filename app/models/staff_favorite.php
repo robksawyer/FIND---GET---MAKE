@@ -84,13 +84,28 @@ class StaffFavorite extends AppModel {
 	 * 
 	*/
 	public function getTenUsers(){
-		$data = $this->find('all',array(
+		$this->recursive = -1;
+		$data = $this->find('list',array(
 										'conditions'=>array(
 											'StaffFavorite.model'=>'User'
 										),
-										'limit'=>10
+										'fields'=>'StaffFavorite.model_id',
+										'limit'=>10,
+										'order'=>array('StaffFavorite.created'=>'desc')
 										));
-		return $data;
+		$data = array_values($data);
+		$users = $this->User->find('all',array(
+									'conditions'=>array(
+										'User.id'=>$data
+									),
+									'contain'=>array('Product'=>array(
+																	'limit'=>3,
+																	'Attachment'
+																)
+													))
+									);
+		
+		return $users;
 	}
 	
 	/**

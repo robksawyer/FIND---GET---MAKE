@@ -112,7 +112,7 @@ class StaffFavoritesController extends AppController {
 	 * 
 	*/
 	public function getTenUsers(){
-		return $this->getTenUsers();
+		return $this->StaffFavorite->getTenUsers();
 	}
 	
 	function edit($id = null) {

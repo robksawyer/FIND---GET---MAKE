@@ -17,7 +17,7 @@
 															'alt'=>$product['Product']['name'],
 															'url'=>$product['Product']['source_url'],
 															'id'=>'attachment0',
-															'width'=>$product['Attachment'][0]['width']
+															//'width'=>$product['Attachment'][0]['width']
 															)
 														);
 			?>

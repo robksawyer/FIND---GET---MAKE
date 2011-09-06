@@ -516,6 +516,7 @@ a.twitter{
 	color: #4287b1;
 }
 
+
 .followers{
 	position: relative;
 	display: block;
@@ -1196,9 +1197,14 @@ h3.header{
 .left-container{
 	position: relative;
 	display: inline-block;
-	margin: 0 0 10px 0;
+	margin: 0 10px 10px 0;
 	width: 500px !important;
 	float: left;
+}
+
+.image img{
+	width: 500px;
+	height: auto;
 }
 
 .left-container .image{
@@ -1222,6 +1228,7 @@ h3.header{
 
 #left-panel-index .find-people li,
 #left-panel-index .find-people li:hover{
+	width: 200px;
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F4F4F4), to(#ECECEC));
 	border: 1px solid #D4D4D4;
 	border-radius: 3px;
@@ -1236,6 +1243,41 @@ h3.header{
 	text-decoration: none;
 	margin: 10px 0;
 	padding: 4px 9px 4px 7px;
+}
+
+#left-panel-index #searchbox,
+#left-panel-index #searchbox:hover{
+	background: none;
+	border: none;
+	color: #333;
+}
+
+#left-panel-index #searchbox #SearchQuery{
+	background-image: url('img/search.png');
+	background-position: 191px 8px;
+	background-repeat: no-repeat;
+	border: 1px solid #B9B9B9;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	color: #333;
+	font-size: 13px;
+	margin: 0px;
+	padding: 8px 10px;
+	width: 194px;
+}
+
+#left-panel-index .find-people li.selected,
+#left-panel-index .find-people li.selected:hover{
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ef3f23), to(#f0573e));
+	border: none;
+	color: #ffffff;
+	text-decoration: none;
+	font-weight: normal;
+}
+#left-panel-index .find-people li.selected a,
+#left-panel-index .find-people li.selected a:hover{
+	color: #ffffff;
+	text-shadow: none;
 }
 
 #left-panel-index .find-people li:hover{
@@ -2620,6 +2662,75 @@ span.total a:hover{
 	font-family: Georgia, serif;
 	color: #666666;
 	font-size: 15px;
+}
+
+/*** STANDARD USER BLOCK ***/
+.user-block{
+	position: relative;
+	margin: 20px 0;
+}
+.user-block .avatar{
+	width: 65px;
+	padding: 0;
+	margin: 0;
+	float: left;
+}
+
+.user-block .avatar img{
+	padding-bottom: 5px;
+}
+
+.user-block  ul.user-details{
+	position: relative;
+	font-size: 12px;
+	color: #999;
+	margin: 0;
+	float: left;
+}
+
+.user-block  ul.item-details,
+.user-block  ul.item-details li,
+.user-block  ul.item-details li img,
+.user-block  ul.item-details li a{
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+}
+.user-block  ul.item-details li a{
+	margin-right: 10px;
+	vertical-align: middle;
+}
+.user-block  ul.item-details li a:hover{
+	opacity:.75;
+	filter:alpha(opacity=75);
+}
+
+/*** END STANDARD USER BLOCK ***/
+
+#follow-all-btn {
+	text-align: center;
+}
+
+#follow-all-btn a{
+	position: relative;
+	float: right;
+	font-size: 12px;
+	width: 65px;
+	padding: 10px 13px;
+	background: #000000;
+	color: #ffffff;
+	font-weight: bold;
+	text-decoration: none;
+}
+#follow-all-btn a:hover{
+	background: #999999;
+}
+
+#follow-all-btn a#follow-all{
+	background: #ef3f23;
+}
+#follow-all-btn a#follow-all:hover{
+	background: #f0573e;
 }
 
 #follower-following{
