@@ -15,6 +15,7 @@ if (!empty($user)): ?>
 	<div class="right-sidebar">
 		<div class="header profile">
 			<!--<button type="button" onclick="goTo('<?php //echo $this->Html->url(array('action' => 'report', $user['User']['id'])); ?>');" class="fr button"><?php //__('Report User'); ?></button>-->
+			<?php echo $this->element('staff-favorite-link',array('cache'=>false,'model_id'=>$user['User']['id'],'model'=>'User')); ?>
 			<div class="user-details">
 				<?php 
 					if(!empty($user['User']['fullname'])){

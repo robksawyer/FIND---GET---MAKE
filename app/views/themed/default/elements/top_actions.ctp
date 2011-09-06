@@ -139,7 +139,7 @@
 		<?php 
 			//Don't allow the staff to like their own items
 			if($authUser['User']['id'] != $item['User']['id'] && $isAdmin || $isManager){
-				echo $this->element('staff-favorite-link',array('cache'=>false,'item'=>$item,'model'=>$model)); 
+				echo $this->element('staff-favorite-link',array('cache'=>false,'model_id'=>$item[$model]['id'],'model'=>$model));
 			}
 		?>
 		<!-- END STAFF FAVORITE -->

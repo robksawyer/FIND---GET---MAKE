@@ -93,7 +93,28 @@ class StaffFavoritesController extends AppController {
 	public function remove($model='',$model_id=null){
 		
 	}
-
+	
+	/**
+	 * Returns whether or not the item is favorited
+	 * @param string model 
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	public function isFavorited($model='',$model_id=null){
+		return $this->hasItemBeenFavorited($model,$model_id);
+	}
+	
+	/**
+	 * Returns the most recent ten staff favorited users
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function getTenUsers(){
+		return $this->getTenUsers();
+	}
+	
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid staff favorite', true));

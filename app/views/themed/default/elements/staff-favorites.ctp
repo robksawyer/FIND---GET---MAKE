@@ -1,4 +1,4 @@
 <?php
-	$favorites = $this->requestAction('/users/staff_favorites');
+	$favorites = $this->requestAction('/staff_favorites/getTenUsers');
 	debug($favorites);
 ?>
