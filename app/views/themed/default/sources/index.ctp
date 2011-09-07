@@ -19,8 +19,10 @@ if(!empty($this->Paginator->params['paging']['Tagged'])){
 		//Rating sorter
 		echo $this->element('source-sorter',array('cache'=>false));
 		
-		//Alphabet sorter
-		echo $this->element('alphabet-sorter',array('cache'=>false));
+		if(empty($this->params['named']['by'])){
+			//Alphabet sorter
+			echo $this->element('alphabet-sorter',array('cache'=>false));
+		}
 		
 		//Category sorter
 		echo $this->element('source-category-sorter',array('cache'=>false,'sourceCategories'=>$sourceCategories));

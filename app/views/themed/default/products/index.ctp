@@ -20,8 +20,10 @@
 		//Rating sorter
 		echo $this->element('product-sorter',array('cache'=>false));
 		
-		//Alphabet sorter
-		echo $this->element('alphabet-sorter',array('cache'=>false));
+		if(empty($this->params['named']['by'])){
+			//Alphabet sorter
+			echo $this->element('alphabet-sorter',array('cache'=>false));
+		}
 		
 		//Category sorter
 		echo $this->element('product-category-sorter',array('cache'=>false,'productCategories'=>$productCategories));
