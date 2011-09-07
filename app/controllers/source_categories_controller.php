@@ -28,10 +28,20 @@ class SourceCategoriesController extends AppController {
 			$this->Session->setFlash(__('Invalid source category', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}
-		
+		//Find the id
+		if(!is_numeric($id)){
+			$this->SourceCategory->recursive = -1;
+			$category = $this->SourceCategory->findBySlug($id);
+			if(!empty($category)){
+				$id = $category['SourceCategory']['id'];
+			}else{
+				$this->Session->setFlash(__('Invalid source category', true));
+				$this->redirect(array('action' => 'index','admin'=>false));
+			}
+		}
 		// query all distinct first letters used in names
-		$letters = $this->SourceCategory->Source->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `sources` ORDER BY `name`');
-		
+		$letters = $this->SourceCategory->Source->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `sources` WHERE `source_category_id` = '.$id.' ORDER BY `name`');
+
 		$links = array();
 		// push all letters into a non-nested array
 		foreach ($letters as $row) {
@@ -39,28 +49,48 @@ class SourceCategoriesController extends AppController {
 		}
 
 		$this->paginate['Source'] = array(
+										'conditions'=>array(
+											'Source.source_category_id'=>$id
+										),
 										'order' => array(
 											'Source.name' => 'asc'
-											)
+											),
+										'contain'=>array('Country')
 										);
 
 		if($filter == 'number'){
 			$filter = '^[0-9]+'; //Find records that start with numbers
-			$sources = $this->paginate('Source',array(
-											   'Source.name REGEXP' => $filter
-											));
+			$this->paginate['Source'] = array(
+											'conditions'=>array(
+												'Source.name REGEXP' => $filter,
+												'Source.source_category_id'=>$id
+											),
+											'order' => array(
+												'Source.name' => 'asc'
+											),
+											'contain'=>array('Country')
+											);
+			$sources = $this->paginate('Source');
 			
 		}else{
-			$sources = $this->paginate('Source',array(
-											   'Source.name LIKE' => $filter.'%'
-											));
+			$this->paginate['Source'] = array(
+											'conditions'=>array(
+												'Source.name LIKE' => $filter.'%',
+												'Source.source_category_id'=>$id
+											),
+											'order' => array(
+												'Source.name' => 'asc'
+											),
+											'contain'=>array('Country')
+											);
+			$sources = $this->paginate('Source');
 			
 		}
 	
 		$sourceCategories = $this->SourceCategory->getAll();
-		$this->set('sourceCategory', $this->SourceCategory->read(null, $id));
+		//$this->set('sourceCategory', $this->SourceCategory->read(null, $id));
 		$total_count = $this->SourceCategory->Source->find('count');
-		$this->set(compact('filter','links','total_count','sourceCategories'));
+		$this->set(compact('sources','filter','links','total_count','sourceCategories'));
 		
 	}
 

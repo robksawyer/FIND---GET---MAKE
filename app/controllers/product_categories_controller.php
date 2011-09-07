@@ -24,7 +24,7 @@ class ProductCategoriesController extends AppController {
 		}
 		
 		// query all distinct first letters used in names
-		$letters = $this->ProductCategory->Product->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `products` ORDER BY `name`');
+		$letters = $this->ProductCategory->Product->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `products` WHERE `product_category_id` = '.$id.' ORDER BY `name`');
 		
 		$links = array();
 		// push all letters into a non-nested array
@@ -33,70 +33,35 @@ class ProductCategoriesController extends AppController {
 		}
 
 		$this->paginate['Product'] = array(
-										'order' => array(
-											'Product.name' => 'asc'
-											)
-										);
+											'order' => array('Product.name' => 'asc'),
+											'conditions'=>array('Product.product_category_id'=>$id),
+											'contain'=>array('Attachment')
+											);
 
 		if($filter == 'number'){
 			$filter = '^[0-9]+'; //Find records that start with numbers
-			$products = $this->paginate('Product',array(
-											   'Product.name REGEXP' => $filter
-											));
+			$this->paginate['Product'] = array('conditions'=>array(
+													'Product.name REGEXP' => $filter,
+													'Product.product_category_id'=>$id
+												),
+												'contain'=>array('Attachment','User','Tag')
+												);
+			$products = $this->paginate('Product');
 			
 		}else{
-			$products = $this->paginate('Product',array(
-											   'Product.name LIKE' => $filter.'%'
-											));
+			$this->paginate['Product'] = array('conditions'=>array(
+												'	Product.name LIKE' => $filter.'%',
+													'Product.product_category_id'=>$id
+												),
+												'contain'=>array('Attachment','User','Tag')
+												);
+			$products = $this->paginate('Product');
 			
 		}
-		
-		/*$this->paginate = array(
-				'Product'=>array(
-					'limit' => 25,
-					'order' => array('Product.name'=>'asc'),
-					'conditions'=>array('Product.product_category_id'=>$id)
-				)
-			);*/
-			
-		//$this->set('products', $this->paginate('Product'));
-		
-		//Tagging
-		/*if (isset($this->passedArgs['by'])) {
-			$this->paginate = array(
-								'Tagged'=>array(
-									'tagged',
-									'model' => 'Product',
-									'by' => $this->passedArgs['by']
-									//'recursive' => 2 //Doesn't change anything
-								)
-							);
-			$products = Set::filter($this->paginate('Tagged')); //Remove empty values
-			//Build a new array
-			foreach($products as $product){
-				$clean_products[] = $product;
-			}
-			if(!empty($clean_products)){
-				$products = $clean_products;
-			}
-			$counter = 0;
-			foreach($products as $product){
-				//Find categories
-				$temp_cat = $this->ProductCategory->find('first',array('conditions'=>array('ProductCategory.id'=>$product['Product']['product_category_id'])));
-				$products[$counter]['ProductCategory'] = $temp_cat['ProductCategory'];
-				
-				//Find sources
-				$temp_source = $this->ProductCategory->Product->Source->find('first',array('conditions'=>array('Source.id'=>$product['Product']['source_id'])));
-				$products[$counter]['Source'] = $temp_source['Source'];
-				$counter++;
-			}
-		}*/
-		
 		$productCategories = $this->ProductCategory->getAll();
 		$productCategory = $this->ProductCategory->read(null, $id);
-		$this->set('productCategory', $productCategory);
 		$total_count = $this->ProductCategory->Product->find('count');
-		$this->set(compact('filter','links','total_count','productCategories'));
+		$this->set(compact('products','filter','links','total_count','productCategory','productCategories'));
 		
 	}
 

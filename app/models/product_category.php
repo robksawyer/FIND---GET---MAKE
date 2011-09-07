@@ -62,9 +62,16 @@ class ProductCategory extends AppModel {
 	 * Returns all of the categories in the system
 	 * @param 
 	 */
-	function getAll(){
-		$this->recursive = 1;
-		$categories = $this->find('all',array('order' => 'name ASC'));
+	function getAll($more=false){
+		$this->recursive = -1;
+		if($more){
+			$categories = $this->find('all',array('order' => 'name ASC',
+												'contain'=>array('Product'=>array('Attachment','User','Tag'))
+												));
+		}else{
+			$categories = $this->find('all',array('order' => 'name ASC'));
+		}
+		//debug($categories);
 		return $categories;
 	}
 

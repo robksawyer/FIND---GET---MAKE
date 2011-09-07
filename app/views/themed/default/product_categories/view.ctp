@@ -7,7 +7,7 @@
 	
 	$this->Html->script('jquery.masonry.min',array('inline'=>false));
 ?>
-<div class="left-container">
+<div id="left-panel-index">
 	<?php
 		//Index Box Ad (300x250)
 		echo $this->element('index-box-ad',array('cache'=>false));
@@ -24,46 +24,46 @@
 		$this->Html->script('jquery.masonry.min',array('inline'=>false));
 	?>
 </div>
-<div class="right-container-index">
+<div id="right-panel">
 	<div class="productCategories index">
 		<div class="header red">
 			<?php  __('Items in the category [ '.ucwords($productCategory['ProductCategory']['name']).' ]');?>
 		</div>
-		<?php if(empty($productCategory['Product'])){
+		<?php if(empty($products)){
 			echo "<br/><br/><br/>";
 		}?>
 
 		<!-- Start gridded items -->
 		<div id="grid-container">
 		<?php
-		if(!empty($productCategory['Product'])):
+		if(!empty($products)):
 		$i = 0;
-		foreach ($productCategory['Product'] as $productCategory):
-
+		foreach ($products as $product):
+			//$product = $product['Product'];
 		?>
 			<div class="grid-item">
 				<?php 
-					if(!empty($productCategory['Attachment'][0]['path_med'])){
-						echo $this->Html->image($productCategory['Attachment'][0]['path_med'],array('alt'=>'','url'=>array('controller'=>'products','action'=>'view',$productCategory['id']))); 
+					if(!empty($product['Attachment'][0]['path_med'])){
+						echo $this->Html->image($product['Attachment'][0]['path_med'],array('alt'=>'','url'=>array('controller'=>'products','action'=>'view',$product['Product']['id']))); 
 					}
 				?>
-				<div class="title"><?php echo $this->Html->link($productCategory['name'],array('controller'=>'products','action'=>'view',$productCategory['id'])); ?></div>
-				<div class="description"><?php echo $this->String->truncate($productCategory['description'],250); ?></div>
-				<?php if(!empty($productCategory['designer'])) echo "<div class='designer'>Designed by ".$productCategory['designer']."</div>"; ?>
-				<div class="designer"><?php echo "Found by ".$this->Html->link($productCategory['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$productCategory['User']['username'])); ?></div>
-				<?php if(!empty($productCategory['designer'])) echo "Designed by ".$productCategory['designer']; ?><br/>
+				<div class="title"><?php echo $this->Html->link($product['Product']['name'],array('controller'=>'products','action'=>'view',$product['Product']['id'])); ?></div>
+				<div class="description"><?php echo $this->String->truncate($product['Product']['description'],250); ?></div>
+				<?php if(!empty($product['Product']['designer'])) echo "<div class='designer'>Designed by ".$product['Product']['designer']."</div>"; ?>
+				<div class="designer"><?php echo "Found by ".$this->Html->link($product['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$product['User']['username'])); ?></div>
+				<?php if(!empty($product['Product']['designer'])) echo "Designed by ".$product['Product']['designer']; ?><br/>
 				<div class="bottom-detail">
-					<span class="date"><?php echo $this->Time->niceShort($productCategory['created'],null,null)." / "; ?>&nbsp;</span>
+					<span class="date"><?php echo $this->Time->niceShort($product['Product']['created'],null,null)." / "; ?>&nbsp;</span>
 					<span class="tags"><?php
 						//Build a tag list of only two tags.
 						$limit = 2;
 						$counter = 0;
 						//debug($product['Tag']);
-						if(!empty($productCategory['Tag'])){
-							foreach($productCategory['Tag'] as $tag){
+						if(!empty($product['Tag'])){
+							foreach($product['Tag'] as $tag){
 								if($counter == $limit) break;
 						
-								if($counter == ($limit - 1) || count($productCategory['Tag']) < 2){
+								if($counter == ($limit - 1) || count($product['Tag']) < 2){
 									echo $this->Html->link($tag['name'],array('controller'=>'products','action'=>'index/by:'.$tag['keyname']));
 								}else{
 									echo $this->Html->link($tag['name'],array('controller'=>'products','action'=>'index/by:'.$tag['keyname'])).", ";

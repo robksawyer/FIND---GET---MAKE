@@ -2063,7 +2063,7 @@ div.attachments.view .attachments.box img{
 
 div#attachments{
 	position: relative;
-	height: 350px;
+	height: 200px;
 	width: 1024px;
 	margin-top: 10px;
 	padding: 20px;
@@ -2113,6 +2113,10 @@ div#attachments ul.wrapper li a:focus {
 	background: none;
 	opacity:.60;
 	filter:alpha(opacity=60);
+}
+
+div#attachments ul.wrapper li img.attachment{
+	height: 150px;
 }
 
 

@@ -62,9 +62,14 @@ class SourceCategory extends AppModel {
 	 * Returns all of the categories in the system
 	 * @param 
 	 */
-	function getAll(){
-		$this->recursive = 1;
-		$categories = $this->find('all',array('order' => 'name ASC'));
+	function getAll($more=false){
+		$this->recursive = -1;
+		if($more){
+			$categories = $this->find('all',array('order' => 'name ASC','contain'=>array('Source'=>array('Country'))));
+		}else{
+			$categories = $this->find('all',array('order' => 'name ASC'));
+		}
+		
 		return $categories;
 	}
 

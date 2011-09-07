@@ -5,7 +5,7 @@
 		<li><?php echo $this->Html->link(ucwords($category['SourceCategory']['name']),array(
 															'controller'=>'source_categories',
 															'action'=>'view',
-															$category['SourceCategory']['id'],$category['SourceCategory']['slug']
+															$category['SourceCategory']['slug']
 															)
 														); ?>
 		</li>
