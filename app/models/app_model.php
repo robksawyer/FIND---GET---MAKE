@@ -31,7 +31,7 @@
  * @package       cake
  * @subpackage    cake.cake.libs.model
  */
-
+App::import('Sanitize');
 class AppModel extends Model {
 	
 	/**
@@ -66,7 +66,7 @@ class AppModel extends Model {
 	 * @var int
 	 */
 	var $recursive = -1;
-
+	
 	/**
 	 * Grab a row and defined fields/containables.
 	 *

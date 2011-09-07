@@ -1,4 +1,5 @@
 <?php
+App::Import('Sanitize');
 class Inspiration extends AppModel {
 	var $name = 'Inspiration';
 	var $displayField = 'name';
@@ -124,6 +125,28 @@ class Inspiration extends AppModel {
 			'insertQuery' => ''
 		)
 	);
+	
+	/**
+	 * Sanitize all data saved
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	var $cleanData = true;
+	
+	/**
+	 * Runs before every save event in the system
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function beforeSave(){
+		//Sanitize the data added to the database
+		if (!empty($this->data) && $this->cleanData === true) {
+			$this->data = Sanitize::clean($this->data, array('escape' => false,'remove_html' => true));
+		}
+		return true;
+	}
 	
 	/**
 	 * Don't show products that aren't active

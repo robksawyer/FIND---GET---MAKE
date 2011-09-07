@@ -16,7 +16,8 @@
 	
 ?>
 </div>
-
+<?php if(!empty($this->params['named'])): ?>
+<div id="search-results">
 <?php
 	if(!empty($sources)){
 ?>
@@ -71,4 +72,6 @@
 <?php
 		} 
 ?>	
+</div>
+<?php endif; ?>
 <script type="text/javascript"> $(".chzn-select").chosen(); </script>

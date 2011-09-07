@@ -1,4 +1,5 @@
 <?php
+App::Import('Sanitize');
 class User extends AppModel {
 	
 	var $name = 'User';
@@ -206,6 +207,28 @@ class User extends AppModel {
 			'exclusive' => true
 		)
 	);
+	
+	/**
+	 * Sanitize all data saved
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	var $cleanData = true;
+	
+	/**
+	 * Runs before every save event in the system
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function beforeSave(){
+		//Sanitize the data added to the database
+		if (!empty($this->data) && $this->cleanData === true) {
+			$this->data = Sanitize::clean($this->data, array('escape' => false,'remove_html' => true));
+		}
+		return true;
+	}
 	
 	/**
 	 * The AclBehavior allows for the automagic connection of models with the Acl tables. 

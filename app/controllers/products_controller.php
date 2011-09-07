@@ -54,10 +54,14 @@ class ProductsController extends AppController {
 	public function find() {
 		$this->Prg->commonProcess();
 		$this->paginate['conditions'] = $this->Product->parseCriteria($this->passedArgs);
-		$this->set('products', $this->paginate());
+		$this->paginate['contain'] = array('ProductCategory');
+		if(!empty($this->passedArgs)){
+			$products = $this->paginate();
+		}
+		$this->data['Product'] = $this->passedArgs; //Automatically fill in the form with previous search data
 		
-		$productCategories = $this->Product->ProductCategory->find('list',array( 'order' => 'name ASC' ));
-		$this->set(compact('productCategories'));
+		$productCategories = $this->Product->ProductCategory->getList();
+		$this->set(compact('productCategories','products'));
 	}
 	
 	public function index($filter = null) {
@@ -224,6 +228,7 @@ class ProductsController extends AppController {
 			$this->uploadAttachments('Product');
 			
 			if(!empty($this->data['Attachment'])){
+				
 				$this->Product->create();
 				if ($this->Product->save($this->data)) {
 					$this->Session->setFlash(__('The product has been saved', true));
@@ -256,87 +261,6 @@ class ProductsController extends AppController {
 		$this->set(compact('sources', 'collections', 'attachments','tags','productCategories'));
 	}
 	
-	/**
-	 * 
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	public function admin_add() {
-		//Add the source to a model
-		if(isset($this->passedArgs['model'])){
-			$model = ucwords($this->passedArgs['model']);
-			if(isset($this->passedArgs['id'])){
-				$id = intval($this->passedArgs['id']);
-				
-				//Pluralize the model name
-				$plural_model = strtolower($model);
-				$plural_model = Inflector::pluralize($plural_model);
-
-				//Find the actual record and make sure it's legit.
-				$item = $this->Product->$model->findById($id);
-				if(!empty($item)){
-					//Pass along the details
-					$this->set(compact('item','model','plural_model'));
-				}else{
-					$this->Session->setFlash(__('This record does not exist.', true));
-					//TODO:Redirect the user or set a variable that hides the upload field.
-					$errors['message'] = 'The item was not found in the database';
-				}
-			}
-		}
-		
-		if (!empty($this->data)) {
-			//Cleanup
-			if(!empty($this->data['Product']['source_url'])){
-				$this->data['Product']['source_url'] = $this->cleanURL($this->data['Product']['source_url']); //Clean the URL
-			}
-			if(!empty($this->data['Product']['purchase_url'])){
-				$this->data['Product']['purchase_url'] = $this->cleanURL($this->data['Product']['purchase_url']); //Clean the URL
-			}
-			$this->data['Product']['slug'] = $this->toSlug($this->data['Product']['name']);
-			
-			//Check for a redirect variable
-			if(!empty($this->data['Product']['redirect'])){
-				$redirect = $this->data['Product']['redirect'];
-				unset($this->data['Product']['redirect']);
-			}
-			
-			//Upload the attachments
-			$this->uploadAttachments('Product');
-			
-			if(!empty($this->data['Attachment'])){
-				$this->Product->create();
-				if ($this->Product->save($this->data)) {
-					$this->Session->setFlash(__('The product has been saved', true));
-					$id = $this->Product->getLastInsertID();
-					//Generate and create keycode
-					$this->generateKeycode($id,true);
-					
-					if(!empty($redirect)){
-						$this->redirect($redirect);
-					}else{
-						$this->redirect(array('action' => 'view','admin'=>false,$id));
-					}
-				} else {
-					$this->Session->setFlash(__('The product could not be saved. Please, try again.', true));
-				}
-			}else{
-				$this->Session->setFlash(__('You didn\'t add any attachments or the filetype is not valid. Try saving the file to your computer and trying again.', true),'default',array('class'=>'error-message'));
-				if(!empty($redirect)){
-					$this->redirect($redirect);
-				}
-			}
-			
-		}
-		$productCategories = $this->Product->ProductCategory->find('list',array( 'order' => 'name ASC' ));
-		$sources = $this->Product->Source->find('list',array( 'order' => 'name ASC' ));
-		$tags = $this->Product->Tagged->find('cloud', array('limit' => 10));
-		$collections = $this->Product->Collection->find('list',array( 'order' => 'name ASC' ));
-		$attachments = $this->Product->Attachment->find('list');
-		
-		$this->set(compact('sources', 'collections', 'attachments','tags','productCategories'));
-	}
 	
 	public function getProductsForSource($id = null){
 		if (isset($this->params['requested'])) {  
@@ -373,54 +297,7 @@ class ProductsController extends AppController {
 	 * 
 	*/
 	public function edit($id = null) {
-		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid product', true));
-			$this->redirect(array('action' => 'index','admin'=>false));
-		}
-		if (!empty($this->data)) {
-			//Cleanup
-			if(!empty($this->data['Product']['source_url'])){
-				$this->data['Product']['source_url'] = $this->cleanURL($this->data['Product']['source_url']); //Clean the URL
-			}
-			if(!empty($this->data['Product']['purchase_url'])){
-				$this->data['Product']['purchase_url'] = $this->cleanURL($this->data['Product']['purchase_url']); //Clean the URL
-			}
-			$this->data['Product']['slug'] = $this->toSlug($this->data['Product']['name']);
-			
-			//Upload the attachments
-			$this->uploadAttachments('Product',$id);
-			
-			//Update the inspiration photo tag name
-			$this->Product->InspirationPhotoTag->updateName($id,'Product',$this->data['Product']['name']);
-			
-			if ($this->Product->saveAll($this->data)) {
-				$this->Session->setFlash(__('The product has been updated', true));
-				$this->redirect(array('action' => 'view','admin'=>false,$id));
-			} else {
-				$this->Session->setFlash(__('The product could not be updated. Please, try again.', true));
-			}
-		}
-		if (empty($this->data)) {
-			$this->data = $this->Product->read(null, $id);
-		}
-		
-		$productCategories = $this->Product->ProductCategory->find('list',array( 'order' => 'name ASC' ));
-		$sources = $this->Product->Source->find('list',array( 'order' => 'name ASC' ));
-		$collections = $this->Product->Collection->find('list',array( 'order' => 'name ASC' ));
-		$attachments = $this->Product->Attachment->find('list');
-		$tags = $this->Product->Tagged->find('cloud', array('limit' => 10));
-		$this->set('product', $this->Product->read(null, $id));
-		
-		$this->set(compact('sources', 'collections', 'attachments','tags','productCategories'));
-	}
-	
-	/**
-	 * 
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	public function admin_edit($id = null) {
+		$this->Product->recursive = 1;
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid product', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
@@ -469,39 +346,6 @@ class ProductsController extends AppController {
 	 * 
 	*/
 	public function delete($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for product', true));
-			$this->redirect(array('action'=>'index','admin'=>false));
-		}
-		
-		$this->data = $this->Product->read(null,$id);
-		
-		//Delete associated attachments
-		if(!empty($this->data['Attachment'])){
-			//Get all attachment ids
-			foreach($this->data['Attachment'] as $attachment){
-				$attachment_ids[] = $attachment['id'];
-			}
-			
-			//Delete all of the attachments
-			$this->Product->Attachment->deleteAll(array('Attachment.id'=>$attachment_ids));
-		}
-		
-		if ($this->Product->delete($id)) {
-			$this->Session->setFlash(__('Product deleted', true));
-			$this->redirect(array('action'=>'index','admin'=>false));
-		}
-		$this->Session->setFlash(__('Product was not deleted', true));
-		$this->redirect(array('action' => 'index','admin'=>false));
-	}
-	
-	/**
-	 * 
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	public function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for product', true));
 			$this->redirect(array('action'=>'index','admin'=>false));

@@ -16,61 +16,64 @@
 	echo $this->Form->end();
 ?>
 </div>
-
-<?php
-	if(!empty($products)){
-?>
-		<table cellpadding="0" cellspacing="0">
-		<tr>
-				<th style="display:none"><?php echo $this->Paginator->sort('id');?></th>
-				<th><?php echo $this->Paginator->sort('name');?></th>
-				<th><?php echo $this->Paginator->sort('product_category_id');?></th>
-				<th><?php echo $this->Paginator->sort('designer');?></th>
-				<th><?php echo $this->Paginator->sort('description');?></th>
-				<th><?php echo $this->Paginator->sort('source url');?></th>
-		</tr>
-		<?php
-		$i = 0;
-		foreach ($products as $product):
-			$class = null;
-			if ($i++ % 2 == 0) {
-				$class = ' class="altrow"';
-			}
-		?>
-		<tr<?php echo $class; ?>>
-			<td style="display:none"><?php echo $product['Product']['id']; ?>&nbsp;</td>
-			<td width="40%"><?php echo $this->Html->link(__($product['Product']['name'], true), array('action' => 'view', $product['Product']['id']),array('title'=>$product['Product']['description'])); ?>&nbsp;</td>
-			<td><?php echo $product['ProductCategory']['name'] ?></td>
-			<td><?php echo $product['Product']['designer'] ?></td>
-			<td><?php echo $this->String->truncate($product['Product']['description'],100); ?></td>
-			<td><?php echo $this->Html->link($this->String->truncate($product['Product']['source_url']),$product['Product']['source_url'],array('target'=>'_blank')); ?></td>
-		</tr>
-		<?php endforeach; ?>
-		</table>
-		<p>
-		<?php
-		echo $this->Paginator->counter(array(
-		'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
-		));
-		?>	</p>
-		<div class="paging">
-			<?php echo $this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class'=>'disabled'));?>
-		 | 	<?php echo $this->Paginator->numbers();?>
-	 |
-			<?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled'));?>
-		</div>
-<?php 
-		}else{
-?>
+<?php if(!empty($this->params['named'])): ?>
+<div id="search-results">
+	<?php
+		if(!empty($products)){
+	?>
 			<table cellpadding="0" cellspacing="0">
-				<tr>
-					<th></th>
-				</tr>
-				<tr>
-					<td><h3>No results found.</h3></td>
-				</tr>
+			<tr>
+					<th style="display:none"><?php echo $this->Paginator->sort('id');?></th>
+					<th><?php echo $this->Paginator->sort('name');?></th>
+					<th><?php echo $this->Paginator->sort('product_category_id');?></th>
+					<th><?php echo $this->Paginator->sort('designer');?></th>
+					<th><?php echo $this->Paginator->sort('description');?></th>
+					<th><?php echo $this->Paginator->sort('source url');?></th>
+			</tr>
+			<?php
+			$i = 0;
+			foreach ($products as $product):
+				$class = null;
+				if ($i++ % 2 == 0) {
+					$class = ' class="altrow"';
+				}
+			?>
+			<tr<?php echo $class; ?>>
+				<td style="display:none"><?php echo $product['Product']['id']; ?>&nbsp;</td>
+				<td width="40%"><?php echo $this->Html->link(__($product['Product']['name'], true), array('action' => 'view', $product['Product']['id']),array('title'=>$product['Product']['description'])); ?>&nbsp;</td>
+				<td><?php echo $product['ProductCategory']['name'] ?></td>
+				<td><?php echo $product['Product']['designer'] ?></td>
+				<td><?php echo $this->String->truncate($product['Product']['description'],100); ?></td>
+				<td><?php echo $this->Html->link($this->String->truncate($product['Product']['source_url']),$product['Product']['source_url'],array('target'=>'_blank')); ?></td>
+			</tr>
+			<?php endforeach; ?>
 			</table>
-<?php
-		} 
-?>
+			<p>
+			<?php
+			echo $this->Paginator->counter(array(
+			'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
+			));
+			?>	</p>
+			<div class="paging">
+				<?php echo $this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class'=>'disabled'));?>
+			 | 	<?php echo $this->Paginator->numbers();?>
+		 |
+				<?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled'));?>
+			</div>
+	<?php 
+			}else{
+	?>
+				<table cellpadding="0" cellspacing="0">
+					<tr>
+						<th></th>
+					</tr>
+					<tr>
+						<td><h3>No results found.</h3></td>
+					</tr>
+				</table>
+	<?php
+			} 
+	?>
+</div>
+<?php endif; ?>
 <script type="text/javascript"> $(".chzn-select").chosen(); </script>
