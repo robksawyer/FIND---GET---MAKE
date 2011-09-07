@@ -38,19 +38,28 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		
-		$this->Auth->allowedActions = array('more_user_feed_data', 'forgot', 'listing', 'profile','getAvatar',
+		$this->Auth->allowedActions = array('ajax_more_user_feed_data','ajax_more_feed_data', 'forgot', 'listing', 'profile','getAvatar',
 											'signup','login','logout','register','register_with_twitter','register_with_facebook',
-											'twitter_logout','facebook_logout','hide_welcome','staff_favorites',
+											'twitter_logout','facebook_logout','staff_favorites',
 											'facebook_signup','twitter_signup','check',
 											'find','find_via_twitter','find_via_facebook','find_users'
 											);
 		
 		/*$this->Auth->allow('login','logout','register','register_with_twitter','register_with_facebook',
-							'more_user_feed_data', 'forgot', 'listing','twitter_logout','facebook_logout', 
-							'profile', 'signup','getAvatar','hide_welcome'
+							'ajax_more_user_feed_data','ajax_more_feed_data', 'forgot', 'listing','twitter_logout','facebook_logout', 
+							'profile', 'signup','getAvatar'
 							);*/
-		$this->AjaxHandler->handle('hide_welcome','find_users');
+
+		//Disable the Security component for certain actions
+		/*if(isset($this->Security)){
+			if($this->action == 'find' || $this->action == 'find_users'){
+				$this->Security->enabled = false;
+				//$this->Security->validatePost = false;
+				//$this->Security->blackHoleCallback = null;
+			}
+		}*/
 		
+		$this->AjaxHandler->handle('ajax_hide_welcome','ajax_find_users');
 		
 		/*if (isset($this->params['admin'])) {
 			$this->Toolbar->verifyAdmin();
@@ -92,6 +101,96 @@ class UsersController extends AppController {
 		$this->redirect('/signup');
 	}*/
 	
+	/**************** AJAX METHODS ************************/
+	
+	/**
+	 * Hides the welcome blurb that lives in the admin_moderate view
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function ajax_hide_welcome(){
+		if($this->RequestHandler->isAjax()) {
+			Configure::write('debug',0);
+			$this->autoLayout = false;
+			$this->autoRender = false;
+			$response = array('success' => false);
+			$this->User->id = $this->Auth->user('id');
+			$this->User->saveField('hide_welcome',1);
+			$this->AjaxHandler->response(true, 1);
+			$this->AjaxHandler->respond();
+			return;
+		}
+	}
+	
+	/**
+	 * Handles finding a user. This is triggered by the search box
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function ajax_find_users(){
+		debug($this->passedArgs);
+		if($this->RequestHandler->isAjax()) {
+			Configure::write('debug',0);
+			$this->layout = 'ajax';
+			//$this->autoLayout = false;
+			$this->autoRender = true;
+			$response = array('success' => false);
+			$this->Prg->commonProcess();
+			//Search for the username
+			$results = $this->User->parseCriteria($this->passedArgs);
+			$this->AjaxHandler->response(true, $results);
+			$this->AjaxHandler->respond();
+			return;
+		}
+	}
+	
+	/**
+	 * Returns the feed data based on the offset passed for the logged in user
+	 * @param offset
+	 * @return 
+	 * 
+	*/
+	public function ajax_more_feed_data($offset=0){
+		Configure::write ( 'debug', 0);
+		$this->autoLayout = true;
+		$this->autoRender = true;
+		$user_id = $this->Auth->user('id');
+		//$user = $this->User->read(null,$user['User']['id']);
+		if(!empty($user_id)){
+			//Find all of the followed users (with details) for this user
+			$following_user_ids = $this->User->getFollowingUserIds($user_id);
+			$feed = $this->User->Feed->getUsersFollowingFeedData($following_user_ids,$offset);
+			$this->set(compact('feed'));
+		}else{
+			$feed = null;
+			$this->set(compact('feed'));
+		}
+	}
+	
+	/**
+	 * Returns the feed data for a user passed
+	 * @param user_id
+	 * @param offset
+	 * @return 
+	 * 
+	*/
+	public function ajax_more_user_feed_data($user_id=null,$offset=0){
+		Configure::write ( 'debug', 0);
+		$this->autoLayout = true;
+		$this->autoRender = true;
+		//$this->render('ajax_more_user_feed_data', 'ajax');
+		if(!empty($user_id)){
+			$feed = $this->User->Feed->getUserFeedDataDetails($user_id,$offset);
+			$this->set(compact('feed'));
+		}else{
+			$feed = null;
+			$this->set(compact('feed'));
+		}
+	}
+	
+	/**************** END AJAX METHODS ************************/
 	
 	/**************** BORROWED FROM CUPCAKE ************************/
 	/**
@@ -190,84 +289,6 @@ class UsersController extends AppController {
 		
 		//$this->Toolbar->pageTitle(__('Login', true));
 	}
-	
-	/**
-	 * Another attempt to do some ACL checking
-	 * Check to see if the user has permission
-	 * @param string controller The controller to check permissions on
-	 * @param string action The action to check permissions on
-	 * @return 
-	 * 
-	*/
-	/*public function check($controller='',$action='*'){
-		if(!empty($this->params['requested'])) {
-			$user = $this->Auth->user();
-			if(!empty($user)){
-				if(empty($controller)){
-					//$checker = $this->Acl->check(array('model' => 'Group', 'foreign_key' => $user['User']['group_id']));
-					return false;
-				}else if(empty($action)){
-					$checker = $this->Acl->check(array('model' => 'Group', 'foreign_key' => $user['User']['group_id']), $controller);
-				}else {
-					$checker = $this->Acl->check(array('model' => 'Group', 'foreign_key' => $user['User']['group_id']), $controller, $action);
-				}
-				if(!empty($checker)){ 
-					return true;
-				}else{
-					return false;
-				}
-			}else{
-				return false;
-			}
-		}
-	}*/
-	
-	/**
-	 * I think this is generally a bad a idea because it'll bloat the session with tons of data.
-	 * A helper method to build a permissions Session
-	 * http://bakery.cakephp.org/articles/thanos/2011/01/17/acl_checking_permissions_in_views
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	/*protected function createPermissionSession($user=null){
-		$userGroup = $this->User->Group->findById($user['User']['group_id']);
-		$aro = $this->Acl->Aro->find('first', array(
-			'conditions' => array(
-				'Aro.model' => 'Group',
-				'Aro.foreign_key' => $this->_user['User']['group_id'],
-			),
-	 	));
-		$acos = $this->Acl->Aco->children();
-		foreach($acos as $aco){
-			$permission = $this->Acl->Aro->Permission->find('first', array(
-																	'conditions' => array(
-																		'Permission.aro_id' => $aro['Aro']['id'],
-																		'Permission.aco_id' => $aco['Aco']['id'],
-																	),
-																));
-	 		if(isset($permission['Permission']['id'])){
-				if ($permission['Permission']['_create'] == 1 ||
-					$permission['Permission']['_read'] == 1 ||
-					$permission['Permission']['_update'] == 1 ||
-					$permission['Permission']['_delete'] == 1) {
-					$this->Session->write('Auth.Permissions.'.$permission['Aco']['alias'],true);
-					if(!empty($permission['Aco']['parent_id'])){
-						$parentAco = $this->Acl->Aco->find('first', array(
-								'conditions' => array(
-									 'id' => $permission['Aco']['parent_id']
-								)	
-						));
-						$this->Session->write(
-								'Auth.Permissions.'.$permission['Aco']['alias']
-								.'.'.$parentAco['Aco']['alias'], 
-								true
-						);
-					}
-				}
-			}
-		}
-	}*/
 	
 	/**
 	 * Logout.
@@ -886,6 +907,12 @@ class UsersController extends AppController {
 		
 	}
 	
+	/**
+	 * Log out a Twitter user
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	public function twitter_logout(){
 		$this->Twitter->deleteAuthorizeCookie();
 	}
@@ -957,104 +984,13 @@ class UsersController extends AppController {
 		
 	}
 	
-	
-	/**
-	 *  User moderation panel
-	 *
-	 * @access public
-	 * @category Admin
-	 * @param int $id
-	 */
-	public function admin_moderate() {
-		$this->User->recursive = 2;
-		$user = $this->Auth->user();
-	
-		if (!$user['User']['id']) {
-			$this->Session->setFlash(__('Invalid user', true));
-			$this->redirect(array('action' => 'index'));
-		}
-		
-		$user = $this->User->getProfile($user['User']['id']);
-
-		if (!empty($user)) {
-			//$this->loadModel('Forum.Topic');
-			Controller::loadModel('Topic');
-			$this->set('topics', $this->Topic->getLatestByUser($user['User']['id']));
-			$this->set('posts', $this->Topic->Post->getLatestByUser($user['User']['id']));
-		}
-		
-		//Check for a local avatar details
-		if(!empty($user['User']['attachment_id'])){
-			$avatar = $this->User->Attachment->getAvatar($user['User']['attachment_id'],$user['User']['id']);
-		}else{
-			$avatar = false;
-		}
-		$this->set('avatar',$avatar);
-		
-		//$user = $this->User->read(null,$user['User']['id']);
-		$this->User->UserFollowing->recursive = 1;
-		$followers = $this->User->UserFollowing->findFollowers($user['User']['id'],5);
-		$this->User->Ownership->recursive = 1;
-		$user_wants = $this->User->Ownership->getUserWantCount('Product',$user['User']['id']);
-		$user_haves = $this->User->Ownership->getUserHaveCount('Product',$user['User']['id']);
-		$this->set(compact('user_wants','user_haves','followers'));
-		//$this->set('user', $this->User->read(null, $user['User']['id']));
-		$this->set('user', $user);
-		
-	}
-	
-	
-	/**
-	 * Returns the feed data based on the offset passed for the logged in user
-	 * @param offset
-	 * @return 
-	 * 
-	*/
-	public function more_feed_data($offset=0){
-		Configure::write ( 'debug', 0);
-		$this->autoLayout = true;
-		$this->autoRender = true;
-		$user_id = $this->Auth->user('id');
-		//$user = $this->User->read(null,$user['User']['id']);
-		if(!empty($user_id)){
-			//Find all of the followed users (with details) for this user
-			$following_user_ids = $this->User->getFollowingUserIds($user_id);
-			$feed = $this->User->Feed->getUsersFollowingFeedData($following_user_ids,$offset);
-			$this->set(compact('feed'));
-		}else{
-			$feed = null;
-			$this->set(compact('feed'));
-		}
-	}
-	
-	/**
-	 * Returns the feed data for a user passed
-	 * @param user_id
-	 * @param offset
-	 * @return 
-	 * 
-	*/
-	public function more_user_feed_data($user_id=null,$offset=0){
-		Configure::write ( 'debug', 0);
-		$this->autoLayout = true;
-		$this->autoRender = true;
-		//$this->render('more_user_feed_data', 'ajax');
-		if(!empty($user_id)){
-			$feed = $this->User->Feed->getUserFeedDataDetails($user_id,$offset);
-			$this->set(compact('feed'));
-		}else{
-			$feed = null;
-			$this->set(compact('feed'));
-		}
-	}
-	
 	/**
 	 * Handles showing staff favorites and allows users to find others
 	 * @param 
 	 * @return 
 	 * 
 	*/
-	function find(){
+	public function find(){
 		
 	}
 	
@@ -1065,7 +1001,7 @@ class UsersController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function find_via_twitter(){
+	public function find_via_twitter(){
 		//1. Handle authenticating the user if they don't already have their account linked.
 		//2. Scan the user's Twitter friends (the user's they are following)
 		//3. Check to see if any of the usernames match any of the user's in our system. Maybe check by twitter id vs. User.twitter_id
@@ -1077,51 +1013,13 @@ class UsersController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function find_via_facebook(){
+	public function find_via_facebook(){
 		//1. Handle authenticating the user if they don't already have their account linked.
 		//2. Scan the user's Facebook friends (the user's they are following)
 		//3. Check to see if any of the usernames match any of the user's in our system. Maybe check by facebook id vs. User.facebook_id
 	}
-	
-	/**
-	 * Handles finding a user. This is triggered by the search box
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	function find_users(){
-		if($this->RequestHandler->isAjax()) {
-			$this->autoLayout = false;
-			$this->autoRender = false;
-			$response = array('success' => false);
-			$this->Prg->commonProcess();
-			//Search for the username
-			$results = $this->User->parseCriteria($this->passedArgs);
-			$this->AjaxHandler->response(true, $results);
-			$this->AjaxHandler->respond();
-			return;
-		}
-	}
-	
-	/**
-	 * Hides the welcome blurb that lives in the admin_moderate view
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	public function hide_welcome(){
-		if($this->RequestHandler->isAjax()) {
-			$this->autoLayout = false;
-			$this->autoRender = false;
-			$response = array('success' => false);
-			$this->User->id = $this->Auth->user('id');
-			$this->User->saveField('hide_welcome',1);
-			$this->AjaxHandler->response(true, 1);
-			$this->AjaxHandler->respond();
-			return;
-		}
-	}
 
+	
 	/**
 	 * Returns the avatar details, if there is one.
 	 * @param 
@@ -1154,25 +1052,5 @@ class UsersController extends AppController {
 	*/
 	public function staff_favorites(){
 		return $this->User->getStaffFavorites();
-	}
-	
-	/**
-	 * Set a user as a staff favorite.
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	public function admin_set_staff_favorite(){
-		
-	}
-	
-	/**
-	 * Removes a user from the staff favorite list
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	public function admin_remove_staff_favorite(){
-		
 	}	
 }

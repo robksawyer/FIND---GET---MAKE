@@ -12,7 +12,7 @@ class ChallengeController extends AppController {
 	public function beforeFilter(){
 		parent::beforeFilter();
 		
-		$this->Auth->allowedActions('setChallengeSession','findChallenge','admin_hide_challenge');
+		$this->Auth->allowedActions('setChallengeSession','findChallenge','ajax_hide_challenge');
 		
 		/*
 			TODO Set up a check to see if the user has hidden the challenge.
@@ -36,8 +36,34 @@ class ChallengeController extends AppController {
 			}
 		}
 		
-		$this->AjaxHandler->handle('admin_hide_challenge');
+		$this->AjaxHandler->handle('ajax_hide_challenge');
 	}
+	
+	/**************** AJAX METHODS ************************/
+	
+	/**
+	 * Hides the challenge header.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function ajax_hide_challenge(){
+		Configure::write('debug', 0); //it will avoid any extra output
+		if ($this->RequestHandler->isAjax()) {
+			$this->autoLayout = false;
+			$this->autoRender = false;
+		
+			$this->Session->delete('Challenge.title');
+			$this->Session->delete('Challenge.slug');
+			$this->Session->write('Challenge.deactivated',1);
+			//$this->redirect($this->referer());
+			$this->AjaxHandler->response(true,'deactivated');
+			$this->AjaxHandler->respond();
+			return;
+		}
+	}
+	
+	/**************** END AJAX METHODS ************************/
 	
 	/**
 	 * This method sets up the challenge Session variables.
@@ -67,25 +93,6 @@ class ChallengeController extends AppController {
 		Controller::loadModel('Forum.Topic');
 		$latestTopic = $this->Topic->findLatestTopic(2);
 		return $latestTopic;
-	}
-
-	/**
-	 * Hides the challenge header.
-	 **/ 
-	public function admin_hide_challenge(){
-		Configure::write('debug', 0); //it will avoid any extra output
-		if ($this->RequestHandler->isAjax()) {
-			$this->autoLayout = false;
-			$this->autoRender = false;
-		
-			$this->Session->delete('Challenge.title');
-			$this->Session->delete('Challenge.slug');
-			$this->Session->write('Challenge.deactivated',1);
-			//$this->redirect($this->referer());
-			$this->AjaxHandler->response(true,'deactivated');
-			$this->AjaxHandler->respond();
-			return;
-		}
 	}
 	
 }

@@ -12,19 +12,8 @@ class StaffFavoritesController extends AppController {
 		$this->AjaxHandler->handle('add','remove');
 	}
 	
-	function index() {
-		$this->StaffFavorite->recursive = 0;
-		$this->set('staffFavorites', $this->paginate());
-	}
-
-	function view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid staff favorite', true));
-			$this->redirect(array('action' => 'index'));
-		}
-		$this->set('staffFavorite', $this->StaffFavorite->read(null, $id));
-	}
-
+	/**************** AJAX METHODS ************************/
+	
 	/**
 	 * Adds an item to the staff favorites list.
 	 * @param string model The model name of the item
@@ -32,7 +21,7 @@ class StaffFavoritesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	function add($model='',$model_id=null) {
+	function ajax_add($model='',$model_id=null) {
 		Configure::write('debug', 0);
 		if($this->RequestHandler->isAjax()) {
 			$this->autoLayout = false;
@@ -79,6 +68,64 @@ class StaffFavoritesController extends AppController {
 			//Send the response
 			$this->AjaxHandler->respond();
 		}
+	}
+	
+	/**************** END AJAX METHODS ************************/
+	
+	function index() {
+		$this->StaffFavorite->recursive = 0;
+		$this->set('staffFavorites', $this->paginate());
+	}
+
+	function view($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid staff favorite', true));
+			$this->redirect(array('action' => 'index'));
+		}
+		$this->set('staffFavorite', $this->StaffFavorite->read(null, $id));
+	}
+	
+	/**
+	 * Adds an item to the staff favorites list.
+	 * @param string model The model name of the item
+	 * @param int model_id The model id of the item to add  
+	 * @return 
+	 * 
+	*/
+	function add($model='',$model_id=null) {
+		
+		//Get the user logged in
+		$user = $this->Auth->user();
+		if(!$user){
+			$this->Session->setFlash(__('You have to login before you can add a staff favorite.', true));
+			$this->redirect(array('admin'=>false,'plugin'=>'','controller'=>'users','action' => 'login'));
+		}
+		
+		//Check to see if the record already exists
+		$staffFavoriteRecordCheck = $this->StaffFavorite->find('first',array('conditions'=>array(
+																					'StaffFavorite.model'=>$model,
+																					'StaffFavorite.model_id'=>$model_id,
+																					'StaffFavorite.user_id'=>$user['User']['id']
+																					)));
+		if(empty($staffFavoriteRecordCheck)){
+			$this->StaffFavorite->create();
+			
+			$save_data['StaffFavorite']['model'] = $model;
+			$save_data['StaffFavorite']['model_id'] = $model_id;
+			$save_data['StaffFavorite']['name'] = Inflector::pluralize(strtolower($model));
+			$save_data['StaffFavorite']['user_id'] = $user['User']['id'];
+			
+			if ($this->StaffFavorite->save($save_data)) {
+				$this->Session->setFlash(__('The staff favorite has been saved', true));
+				//The save was successful
+				$this->redirect(array('controller'=>Inflector::pluralize(strtolower($model)),'action' => 'view',$model_id));
+
+			} else {
+				$this->Session->setFlash(__('The staff favorite could not be saved. Please, try again.', true));
+				$this->redirect(array('controller'=>Inflector::pluralize(strtolower($model)),'action' => 'view',$model_id));
+			}
+		}
+		
 		$users = $this->StaffFavorite->User->find('list');
 		$this->set(compact('users'));
 	}

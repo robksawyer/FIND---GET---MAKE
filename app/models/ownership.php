@@ -72,7 +72,7 @@ class Ownership extends AppModel {
 	}
 	
 	/**
-	 * 
+	 * Return the first item found based on the passed data
 	 * @param user_id
 	 * @param model
 	 * @param model_id

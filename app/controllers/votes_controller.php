@@ -18,83 +18,17 @@ class VotesController extends AppController {
 											);
 											
 		//$this->Auth->allow('getLikes','getDislikes','getUserLikes','getUserDislikes');
-		$this->AjaxHandler->handle('vote_up','vote_down','remove_vote');
+		$this->AjaxHandler->handle('ajax_vote_up','ajax_vote_down','ajax_remove_vote');
 	}
 	
+	/**************** AJAX METHODS ************************/
 	/**
-	 * This method handles showing the user's likes for all models
-	 * @param int user_id The user id 
-	 * @return 
-	 * 
-	*/
-	public function likes($user_id=null){
-		if (!$user_id) {
-			$this->Session->setFlash(__('Invalid user id', true));
-			$this->redirect('/');
-		}
-		$user = $this->Vote->User->find('first',array('conditions'=>array('User.id'=>$user_id)));
-		if(empty($user)){
-			$this->Session->setFlash(__('Invalid user id', true));
-			$this->redirect('/');
-		}
-										
-		$products = array();	
-		$product_ids = array();
-		foreach($user['Vote'] as $vote){
-			//Find likes only
-			if($vote['model'] == 'Product' && $vote['likes']==1){
-				$product_ids[] = $vote['model_id'];
-			}
-		}
-		
-		$products = $this->paginate('Product',array(
-									   'Product.id' => $product_ids
-									));
-									
-		$this->set(compact('user','products'));
-	}
-	
-	
-	/**
-	 * This method handles showing the user's dislikes for all models
-	 * @param int user_id The user id 
-	 * @return 
-	 * 
-	*/
-	public function dislikes($user_id=null){
-		if (!$user_id) {
-			$this->Session->setFlash(__('Invalid user id', true));
-			$this->redirect('/');
-		}
-		$user = $this->Vote->User->find('first',array('conditions'=>array('User.id'=>$user_id)));
-		if(empty($user)){
-			$this->Session->setFlash(__('Invalid user id', true));
-			$this->redirect('/');
-		}
-		
-		$products = array();	
-		$product_ids = array();
-		foreach($user['Vote'] as $vote){
-			//Find dislikes only
-			if($vote['model'] == 'Product' && $vote['dislikes']==1){
-				$product_ids[] = $vote['model_id'];
-			}
-		}
-		
-		$products = $this->paginate('Product',array(
-									   'Product.id' => $product_ids
-									));
-									
-		$this->set(compact('user','products'));
-	}
-	
-	/**
-	 * 
+	 * Votes up an item
 	 * @param 
 	 * @return 
 	 * 
 	*/
-	public function vote_up($model,$model_id){
+	public function ajax_vote_up($model,$model_id){
 		$this->Vote->recursive = -1;
 		Configure::write('debug', 0);
 		if($this->RequestHandler->isAjax()) {
@@ -164,12 +98,12 @@ class VotesController extends AppController {
 	}
 	
 	/**
-	 * 
+	 * Votes down an item
 	 * @param 
 	 * @return 
 	 * 
 	*/
-	public function vote_down($model,$model_id){
+	public function ajax_vote_down($model,$model_id){
 		$this->Vote->recursive = -1;
 		Configure::write('debug', 0);
 		if($this->RequestHandler->isAjax()) {
@@ -241,12 +175,12 @@ class VotesController extends AppController {
 	}
 	
 	/**
-	 * 
+	 * Removes a vote from an item
 	 * @param 
 	 * @return 
 	 * 
 	*/
-	public function remove_vote($model,$model_id){
+	public function ajax_remove_vote($model,$model_id){
 		$this->Vote->recursive = -1;
 		Configure::write('debug', 0);
 
@@ -300,6 +234,75 @@ class VotesController extends AppController {
 			return;
 		}
 	}
+	/**************** END AJAX METHODS ************************/
+	
+	/**
+	 * This method handles showing the user's likes for all models
+	 * @param int user_id The user id 
+	 * @return 
+	 * 
+	*/
+	public function likes($user_id=null){
+		if (!$user_id) {
+			$this->Session->setFlash(__('Invalid user id', true));
+			$this->redirect('/');
+		}
+		$user = $this->Vote->User->find('first',array('conditions'=>array('User.id'=>$user_id)));
+		if(empty($user)){
+			$this->Session->setFlash(__('Invalid user id', true));
+			$this->redirect('/');
+		}
+										
+		$products = array();	
+		$product_ids = array();
+		foreach($user['Vote'] as $vote){
+			//Find likes only
+			if($vote['model'] == 'Product' && $vote['likes']==1){
+				$product_ids[] = $vote['model_id'];
+			}
+		}
+		
+		$products = $this->paginate('Product',array(
+									   'Product.id' => $product_ids
+									));
+									
+		$this->set(compact('user','products'));
+	}
+	
+	
+	/**
+	 * This method handles showing the user's dislikes for all models
+	 * @param int user_id The user id 
+	 * @return 
+	 * 
+	*/
+	public function dislikes($user_id=null){
+		if (!$user_id) {
+			$this->Session->setFlash(__('Invalid user id', true));
+			$this->redirect('/');
+		}
+		$user = $this->Vote->User->find('first',array('conditions'=>array('User.id'=>$user_id)));
+		if(empty($user)){
+			$this->Session->setFlash(__('Invalid user id', true));
+			$this->redirect('/');
+		}
+		
+		$products = array();	
+		$product_ids = array();
+		foreach($user['Vote'] as $vote){
+			//Find dislikes only
+			if($vote['model'] == 'Product' && $vote['dislikes']==1){
+				$product_ids[] = $vote['model_id'];
+			}
+		}
+		
+		$products = $this->paginate('Product',array(
+									   'Product.id' => $product_ids
+									));
+									
+		$this->set(compact('user','products'));
+	}
+	
 	
 	/**
 	 * 

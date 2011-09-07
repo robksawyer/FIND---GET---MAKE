@@ -43,7 +43,7 @@ if(!empty($cTitle) && !empty($cSlug) && empty($deactivated)){
 function hideChallenge(){
 	$.ajax({
 		type: "post",
-		url: "/app/hide_challenge",
+		url: "/ajax/challenges/hide_challenge",
 		//data: data,
 		//dataType: "json",
 		success: function(response, status) {

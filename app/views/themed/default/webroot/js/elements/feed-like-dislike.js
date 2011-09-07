@@ -52,7 +52,7 @@ function submit_like(model, model_id){
 		success:function (data, textStatus) {
 			updateLikeDislike(data);
 		}, 
-		url:"\/votes\/vote_up\/"+model+"\/"+model_id
+		url:"\/ajax\/votes\/vote_up\/"+model+"\/"+model_id
 	});
 	return false;
 }
@@ -72,7 +72,7 @@ function submit_dislike(model, model_id){
 		success:function (data, textStatus) {
 			updateLikeDislike(data);
 		}, 
-		url:"\/votes\/vote_down\/"+model+"\/"+model_id
+		url:"\/ajax\/votes\/vote_down\/"+model+"\/"+model_id
 	});
 	return false;
 }

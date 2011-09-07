@@ -41,15 +41,15 @@ function doSubmit(model,model_id){
 	//var model = this.model;
 	//var model_id = this.model_id;
 	var data = $("#OwnershipSetOwnershipForm").serialize();
-	
 	$.ajax({
 		type: "post",
-		url: "/ownerships/set_ownership/"+model+"/"+model_id,
+		url: "/ajax/ownerships/set_ownership/"+model+"/"+model_id,
 		target:	'.messagepop fieldset.return-type',
 		data: data,
 		dataType: "json",
 		success: showResponse,
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(textStatus + " : " +errorThrown);
 			$('.messagepop fieldset.return-type').html(textStatus + " : " +errorThrown);
 			$('.messagepop fieldset.return-type').show();
 			//handleError(XMLHttpRequest, textStatus, errorThrown);
@@ -79,6 +79,10 @@ function doSubmit(model,model_id){
 			$(".messagepop fieldset.return-type").show();
 			$(".messagepop fieldset.return-type").html("<p>This item has been added to your "+data.ownership_type+" list.</p><p class='ok-button'><a href='javascript:void(0);' title='ok'>ok</a></p>");
 			$("#ownership-form-button").text("+ you "+data.ownership_type+" it");
+		}else{
+			$(".messagepop fieldset.form-type").hide();
+			$(".messagepop fieldset.return-type").html("<p>There was a problem updating the ownership. Please submit a bug and try again later.</p>");
+			$(".messagepop fieldset.return-type").show();
 		}
 
 		return false;

@@ -28,14 +28,14 @@
 	<li class="action">
 		<?php
 			if($user_likes < 1){
-				echo $this->Js->link('like', array('controller'=>'votes','action'=>'vote_up',$model,$model_id), 
+				echo $this->Js->link('like', array('ajax'=>true,'controller'=>'votes','action'=>'vote_up',$model,$model_id), 
 													array(
 														'class'=>'btn auth vote dup like',
 														'title'=>'like',
 														'beforeSend'=>'showLoader();',
 														'success'=>'updateLikeDislike(data);'
 														));
-				echo $this->Js->link('liked', array('controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
+				echo $this->Js->link('liked', array('ajax'=>true,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
 													array(
 														'class'=>'btn auth vote dup liked',
 														'style'=>'display:none;',
@@ -45,7 +45,7 @@
 														'success'=>'updateLikeDislike(data);'
 														));
 			}else{
-				echo $this->Js->link('like', array('controller'=>'votes','action'=>'vote_up',$model,$model_id), 
+				echo $this->Js->link('like', array('ajax'=>true,'controller'=>'votes','action'=>'vote_up',$model,$model_id), 
 												array(
 														'class'=>'btn auth vote dup like',
 														'style'=>'display:none;',
@@ -53,7 +53,7 @@
 														'beforeSend'=>'showLoader();',
 														'success'=>'updateLikeDislike(data);'
 														));
-				echo $this->Js->link('liked', array('controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
+				echo $this->Js->link('liked', array('ajax'=>true,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
 													array(
 														'class'=>'btn auth vote dup liked',
 														'title'=>'liked',
@@ -84,14 +84,14 @@
 	<li class="action">
 		<?php
 			if($user_dislikes < 1){
-				echo $this->Js->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), 
+				echo $this->Js->link('dislike', array('ajax'=>true,'controller'=>'votes','action'=>'vote_down',$model,$model_id), 
 													array(
 														'class'=>'btn auth vote ddown dislike',
 														'title'=>'dislike',
 														'beforeSend'=>'showLoader();',
 														'success'=>'updateLikeDislike(data);'	
 														));
-				echo $this->Js->link('disliked', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
+				echo $this->Js->link('disliked', array('ajax'=>true,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
 													array(
 														'class'=>'btn auth vote ddown disliked',
 														'style'=>'display:none;',
@@ -100,7 +100,7 @@
 														'success'=>'updateLikeDislike(data);'
 														));
 			}else{
-				echo $this->Js->link('dislike', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'vote_down',$model,$model_id), 
+				echo $this->Js->link('dislike', array('ajax'=>true,'controller'=>'votes','action'=>'vote_down',$model,$model_id), 
 													array(
 														'class'=>'btn auth vote ddown dislike',
 														'style'=>'display:none;',
@@ -108,7 +108,7 @@
 														'beforeSend'=>'showLoader();',
 														'success'=>'updateLikeDislike(data);'
 														));
-				echo $this->Js->link('disliked', array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
+				echo $this->Js->link('disliked', array('ajax'=>true,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
 													array(
 														'class'=>'btn auth vote ddown disliked',
 														'title'=>'disliked',

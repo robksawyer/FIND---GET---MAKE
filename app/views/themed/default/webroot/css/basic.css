@@ -2205,6 +2205,17 @@ div#attachments-small ul.wrapper li a:focus{
 	text-decoration: none;
 	cursor: pointer;
 }
+
+.profile .staff-favorite{
+	position: relative;
+	font-size: 11px;
+	vertical-align: top;
+	text-decoration: none;
+	cursor: pointer;
+	float: right;
+	padding: 0;
+	margin: 0;
+}
 /* END TOP ACTIONS */
 
 

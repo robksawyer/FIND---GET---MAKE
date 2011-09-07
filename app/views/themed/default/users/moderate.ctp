@@ -7,7 +7,7 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 		echo $this->Js->link($this->Html->image('/img/icons/delete.gif',array('alt'=>'Hide',
 																			'title'=>'Hide the welcome',
 																			'class'=>'hide-welcome'
-																			)),'/users/hide_welcome',array(
+																			)),'/ajax/users/hide_welcome',array(
 																													'escape'=>false,
 																													'success'=>'hideWelcome(data);'
 																													)); 

@@ -66,7 +66,7 @@ if(!empty_feed){
 					loading = true;
 					//Show the loader
 					showMoreLoader();
-					var url = "/users/more_user_feed_data/"+<?php echo $user_id; ?>+"/"+previous_loaded;
+					var url = "/ajax/users/more_user_feed_data/"+<?php echo $user_id; ?>+"/"+previous_loaded;
 					$.ajax({
 							url: url,
 							error: function(response, status, xhr) {
@@ -97,7 +97,7 @@ function retry_auto_paginator_request(){
 	$.ajax({success:function (data, textStatus) {
 			appendData(data);
 		}, 
-		url:"/users/more_user_feed_data/"+<?php echo $user_id; ?>+"/"+previous_loaded
+		url:"/ajax/users/more_user_feed_data/"+<?php echo $user_id; ?>+"/"+previous_loaded
 	});
 	return false;
 }

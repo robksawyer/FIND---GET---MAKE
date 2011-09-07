@@ -179,6 +179,7 @@ class ConfigController extends AppController {
 		$this->Acl->deny($group, 'controllers');
 		
 		//$this->Acl->allow($group, 'controllers/App');
+		$this->Acl->allow($group, 'controllers/Ajaxs');
 		$this->Acl->allow($group, 'controllers/Attachments');
 		//$this->Acl->allow($group, 'controllers/AttachmentTags'); //Not used
 		$this->Acl->deny($group, 'controllers/BetaUsers');
@@ -264,6 +265,7 @@ class ConfigController extends AppController {
 		//$group = 'users';
 		
 		$this->Acl->deny($group, 'controllers');        
+		$this->Acl->allow($group, 'controllers/Ajax');
 		//$this->Acl->allow($group, 'controllers/App/add_attachment');
 		$this->Acl->allow($group, 'controllers/Attachments/view');
 		$this->Acl->allow($group, 'controllers/Attachments/photo_tag_view');
@@ -341,9 +343,8 @@ class ConfigController extends AppController {
 		$this->Acl->allow($group, 'controllers/Users/report');
 		//$this->Acl->allow($group, 'controllers/Users/edit');
 		$this->Acl->allow($group, 'controllers/Users/moderate');
-		$this->Acl->allow($group, 'controllers/Users/more_feed_data');
-		$this->Acl->allow($group, 'controllers/Users/more_user_feed_data');
-		$this->Acl->allow($group, 'controllers/Users/hide_welcome');
+		$this->Acl->allow($group, 'controllers/Users/ajax_more_feed_data');
+		$this->Acl->allow($group, 'controllers/Users/ajax_more_user_feed_data');
 		//$this->Acl->allow($group, 'controllers/Users/add_avatar');
 		//$this->Acl->allow($group, 'controllers/Users/upload_avatar');
 		//$this->Acl->allow($group, 'controllers/Users/save_avatar');

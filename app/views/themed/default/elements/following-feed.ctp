@@ -48,7 +48,7 @@
 				</div>
 				<?php 
 					/*echo $this->Js->link('More',
-													'/users/more_feed_data/'.$limit,
+													'/ajax/users/more_feed_data/'.$limit,
 													array('title'=>'See more',
 															'id'=>'more-button',
 															//'beforeSend'=>'showMoreLoader',
@@ -81,7 +81,7 @@ if(!empty_feed){
 			if($(window).scrollTop() == position){	 //If scrollbar is at the bottom
 				if(!loading){
 					loading = true;
-					var url = "/users/more_feed_data/"+previous_loaded;
+					var url = "/ajax/users/more_feed_data/"+previous_loaded;
 					$.ajax({
 							url: url,
 							error: function(response, status, xhr) {
@@ -113,7 +113,7 @@ function retry_auto_paginator_request(){
 		success:function (data, textStatus) {
 			appendData(data);
 		}, 
-		url:"/users/more_feed_data/"+previous_loaded
+		url:"/ajax/users/more_feed_data/"+previous_loaded
 	});
 	return false;
 }

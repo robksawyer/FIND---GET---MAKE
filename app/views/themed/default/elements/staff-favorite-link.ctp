@@ -4,6 +4,7 @@
 		echo $this->Js->link('Staff favorite',array(
 																'plugin'=>'',
 																'admin'=>false,
+																'ajax'=>true,
 																'controller'=>'staff_favorites',
 																'action'=>'add',$model,$model_id
 															),

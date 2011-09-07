@@ -12,6 +12,11 @@ class FlagsController extends AppController {
 						//'group'=>array('Flag.model')
 									);
 	
+	
+	/**************** AJAX METHODS ************************/
+	
+	/**************** END AJAX METHODS ************************/
+	
 	/**
 	 * Flags the item
 	 * @param 

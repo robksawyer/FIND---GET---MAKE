@@ -79,31 +79,43 @@ class Feed extends AppModel {
 	*/
 	public function addFeedData($model=null,$data=null){
 		if($model && $data){
-			$this->set('model',$model);
-			$this->set('name',strtolower($model));
+			
 			if(empty($data['User']['id'])){
-				$this->set('user_id',$data[$model]['user_id']); //This is a special case for ownerships
-			}else{
-				$this->set('user_id',$data['User']['id']);
-			}
-			$this->set('model_id',$data[$model]['id']);
-			$this->set('record_created',$data[$model]['created']);
-		
-			//Make sure it doesn't already exist
-			$item = $this->find('first',array(
-											'conditions'=>array(
+				//Check to see if the item exists already
+				$feedChecker = $this->find('first',array('conditions'=>array(
+																'Feed.user_id'=>$data[$model]['user_id'],
 																'Feed.model'=>$model,
 																'Feed.model_id'=>$data[$model]['id']
-																)
-											)
-										);
-			//Only add it if it doesn't already exist
-			if(empty($item[$model])){
+															)
+														));
+														
+				if(empty($feedChecker)) $this->set('user_id',$data[$model]['user_id']); //This is a special case for ownerships
+			}else{
+				//Check to see if the item exists already
+				$feedChecker = $this->find('first',array('conditions'=>array(
+																'Feed.user_id'=>$data['User']['user_id'],
+																'Feed.model'=>$model,
+																'Feed.model_id'=>$data[$model]['id']
+															)
+														));
+				if(empty($feedChecker)) $this->set('user_id',$data['User']['id']);
+			}
+			
+			//Make sure that the user doesn't already have something related to the item in the feed 
+			if(empty($feedChecker)){
+				$this->set('model',$model);
+				$this->set('name',strtolower($model));
+				$this->set('model_id',$data[$model]['id']);
+				$this->set('record_created',$data[$model]['modified']);
+				
 				if($this->save()){
 					//The data saved correctly
 				}else{
 					//There was an error saving the data
 				}
+			}else{
+				$this->id = $feedChecker['Feed']['id'];
+				$this->set('record_created',$data[$model]['modified']);
 			}
 		}
 	}

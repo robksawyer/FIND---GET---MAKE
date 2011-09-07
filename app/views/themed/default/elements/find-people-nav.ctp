@@ -17,8 +17,8 @@
 																							)
 															));
 		echo $this->Form->input('query', array('div' => false,'label'=>'','value'=>'Find people','style'=>'color:#999'));
-		echo "</form>";
-		//echo $this->Form->submit('Submit',array('div'=>false,'type'=>'hidden'));
+		echo $this->Js->get('#SearchQuery')->event('keypress','checkKeyPress(event);',array('stop'=>false));
+		echo $this->Js->submit('Submit',array('div'=>false,'id'=>'SearchSubmit','style'=>'display:none','url'=>'/users/find_users'));
 	?>
 </div>
 <script type="text/javascript">
@@ -34,7 +34,18 @@ $('#searchbox #SearchQuery').blur(function(){
 		$(this).css('color','#999');
 	}
 });
-$('#searchbox input').bind('keypress', function(e) {
+
+function checkKeyPress(e){
+	var code = (e.keyCode ? e.keyCode : e.which);
+	if(code == 13) { //Enter keycode
+		$('#SearchSubmit').click();
+		//return true;
+	}else{
+		return false;
+	}
+}
+
+/*$('#searchbox #SearchQuery').bind('keypress', function(e) {
 	//Bind the event to the return key and show an ajax loader in the search magnify graphic area on submit.
 	var code = (e.keyCode ? e.keyCode : e.which);
 	if(code == 13) { //Enter keycode
@@ -46,12 +57,11 @@ $('#searchbox input').bind('keypress', function(e) {
 				success:function(data) {
 					console.log(data);
 					//Build the results page
-					//$("#update-zone-phone").html(data);
 				}, 
 				type:"post", 
 				url:"\/users\/find_users"
 			}); 
 			$("#SearchFindForm")[0].reset();
 	}
-});
+});*/
 </script>

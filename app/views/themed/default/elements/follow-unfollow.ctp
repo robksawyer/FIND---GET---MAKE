@@ -9,8 +9,7 @@ if(!empty($authUser)):
 		<?php if(empty($following)): ?>
 			<div id="follow-user">
 			<?php echo $this->Js->link('Follow',array(
-																	'plugin'=>'',
-																	'admin'=>false,
+																	'ajax'=>true,
 																	'controller'=>'user_followings',
 																	'action'=>'followUserID',$user_id
 																	),
@@ -22,8 +21,7 @@ if(!empty($authUser)):
 																		'success'=>'updateFollowUnfollow(data);'
 																		));
 					echo $this->Js->link('Unfollow',array(
-																	'plugin'=>'',
-																	'admin'=>false,
+																	'ajax'=>true,
 																	'controller'=>'user_followings',
 																	'action'=>'unfollowUserID',$user_id
 																	),
@@ -39,8 +37,7 @@ if(!empty($authUser)):
 		<?php else: ?>
 			<div id="follow-user">
 			<?php echo $this->Js->link('Unfollow',array(
-																	'plugin'=>'',
-																	'admin'=>false,
+																	'ajax'=>true,
 																	'controller'=>'user_followings',
 																	'action'=>'unfollowUserID',$user_id
 																	),
@@ -52,8 +49,7 @@ if(!empty($authUser)):
 																		'success'=>'updateFollowUnfollow(data);'
 																		));
 					echo $this->Js->link('Follow',array(
-																	'plugin'=>'',
-																	'admin'=>false,
+																	'ajax'=>true,
 																	'controller'=>'user_followings',
 																	'action'=>'followUserID',$user_id
 																	),

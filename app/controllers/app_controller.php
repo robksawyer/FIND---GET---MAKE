@@ -133,6 +133,7 @@ class AppController extends Controller {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		
+		//Security overrides
 		$this->Security->blackHoleCallback = 'submit_fail';
 		
 		if(isset($this->Auth)) {

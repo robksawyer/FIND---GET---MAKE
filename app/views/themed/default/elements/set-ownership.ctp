@@ -48,7 +48,7 @@
 				$form_options = array(
 											'type' => 'post',
 											'id'=>'OwnershipSetOwnershipForm',
-											'url' => '/ownerships/set_ownership/'.$model.'/'.$model_id
+											'url' => '/ajax/ownerships/set_ownership/'.$model.'/'.$model_id
 										);
 			}else{
 				$form_options = array(
