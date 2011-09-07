@@ -93,7 +93,7 @@ class Feed extends AppModel {
 			}else{
 				//Check to see if the item exists already
 				$feedChecker = $this->find('first',array('conditions'=>array(
-																'Feed.user_id'=>$data['User']['user_id'],
+																'Feed.user_id'=>$data['User']['id'],
 																'Feed.model'=>$model,
 																'Feed.model_id'=>$data[$model]['id']
 															)
