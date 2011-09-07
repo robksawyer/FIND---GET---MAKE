@@ -2,7 +2,7 @@
 class ClientsController extends AppController {
 
 	var $name = 'Clients';
-	var $components = array('Search.Prg','Uploader.Uploader','String');
+	var $components = array('Search.Prg','Uploader.Uploader');
 	var $helpers = array('Tags.TagCloud');
 	
 	function beforeFilter(){
@@ -13,7 +13,7 @@ class ClientsController extends AppController {
 	
 	function index() {
 		if(Configure::read('FGM.private_solution') == 1){
-			$this->Client->recursive = 2;
+			$this->Client->recursive = 1;
 		
 			$clients = $this->paginate();
 		
@@ -48,7 +48,7 @@ class ClientsController extends AppController {
 
 	function view($id = null) {
 		if(Configure::read('FGM.private_solution') == 1){
-			$this->Client->recursive = 2;
+			$this->Client->recursive = 1;
 			if (!$id) {
 				$this->Session->setFlash(__('Invalid client', true));
 				$this->redirect(array('action' => 'index','admin'=>false));
@@ -265,7 +265,7 @@ class ClientsController extends AppController {
 	 */
 	function tags(){
 		if(Configure::read('FGM.private_solution') == 1){
-			$this->Client->recursive = 2;
+			$this->Client->recursive = 1;
 			$this->paginate = array(
 								'Tagged'=>array(
 												'conditions'=>array('Tagged.model'=>'Client'),

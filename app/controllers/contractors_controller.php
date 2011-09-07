@@ -2,7 +2,7 @@
 class ContractorsController extends AppController {
 
 	var $name = 'Contractors';
-	var $components = array('Search.Prg','Uploader.Uploader','String');
+	var $components = array('Search.Prg','Uploader.Uploader');
 	var $helpers = array('Tags.TagCloud');
 	
 	function beforeFilter(){
@@ -13,7 +13,7 @@ class ContractorsController extends AppController {
 	
 	function index() {
 		if(Configure::read('FGM.private_solution') == 1){
-			$this->Contractor->recursive = 2;
+			$this->Contractor->recursive = 1;
 		
 			$contractors = $this->paginate();
 			if(isset($this->params['requested'])) {
@@ -37,7 +37,7 @@ class ContractorsController extends AppController {
 				}
 			
 			} else {
-				$this->Contractor->recursive = 2;
+				$this->Contractor->recursive = 1;
 				$contractors = $this->paginate();
 			}
 			$this->set('contractors', $contractors);
@@ -322,7 +322,7 @@ class ContractorsController extends AppController {
 	 */
 	function tags(){
 		if(Configure::read('FGM.private_solution') == 1){
-			$this->Contractor->recursive = 2;
+			$this->Contractor->recursive = 1;
 			$this->paginate = array(
 								'Tagged'=>array(
 												'conditions'=>array('Tagged.model'=>'Contractor'),

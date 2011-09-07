@@ -61,7 +61,7 @@ class SourcesController extends AppController {
 	}
 	
 	public function index($filter = null){
-		$this->Source->recursive = 2;
+		$this->Source->recursive = 1;
 		
 		// query all distinct first letters used in names
 		$letters = $this->Source->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `sources` ORDER BY `name`');
@@ -148,8 +148,13 @@ class SourcesController extends AppController {
 			$this->Session->setFlash(__('Invalid user id', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}
-		$this->Source->User->recursive = 1;
-		$user = $this->Source->User->read(null,$id);
+		//Check to see if the username was passed
+		if(is_numeric($id)){
+			$user = $this->Source->User->read(null,$id);
+		}else{
+			$user = $this->Source->User->find('first',array('conditions'=>array('User.username'=>$id)));
+			$id = $user['User']['id'];
+		}
 		if(empty($user)){
 			$this->Session->setFlash(__('Invalid user id', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
@@ -171,7 +176,7 @@ class SourcesController extends AppController {
 	 * 
 	*/
 	public function view($id = null) {
-		$this->Source->recursive = 2;
+		$this->Source->recursive = 1;
 		//$isSlug = $this->isSlug($id);
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid source', true));
@@ -201,7 +206,7 @@ class SourcesController extends AppController {
 	 * 
 	*/
 	public function key($keycode=null){
-		$this->Source->recursive = 2;
+		$this->Source->recursive = 1;
 		$this->layout = 'client_review';
 		if (!$keycode && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid keycode', true));

@@ -2,7 +2,7 @@
 class SourceCategoriesController extends AppController {
 
 	var $name = 'SourceCategories';
-	var $components = array('String');
+	//var $components = array();
 	
 	public function beforeFilter(){
 		parent::beforeFilter();
@@ -11,7 +11,7 @@ class SourceCategoriesController extends AppController {
 	}
 
 	function index() {
-		$this->SourceCategory->recursive = 2;
+		$this->SourceCategory->recursive = 1;
 		$this->paginate = array(
 								'limit' => 50,
 								'order' => array(
@@ -23,7 +23,7 @@ class SourceCategoriesController extends AppController {
 	}
 
 	function view($id = null,$filter=null) {
-		$this->SourceCategory->recursive = 2;
+		$this->SourceCategory->recursive = 1;
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid source category', true));
 			$this->redirect(array('action' => 'index','admin'=>false));

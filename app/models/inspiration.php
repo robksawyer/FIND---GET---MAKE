@@ -245,7 +245,7 @@ class Inspiration extends AppModel {
 	 * @return Array
 	 **/
 	function userInspirations($user_id=null,$limit=10,$type=null){
-		$this->recursive = 2;
+		$this->recursive = 1;
 		if(empty($type)){
 			$items = $this->find('list',
 										array(

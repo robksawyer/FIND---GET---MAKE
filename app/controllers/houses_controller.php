@@ -2,7 +2,7 @@
 class HousesController extends AppController {
 
 	var $name = 'Houses';
-	var $components = array('Search.Prg','Uploader.Uploader','String');
+	var $components = array('Search.Prg','Uploader.Uploader');
 	var $helpers = array('Tags.TagCloud');
 	
 	function beforeFilter(){
@@ -13,7 +13,7 @@ class HousesController extends AppController {
 	
 	function index() {
 		if(Configure::read('FGM.private_solution') == 1){
-			$this->House->recursive = 2;
+			$this->House->recursive = 1;
 
 			$houses = $this->paginate();
 			if(isset($this->params['requested'])) {
@@ -42,7 +42,7 @@ class HousesController extends AppController {
 
 				//debug($houses);
 			} else {
-				$this->House->recursive = 2;
+				$this->House->recursive = 1;
 				$houses = $this->paginate();
 			}
 
@@ -56,7 +56,7 @@ class HousesController extends AppController {
 
 	function view($id = null) {
 		if(Configure::read('FGM.private_solution') == 1){
-			$this->House->recursive = 2;
+			$this->House->recursive = 1;
 			if (!$id) {
 				$this->Session->setFlash(__('Invalid house', true));
 				$this->redirect(array('action' => 'index','admin'=>false));
@@ -281,7 +281,7 @@ class HousesController extends AppController {
 	 */
 	function tags(){
 		if(Configure::read('FGM.private_solution') == 1){
-			$this->House->recursive = 2;
+			$this->House->recursive = 1;
 			$this->paginate = array(
 								'Tagged'=>array(
 												'conditions'=>array('Tagged.model'=>'House'),

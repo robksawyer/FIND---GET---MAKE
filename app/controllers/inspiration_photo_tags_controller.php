@@ -2,7 +2,7 @@
 class InspirationPhotoTagsController extends AppController {
 
 	var $name = 'InspirationPhotoTags';
-	var $components = array('String','RequestHandler');
+	var $components = array('RequestHandler');
 	
 	function beforeFilter(){
 		parent::beforeFilter();

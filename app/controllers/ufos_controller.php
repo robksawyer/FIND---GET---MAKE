@@ -33,7 +33,7 @@ class UfosController extends AppController {
 	
 	
 	function index($filter = null) {
-		$this->Ufo->recursive = 2;
+		$this->Ufo->recursive = 1;
 		
 		// query all distinct first letters used in names
 		$letters = $this->Ufo->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `ufos` ORDER BY `name`');
@@ -51,18 +51,20 @@ class UfosController extends AppController {
 									'model' => 'Ufo',
 									'tagged',
 									'by' => $this->passedArgs['by'],
-									'recursive'=>2 //Removing this throws errors.
+									'recursive'=>1 //Removing this throws errors.
 								)
 							);
 			$ufos = $this->paginate('Tagged');
-			
 			$counter = 0;
 			foreach($ufos as $ufo){
 				//Find attachments
 				if(!empty($ufo['Ufo']['id'])){
-					$temp_att = $this->Ufo->read(null,$ufo['Ufo']['id']);
+					$temp_att = $this->Ufo->find('first',array('conditions'=>array('Ufo.id'=>$ufo['Ufo']['id']),
+																'contain'=>array('Attachment','User','Tag')
+																)
+															);
 					//debug($temp_att);
-					$ufos[$counter]['Attachment'] = $temp_att['Attachment'];
+					$ufos[$counter] = $temp_att;
 
 					$counter++;
 				}else{
@@ -252,7 +254,7 @@ class UfosController extends AppController {
 	 * @param limit 
 	 */
 	function getUfosFromUser($id = null,$limit=25){
-		$this->Ufo->recursive = 2;
+		$this->Ufo->recursive = 1;
 		if(isset($this->params['requested'])) {
 			$ufos = $this->Ufo->userUfos($id,$limit);
 			return $ufos;
@@ -263,7 +265,7 @@ class UfosController extends AppController {
 	 * Finds the tags associated with this model
 	 */
 	function tags(){
-		$this->Ufo->recursive = 2;
+		$this->Ufo->recursive = 1;
 		$this->Ufo->Tagged->recursive = 2;
 		$this->paginate['conditions']['Tagged.model'] = 'Ufo';
 		$this->paginate['fields'] = 'DISTINCT Tag.name,Tag.keyname,Tagged.model';

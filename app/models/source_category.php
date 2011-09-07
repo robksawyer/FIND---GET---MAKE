@@ -53,6 +53,7 @@ class SourceCategory extends AppModel {
 	 * @param 
 	 */
 	function getList(){
+		$this->recursive = 1;
 		$categories = $this->find('list',array('order' => 'name ASC'));
 		return $categories;
 	}
@@ -62,6 +63,7 @@ class SourceCategory extends AppModel {
 	 * @param 
 	 */
 	function getAll(){
+		$this->recursive = 1;
 		$categories = $this->find('all',array('order' => 'name ASC'));
 		return $categories;
 	}

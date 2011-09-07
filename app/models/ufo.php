@@ -115,7 +115,7 @@ class Ufo extends AppModel {
 	 * 
 	*/
 	public function getFeedData($model_id=null){
-		$this->recursive = 2;
+		$this->recursive = 1;
 		$this->User->recursive = -1;
 		$data = $this->read(null,$model_id);	
 		
@@ -130,7 +130,7 @@ class Ufo extends AppModel {
 	 * @return Array
 	 **/
 	function userUfos($user_id=null,$limit=10,$type=null){
-		$this->recursive = 2;
+		$this->recursive = 1;
 		$items = $this->find('all',
 									array(
 										'conditions'=>array('Ufo.user_id' => $user_id),

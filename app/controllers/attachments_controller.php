@@ -45,7 +45,7 @@ class AttachmentsController extends AppController {
 	
 	
 	public function index() {
-		$this->Attachment->recursive = 2;
+		$this->Attachment->recursive = 1;
 		$attachments = $this->paginate();
 		if(isset($this->params['requested'])) {
 			return $attachments;
@@ -62,7 +62,7 @@ class AttachmentsController extends AppController {
 	 * 
 	*/
 	public function view($id = null) {
-		$this->Attachment->recursive = 2;
+		$this->Attachment->recursive = 1;
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid attachment', true));
 			$this->redirect(array('action' => 'index'));
@@ -78,7 +78,7 @@ class AttachmentsController extends AppController {
 	 * 
 	*/
 	public function key($keycode=null){
-		$this->Attachment->recursive = 2;
+		$this->Attachment->recursive = 1;
 		$this->layout = 'client_review';
 		if (!$keycode && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid keycode', true));
@@ -94,7 +94,7 @@ class AttachmentsController extends AppController {
 	}
 	
 	public function photo_tag_view($id = null) {
-		$this->Attachment->recursive = 2;
+		$this->Attachment->recursive = 1;
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid attachment', true));
 			$this->redirect(array('action' => 'index'));

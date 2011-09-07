@@ -3,10 +3,10 @@ class ProductCategoriesController extends AppController {
 
 	var $name = 'ProductCategories';
 	
-	var $components = array('String');
+	//var $components = array();
 
 	function index() {
-		$this->ProductCategory->recursive = 2;
+		$this->ProductCategory->recursive = 1;
 		$this->paginate = array(
 								'limit' => 50,
 								'order' => array(
@@ -17,7 +17,7 @@ class ProductCategoriesController extends AppController {
 	}
 
 	function view($id = null,$filter=null) {
-		$this->ProductCategory->recursive = 2;
+		$this->ProductCategory->recursive = 1;
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid product category', true));
 			$this->redirect(array('action' => 'index','admin'=>false));

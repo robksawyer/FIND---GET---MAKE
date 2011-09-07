@@ -947,7 +947,7 @@ class UsersController extends AppController {
 	 * @param int $id
 	 */
 	public function moderate() {
-		$this->User->recursive = 2;
+		$this->User->recursive = 1;
 		$user = $this->Auth->user();
 
 		if (!$user['User']['id']) {

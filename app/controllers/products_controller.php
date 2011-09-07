@@ -61,7 +61,7 @@ class ProductsController extends AppController {
 	}
 	
 	public function index($filter = null) {
-		$this->Product->recursive = 2;
+		$this->Product->recursive = 1;
 		// query all distinct first letters used in names
 		$letters = $this->Product->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `products` ORDER BY `name`');
 		
@@ -125,38 +125,13 @@ class ProductsController extends AppController {
 	}
 	
 	/**
-	 * This method handles showing only the user's products
-	 * @param int id The user id
-	 * @return 
-	 * 
-	*/
-	public function users($id=null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid user id', true));
-			$this->redirect(array('action' => 'index','admin'=>false));
-		}
-		$user = $this->Product->User->find('first',array('conditions'=>array('User.id'=>$id)));
-		if(empty($user)){
-			$this->Session->setFlash(__('Invalid user id', true));
-			$this->redirect(array('action' => 'index','admin'=>false));
-		}
-		$productCategories = $this->Product->ProductCategory->getAll();
-		$products = $this->paginate('Product',array(
-										   'Product.user_id' => $id
-										));
-		$total_count = $this->Product->find('count',array('conditions'=>array('Product.user_id'=>$id)));
-		$this->set(compact('products','total_count','productCategories','user'));
-		
-	}
-	
-	/**
 	 * Main view method
 	 * @param int id The product id
 	 * @return 
 	 * 
 	*/
 	public function view($id = null) {
-		$this->Product->recursive = 2;
+		$this->Product->recursive = 1;
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid product', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
@@ -183,7 +158,7 @@ class ProductsController extends AppController {
 	 * 
 	*/
 	public function key($keycode=null){
-		$this->Product->recursive = 2;
+		$this->Product->recursive = 1;
 		$this->layout = 'client_review';
 		if (!$keycode && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid keycode', true));
@@ -609,6 +584,38 @@ class ProductsController extends AppController {
 		} else {
 			$this->Session->setFlash(__('The product could not be updated. Please, try again.', true));
 		}
+	}
+	
+	/**
+	 * This method handles showing only the user's products
+	 * @param int id The user id
+	 * @return 
+	 * 
+	*/
+	public function users($id=null) {
+		$this->Product->recursive = 1;
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid user id', true));
+			$this->redirect(array('action' => 'index','admin'=>false));
+		}
+		//Check to see if the username was passed
+		if(is_numeric($id)){
+			$user = $this->Product->User->find('first',array('conditions'=>array('User.id'=>$id)));
+		}else{
+			$user = $this->Product->User->find('first',array('conditions'=>array('User.username'=>$id)));
+			$id = $user['User']['id'];
+		}
+		if(empty($user)){
+			$this->Session->setFlash(__('Invalid user id', true));
+			$this->redirect(array('action' => 'index','admin'=>false));
+		}
+		$productCategories = $this->Product->ProductCategory->getAll();
+		$products = $this->paginate('Product',array(
+										   'Product.user_id' => $id
+										));
+		$total_count = $this->Product->find('count',array('conditions'=>array('Product.user_id'=>$id)));
+		$this->set(compact('products','total_count','productCategories','user'));
+		
 	}
 	
 	/**

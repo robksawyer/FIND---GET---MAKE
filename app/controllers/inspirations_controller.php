@@ -129,33 +129,7 @@ class InspirationsController extends AppController {
 		$this->set(compact('inspirations','filter','total_count','links'));
 		
 	}
-	
-	/**
-	 * This method handles only showing inspirations added by a certain user.
-	 * @param int id The user id targetting 
-	 * @return 
-	 * 
-	*/
-	function users($id = null) {
-		$this->Inspiration->recursive = 2;
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid user id', true));
-			$this->redirect(array('action' => 'index','admin'=>false));
-		}
-		$user = $this->Inspiration->User->find('first',array('conditions'=>array('User.id'=>$id)));
-		if(empty($user)){
-			$this->Session->setFlash(__('Invalid user id', true));
-			$this->redirect(array('action' => 'index','admin'=>false));
-		}
-		
-		$inspirations = $this->paginate('Inspiration',array(
-										   'Inspiration.user_id' => $id
-										));
-										
-		$total_count = $this->Inspiration->find('count');
-		$this->set(compact('inspirations','total_count','user'));
-		
-	}
+
 	
 	/**
 	 * The main view method
@@ -471,7 +445,7 @@ class InspirationsController extends AppController {
 	 * @param id User id
 	 */
 	/*function getInspirationsFromUser($id = null){
-		$this->Inspiration->recursive = 2;
+		$this->Inspiration->recursive = 1;
 		if(isset($this->params['requested'])) {
 			$inspirations = $this->Inspiration->find('all',
 											array(
@@ -620,11 +594,44 @@ class InspirationsController extends AppController {
 	}
 	
 	/**
+	 * This method handles only showing inspirations added by a certain user.
+	 * @param int id The user id targetting 
+	 * @return 
+	 * 
+	*/
+	function users($id = null) {
+		$this->Inspiration->recursive = 1;
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid user id', true));
+			$this->redirect(array('action' => 'index','admin'=>false));
+		}
+		//Check to see if the username was passed
+		if(is_numeric($id)){
+			$user = $this->Inspiration->User->find('first',array('conditions'=>array('User.id'=>$id)));
+		}else{
+			$user = $this->Inspiration->User->find('first',array('conditions'=>array('User.username'=>$id)));
+			$id = $user['User']['id'];
+		}
+		if(empty($user)){
+			$this->Session->setFlash(__('Invalid user id', true));
+			$this->redirect(array('action' => 'index','admin'=>false));
+		}
+		
+		$inspirations = $this->paginate('Inspiration',array(
+										   'Inspiration.user_id' => $id
+										));
+										
+		$total_count = $this->Inspiration->find('count');
+		$this->set(compact('inspirations','total_count','user'));
+		
+	}
+	
+	/**
 	 * Retrieves the items from the user id passed
 	 * @param id User id
 	 */
 	function userInspirations($id = null,$limit=25){
-		$this->Inspiration->recursive = 2;
+		$this->Inspiration->recursive = 1;
 		if(isset($this->params['requested'])) {
 			$inspirations = $this->Inspiration->userInspirations($id,$limit,'all');
 			return $inspirations;

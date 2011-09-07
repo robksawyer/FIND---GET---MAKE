@@ -2,7 +2,7 @@
 class AttachmentTagsController extends AppController {
 
 	var $name = 'AttachmentTags';
-	var $components = array('String');
+	//var $components = array();
 	
 	function beforeFilter(){
 		parent::beforeFilter();

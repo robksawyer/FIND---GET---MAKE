@@ -418,22 +418,28 @@ class CollectionsController extends AppController {
 	 * 
 	*/
 	public function users($id = null) {
-		$this->Collection->recursive = 2;
+		$this->Collection->recursive = 1;
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid user id', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}
-		
-		$user = $this->Collection->User->find('first',array('conditions'=>array('User.id'=>$id)));
+		//Check to see if the username was passed
+		if(is_numeric($id)){
+			$user = $this->Collection->User->find('first',array('conditions'=>array('User.id'=>$id)));
+		}else{
+			$user = $this->Collection->User->find('first',array('conditions'=>array('User.username'=>$id)));
+			$id = $user['User']['id'];
+		}
 		if(empty($user)){
 			$this->Session->setFlash(__('Invalid user id', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}
-		
-		$collections = $this->paginate('Collection',array(
-										   'Collection.user_id' => $id
-										));
-										
+		$this->paginate = array('conditions'=>array(
+													'Collection.user_id' => $id
+												),
+												'contain'=>array('Product'=>array('Attachment'),'Tag','User')
+											);
+		$collections = $this->paginate('Collection');
 		$total_count = $this->Collection->find('count');
 		$this->set(compact('collections','total_count','user','links'));
 		
@@ -494,7 +500,7 @@ class CollectionsController extends AppController {
 	 * 
 	*/
 	public function tags($filter=null){
-		$this->Collection->recursive = 2;
+		$this->Collection->recursive = 1;
 		
 		// query all distinct first letters used in names
 		$letters = $this->Collection->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `collections` ORDER BY `name`');

@@ -9,7 +9,7 @@ class CountriesController extends AppController {
 	}
 
 	function view($id = null) {
-		$this->Country->recursive = 2;
+		$this->Country->recursive = 1;
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid country', true));
 			$this->redirect(array('action' => 'index','admin'=>false));

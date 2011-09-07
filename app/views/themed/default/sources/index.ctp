@@ -68,7 +68,10 @@ if(!empty($this->Paginator->params['paging']['Tagged'])){
 			<td><?php echo $source['Source']['city']; ?>&nbsp;</td>
 			<td><?php echo $source['Source']['state']; ?>&nbsp;</td>
 			<td>
-				<?php echo $this->Html->link($source['Country']['name'], array('controller' => 'countries', 'action' => 'view', $source['Country']['id'])); ?>
+				<?php 
+					//echo $this->Html->link($source['Country']['name'], array('controller' => 'countries', 'action' => 'view', $source['Country']['id']));
+					echo $source['Country']['name']; 
+				?>
 			</td>
 			<?php if(Configure::read('FGM.allow_rating') == 1): ?>
 			<td><?php echo $this->element('rating', array(

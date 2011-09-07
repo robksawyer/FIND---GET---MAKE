@@ -24,7 +24,7 @@ class UsersController extends ForumAppController {
 	 * @access public
 	 * @var array
 	 */
-	public $components = array('Auth', 'Forum.AutoLogin', 'Email','String');
+	public $components = array('Auth', 'Forum.AutoLogin', 'Email');
 	
 	/**
 	 * Pagination.
