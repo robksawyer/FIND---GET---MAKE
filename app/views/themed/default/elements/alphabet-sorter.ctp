@@ -6,17 +6,29 @@ if(empty($controller)){
 	$controller = $this->params['controller'];
 }
 
+if(empty($action)){
+	$action = 'index';
+}
+
+if(empty($name)){
+	$name = $this->params['controller'];
+}
+
+if(empty($arg)){
+	$arg = '';
+}
+
 ?>
 <div class="alphabet-sorter">
-	<h3>Sort <?php echo $controller; ?> by name:</h3>
+	<h3>Sort <?php echo $name; ?> by name:</h3>
 	<ul class='alphabet sortby'>
 	<?php
 		if ($filter == "^[0-9]+") {
 			echo "<li class='link selected'>";
-			echo $this->Html->link("#", array('controller' => strtolower($controller), 'action' => 'index', 'number'), array('class' => 'link_selected')) . "";
+			echo $this->Html->link("#", array('controller' => strtolower($controller), 'action' => $action,$arg, 'number'), array('class' => 'link_selected')) . "";
 		}else{
 			echo "<li>";
-			echo $this->Html->link("#", array('controller' => strtolower($controller), 'action' => 'index', 'number'), array('class' => 'link')) . "";
+			echo $this->Html->link("#", array('controller' => strtolower($controller), 'action' => $action,$arg, 'number'), array('class' => 'link')) . "";
 		}
 	?>
 		</li>
@@ -29,10 +41,10 @@ if(empty($controller)){
 			if ($alpha[$i] == $filter) {
 				echo "<li class='link selected'>";
 				// if the current letter matches the filter, give it a selected style
-				echo $this->Html->link($alpha[$i], array('controller' => strtolower($controller), 'action' => 'index', $alpha[$i]), array('class' => 'link_selected')) . "";
+				echo $this->Html->link($alpha[$i], array('controller' => strtolower($controller), 'action' => $action,$arg, $alpha[$i]), array('class' => 'link_selected')) . "";
 			} else {
 				echo "<li class='link'>";
-				echo $this->Html->link($alpha[$i], array('controller' => strtolower($controller), 'action' => 'index', $alpha[$i]), array('class'=>'link')) . "";
+				echo $this->Html->link($alpha[$i], array('controller' => strtolower($controller), 'action' => $action,$arg, $alpha[$i]), array('class'=>'link')) . "";
 			}
 		}
 	?>

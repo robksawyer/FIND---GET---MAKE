@@ -16,7 +16,7 @@
 		echo $this->element('product-sorter',array('cache'=>false));
 		
 		//Alphabet sorter
-		echo $this->element('alphabet-sorter',array('cache'=>false));
+		echo $this->element('alphabet-sorter',array('cache'=>false,'action'=>'view','controller'=>'product_categories','name'=>'products','arg'=>$productCategory['ProductCategory']['id']));
 		
 		//Category sorter
 		echo $this->element('product-category-sorter',array('cache'=>false,'productCategories'=>$productCategories));

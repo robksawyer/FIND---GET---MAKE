@@ -88,7 +88,7 @@ class SourceCategoriesController extends AppController {
 		}
 	
 		$sourceCategories = $this->SourceCategory->getAll();
-		//$this->set('sourceCategory', $this->SourceCategory->read(null, $id));
+		$this->set('sourceCategory', $this->SourceCategory->read(null, $id));
 		$total_count = $this->SourceCategory->Source->find('count');
 		$this->set(compact('sources','filter','links','total_count','sourceCategories'));
 		

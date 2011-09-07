@@ -4,13 +4,13 @@
 		echo $this->element('source-sorter',array('cache'=>false));
 		
 		//Alphabet sorter
-		echo $this->element('alphabet-sorter',array('cache'=>false,'controller'=>'sources'));
+		echo $this->element('alphabet-sorter',array('cache'=>false,'action'=>'view','controller'=>'source_categories','name'=>'sources','arg'=>$sourceCategory['SourceCategory']['id']));
 		
 		//Category sorter
 		echo $this->element('source-category-sorter',array('cache'=>false,'sourceCategories'=>$sourceCategories));
 		//Designer sorter
 		//echo $this->element('designer-sorter',array('cache'=>false));
-		$sourceCategory = $sourceCategories[0];
+		//$sourceCategory = $sourceCategories[0];
 	?>
 </div>
 <div id="right-panel">

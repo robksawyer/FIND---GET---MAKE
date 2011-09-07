@@ -23,6 +23,18 @@ class ProductCategoriesController extends AppController {
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}
 		
+		//Find the id
+		if(!is_numeric($id)){
+			$this->ProductCategory->recursive = -1;
+			$category = $this->ProductCategory->findBySlug($id);
+			if(!empty($category)){
+				$id = $category['ProductCategory']['id'];
+			}else{
+				$this->Session->setFlash(__('Invalid product category', true));
+				$this->redirect(array('action' => 'index','admin'=>false));
+			}
+		}
+		
 		// query all distinct first letters used in names
 		$letters = $this->ProductCategory->Product->query('SELECT DISTINCT SUBSTRING(`name`, 1, 1) FROM `products` WHERE `product_category_id` = '.$id.' ORDER BY `name`');
 		

@@ -5,7 +5,7 @@
 		<li><?php echo $this->Html->link(ucwords($category['ProductCategory']['name']),array(
 															'controller'=>'product_categories',
 															'action'=>'view',
-															$category['ProductCategory']['id'],$category['ProductCategory']['slug']
+															$category['ProductCategory']['slug']
 															)
 														); ?>
 		</li>
