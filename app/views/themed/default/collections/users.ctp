@@ -36,6 +36,7 @@
 				__('Collections added by '.$user['User']['username']);
 			}
 		?></div>
+		<div class="clear"></div>
 		<h4>Things you’ve grouped together for any reason or season: that’s a collection.</h4>
 		<?php
 		if(!empty($collections)): 

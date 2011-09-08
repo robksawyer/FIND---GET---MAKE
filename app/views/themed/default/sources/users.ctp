@@ -40,6 +40,7 @@ if(!empty($this->Paginator->params['paging']['Tagged'])){
 			}
 		?>
 		</div>
+		<div class="clear"></div>
 		<h4>Keep track of any shop that stocks your favorite brands.</h4>
 		<table cellpadding="0" cellspacing="0">
 		<tr>

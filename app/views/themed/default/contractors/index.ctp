@@ -9,6 +9,7 @@
 ?>
 <div class="contractors index">
 	<div class="header red"><?php __('Contractors');?></div>
+	<div class="clear"></div>
 	<h4></h4>
 	<table cellpadding="0" cellspacing="0">
 	<tr>

@@ -27,7 +27,7 @@
 		?>
 		<?php echo $this->Html->image($ufo['Attachment']['path'],array('alt'=>$title,'url'=>$source_url,'title'=>$title)); ?>
 	</div>
-	<div class="right-sidebar">
+	<div id="right-sidebar">
 		<?php
 		echo $this->element('like-dislike',array('model_id'=>$ufo['Ufo']['id'],
 																'model'=>'Ufo',

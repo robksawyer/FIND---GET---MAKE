@@ -20,8 +20,10 @@
 		//Rating sorter
 		echo $this->element('inspiration-sorter',array('cache'=>false));
 		
-		//Alphabet sorter
-		echo $this->element('alphabet-sorter',array('cache'=>false));
+		if(empty($this->params['named']['by'])){
+			//Alphabet sorter
+			echo $this->element('alphabet-sorter',array('cache'=>false));
+		}
 		
 		//Designer sorter
 		//echo $this->element('designer-sorter',array('cache'=>false));
@@ -38,6 +40,7 @@
 		}
 		?>
 		</div>
+		<div class="clear"></div>
 		<h4>Inspirations are: <br/>completed rooms you lust after<br/>lines &amp; shapes you want to use<br/>colors and forms that enthrall you<br/>sketches that one day will be fully realized.</h4>
 		<?php
 		if(!empty($inspirations)):
@@ -62,7 +65,7 @@
 				}
 				?>
 				<?php if(!empty($inspiration['User'])): ?>
-				<div class="designer"><?php echo "Added by ".$this->Html->link($inspiration['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$inspiration['User']['username'])); ?></div>
+				<div class="designer"><?php echo "Added by ".$this->Html->link($inspiration['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$inspiration['User']['username'])); ?></div>
 				<?php endif; ?>
 				<div class="bottom-detail">
 					<span class="date"><?php 

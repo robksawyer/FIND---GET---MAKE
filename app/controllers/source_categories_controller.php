@@ -7,6 +7,7 @@ class SourceCategoriesController extends AppController {
 	public function beforeFilter(){
 		parent::beforeFilter();
 		
+		//Make these views public
 		$this->Auth->allowedActions = array('view');
 	}
 

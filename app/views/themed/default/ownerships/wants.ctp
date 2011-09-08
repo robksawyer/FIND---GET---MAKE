@@ -24,7 +24,7 @@
 		<div class="header red"><?php 
 			__('Products that '.$user['User']['username'].' wants');
 		?></div>
-		
+		<div class="clear"></div>
 		<!-- Start gridded items -->
 		<div id="grid-container">
 		<?php

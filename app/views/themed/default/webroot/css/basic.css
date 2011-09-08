@@ -414,22 +414,22 @@ div.message {
 	clear: none;
 }
 
-.view .right-sidebar{
+.view #right-sidebar{
 	float: right;
 	margin-top: 10px;
 }
 
-.view .right-sidebar .added-by{
+.view #right-sidebar .added-by{
 	border: 1px solid #e7e7e7;
 	padding: 10px;
 	margin: 10px;
 }
 
-.view .right-sidebar .added-by img{
+.view #right-sidebar .added-by img{
 	height: 48px !important;
 }
 
-.view .right-sidebar .added-by {
+.view #right-sidebar .added-by {
 	font-size: 11px;
 }
 
@@ -1167,6 +1167,34 @@ h3.header{
 	border-bottom: 1px solid #efefef;
 }
 
+#view-container-top{
+	position: relative;
+	width: auto;
+}
+
+#view-container-top #right-sidebar{
+	position: relative;
+	margin: 0;
+	float: right;
+}
+
+#view-container-top #attachment-container{
+	float: left;
+	width: auto;
+	margin: 0px 20px 0px 0px;
+}
+
+#view-container-top #attachment-container .image{
+	width: auto;
+	text-align: center;
+}
+
+#view-container-bottom{
+	position: relative;
+	width: auto;
+	clear: both;
+}
+
 #right-panel{
 	position: relative;
 	float: left;
@@ -1194,25 +1222,30 @@ h3.header{
 	border-bottom: none;
 }
 
-.left-container{
+#left-container{
 	position: relative;
-	display: inline-block;
 	margin: 0 10px 10px 0;
-	width: 500px !important;
+	width: 500px;
 	float: left;
 }
 
+.image{
+	text-align: right;
+	max-width: 500px;
+	height: auto;
+}
 .image img{
-	width: 500px;
+	position: relative;
+	max-width: 500px;
 	height: auto;
 }
 
-.left-container .image{
+#left-container .image{
 	display: inline-block;
-	width: 500px !important;
+	/*width: 500px;*/
 }
 
-.left-panel .image img{
+#left-panel .image img{
 	display: inline-block;
 	max-width: 450px !important;
 	min-width: 200px !important;
@@ -1300,20 +1333,20 @@ h3.header{
 	color: #262626;
 }
 
-.right-container{
+#right-container{
 	position: relative;
 	float: left;
-	width: 600px;
+	max-width: 500px;
 }
 
-.right-container .right-sidebar{
+#right-container #right-sidebar{
 	position: relative;
 	float: right;
 	margin-left: 15px;
 	z-index: 2;
 }
 
-.left-container-with-sidebar{
+#left-container-with-sidebar{
 	position: relative;
 	float: left;
 	margin: 0 0 10px 0;
@@ -1321,16 +1354,16 @@ h3.header{
 	width: 70%;
 }
 
-.left-container-with-sidebar .header{
+/*#left-container-with-sidebar .header{
 	position: relative;
 	display: block;
 	clear: both;
 	float: none;
 	margin: 0;
 	padding: 0;
-}
+}*/
 
-.moderate-area .right-sidebar{
+#moderate-area #right-sidebar{
 	position: relative;
 	float: left;
 	z-index: 2;
@@ -1338,7 +1371,7 @@ h3.header{
 	padding: 0;
 }
 
-.right-container-index{
+#right-container-index{
 	position: relative;
 	float: left;
 	padding: 0;
@@ -1346,7 +1379,7 @@ h3.header{
 	max-width: 65% !important;
 }
 
-.right-container-index .index{
+#right-container-index .index{
 	position: relative;
 	margin: 0px 0px 0px 20px !important;
 	padding: 0px 0px 0px 20px;
@@ -1535,6 +1568,7 @@ ul.inline-list li img{ }
 .header.red,
 .index .header.red,
 .moderate .header.red{
+	float: left;
 	border-bottom: 4px solid #EF3F23;
 }
 
@@ -2422,10 +2456,10 @@ input, textarea {
 
 
 /** LANDING PAGE **/
-.home .left-container{
+.home #left-container{
 	width: 600px;
 }
-.home .right-container{
+.home #right-container{
 	height: 100%;
 	width: 40%;
 	margin-left: 10px;

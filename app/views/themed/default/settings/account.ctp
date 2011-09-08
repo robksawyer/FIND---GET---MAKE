@@ -5,7 +5,7 @@
 <?php echo $this->element('settings-header',array('cache'=>true,'username'=>$authUser['User']['username'])); ?>
 <?php echo $this->element('settings-nav',array('cache'=>false)); ?>
 <div id="settings-container">
-	<div class="left-panel">
+	<div id="left-panel">
 		<?php echo $this->Form->create('User', array('url' => array('controller' => 'settings', 'action' => 'account'))); ?>
 		<?php echo $this->Form->input('id', array('type' => 'hidden','label' => false)); ?>
 		<div class="full-name">

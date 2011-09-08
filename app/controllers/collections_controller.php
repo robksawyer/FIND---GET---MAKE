@@ -112,7 +112,7 @@ class CollectionsController extends AppController {
 									'tagged',
 									'model' => 'Collection',
 									'by' => $this->passedArgs['by'],
-									'recursive'=>2 //Removing this throws errors.
+									'recursive'=>1 //Removing this throws errors.
 								)
 							);
 			$collections = Set::filter($this->paginate('Tagged')); //Remove empty values
@@ -125,6 +125,7 @@ class CollectionsController extends AppController {
 			}
 			$counter = 0;
 			foreach($collections as $collection){
+				$this->Collection->contain(array('User','Tag','Product'=>array('User','Attachment')));
 				$temp_collection = $this->Collection->read(null,$collection['Collection']['id']);
 				$collections[$counter] = $temp_collection;
 				$counter++;

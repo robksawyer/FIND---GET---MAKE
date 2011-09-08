@@ -4,7 +4,13 @@ class ProductCategoriesController extends AppController {
 	var $name = 'ProductCategories';
 	
 	//var $components = array();
-
+	public function beforeFilter(){
+		parent::beforeFilter();
+		
+		//Make certain pages public
+		$this->Auth->allowedActions = array('view');
+	}
+	
 	function index() {
 		$this->ProductCategory->recursive = 1;
 		$this->paginate = array(

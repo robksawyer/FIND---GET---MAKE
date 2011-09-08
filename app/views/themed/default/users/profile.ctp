@@ -3,16 +3,17 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 ?>
 <?php // User exists
 if (!empty($user)): ?>
-<div class="moderate-area">
-	<div class="left-container-with-sidebar">
+<div id="moderate-area">
+	<div id="left-container-with-sidebar">
 		<div class="header red"><?php 
 				__('running bond: what '.$user['User']['username'].' is posting.');
 		?></div>
+		<div class="clear"></div>
 		<?php
 		echo $this->element('user-feed',array('cache'=>false,'user_id'=>$user['User']['id']));
 		?>
 	</div>
-	<div class="right-sidebar">
+	<div id="right-sidebar">
 		<div class="header profile">
 			<!--<button type="button" onclick="goTo('<?php //echo $this->Html->url(array('action' => 'report', $user['User']['id'])); ?>');" class="fr button"><?php //__('Report User'); ?></button>-->
 			<?php echo $this->element('staff-favorite-link',array('cache'=>false,'model_id'=>$user['User']['id'],'model'=>'User')); ?>

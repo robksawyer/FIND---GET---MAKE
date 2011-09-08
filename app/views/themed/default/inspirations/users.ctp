@@ -38,6 +38,7 @@
 				}
 			?>
 		</div>
+		<div class="clear"></div>
 		<h4>Inspirations are: <br/>completed rooms you lust after<br/>lines &amp; shapes you want to use<br/>colors and forms that enthrall you<br/>sketches that one day will be fully realized.</h4>
 		<div id="grid-container">
 		<?php

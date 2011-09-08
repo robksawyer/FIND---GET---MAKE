@@ -6,7 +6,7 @@
 		echo $this->element('top_actions',array('item'=>$inspiration,'model'=>'Inspiration','rate'=>true,'cache'=>false));
 	?>
 	<!-- START LEFT CONTAINER -->
-	<div class="left-container">
+	<div id="left-container">
 		<!--- TAGGABLE IMAGE SECTION -->
 		<div id="taggable-image">
 			<?php 
@@ -28,8 +28,8 @@
 	<!-- END LEFT CONTAINER -->
 	
 	<!-- START RIGHT CONTAINER -->
-	<div class="right-container">
-		<div class="right-sidebar">
+	<div id="right-container">
+		<div id="right-sidebar">
 			<?php
 			echo $this->element('like-dislike',array('model_id'=>$inspiration['Inspiration']['id'],
 																	'model'=>'Inspiration',

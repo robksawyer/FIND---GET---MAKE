@@ -7,7 +7,7 @@
 		//ADD FAVORITES
 	?>
 	</div>
-	<div class="left-container">
+	<div id="left-container">
 		<div class="latest-stuff">
 		<?php 
 			//LATEST SOURCES
@@ -25,7 +25,7 @@
 		?>
 		</div>
 	</div>
-	<div class="right-container">
+	<div id="right-container">
 		<div id="comments" class="dsq-widget">
 			<script type="text/javascript" src="http://theinteriorsource.disqus.com/combination_widget.js?num_items=5&hide_mods=0&color=grey&default_tab=people&excerpt_length=200"></script>
 		</div>

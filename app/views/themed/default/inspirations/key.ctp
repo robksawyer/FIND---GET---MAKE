@@ -38,7 +38,7 @@
 															));
 	?>
 	<!-- START LEFT CONTAINER -->
-	<div class="left-container">
+	<div id="left-container">
 		<!--- TAGGABLE IMAGE SECTION -->
 		<div id="taggable-image">
 			<?php echo $this->element('taggable_image',array('inspiration'=>$inspiration,'disableTagging'=>$disableTagging)); ?>
@@ -52,7 +52,7 @@
 	<!-- END LEFT CONTAINER -->
 	
 	<!-- START RIGHT CONTAINER -->
-	<div class="right-container">
+	<div id="right-container">
 		<!--- DETAILS SECTION -->
 		<div class="details">
 			<div id="responseSuccess" class="message" style="display: none"></div>

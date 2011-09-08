@@ -2,7 +2,7 @@
 	<?php
 		echo $this->element('top_actions',array('item'=>$source,'model'=>'Source','rate'=>true,'cache'=>false));
 	?>
-	<div class="right-sidebar">
+	<div id="right-sidebar">
 		<?php
 		echo $this->element('like-dislike',array('model_id'=>$source['Source']['id'],
 																'model'=>'Source',

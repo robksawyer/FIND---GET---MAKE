@@ -20,3 +20,4 @@ config/database.php
 old
 app/webroot/files/uploads/*
 google_ad_example.txt
+app/webroot/media/

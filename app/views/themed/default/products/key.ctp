@@ -43,7 +43,7 @@
 														));
 ?>
 	<!-- START LEFT CONTAINER -->
-	<div class="left-container">
+	<div id="left-container">
 		<?php if (!empty($product['Attachment'][0])):?>
 			<div class="image">
 			<?php 
@@ -79,8 +79,8 @@
 		<!-- END LEFT CONTAINER -->
 		
 		<!-- START RIGHT CONTAINER -->
-		<div class="right-container">
-				<div class="right-sidebar">
+		<div id="right-container">
+				<div id="right-sidebar">
 					<?php
 					if(empty($disableOwnershipCounts)){
 						echo $this->element('ownership-counts',array('model_id'=>$product['Product']['id'],

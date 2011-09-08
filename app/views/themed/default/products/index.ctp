@@ -41,6 +41,7 @@
 				__('Products tagged [ '.$this->params['named']['by'].' ]');
 			}
 		?></div>
+		<div class="clear"></div>
 		<h4>Adding a product is an easy way to keep track of an item you’ve been wanting to buy or use in a space.</h4>
 		<?php
 		if(!empty($products)):
@@ -61,7 +62,7 @@
 				<div class="title"><?php echo $this->Html->link($product['Product']['name'],array('controller'=>'products','action'=>'view',$product['Product']['id'])); ?></div>
 				<div class="description"><?php echo $this->String->truncate($product['Product']['description'],250); ?></div>
 				<?php if(!empty($product['Product']['designer'])) echo "<div class='designer'>Designed by ".$product['Product']['designer']."</div>"; ?>
-				<div class="designer"><?php echo "Found by ".$this->Html->link($product['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$product['User']['username'])); ?></div>
+				<div class="designer"><?php echo "Found by ".$this->Html->link($product['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$product['User']['username'])); ?></div>
 				<div class="bottom-detail">
 					<span class="date"><?php echo $this->Time->niceShort($product['Product']['created'],null,null)." / "; ?>&nbsp;</span>
 					<span class="tags"><?php

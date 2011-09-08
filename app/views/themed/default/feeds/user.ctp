@@ -2,7 +2,8 @@
 	<div class="header red"><?php 
 			__('running bond: what others are posting.');
 	?></div>
-	<h4><?php echo $this->Html->link($user['User']['username']."'s",array('plugin'=>'forum','controller'=>'users','action'=>'profile','admin'=>false,$user['User']['username']))." feed." ?></h4>
+	<div class="clear"></div>
+	<h4><?php echo $this->Html->link($user['User']['username']."'s",array('plugin'=>'','controller'=>'users','action'=>'profile','admin'=>false,$user['User']['username']))." feed." ?></h4>
 	<?php 
 	
 		/**

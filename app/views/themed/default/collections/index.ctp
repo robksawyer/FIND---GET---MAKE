@@ -15,8 +15,10 @@
 		//Collection sorter
 		echo $this->element('collection-sorter',array('cache'=>false));
 		
-		//Alphabet sorter
-		echo $this->element('alphabet-sorter',array('cache'=>false));
+		if(empty($this->params['named']['by'])){
+			//Alphabet sorter
+			echo $this->element('alphabet-sorter',array('cache'=>false));
+		}
 
 		//Designer sorter
 		//echo $this->element('designer-sorter',array('cache'=>false));
@@ -31,6 +33,7 @@
 				__('Collections tagged [ '.$this->params['named']['by'].' ]');
 			}
 		?></div>
+		<div class="clear"></div>
 		<h4>Things you’ve grouped together for any reason or season: that’s a collection.</h4>
 		<?php
 		if(!empty($collections)): 
@@ -84,7 +87,7 @@
 				<div class="title"><?php echo $this->Html->link($collection['Collection']['name'],array('controller'=>'collections','action'=>'view',$collection['Collection']['id'])); ?></div>
 				<div class="description"><?php echo $this->String->truncate($collection['Collection']['description'],350); ?></div>
 				<?php if(!empty($collection['Collection']['credit'])) echo "<div class='designer'>Credit: ".$collection['Collection']['credit']."</div>"; ?>
-					<div class="designer"><?php echo "Added by ".$this->Html->link($collection['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$collection['User']['username'])); ?></div>
+					<div class="designer"><?php echo "Added by ".$this->Html->link($collection['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$collection['User']['username'])); ?></div>
 				<div class="bottom-detail">
 					<span class="date"><?php echo $this->Time->niceShort($collection['Collection']['created'],null,null); ?>&nbsp;</span>
 					<span class="tags"><?php

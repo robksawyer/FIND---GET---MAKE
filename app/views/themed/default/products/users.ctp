@@ -38,6 +38,7 @@
 				__('Products found by '.$user['User']['username']);
 			}
 		?></div>
+		<div class="clear"></div>
 		<h4>Adding a product is an easy way to keep track of an item you’ve been wanting to buy or use in a space.</h4>
 		<!-- Start gridded items -->
 		<div id="grid-container">

@@ -15,19 +15,20 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 <h3>Hi <?php echo $user['User']['fullname']; ?>! Welcome to your space. Here you'll find all of the items that you've added to the system.</h3>
 </div>
 <?php endif; ?>
-<div class="moderate-area">
+<div id="moderate-area">
 	<?php
 	if(!empty($user)):
 	?>
-	<div class="left-container-with-sidebar">
-		<div class="header red"><?php 
-				__('running bond: what others are posting.');
-		?></div>
+	<div id="left-container-with-sidebar">
+		<div class="header red">
+		<?php __('running bond: what others are posting.'); ?>
+		</div>
+		<div class="clear"></div>
 		<?php
 		echo $this->element('following-feed',array('cache'=>false));
 		?>
 	</div>
-	<div class="right-sidebar">
+	<div id="right-sidebar">
 		<div class="header profile">
 			<div class="user-details">
 				<?php 

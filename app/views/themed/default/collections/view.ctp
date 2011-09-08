@@ -22,7 +22,7 @@
 			echo "<div class='credit'>&mdash;".$collection['Collection']['credit']."</div>";
 		}
 		?></h2>
-	<div class="right-sidebar">
+	<div id="right-sidebar">
 		<?php
 		echo $this->element('like-dislike',array('model_id'=>$collection['Collection']['id'],
 																'model'=>'Collection',

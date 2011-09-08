@@ -18,9 +18,7 @@
 		<div class="header red">
 			<?php  __('Items in the category [ '.ucwords($sourceCategory['SourceCategory']['name']).' ]');?>
 		</div>
-		<?php if(empty($sources)){
-			echo "<br/><br/><br/>";
-		}?>
+		<div class="clear"></div>
 		<?php if (!empty($sources)):?>
 		<table cellpadding = "0" cellspacing = "0">
 			<tr>

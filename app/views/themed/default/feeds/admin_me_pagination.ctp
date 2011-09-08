@@ -1,4 +1,4 @@
-<div class="left-container">
+<div id="left-container">
 	<?php
 		//Index Box Ad (300x250)
 		//echo $this->element('index-box-ad',array('cache'=>false));
@@ -8,11 +8,12 @@
 
 	?>
 </div>
-<div class="right-container-index">
+<div id="right-container-index">
 	<div id="user-feed" class="feed index">
 		<div class="header red"><?php 
 				__('running bond: what others are posting.');
 		?></div>
+		<div class="clear"></div>
 		<h4>Your running bond.</h4>
 	<?php 
 	

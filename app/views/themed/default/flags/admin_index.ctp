@@ -1,18 +1,19 @@
 <?php
 
 ?>
-<div class="left-container">
+<div id="left-container">
 	<?php
 
 	?>
 </div>
-<div class="right-container-index">
+<div id="right-container-index">
 	<div class="flags index">
 		<div class="header red">
 		<?php 
 			__('Flags');
 		?>
 		</div>
+		<div class="clear"></div>
 		<h4>There are currently <span class="flag-count"><?php echo $total_count; ?></span> flagged items in the system.</h4>
 		<ul class="legend">
 			Item Types:

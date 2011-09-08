@@ -4,7 +4,7 @@
 <?php
 	$this->Html->script('jquery.masonry.min',array('inline'=>false));
 ?>
-<div class="left-container">
+<div id="left-container">
 	<?php
 		//Rating sorter
 		//echo $this->element('product-sorter',array('cache'=>false));
@@ -22,12 +22,12 @@
 		echo $this->element('index-box-ad',array('cache'=>false));
 	?>
 </div>
-<div class="right-container-index">
+<div id="right-container-index">
 	<div class="products index">
 		<div class="header red"><?php 
 			__('Products liked by '.$user['User']['username']);
 		?></div>
-		
+		<div class="clear"></div>
 		<!-- Start gridded items -->
 		<div id="grid-container">
 		<?php

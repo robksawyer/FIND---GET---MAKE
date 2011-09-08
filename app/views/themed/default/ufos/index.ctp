@@ -9,7 +9,7 @@
 		$this->Paginator->params['paging']['Ufo'] = $this->Paginator->params['paging']['Tagged'];
 	}
 ?>
-<div class="left-container">
+<div id="left-container">
 	<?php
 		//Index Box Ad (300x250)
 		echo $this->element('index-box-ad',array('cache'=>false));
@@ -22,7 +22,7 @@
 		
 	?>
 </div>
-<div class="right-container-index">
+<div id="right-container-index">
 	<div class="ufos index">
 		<div class="header red"><?php __('Ufos');?></div>
 		<div class="clear"></div>
@@ -47,7 +47,7 @@
 			<div class="title"><?php echo $this->Html->link($ufo['Ufo']['name'],array('controller'=>'ufos','action'=>'view',$ufo['Ufo']['id'])); ?></div>
 			<?php endif; ?>
 			<div class="description"><?php echo $this->String->truncate($ufo['Ufo']['description'],250); ?></div>
-			<div class="added-by"><?php echo "Found by ".$this->Html->link($ufo['User']['username'],array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'profile',$ufo['User']['username'])); ?></div>
+			<div class="added-by"><?php echo "Found by ".$this->Html->link($ufo['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$ufo['User']['username'])); ?></div>
 			<div class="bottom-detail">
 				<span class="date"><?php 
 						echo $this->Time->niceShort($ufo['Ufo']['created'],null,null);
