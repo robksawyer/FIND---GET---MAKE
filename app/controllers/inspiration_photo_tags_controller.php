@@ -7,37 +7,19 @@ class InspirationPhotoTagsController extends AppController {
 	function beforeFilter(){
 		parent::beforeFilter();
 		
-		//$this->Auth->allow('add','edit','delete');
-		$this->AjaxHandler->handle('admin_add','admin_delete');
+		//$this->Auth->allow('ajax_add','ajax_delete');
+		$this->AjaxHandler->handle('ajax_add','ajax_delete');
 	}
 	
-	function index() {
-		$this->InspirationPhotoTag->recursive = 0;
-		$this->set('inspirationPhotoTags', $this->paginate());
-	}
-
-	function view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid inspiration photo tag', true));
-			$this->redirect(array('action' => 'index'));
-		}
-		$this->set('inspirationPhotoTag', $this->InspirationPhotoTag->read(null, $id));
-	}
+	/**************** AJAX METHODS ************************/
 	
-	function admin_index() {
-		$this->InspirationPhotoTag->recursive = 0;
-		$this->set('inspirationPhotoTags', $this->paginate());
-	}
-
-	function admin_view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid inspiration photo tag', true));
-			$this->redirect(array('action' => 'index'));
-		}
-		$this->set('inspirationPhotoTag', $this->InspirationPhotoTag->read(null, $id));
-	}
-
-	function add($id=null) {
+	/**
+	 * Handles adding an image tag to an image.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function ajax_add($id=null) {
 		Configure::write('debug', 0); //it will avoid any extra output
 		
 		if (!empty($this->data)) {
@@ -49,11 +31,23 @@ class InspirationPhotoTagsController extends AppController {
 			
 			//Parse the value field and create the model name and id for the database save.
 			$model_id_array = preg_split('/_/',$this->data['InspirationPhotoTag']['name']);
-
-			//Find the item name by the id
-			$model = ucFirst($model_id_array[0]);
-			$model_id = intval($model_id_array[1]);
-			$item_name = $model_id_array[2];
+			if(!empty($model_id_array)){
+				if(!empty($model_id_array[0]) && !empty($model_id_array[1]) && !empty($model_id_array[2])){
+					//Find the item name by the id
+					$model = ucFirst($model_id_array[0]);
+					$model_id = intval($model_id_array[1]);
+					$item_name = $model_id_array[2];
+				}else{
+					$this->AjaxHandler->response(false, 'There was a problem creating the tag. Please, try again.', 0);
+					$this->AjaxHandler->respond();
+					return;
+				}
+			}else{
+				$this->AjaxHandler->response(false, 'There was a problem creating the tag. Please, try again.', 0);
+				$this->AjaxHandler->respond();
+				return;
+			}
+			
 			
 			ClassRegistry::init($model);
 			
@@ -97,7 +91,13 @@ class InspirationPhotoTagsController extends AppController {
 		
 	}
 
-	function delete($id = null,$inspiration_id = null) {
+	/**
+	 * Handles removing an image tag from an image
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function ajax_delete($id = null,$inspiration_id = null) {
 		Configure::write('debug', 0); //it will avoid any extra output
 		
 		if (!$id) {
@@ -127,6 +127,34 @@ class InspirationPhotoTagsController extends AppController {
 			$this->redirect(array('controller'=>'inspirations','action'=>'view',$inspiration_id,'admin'=>false));
 		}
 		
+	}
+	
+	/**************** END AJAX METHODS ************************/
+	
+	function index() {
+		$this->InspirationPhotoTag->recursive = 0;
+		$this->set('inspirationPhotoTags', $this->paginate());
+	}
+
+	function view($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid inspiration photo tag', true));
+			$this->redirect(array('action' => 'index'));
+		}
+		$this->set('inspirationPhotoTag', $this->InspirationPhotoTag->read(null, $id));
+	}
+	
+	function admin_index() {
+		$this->InspirationPhotoTag->recursive = 0;
+		$this->set('inspirationPhotoTags', $this->paginate());
+	}
+
+	function admin_view($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid inspiration photo tag', true));
+			$this->redirect(array('action' => 'index'));
+		}
+		$this->set('inspirationPhotoTag', $this->InspirationPhotoTag->read(null, $id));
 	}
 	
 }

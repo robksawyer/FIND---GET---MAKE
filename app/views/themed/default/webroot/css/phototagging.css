@@ -1,10 +1,65 @@
-.image{
-	margin-right: 25px;
-	position:relative;
-}
 #taggable-image{
-	/*float: left;*/
+	position: relative;
+	float: left;
+	text-align: left;
+	margin: 0;
+	padding: 0;
+	width: auto;
 }
+
+#taggable-image .image{
+	position: relative;
+	padding: 0;
+	margin: 0;
+	text-align: left;
+	float: left;
+}
+
+#taggable-image .inspiration-image{
+	margin: 0;
+	padding: 0;
+}
+#taggable-image .source{
+	text-align: left;
+}
+#taggable-image .image{
+	text-align: left;
+	height: auto;
+	padding: 0;
+	margin: 0;
+}
+#taggable-image .image img{
+	height: auto;
+	padding: 0;
+	margin: 0;
+}
+
+#taggable-image .tag_titles{
+	position: relative;
+	float: left;
+	padding: 0;
+	margin: 0 0 0 15px;
+	width: auto;
+}
+#taggable-image .tag_titles ul#titles {
+	display: block;
+	padding: 0;
+	margin: 0;
+}
+
+#taggable-image .tag_titles ul#titles li {
+	float: left;
+	clear: both;
+	margin: 3px 5px 3px 0;
+	list-style: none;
+	padding: 4px 4px;
+	width: auto;
+	background: #efefef;
+}
+
+.tag_titles ul#titles li:first-child {
+}
+
 /** ATTACHMENT TAGS **/
 /* Tagging specfic styles here */
 .on-off {
@@ -91,29 +146,6 @@ ul.map li a:hover div{
 }*/
 
 /* END THIS SHOWS ON HOVER OF THE TITLES */
-
-.tag_titles{
-	position: relative;
-	float: left;
-	padding: 0;
-	margin: 0;
-}
-.tag_titles ul#titles {
-	display: inline;
-	padding: 0;
-	margin: 0;
-}
-
-.tag_titles ul#titles li {
-	float: left;
-	margin: 3px 5px 3px 0;
-	list-style: none;
-	padding: 4px 4px;
-	background: #efefef;
-}
-
-.tag_titles ul#titles li:first-child {
-}
 
 /* Form CSS */
 #title_container { 

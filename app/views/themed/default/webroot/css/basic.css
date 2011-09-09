@@ -420,17 +420,13 @@ div.message {
 }
 
 .view #right-sidebar .added-by{
-	border: 1px solid #e7e7e7;
 	padding: 10px;
 	margin: 10px;
+	font-size: 11px;
 }
 
 .view #right-sidebar .added-by img{
 	height: 48px !important;
-}
-
-.view #right-sidebar .added-by {
-	font-size: 11px;
 }
 
 .collection .product{
@@ -1225,24 +1221,22 @@ h3.header{
 #left-container{
 	position: relative;
 	margin: 0 10px 10px 0;
-	width: 500px;
 	float: left;
 }
 
 .image{
-	text-align: right;
-	max-width: 500px;
+	display: inline-block;
+	/*max-width: 500px;*/
 	height: auto;
 }
+
 .image img{
 	position: relative;
-	max-width: 500px;
+	/*max-width: 500px;*/
 	height: auto;
 }
 
 #left-container .image{
-	display: inline-block;
-	/*width: 500px;*/
 }
 
 #left-panel .image img{
@@ -1332,18 +1326,23 @@ h3.header{
 #left-panel-index .find-people li > a:hover{
 	color: #262626;
 }
-
+	
 #right-container{
 	position: relative;
 	float: left;
+}
+
+#right-container .details{
 	max-width: 500px;
 }
 
 #right-container #right-sidebar{
 	position: relative;
-	float: right;
-	margin-left: 15px;
+	float: left;
+	margin: 0 0 0 15px;
+	padding: 0;
 	z-index: 2;
+	width: 175px;
 }
 
 #left-container-with-sidebar{
@@ -2190,6 +2189,7 @@ div#attachments-small ul.wrapper li a:focus{
 /* TOP ACTIONS */
 .top-actions{
 	position: relative;
+	margin: 0 0 10px 0;
 	font-size: 10px;
 	display: block;
 	float: right;

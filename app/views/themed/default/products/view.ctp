@@ -17,14 +17,14 @@
 			?></h3>
 		<div id="right-sidebar">
 			<?php
-			echo $this->element('ownership-counts',array('model_id'=>$product['Product']['id'],
-																		'model'=>'Product',
-																		'cache'=>false
-																		));
 			echo $this->element('like-dislike',array('model_id'=>$product['Product']['id'],
 																	'model'=>'Product',
 																	'cache'=>false
 																	));
+			echo $this->element('ownership-counts',array('model_id'=>$product['Product']['id'],
+																		'model'=>'Product',
+																		'cache'=>false
+																		));
 			?>
 			
 			<div class="added-by" style="text-align:center">

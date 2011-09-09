@@ -35,7 +35,15 @@
 			if(empty($user)){
 				__('Products ('.$total_count.')');
 			}else{
-				__('Products found by '.$user['User']['username']);
+				if(empty($authUser)){
+					__('Products found by '.$user['User']['username']);
+				}else{
+					if($authUser['User']['username'] == $user['User']['username']){
+						__('Products found by you');
+					}else{
+						__('Products found by '.$user['User']['username']);
+					}
+				}
 			}
 		?></div>
 		<div class="clear"></div>

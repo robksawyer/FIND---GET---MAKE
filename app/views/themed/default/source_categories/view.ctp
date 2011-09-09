@@ -39,14 +39,14 @@
 				if ($i++ % 2 == 0) {
 					$class = ' class="altrow"';
 				}
-				$source = $source['Source'];
+				//$source = $source['Source'];
 			?>
 			<tr<?php echo $class;?>>
-				<td><?php echo $this->Html->link($source['name'], array('controller'=>'sources','action' => 'view', $source['id'])); ?>&nbsp;</td>
+				<td><?php echo $this->Html->link($source['Source']['name'], array('controller'=>'sources','action' => 'view', $source['Source']['id'])); ?>&nbsp;</td>
 				<!--<td><?php //echo $this->Html->link($source['SourceCategory']['name'], array('controller'=>'source_categories','action' => 'view', $source['SourceCategory']['id'])); ?>&nbsp;</td>-->
-				<td><?php echo $this->Html->link($source['url'],$source['url'],array('target'=>'_blank')); ?>&nbsp;</td>
-				<td><?php echo $source['city']; ?>&nbsp;</td>
-				<td><?php echo $source['state']; ?>&nbsp;</td>
+				<td><?php echo $this->Html->link($source['Source']['url'],$source['Source']['url'],array('target'=>'_blank')); ?>&nbsp;</td>
+				<td><?php echo $source['Source']['city']; ?>&nbsp;</td>
+				<td><?php echo $source['Source']['state']; ?>&nbsp;</td>
 				<td>
 					<?php 
 						if(!empty($source['Country'])):
@@ -59,7 +59,7 @@
 					<td><?php echo $this->element('rating', array(
 																'plugin' => 'rating',
 																'model' => 'Source',
-																'id' => $source['id'],
+																'id' => $source['Source']['id'],
 																'name' => strtolower('Source')));
 																?></td>
 				<?php endif; ?>

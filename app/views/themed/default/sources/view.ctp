@@ -71,7 +71,10 @@
 			</dd>
 			<dt><?php __('Country'); ?></dt>
 			<dd>
-				<?php echo $this->Html->link($source['Country']['name'], array('controller' => 'countries', 'action' => 'view', $source['Country']['id'])); ?>
+				<?php 
+				//echo $this->Html->link($source['Country']['name'], array('controller' => 'countries', 'action' => 'view', $source['Country']['id'])); 
+				echo $source['Country']['name'];
+				?>
 				&nbsp;
 			</dd>
 		</dl>

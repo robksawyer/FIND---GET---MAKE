@@ -12,27 +12,14 @@ echo $this->Html->script('jquery.phototagging',array('inline'=>false));
 ?>
 <?php
 	$testing = false;
-	
 	//Load the options list with sources and products
 	foreach($inspiration['Source'] as $source){
-		$source_options["source_".$source['id']] = $source['name'];
+		$source_options["source_".$source['id']."_".$source['name']] = $source['name'];
 	}
 	
 	foreach($inspiration['Product'] as $product){
 		$product_options["product_".$product['id']."_".$product['name']] = $product['name'];
 	}
-?>
-<?php 
-if(!empty($authUser) && empty($disableTagging)): 
-	if(!empty($source_options) || !empty($product_options)):
-?>
-<div class="on-off">
-	<div class="start-tagging" title="Tag the image with products or sources.">Tag image</div>
-	<div class="finish-tagging hide">Cancel tagging</div>
-</div>
-<?php
-	endif;
-endif; 
 ?>
 <div class="image">
 	<?php if(!empty($authUser) && empty($disableTagging)): ?>
@@ -43,7 +30,7 @@ endif;
 		if(!empty($testing)){
 			$form_options = array(
 										'type' => 'post',
-										'url' => '/inspiration_photo_tags/add/'.$inspiration['Inspiration']['id']
+										'url' => '/ajax/inspiration_photo_tags/add/'.$inspiration['Inspiration']['id']
 									);
 		}else{
 			$form_options = array(
@@ -103,34 +90,46 @@ endif;
 	<div id="photo-tag-map">
 		<?php echo $this->element('taggable_image_map',array('inspiration'=>$inspiration)); ?>
 	</div>
-	<!-- PHOTO TAG TITLES -->
-	<?php
-	 	if(empty($inspiration['InspirationPhotoTag'])){
-			$style = "display:none";
-		}
+	<?php 
+	if(!empty($authUser) && empty($disableTagging)): 
+		if(!empty($source_options) || !empty($product_options)):
 	?>
-	<div class="tag_titles" <?php if(!empty($style)) echo "style='".$style."'"; ?>>
-		<!--<h2 class="tagtitles">In this photo:</h2>-->
-		<ul id="titles">
-		<?php 
-			if(empty($style)):
-			foreach($inspiration['InspirationPhotoTag'] as $tag): ?>
-	      <li>
-				<?php if(!empty($authUser) && empty($disableTagging)): ?>
-				<a href="#" class="title" id="tag_<?php echo $tag['id']; ?>"><?php echo $tag['name']; ?></a> (<?php echo $this->Html->link('Delete','javascript:doDelete('.$tag['id'].','.$tag['inspiration_id'].')'); ?>)
-				<?php else: ?>
-				<a href="#" class="title" id="tag_<?php echo $tag['id']; ?>"><?php echo $tag['name']; ?></a>
-				<?php endif; ?>
-			</li>  
-		<?php 
-			endforeach; 
-			endif;
-		?>
-		</ul>
+	<div class="on-off">
+		<div class="start-tagging" title="Tag the image with products or sources.">Tag image</div>
+		<div class="finish-tagging hide">Cancel tagging</div>
 	</div>
-	<div class="clear"></div>
-	<!-- END PHOTO TAG TITLES -->
+	<?php
+		endif;
+	endif; 
+	?>
 </div> <!-- image -->
+<!-- PHOTO TAG TITLES -->
+<?php
+ 	if(empty($inspiration['InspirationPhotoTag'])){
+		$style = "display:none";
+	}
+?>
+<div class="tag_titles" <?php if(!empty($style)) echo "style='".$style."'"; ?>>
+	<!--<h2 class="tagtitles">In this photo:</h2>-->
+	<ul id="titles">
+	<?php 
+		if(empty($style)):
+		foreach($inspiration['InspirationPhotoTag'] as $tag): ?>
+      <li>
+			<?php if(!empty($authUser) && empty($disableTagging)): ?>
+			<a href="#" class="title" id="tag_<?php echo $tag['id']; ?>"><?php echo $tag['name']; ?></a> (<?php echo $this->Html->link('Delete','javascript:doDelete('.$tag['id'].','.$tag['inspiration_id'].')'); ?>)
+			<?php else: ?>
+			<a href="#" class="title" id="tag_<?php echo $tag['id']; ?>"><?php echo $tag['name']; ?></a>
+			<?php endif; ?>
+		</li>  
+	<?php 
+		endforeach; 
+		endif;
+	?>
+	</ul>
+</div>
+<!-- END PHOTO TAG TITLES -->
+<div class="clear"></div>
 <?php if (!empty($inspiration['Attachment'][0])): ?>
 <script type="text/javascript">
 	//Set the image width for the title tags. Otherwise, they'll stretch into the description area.

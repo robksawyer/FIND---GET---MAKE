@@ -1,6 +1,12 @@
 <div class="sorter">
 	<h3>Sort collections by:</h3>
 	<ul class="standard-sorter">
+		<?php if(!empty($authUser)): ?>
+		<li><?php echo $this->Html->link('See Yours Only',array('controller'=>'collections',
+															'action'=>'users',$authUser['User']['id']
+															)
+														); ?></li>
+		<?php endif; ?>
 		<li><?php echo $this->Html->link('See All',array('controller'=>'collections',
 															'action'=>'index'
 															)

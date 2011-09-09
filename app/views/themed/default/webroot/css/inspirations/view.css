@@ -6,10 +6,10 @@ div.inspirations.view{
 
 div.inspirations.view .inspiration-image{
 	position: relative;
-	display: block;
-	clear: both;
+	display: inline-block;
+	clear: none;
+	float: left;
 	margin: 0px 0px 10px 0px;
-	/*border: 32px solid #000000;*/
 	padding: 0px;
 }
 div.inspirations.view .inspiration-image a,
@@ -20,11 +20,36 @@ div.inspirations.view .inspiration-image a img{
 
 div.inspirations.view .inspiration-image a img{
 	max-width: 500px !important;
-	/*width: 100%;*/
 }
 
 div.inspirations.view .inspiration-image a:hover{
 	text-decoration: none !important;
 	background: none;
+}
+
+.inspirations.view{
+	width: 100%;
+}
+
+.inspirations #left-container{
+	position: relative;
+	float: left;
+	width: 100%;
+}
+
+.inspirations #right-container {
+	position: relative;
+	width: 100%;
+}
+.inspirations #right-container .details{
+	width: auto;
+}
+
+.inspirations #left-container #right-sidebar{
+	position: relative;
+	margin: 0;
+	padding: 0;
+	z-index: 2;
+	width: 175px;
 }
 

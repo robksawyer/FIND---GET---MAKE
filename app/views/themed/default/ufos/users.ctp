@@ -1,13 +1,13 @@
 <?php
 	// set url arguements
-	$this->Paginator->options(array('url' =>  array($filter)));
+	/*$this->Paginator->options(array('url' =>  array($filter)));
 	if(!empty($this->params['named']['by'])){
 		$this->Paginator->options(array('url' => $this->passedArgs));
 	}
 	//Replace the Source paging array if a Tagged array exists
 	if(!empty($this->Paginator->params['paging']['Tagged'])){
 		$this->Paginator->params['paging']['Ufo'] = $this->Paginator->params['paging']['Tagged'];
-	}
+	}*/
 ?>
 <div id="left-container">
 	<?php
@@ -24,7 +24,23 @@
 </div>
 <div id="right-container-index">
 	<div class="ufos index">
-		<div class="header red"><?php __('Ufos');?></div>
+		<div class="header red">
+		<?php 
+			if(empty($user)){
+				__('Ufos ('.$total_count.')');
+			}else{
+				if(empty($authUser)){
+					__('Ufos found by '.$user['User']['username']);
+				}else{
+					if($authUser['User']['username'] == $user['User']['username']){
+						__('Ufos found by you');
+					}else{
+						__('Ufos found by '.$user['User']['username']);
+					}
+				}
+			}
+		?>
+		</div>
 		<div class="clear"></div>
 		<h4>Unidentified Found Objects are images you’ve collected and studied, but just don’t know who or what to attribute them to. Start by uploading a file from your computer or linking directly to a URL, and hopefully another user can help you identify your precious puzzle.</h4>
 		<?php if(!empty($ufos)): ?>

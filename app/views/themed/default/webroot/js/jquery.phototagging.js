@@ -71,7 +71,7 @@ function doSubmit(id){
 	
 	$.ajax({
 		type: "post",
-		url: "/inspiration_photo_tags/add/"+item_id,
+		url: "/ajax/inspiration_photo_tags/add/"+item_id,
 		data: data,
 		dataType: "json",
 		success: function(response, status) {
@@ -199,7 +199,7 @@ function doDelete(item_id, view_id){
 	
 	$.ajax({
 		type: "post",
-		url: "/inspiration_photo_tags/delete/"+item_id+"/"+view_id,
+		url: "/ajax/inspiration_photo_tags/delete/"+item_id+"/"+view_id,
 		data: data,
 		dataType: "json",
 		success: function(response, status) {

@@ -33,7 +33,15 @@
 			if(empty($user['User']['username'])){
 				__('Collections');
 			}else{
-				__('Collections added by '.$user['User']['username']);
+				if(empty($authUser)){
+					__('Collections added by '.$user['User']['username']);
+				}else{
+					if($authUser['User']['username'] == $user['User']['username']){
+						__('Collections that you\'ve added');
+					}else{
+						__('Collections added by '.$user['User']['username']);
+					}
+				}
 			}
 		?></div>
 		<div class="clear"></div>

@@ -56,7 +56,12 @@ class InspirationsController extends AppController {
 		$this->set(compact('flagged','staff_favorite'));
 	}
 	
-	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function index($filter = null) {
 		$this->Inspiration->recursive = 1;
 		
@@ -617,9 +622,12 @@ class InspirationsController extends AppController {
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}
 		
-		$inspirations = $this->paginate('Inspiration',array(
-										   'Inspiration.user_id' => $id
-										));
+		$this->paginate = array('conditions'=>array(
+													'Inspiration.user_id' => $id
+												),
+												'contain'=>array('Attachment','Tag','User')
+											);
+		$inspirations = $this->paginate('Inspiration');
 										
 		$total_count = $this->Inspiration->find('count');
 		$this->set(compact('inspirations','total_count','user'));

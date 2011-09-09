@@ -18,17 +18,12 @@
 				}
 				echo $this->element('taggable_image',array('inspiration'=>$inspiration,'disableTagging'=>$disableTagging)); 
 			?>
+			<div class="source">
+				<?php echo $this->Html->link('Source',$inspiration['Inspiration']['source_url'],array('target'=>'_blank')); ?>
+				&nbsp;
+			</div>
 		</div>
 		<!--- END TAGGABLE IMAGE SECTION -->
-		<div class="source">
-			<?php echo $this->Html->link('Source',$inspiration['Inspiration']['source_url'],array('target'=>'_blank')); ?>
-			&nbsp;
-		</div>
-	</div>
-	<!-- END LEFT CONTAINER -->
-	
-	<!-- START RIGHT CONTAINER -->
-	<div id="right-container">
 		<div id="right-sidebar">
 			<?php
 			echo $this->element('like-dislike',array('model_id'=>$inspiration['Inspiration']['id'],
@@ -43,6 +38,12 @@
 				?>
 			</div>
 		</div>
+		<div class="clear"></div>
+	</div>
+	<!-- END LEFT CONTAINER -->
+	
+	<!-- START RIGHT CONTAINER -->
+	<div id="right-container">
 		<!--- DETAILS SECTION -->
 		<div class="details">
 			<div id="responseSuccess" class="message" style="display: none"></div>
@@ -106,6 +107,7 @@
 			</ul>
 		</div>
 		<!--- END DETAILS SECTION -->
+		<div class="clear"></div>
 		<?php 
 			echo $this->element('share-buttons',array('controller'=>'inspirations',
 																	'keycode'=>$inspiration['Inspiration']['keycode'],
@@ -118,47 +120,51 @@
 																	));
 		?>
 		<?php echo $this->element('tags',array('model'=>$inspiration,'cache'=>false)); ?>
-		<?php
-			//PRODUCTS IN THE INSPIRATION
-			if(!empty($productsAll) && !empty($products)){
-				//Check to see if the inspiration is private. Make sure that the user who owns this isn't viewing it.
-				if($inspiration['Inspiration']['private'] == 1 && $inspiration['Inspiration']['user_id'] != $authUser['User']['id']){
-					$disableProductAdding = true;
-					$disableProductDeleting = true;
-				}else{
-					$disableProductAdding = false;
-					$disableProductDeleting = false;
-				}
-				echo $this->element('inspiration_products',array(
-																				'item'=>$inspiration,
-																				'model'=>'Inspiration',
-																				'products'=>$productsAll,
-																				'productList'=>$products,
-																				'disableAdding'=>$disableProductAdding,
-																				'disableDeleting'=>$disableProductDeleting,
-																				'cache'=>false
-																				));
-			}else{
-				$this->log('You did not set the products or product list values.');
-			}
-		?>
 		<div class="clear"></div>
-		<?php
-			//SOURCES
-			if($inspiration['Inspiration']['private'] == 1 && $inspiration['Inspiration']['user_id'] != $authUser['User']['id']){
-				$disableSourceAdding = true;
-			}else{
-				$disableSourceAdding = false;
-			}
-			echo $this->element('sources',array('item'=>$inspiration,
-															'model'=>'Inspiration',
-															'disableAdding'=>$disableSourceAdding,
-															'cache'=>false
-															));
-		?>
 	</div>
 	<!-- END RIGHT CONTAINER -->
 </div>
+<div class="clear"></div>
+<div class="bar">&nbsp;</div>
+<?php
+	//PRODUCTS IN THE INSPIRATION
+	if(!empty($productsAll) && !empty($products)){
+		//Check to see if the inspiration is private. Make sure that the user who owns this isn't viewing it.
+		if($inspiration['Inspiration']['private'] == 1 && $inspiration['Inspiration']['user_id'] != $authUser['User']['id']){
+			$disableProductAdding = true;
+			$disableProductDeleting = true;
+		}else{
+			$disableProductAdding = false;
+			$disableProductDeleting = false;
+		}
+		echo $this->element('inspiration_products',array(
+																		'item'=>$inspiration,
+																		'model'=>'Inspiration',
+																		'products'=>$productsAll,
+																		'productList'=>$products,
+																		'disableAdding'=>$disableProductAdding,
+																		'disableDeleting'=>$disableProductDeleting,
+																		'cache'=>false
+																		));
+	}else{
+		$this->log('You did not set the products or product list values.');
+	}
+?>
+<div class="clear"></div>
+<div class="bar">&nbsp;</div>
+<?php
+	//SOURCES
+	if($inspiration['Inspiration']['private'] == 1 && $inspiration['Inspiration']['user_id'] != $authUser['User']['id']){
+		$disableSourceAdding = true;
+	}else{
+		$disableSourceAdding = false;
+	}
+	echo $this->element('sources',array('item'=>$inspiration,
+													'model'=>'Inspiration',
+													'disableAdding'=>$disableSourceAdding,
+													'cache'=>false
+													));
+?>
 <div class="clear"></div>
 <div class="bar">&nbsp;</div>
 <?php

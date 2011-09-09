@@ -17,7 +17,8 @@ class SourceCategoriesController extends AppController {
 								'limit' => 50,
 								'order' => array(
 									'SourceCategory.name' => 'asc'
-									)
+									),
+								'contain'=>array('Source'=>array('Country'))
 								);
 		
 		$this->set('sourceCategories', $this->paginate());

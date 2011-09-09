@@ -10,7 +10,7 @@ class UfosController extends AppController {
 		
 		//Make certain pages public
 		$this->Auth->allowedActions = array('index','view','tags',
-											'getUfosFromUser'
+											'getUfosFromUser','users'
 											);
 											
 		//$this->Auth->allow('getUfosFromUser');
@@ -114,34 +114,6 @@ class UfosController extends AppController {
 		$attachments = $this->Ufo->Attachment->find('list');
 		$this->set(compact('attachments'));
 	}
-
-	/**
-	 * 
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	function admin_add() {
-		if (!empty($this->data)) {
-			
-			//Upload the attachments
-			$this->uploadAttachments('Ufo');
-			//debug($this->data);
-			$this->data['Ufo']['attachment_id'] = $this->data['Attachment']['Attachment'][0];
-			unset($this->data['Attachment']);
-			
-			$this->Ufo->create();
-			if ($this->Ufo->save($this->data)) {
-				$this->Session->setFlash(__('The ufo has been saved', true));
-				$id = $this->Ufo->getLastInsertID();
-				$this->redirect(array('admin'=>false,'action' => 'view',$id));
-			} else {
-				$this->Session->setFlash(__('The ufo could not be saved. Please, try again.', true));
-			}
-		}
-		$attachments = $this->Ufo->Attachment->find('list');
-		$this->set(compact('attachments'));
-	}
 	
 	/**
 	 * 
@@ -177,39 +149,42 @@ class UfosController extends AppController {
 	}
 	
 	/**
-	 * 
-	 * @param 
+	 * This method handles showing sources added by a certain user
+	 * @param int id 
 	 * @return 
 	 * 
 	*/
-	function admin_edit($id = null) {
-		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid ufo', true));
+	public function users($id = null){
+		$this->Ufo->recursive = 1;
+		
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid user id', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}
-		if (!empty($this->data)) {
-			
-			//Upload the attachments
-			$this->uploadAttachments('Ufo',$id);
-			$this->data['Ufo']['attachment_id'] = $this->data['Attachment']['Attachment'][0];
-			unset($this->data['Attachment']);
-			
-			if ($this->Ufo->save($this->data)) {
-				$this->Session->setFlash(__('The ufo has been saved', true));
-				$this->redirect(array('admin'=>false,'action' => 'view',$id));
-			} else {
-				$this->Session->setFlash(__('The ufo could not be saved. Please, try again.', true));
-			}
+		//Check to see if the username was passed
+		if(is_numeric($id)){
+			$user = $this->Ufo->User->read(null,$id);
+		}else{
+			$user = $this->Ufo->User->find('first',array('conditions'=>array('User.username'=>$id)));
+			$id = $user['User']['id'];
+		}
+		if(empty($user)){
+			$this->Session->setFlash(__('Invalid user id', true));
+			$this->redirect(array('action' => 'index','admin'=>false));
 		}
 		
-		if (empty($this->data)) {
-			$this->data = $this->Ufo->read(null, $id);
-		}
-		$attachments = $this->Ufo->Attachment->find('list');
-		$this->set(compact('attachments'));
+		$this->paginate = array(
+								'conditions'=>array(
+													'Ufo.user_id' => $id
+													),
+													'contain'=>array('User','Attachment','Tag')
+								);
+		$ufos = $this->paginate('Ufo');
+		$total_count = $this->Ufo->find('count');
+		$this->set(compact('total_count','ufos','user'));
+		
 	}
 	
-
 	/**
 	 * 
 	 * @param 
@@ -228,25 +203,7 @@ class UfosController extends AppController {
 		$this->Session->setFlash(__('Ufo was not deleted', true));
 		$this->redirect(array('action' => 'index','admin'=>false));
 	}
-	
-	/**
-	 * 
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	function admin_delete($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for ufo', true));
-			$this->redirect(array('action'=>'index','admin'=>false));
-		}
-		if ($this->Ufo->delete($id)) {
-			$this->Session->setFlash(__('Ufo deleted', true));
-			$this->redirect(array('action'=>'index','admin'=>false));
-		}
-		$this->Session->setFlash(__('Ufo was not deleted', true));
-		$this->redirect(array('action' => 'index','admin'=>false));
-	}
+
 	
 	/**
 	 * Retrieves the items from the user id passed
