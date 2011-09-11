@@ -12,12 +12,18 @@ class User extends AppModel {
 				array('name' => 'fullname', 'type' => 'like'),
 				array('name' => 'username', 'type' => 'like'),
 				array('name' => 'url', 'type' => 'like'),
-				array('name' => 'search', 'type' => 'like', 'field' => 'User.fullname')
-				/*
-				array('name' => 'range_start', 'type' => 'expression', 'method' => 'makeRangeStartCondition', 'field' => 'Project.start BETWEEN ? AND ?'),
-				array('name' => 'range_due', 'type' => 'expression', 'method' => 'makeRangeDueCondition', 'field' => 'Project.due BETWEEN ? AND ?')*/
+				array('name' => 'search', 'type' => 'query', 'method'=>'findPeople','field'=>'search')
 			);
-							
+	
+	public function findPeople($data=array()){
+		$query = $this->getQuery('all', array(
+						'conditions' => array(
+											'User.fullname LIKE'  => $data['User']['search'],
+											'User.username LIKE'  => $data['User']['search']
+											)
+					));
+		return $query;
+	}
 	/**
 	 * Constants specific to changing the status of a user.
 	 *

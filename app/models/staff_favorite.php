@@ -100,6 +100,7 @@ class StaffFavorite extends AppModel {
 									),
 									'contain'=>array('Product'=>array(
 																	'limit'=>3,
+																	'order'=>'created DESC',
 																	'Attachment'
 																)
 													))

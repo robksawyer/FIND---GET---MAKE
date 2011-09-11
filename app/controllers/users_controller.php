@@ -29,6 +29,13 @@ class UsersController extends AppController {
 		),
 	);
 	
+	//This is for the search plugin
+	var $presetVars = array(
+							array('field' => 'name', 'type' => 'value'),
+							array('field' => 'username', 'type' => 'value')
+							);
+	
+	
 	/**
 	 * Before filter.
 	 * 
@@ -42,24 +49,24 @@ class UsersController extends AppController {
 											'signup','login','logout','register','register_with_twitter','register_with_facebook',
 											'twitter_logout','facebook_logout','staff_favorites',
 											'facebook_signup','twitter_signup','check',
-											'find','find_via_twitter','find_via_facebook','find_users'
+											'find','find_via_twitter','find_via_facebook','ajax_find_users'
 											);
 		
 		/*$this->Auth->allow('login','logout','register','register_with_twitter','register_with_facebook',
 							'ajax_more_user_feed_data','ajax_more_feed_data', 'forgot', 'listing','twitter_logout','facebook_logout', 
 							'profile', 'signup','getAvatar'
 							);*/
-
+		
+		$this->AjaxHandler->handle('ajax_hide_welcome');
+		
 		//Disable the Security component for certain actions
-		/*if(isset($this->Security)){
-			if($this->action == 'find' || $this->action == 'find_users'){
+		if(isset($this->Security)){
+			if($this->action == 'ajax_find_users'){
 				$this->Security->enabled = false;
-				//$this->Security->validatePost = false;
+				$this->Security->validatePost = false;
 				//$this->Security->blackHoleCallback = null;
 			}
-		}*/
-		
-		$this->AjaxHandler->handle('ajax_hide_welcome','ajax_find_users');
+		}
 		
 		/*if (isset($this->params['admin'])) {
 			$this->Toolbar->verifyAdmin();
@@ -129,20 +136,28 @@ class UsersController extends AppController {
 	 * @return 
 	 * 
 	*/
-	public function ajax_find_users(){
-		debug($this->passedArgs);
+	public function ajax_find_users($offset=0){
 		if($this->RequestHandler->isAjax()) {
 			Configure::write('debug',0);
-			$this->layout = 'ajax';
-			//$this->autoLayout = false;
+			$this->autoLayout = true;
 			$this->autoRender = true;
-			$response = array('success' => false);
-			$this->Prg->commonProcess();
-			//Search for the username
-			$results = $this->User->parseCriteria($this->passedArgs);
-			$this->AjaxHandler->response(true, $results);
-			$this->AjaxHandler->respond();
-			return;
+			//$response = array('success' => false);
+			if(!empty($this->data)){
+				$this->passedArgs['search'] = $this->data['User']['search'];
+				$results = $this->User->find('all',array('conditions'=>array(
+																			'OR' => array(
+																				array('User.username LIKE'=>'%'.$this->passedArgs['search'].'%'),
+																				array('User.fullname LIKE'=>'%'.$this->passedArgs['search'].'%')	
+																			)
+																			),
+																			'limit'=>10,
+																			'contain'=>array('Product'=>array('Attachment','limit'=>'3','order'=>'created DESC'))
+																			));
+				$this->set(compact('results'));
+				//$this->AjaxHandler->response(true, $results );
+				//$this->AjaxHandler->respond();
+				return true;
+			}
 		}
 	}
 	

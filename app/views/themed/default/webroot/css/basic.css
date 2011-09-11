@@ -826,6 +826,7 @@ div.missing-content{
 	width: 25px;
 	height: 25px;
 	text-align: center;
+	text-decoration: none;
 }
 
 .alphabet-sorter ul.alphabet li.nolink{
@@ -1185,6 +1186,10 @@ h3.header{
 	text-align: center;
 }
 
+.products .image img{
+	max-width: 500px;
+}
+
 #view-container-bottom{
 	position: relative;
 	width: auto;
@@ -1277,6 +1282,14 @@ h3.header{
 	background: none;
 	border: none;
 	color: #333;
+}
+
+#left-panel-index #search-loader{
+	position: relative;
+	top: -31px;
+	left: 185px;
+	text-align: left;
+	display: none;
 }
 
 #left-panel-index #searchbox #SearchQuery{

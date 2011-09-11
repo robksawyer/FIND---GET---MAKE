@@ -10,16 +10,27 @@
 	<?php
 		echo $this->Form->create('Search', array(
 																'url' => array_merge(array(
+																									'ajax'=>true,
 																									'controller'=>'users',
 																									'action' => 'find_users'
 																									), 
 																									$this->params['pass']
 																							)
 															));
-		echo $this->Form->input('query', array('div' => false,'label'=>'','value'=>'Find people','style'=>'color:#999'));
+		echo $this->Form->input('User.search', array('div' => false,'label'=>'','value'=>'Find people','style'=>'color:#999','id'=>'SearchQuery'));
 		echo $this->Js->get('#SearchQuery')->event('keypress','checkKeyPress(event);',array('stop'=>false));
-		echo $this->Js->submit('Submit',array('div'=>false,'id'=>'SearchSubmit','style'=>'display:none','url'=>'/users/find_users'));
+		echo $this->Js->submit('Submit',array('div'=>false,
+															'id'=>'SearchSubmit',
+															'style'=>'display:none',
+															'url'=>'/ajax/users/find_users',
+															'before'=>'startSearch();',
+															'complete'=>'searchComplete(event);',
+															'success'=>'searchSuccess(data);',
+															'update'=>'#search-results',
+															'type'=>'json'
+															));
 	?>
+	<div id="search-loader" style="display:none"><?php echo $this->Html->image('search-loader.gif',array('alt'=>'...')); ?></div>
 </div>
 <script type="text/javascript">
 $('#searchbox #SearchQuery').focus(function(){
@@ -35,33 +46,56 @@ $('#searchbox #SearchQuery').blur(function(){
 	}
 });
 
+/**
+ * 
+ * @param 
+ * @return 
+ * 
+*/
 function checkKeyPress(e){
 	var code = (e.keyCode ? e.keyCode : e.which);
 	if(code == 13) { //Enter keycode
 		$('#SearchSubmit').click();
+		e.preventDefault();
 		//return true;
 	}else{
 		return false;
 	}
 }
 
-/*$('#searchbox #SearchQuery').bind('keypress', function(e) {
-	//Bind the event to the return key and show an ajax loader in the search magnify graphic area on submit.
-	var code = (e.keyCode ? e.keyCode : e.which);
-	if(code == 13) { //Enter keycode
-		//Do something
-		//alert("Sending the search...");
-		$.ajax({
-				data:$("#searchbox").closest("form").serialize(), 
-				dataType:"html", 
-				success:function(data) {
-					console.log(data);
-					//Build the results page
-				}, 
-				type:"post", 
-				url:"\/users\/find_users"
-			}); 
-			$("#SearchFindForm")[0].reset();
-	}
-});*/
+/**
+ * 
+ * @param 
+ * @return 
+ * 
+*/
+function startSearch(){
+	//Show the ajax loader
+	$('#search-loader').show();
+}
+
+/**
+ * 
+ * @param 
+ * @return 
+ * 
+*/
+function searchComplete(event){
+	//Hide the loader
+	$('#search-loader').hide();
+}
+
+/**
+ * 
+ * @param 
+ * @return 
+ * 
+*/
+function searchSuccess(event){
+	//Build the results
+	$("#staff-favorites").fadeOut();
+	$("#search-results").fadeIn();
+}
+
+
 </script>
