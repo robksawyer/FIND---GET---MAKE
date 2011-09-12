@@ -197,6 +197,8 @@ class AppController extends Controller {
 		
 		//FACEBOOK OAUTH SETTINGS
 		$Facebook = new FB();
+		//$facebookFriends = $Facebook->api("/me/friends");
+		//debug($facebookFriends);
 		$loginURL = $Facebook->getLoginUrl(array('req_perms'=>'user_about_me,user_birthday,email,offline_access,publish_stream','next'=>'/facebook_signup')); //Get the login url to use
 		//$accessToken = $Facebook->getAccessToken(); //Get the access token
 		
@@ -204,8 +206,14 @@ class AppController extends Controller {
 		
 		$this->Connect->createUser = false;
 		$facebookUser = $this->Connect->user();
+		// get token
+		$this->Twitter->setTwitterSource('twitter');
+		$token = $this->Twitter->getAccessToken();
+		$twitterUser = $this->Session->read('Twitter.Details');
 		$authUser = $this->Auth->user();
 		
+		
+		//debug($Facebook->api("/me/friends"));
 		//Check to see about permissions
 		$isAdmin = false;
 		$isManager = false;
@@ -220,7 +228,7 @@ class AppController extends Controller {
 			}
 		}
 	
-		$this->set(compact('authUser','facebookUser','loginURL','isAdmin','isManager','isUser'));
+		$this->set(compact('authUser','facebookUser','twitterUser','loginURL','isAdmin','isManager','isUser'));
 		
 		//$this->Auth->allow('*');
 	}
@@ -243,6 +251,8 @@ class AppController extends Controller {
 		if (isset($this->pageTitle) && !empty($this->pageTitle)) {
 			$this->set('title_for_layout', $this->pageTitle);
 		}
+		
+		$this->set('base_url', 'http://'.$_SERVER['SERVER_NAME'].Router::url('/'));
 	}
 	
 	/**

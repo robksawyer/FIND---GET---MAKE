@@ -49,7 +49,8 @@ class UsersController extends AppController {
 											'signup','login','logout','register','register_with_twitter','register_with_facebook',
 											'twitter_logout','facebook_logout','staff_favorites',
 											'facebook_signup','twitter_signup','check',
-											'find','find_via_twitter','find_via_facebook','ajax_find_users'
+											'find','find_via_twitter','find_via_facebook',
+											'ajax_find_users','ajax_find_facebook_users','ajax_find_twitter_users'
 											);
 		
 		/*$this->Auth->allow('login','logout','register','register_with_twitter','register_with_facebook',
@@ -61,7 +62,7 @@ class UsersController extends AppController {
 		
 		//Disable the Security component for certain actions
 		if(isset($this->Security)){
-			if($this->action == 'ajax_find_users'){
+			if($this->action == 'ajax_find_users' || $this->action == 'ajax_find_twitter_users' || $this->action == 'ajax_find_facebook_users'){
 				$this->Security->enabled = false;
 				$this->Security->validatePost = false;
 				//$this->Security->blackHoleCallback = null;
@@ -205,6 +206,83 @@ class UsersController extends AppController {
 		}
 	}
 	
+	/**
+	 * Find users by searching the user's facebook friends
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function ajax_find_facebook_users($offset=0){
+		if($this->RequestHandler->isAjax()) {
+			Configure::write ( 'debug', 2);
+			$this->autoLayout = true;
+			$this->autoRender = true;
+			
+			//Check to see if facebookUser is available or if the user has their account linked. If they do, 
+			//don't launch a popup and ask them to verify their results. Otherwise, launch a window and make the 
+			//user link their account.
+			$facebookUserDetails = $this->Connect->user();
+			debug($facebookUserDetails);
+			$Facebook = new FB();
+			$facebookFriends = $Facebook->api("/me/friends");
+			$friends = array();
+			//Search the system for friends that contain a similar fullname
+			if(!empty($facebookFriends['data'])){
+				foreach($facebookFriends['data'] as $friend){
+					$friends[] = $friend['name'];
+				}
+				//Search the friends array
+				$results = $this->User->find('all',array('conditions'=>array(
+																			'User.fullname'=>$friends
+																			),
+																			'limit'=>10,
+																			'contain'=>array('Product'=>array('Attachment','limit'=>'3'))
+																		));
+			}else{
+				$results = null;
+			}
+			
+			//Get the facebook user's friends.
+			$this->set(compact('results'));
+			
+		}
+	}
+	
+	/**
+	 * Find users by searching the user's facebook friends
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function ajax_find_twitter_users($offset=0){
+		if($this->RequestHandler->isAjax()) {
+			$this->autoLayout = true;
+			$this->autoRender = true;
+			//Controller::loadModel('TwitterKit.TwitterKitUser');
+			Configure::write('debug',2);
+			
+			//https://api.twitter.com/1/friends/ids.json?cursor=-1&screen_name=twitterapi
+			//On Error:
+			/*Array
+			(
+			    [error] => This method requires authentication.
+			    [request] => /1/friends/ids.json
+			)
+			*/
+			//https://api.twitter.com/1/friends/ids.json?cursor=-1&screen_name=twitterapi
+			$token = $this->Session->read('Twitter.Token');
+			debug($token);
+			//$this->Twitter->setTwitterSource('twitter');
+			//$this->Twitter->setToken($token['oauth_token']);
+			$userDetails = $this->Session->read('Twitter.Details');
+			$results = $this->Twitter->friends_ids(array('id'=>$userDetails['id']));
+			//Get the facebook user's friends.
+			$this->set(compact('results'));
+			
+		}
+		
+	}
+	
 	/**************** END AJAX METHODS ************************/
 	
 	/**************** BORROWED FROM CUPCAKE ************************/
@@ -254,7 +332,7 @@ class UsersController extends AppController {
 		}
 		
 		//Check for a Twitter user
-		$twitterUserDetails = $this->Session->read('TwitterUserDetails');
+		$twitterUserDetails = $this->Session->read('Twitter.Details');
 		if(!empty($twitterUserDetails) && empty($this->data)){
 			$userCheck = $this->User->findByTwitterId($twitterUserDetails['id']);
 			if(empty($userCheck)){
@@ -302,6 +380,11 @@ class UsersController extends AppController {
 			}
 		}
 		
+		//Set the Twitter authorize url
+		$this->Twitter->setTwitterSource("twitter");
+		$twitterAuthorizeURL = $this->Twitter->getAuthenticateUrl();
+		$this->set(compact('twitterAuthorizeURL'));
+		
 		//$this->Toolbar->pageTitle(__('Login', true));
 	}
 	
@@ -312,8 +395,9 @@ class UsersController extends AppController {
 	 */
 	public function logout() {
 		$this->Session->delete('Forum');
-		if($this->Session->check('TwitterUserDetails')){
-			$this->Session->delete('TwitterUserDetails');
+		
+		if($this->Session->check('Twitter.Details')){
+			$this->Session->delete('Twitter.Details');
 		}
 		if($this->Session->check('Challenge')){
 			$this->Session->delete('Challenge');
@@ -426,7 +510,7 @@ class UsersController extends AppController {
 		$facebook_link = false; //Used to link an existing account
 		
 		//Check to make sure the user hasn't already linked their account with Twitter
-		$twitterUserDetails = $this->Session->read('TwitterUserDetails');
+		$twitterUserDetails = $this->Session->read('Twitter.Details');
 		//debug($twitterUserDetails);
 		if(!empty($twitterUserDetails)){
 			$twitter_user = $this->User->findByTwitterId($twitterUserDetails['id']);
@@ -632,7 +716,7 @@ class UsersController extends AppController {
 		$twitter_link = false; //Used to link an existing account
 	
 		//Check to make sure the user hasn't already linked their account with Twitter
-		$twitterUserDetails = $this->Session->read('TwitterUserDetails');
+		$twitterUserDetails = $this->Session->read('Twitter.Details');
 		//debug($twitterUserDetails);
 		if(!empty($twitterUserDetails)){
 			$twitter_user = $this->User->findByTwitterId($twitterUserDetails['id']);
@@ -869,8 +953,9 @@ class UsersController extends AppController {
 	 * 
 	*/
 	public function register_with_twitter() {
+		Configure::write('debug',2);
 		Controller::loadModel('TwitterKit.TwitterKitUser');
-		
+		$this->layout = 'social-popup';
 		// check params
 		if (empty($this->params['url']['oauth_token']) || empty($this->params['url']['oauth_verifier'])) {
 			$this->Session->setFlash(__('Invalid access.', true), ' / ', 5);
@@ -880,9 +965,8 @@ class UsersController extends AppController {
 		// get token
 		$this->Twitter->setTwitterSource('twitter');
 		$token = $this->Twitter->getAccessToken();
-		
+		debug($token);
 		//debug($this->Twitter->getAnywhereIdentity());
-		
 		if (is_string($token)) {
 			$this->Session->setFlash(__('Failed to get the access token.', true) . $token, ' / ', 5);
 			return;
@@ -896,16 +980,17 @@ class UsersController extends AppController {
 			'oauth_token' => $token['oauth_token'],
 			'oauth_token_secret' => $token['oauth_token_secret'] //Access token
 		);
-
 		//Check to make sure the token is legit
 		if(!empty($token['screen_name']) && !empty($token['user_id'])){
 			//Find out if the user's email address is already in the system
 			$userDetails = $this->Twitter->account_verify_credentials();
+			debug($userDetails);
 			//Save the session data so that we can use it in the sign up form.
-			$this->Session->write('TwitterUserDetails',$userDetails);
+			$this->Session->write('Twitter.Details',$userDetails);
+			$this->Session->write('Twitter.Token',$token);
 			
 			//Redirect to the signup page (This is handled by the popup unload method.)
-			//$this->redirect(array('admin'=>false,'plugin'=>'forum','controller'=>'users','action'=>'signup'));
+			//$this->redirect(array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'twitter_signup'));
 		}else{
 			$this->Session->setFlash(__('The Twitter authorization failed. Please try again later.', true), 'default', 'error-message');
 			return;
@@ -1006,6 +1091,7 @@ class UsersController extends AppController {
 	 * 
 	*/
 	public function find(){
+		//Do a check to see if the user's account is linked
 		
 	}
 	

@@ -1,4 +1,5 @@
 <?php
+
 ?>
 <div id="login-wrapper">
 	<div class="wrapper">
@@ -84,13 +85,15 @@ $(document).ready(function() {
 	}
 	
 	var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
-	$.getJSON(currentSiteAddress+'/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
-   	$('#twitter-login-wrap #btn-twitter').attr('href', data.url);
+	var authenticateURL = <?php echo '"'.$twitterAuthorizeURL.'"'; ?>;
+	//var oldURL = currentSiteAddress+'/twitter_kit/oauth/authenticate_url/twitter';
+	//$.getJSON(authenticateURL, {}, function(data){
+   	$('#twitter-login-wrap #btn-twitter').attr('href', authenticateURL);
 		$('#twitter-login-wrap #btn-twitter').attr('rel','windowCenter');
 		$('#twitter-login-wrap #btn-twitter').show();
    	$('#twitter-login-wrap .loading').hide();
 		$('.popupwindow').popupwindow(profiles);
-   });
+   //});
 
 	function unloadedTwitterPopup(){
 		//Redirect the user to the signup page and continue the process

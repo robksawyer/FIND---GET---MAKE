@@ -91,8 +91,8 @@ class DATABASE_CONFIG {
 	 */
 	var $twitter = array(
 	    'driver' => 'TwitterKit.TwitterSource',
-	    'oauth_consumer_key'    => 'mhmBaKcwoZ6wDUJPXJKb1g',
-	    'oauth_consumer_secret' => 'lHaNuTfnaOL7eZWsJmCu7RaEmgDRC8yQJKgm75ztfJA',
-	    'oauth_callback'        => 'http://www.find-get-make.com/users/register_with_twitter',
+	    'oauth_consumer_key'    => 'IN6kR9cfyXqqs2Vf99aHA',
+	    'oauth_consumer_secret' => '08PfleLdWyBXxPwkq0OPXOuoIFSnO0Rb84dv7cYVomM',
+	    'oauth_callback'        => 'http://dev.find-get-make.com/users/register_with_twitter',
 	);
 }

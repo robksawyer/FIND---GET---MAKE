@@ -1,5 +1,5 @@
 <?php 
-debug($facebookUser); 
+//debug($facebookUser); 
 //debug($registrationData);
 ?>
 <div id="register">

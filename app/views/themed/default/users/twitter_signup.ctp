@@ -1,5 +1,5 @@
 <?php
-	$twitterDetails = $session->read('TwitterUserDetails');
+	$twitterDetails = $session->read('Twitter.Details');
 ?>
 <div id="signup-wrapper">
 	<div class="wrapper">

@@ -1,5 +1,8 @@
 <div id="left-panel-index">
-	<?php echo $this->element('find-people-nav',array('cache'=>false,'selected'=>'staff_favorites')); ?>
+	<?php 
+		if(empty($facebookConnectURL)) $facebookConnectURL = "";
+		echo $this->element('find-people-nav',array('cache'=>false,'selected'=>'staff_favorites','facebookConnectURL'=>$facebookConnectURL)); 
+	?>
 </div>
 <div id="right-panel">
 	<div class="find-people">
@@ -10,5 +13,6 @@
 		<div id="search-results" style="display:none">
 			
 		</div>
+		<div id="find-user-loader" style="display:none"><?php echo $this->Html->image('ajax-loader.gif',array('alt'=>'Loading...')); ?></div>
 	</div>
 </div>

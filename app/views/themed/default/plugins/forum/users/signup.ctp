@@ -11,7 +11,7 @@
 		echo $this->Facebook->registration(array('width' => '500', 'redirect-uri' => '/signup'));
 	}*/
 	
-	$twitterDetails = $session->read('TwitterUserDetails');
+	$twitterDetails = $session->read('Twitter.Details');
 ?>
 <div id="signup-wrapper">
 	<div class="wrapper">

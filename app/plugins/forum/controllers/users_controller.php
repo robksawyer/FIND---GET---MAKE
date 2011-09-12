@@ -195,8 +195,8 @@ class UsersController extends ForumAppController {
 	 */
 	public function logout() {
 		$this->Session->delete('Forum');
-		if($this->Session->check('TwitterUserDetails')){
-			$this->Session->delete('TwitterUserDetails');
+		if($this->Session->check('Twitter.Details')){
+			$this->Session->delete('Twitter.Details');
 		}
 		if($this->Session->check('Challenge')){
 			$this->Session->delete('Challenge');
@@ -295,7 +295,7 @@ class UsersController extends ForumAppController {
 		$this->layout = 'clean';
 		
 		//Check to make sure the user hasn't already linked their account with Twitter
-		$twitterUserDetails = $this->Session->read('TwitterUserDetails');
+		$twitterUserDetails = $this->Session->read('Twitter.Details');
 		$user = $this->User->find('first',array('conditions'=>array('twitter_id'=>$twitterUserDetails['id'])));
 		if(!empty($user) && empty($this->data)){
 			//Build an array of information to login with
