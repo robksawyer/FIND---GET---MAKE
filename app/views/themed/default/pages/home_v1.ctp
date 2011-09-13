@@ -169,20 +169,19 @@
 
 
 #footer{
-	position: relative;
+	position: absolute;
 	width: 100%;
 	height: 25px;
 	background: none;
 	padding: 0;
 	margin: 0 auto;
-	color: #000000;
 }
 
 #footer a:link,
 #footer a:visited,
 #footer a:active{
 	background: none;
-	color: #000000;
+	color: #C7CED6;
 	font-family: 'Lucida Grande', Arial;
 	text-shadow: #999999 0px -1px -1px;
 }
@@ -195,7 +194,7 @@
 </div>
 <div id="inner-container" class="home">
 	<div id="logo-container">
-		<div class="app-name"><?php echo $this->Html->image('/img/logo_dark.png',array('alt'=>'FIND | GET | MAKE','url'=>'/','style'=>'position: relative; float: none; margin: 0px 0px 2px 0px; padding: 0px;','title'=>'FIND | GET | MAKE')); ?></div>
+		<div class="app-name"><?php echo $this->Html->image('/img/logo.png',array('alt'=>'FIND | GET | MAKE','url'=>'/','style'=>'position: relative; float: none; margin: 0px 0px 2px 0px; padding: 0px;','title'=>'FIND | GET | MAKE')); ?></div>
 	</div>
 	<div class="clear"></div>
 	<div id="results">
@@ -243,7 +242,7 @@ var login = true;
 $(document).ready(function(){
 	$("label").inFieldLabels();
 
-	//applyPositions();
+	applyPositions();
 	
 	//$('container').height(resizeElementHeight($('container')));
 	/*$( window ).resize(function() {
@@ -253,7 +252,7 @@ $(document).ready(function(){
 	$("#sign-up-button").click(function(){
 		signup = true;
 		login = false;
-		//applyPositions(150);
+		applyPositions(150);
 		if($("#sign_up_form_container").is(":hidden")){
 			$("#sign_up_form_container").slideDown("slow",function(){
 				$("#SignupUserUsername").focus();
@@ -274,7 +273,7 @@ $(document).ready(function(){
 	$("#log-in-button").click(function(){
 		signup = false;
 		login = true;
-		//applyPositions(0);
+		applyPositions(0);
 		if($("#login_form_container").is(":hidden")){
 			$("#sign_up_form_container").slideUp("slow");
 			$("#login_form_container").slideDown('slow',function(){
@@ -302,10 +301,36 @@ $(document).ready(function(){
 	});*/
 });
 
-//$(window).scroll(applyPositions).resize(applyPositions);
+// Window load event used just in case window height is dependant upon images
+/*$(window).bind("load", function() { 
+	var footerHeight = 0, footerTop = 0, $footer = $("#footer");
+	//positionFooter();
+	
+	function positionFooter() {
+		footerHeight = $footer.height();
+		footerTop = ($(window).scrollTop()+$(window).height()-footerHeight)+"px";
+		//$("#footer").css('top',footerTop);
+		//alert($(document.body).height()+footerHeight +" < "+ $(window).height());
+		if (($(document.body).height()+footerHeight) < $(window).height()) {
+			$footer.css({
+				  position: "absolute"
+			}).animate({
+				  top: footerTop
+			})
+		} else {
+			$footer.css({
+				  position: "static"
+			})
+		}
+	}
+	
+	$(window).scroll(positionFooter).resize(positionFooter);
+});*/
+
+$(window).scroll(applyPositions).resize(applyPositions);
 
 
-/*function applyPositions(offset){
+function applyPositions(offset){
 	if(!offset) offset = 0;
 	var winW = $(window).width();
 	var winH = $(window).height() - offset;
@@ -322,9 +347,9 @@ $(document).ready(function(){
 	
 	//alert(footerPos);
 	//alert(Math.round(containerHeight-footerHeight));
-}*/
+}
 
-/*function resizeElementHeight(element) {
+function resizeElementHeight(element) {
 	var height = 0;
 	var body = window.document.body;
 	if (window.innerHeight) {
@@ -335,5 +360,5 @@ $(document).ready(function(){
 		height = body.clientHeight;
 	}
 	return ((height - element.offsetTop));
-}*/
+}
 </script>

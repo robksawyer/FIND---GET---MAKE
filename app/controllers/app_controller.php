@@ -93,6 +93,11 @@ class AppController extends Controller {
 	*/
 	var $theme = 'default';
 	
+	
+	var $authUser = null;
+	var $facebookUser = null;
+	var $twitterUser = null;
+	
 	/**
 	 * Run auto login logic.
 	 *
@@ -195,41 +200,6 @@ class AppController extends Controller {
 		// Initialize
 		$this->Toolbar->initForum();
 		
-		//FACEBOOK OAUTH SETTINGS
-		$Facebook = new FB();
-		//$facebookFriends = $Facebook->api("/me/friends");
-		//debug($facebookFriends);
-		$loginURL = $Facebook->getLoginUrl(array('req_perms'=>'user_about_me,user_birthday,email,offline_access,publish_stream','next'=>'/facebook_signup')); //Get the login url to use
-		//$accessToken = $Facebook->getAccessToken(); //Get the access token
-		
-		/** SET GLOBAL VARIABLES **/
-		
-		$this->Connect->createUser = false;
-		$facebookUser = $this->Connect->user();
-		// get token
-		$this->Twitter->setTwitterSource('twitter');
-		$token = $this->Twitter->getAccessToken();
-		$twitterUser = $this->Session->read('Twitter.Details');
-		$authUser = $this->Auth->user();
-		
-		
-		//debug($Facebook->api("/me/friends"));
-		//Check to see about permissions
-		$isAdmin = false;
-		$isManager = false;
-		$isUser = false;
-		if(!empty($authUser)){
-			if($authUser['User']['group_id']==1){
-				$isAdmin = true;
-			}else if($authUser['User']['group_id']==2){
-				$isManager = true;
-			}else{
-				$isUser = true;
-			}
-		}
-	
-		$this->set(compact('authUser','facebookUser','twitterUser','loginURL','isAdmin','isManager','isUser'));
-		
 		//$this->Auth->allow('*');
 	}
 	
@@ -248,11 +218,46 @@ class AppController extends Controller {
 	 * Check page title and set for 1.3.
 	 */
 	public function beforeRender() {
+		parent::beforeRender();
 		if (isset($this->pageTitle) && !empty($this->pageTitle)) {
 			$this->set('title_for_layout', $this->pageTitle);
 		}
 		
+		//FACEBOOK OAUTH SETTINGS
+		$Facebook = new FB();
+		//$facebookFriends = $Facebook->api("/me/friends");
+		//debug($facebookFriends);
+		$loginURL = $Facebook->getLoginUrl(array('req_perms'=>'user_about_me,user_birthday,email,offline_access,publish_stream','next'=>'/facebook_signup')); //Get the login url to use
+		//$accessToken = $Facebook->getAccessToken(); //Get the access token
+		
+		/** SET GLOBAL VARIABLES **/
+		
+		$this->Connect->createUser = false;
+		$facebookUser = $this->Connect->user();
+		// get token
+		$this->Twitter->setTwitterSource('twitter');
+		$token = $this->Twitter->getAccessToken();
+		$twitterUser = $this->Session->read('Twitter.Details');
+		$authUser = $this->Auth->user();
+		
+		//debug($Facebook->api("/me/friends"));
+		//Check to see about permissions
+		$isAdmin = false;
+		$isManager = false;
+		$isUser = false;
+		if(!empty($authUser)){
+			if($authUser['User']['group_id']==1){
+				$isAdmin = true;
+			}else if($authUser['User']['group_id']==2){
+				$isManager = true;
+			}else{
+				$isUser = true;
+			}
+		}
+
+		
 		$this->set('base_url', 'http://'.$_SERVER['SERVER_NAME'].Router::url('/'));
+		$this->set(compact('authUser','facebookUser','twitterUser','loginURL','isAdmin','isManager','isUser'));
 	}
 	
 	/**

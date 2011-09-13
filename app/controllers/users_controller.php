@@ -53,10 +53,7 @@ class UsersController extends AppController {
 											'ajax_find_users','ajax_find_facebook_users','ajax_find_twitter_users'
 											);
 		
-		/*$this->Auth->allow('login','logout','register','register_with_twitter','register_with_facebook',
-							'ajax_more_user_feed_data','ajax_more_feed_data', 'forgot', 'listing','twitter_logout','facebook_logout', 
-							'profile', 'signup','getAvatar'
-							);*/
+		//$this->Auth->allow('login','logout','register','register_with_twitter','register_with_facebook','signup','forgot');
 		
 		$this->AjaxHandler->handle('ajax_hide_welcome');
 		
@@ -73,6 +70,17 @@ class UsersController extends AppController {
 			$this->Toolbar->verifyAdmin();
 			$this->layout = 'admin';
 		}*/
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function beforeRender(){
+		parent::beforeRender();
+		
 	}
 	
 	
@@ -394,23 +402,15 @@ class UsersController extends AppController {
 	 * @access public
 	 */
 	public function logout() {
-		$this->Session->delete('Forum');
-		
-		if($this->Session->check('Twitter.Details')){
-			$this->Session->delete('Twitter.Details');
-		}
-		if($this->Session->check('Challenge')){
-			$this->Session->delete('Challenge');
-		}
-		if($this->Session->check('User')) {
-			$this->Session->delete('User');
-		}
-		if($this->Session->check('Auth.Permissions')){
-			$this->Session->delete('Auth.Permissions');
-		}
+		if($this->Session->check('Forum')) $this->Session->delete('Forum');
+		if($this->Session->check('Twitter')) $this->Session->delete('Twitter');
+		if($this->Session->check('Challenge')) $this->Session->delete('Challenge');
+		if($this->Session->check('User')) $this->Session->delete('User');
+		if($this->Session->check('Auth')) $this->Session->delete('Auth');
+	
 		$this->Session->destroy();
-		
 		$this->redirect($this->Auth->logout());
+		exit;
 	}
 	
 	/**

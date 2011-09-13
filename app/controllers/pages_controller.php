@@ -89,6 +89,14 @@ class PagesController extends AppController {
 		if($path[0] == 'upgrade' && empty($user)){
 			$this->layout = 'client_review';
 		}
+		if($path[0] == "home"){
+			$this->layout = 'landing-page';
+			$authUser = $this->Auth->user();
+			if(!empty($authUser)){
+				//Redirect to the Auth redirect
+				//$this->redirect($this->Auth->redirect());
+			}
+		}
 		
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
 		$this->render(implode('/', $path));
