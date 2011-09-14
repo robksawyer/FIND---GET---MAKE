@@ -185,7 +185,7 @@ class UsersController extends ForumAppController {
 			}
 		}
 		
-		//$this->Toolbar->pageTitle(__d('forum', 'Login', true));
+		$this->Toolbar->pageTitle(__d('forum', 'Login', true));
 	}
 	
 	/**
@@ -195,17 +195,7 @@ class UsersController extends ForumAppController {
 	 */
 	public function logout() {
 		$this->Session->delete('Forum');
-		if($this->Session->check('Twitter.Details')){
-			$this->Session->delete('Twitter.Details');
-		}
-		if($this->Session->check('Challenge')){
-			$this->Session->delete('Challenge');
-		}
-		if($this->Session->check('User')) {
-			$this->Session->delete('User');
-		}
 		$this->Session->destroy();
-		
 		$this->redirect($this->Auth->logout());
 	}
 	

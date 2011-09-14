@@ -130,7 +130,7 @@ class UserFollowing extends AppModel {
 	}
 	
 	/**
-	 * 
+	 * Checks a single user id against the auth user to see if the auth user is following the user
 	 * @param 
 	 * @return 
 	 * 
@@ -142,5 +142,30 @@ class UserFollowing extends AppModel {
 																)
 															));
 		return $user_count;
+	}
+	
+	/**
+	 * Checks a list of user ids
+	 * @param 
+	 * @return
+	 * 
+	*/
+	public function isFollowingAll($auth_user_id=null,$user_ids=null){
+		$user_count = $this->find('count',array('conditions'=>array(
+																'UserFollowing.user_id'=>$auth_user_id,
+																'UserFollowing.follow_user_id'=>$user_ids
+																)
+															));
+		return $user_count;
+	}
+	
+	/**
+	 * Handles following a bulk of users at one time.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function followAll($auth_user_id=null,$user_ids=null){
+		//if($this->save)
 	}
 }

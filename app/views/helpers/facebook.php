@@ -393,7 +393,7 @@ class FacebookHelper extends AppHelper {
 	* @example $this->Facebook->init();
 	* @return string of scriptBlock for FB.init() or error
 	*/
-	function init($options = null, $reload = true) {
+	function init($options = null, $reload = false) {
 		if (empty($options)) {
 			$options = array();
 		}

@@ -8,58 +8,38 @@ if(!empty($authUser)):
 ?>
 		<?php if(empty($following)): ?>
 			<div id="follow-user">
-			<?php echo $this->Js->link('Follow',array(
-																	'ajax'=>true,
-																	'controller'=>'user_followings',
-																	'action'=>'followUserID',$user_id
-																	),
+			<?php echo $this->Html->link('Follow',"#",
 																	array(
 																		'class'=>'auth follow',
 																		'title'=>'follow',
 																		'id'=>'follow-'.$user_id,
-																		'beforeSend'=>'showLoader('.$user_id.');',
-																		'success'=>'updateFollowUnfollow(data);'
+																		'onclick'=>'submit_follow("'.$user_id.'"); return false;',
 																		));
-					echo $this->Js->link('Unfollow',array(
-																	'ajax'=>true,
-																	'controller'=>'user_followings',
-																	'action'=>'unfollowUserID',$user_id
-																	),
+					echo $this->Html->link('Unfollow',"#",
 																	array(
 																		'class'=>'auth unfollow',
 																		'id'=>'unfollow-'.$user_id,
 																		'style'=>'display:none',
 																		'title'=>'unfollow',
-																		'beforeSend'=>'showLoader('.$user_id.');',
-																		'success'=>'updateFollowUnfollow(data);'
+																		'onclick'=>'submit_unfollow("'.$user_id.'"); return false;',
 																		));
 			?></div>
 		<?php else: ?>
 			<div id="follow-user">
-			<?php echo $this->Js->link('Unfollow',array(
-																	'ajax'=>true,
-																	'controller'=>'user_followings',
-																	'action'=>'unfollowUserID',$user_id
-																	),
+			<?php echo $this->Html->link('Unfollow',"#",
 																	array(
 																		'class'=>'auth unfollow',
 																		'id'=>'unfollow-'.$user_id,
 																		'title'=>'unfollow',
-																		'beforeSend'=>'showLoader('.$user_id.');',
-																		'success'=>'updateFollowUnfollow(data);'
+																		'onclick'=>'submit_unfollow("'.$user_id.'"); return false;',
 																		));
-					echo $this->Js->link('Follow',array(
-																	'ajax'=>true,
-																	'controller'=>'user_followings',
-																	'action'=>'followUserID',$user_id
-																	),
+					echo $this->Html->link('Follow',"#",
 																	array(
 																		'class'=>'auth follow',
 																		'id'=>'follow-'.$user_id,
 																		'style'=>'display:none',
 																		'title'=>'follow',
-																		'beforeSend'=>'showLoader('.$user_id.');',
-																		'success'=>'updateFollowUnfollow(data);'
+																		'onclick'=>'submit_follow("'.$user_id.'"); return false;',
 																		));
 				
 			?></div>
@@ -68,5 +48,6 @@ if(!empty($authUser)):
 <?php endif; ?>
 <div id="ajax-status-<?php echo $user_id;?>" style="display:none" class="ajax-status-small"><?php echo $this->Html->image('ajax-loader.gif',array('Loading...')); ?></div>
 <?php 
-	$this->Html->script('elements/follow-unfollow',array('inline'=>false)); 
+	echo $this->Html->script('elements/follow-unfollow',array('inline'=>false)); 
+	echo $this->Js->writeBuffer(array('inline'=>true));
 ?>

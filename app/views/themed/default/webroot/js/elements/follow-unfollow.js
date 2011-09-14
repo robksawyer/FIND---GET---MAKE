@@ -57,3 +57,41 @@ function showLoader(id){
 function hideLoader(id){
 	$('#ajax-status-'+id).hide();
 }
+
+/**
+ * Submits the like for the user
+ * @param int model_id
+ * @return 
+ * 
+*/
+function submit_follow(model_id){
+	$.ajax({
+		beforeSend:function (XMLHttpRequest) {
+			showLoader(model_id);
+		}, 
+		success:function (data, textStatus) {
+			updateFollowUnfollow(data);
+		}, 
+		url:"\/ajax\/user_followings\/followUserID\/"+model_id
+	});
+	return false;
+}
+
+/**
+ * Submits the dislike for the user
+ * @param int model_id
+ * @return 
+ * 
+*/
+function submit_unfollow(model_id){
+	$.ajax({
+		beforeSend:function (XMLHttpRequest) {
+			showLoader(model_id);
+		}, 
+		success:function (data, textStatus) {
+			updateFollowUnfollow(data);
+		}, 
+		url:"\/ajax\/user_followings\/unfollowUserID\/"+model_id
+	});
+	return false;
+}

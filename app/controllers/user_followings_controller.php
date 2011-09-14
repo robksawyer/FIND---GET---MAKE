@@ -7,9 +7,17 @@ class UserFollowingsController extends AppController {
 		parent::beforeFilter();
 		
 		//Make certain pages public
-		$this->Auth->allowedActions = array('following','followers','isFollowing');
+		$this->Auth->allowedActions = array('following','followers','isFollowing','isFollowingAll');
 											
 		$this->AjaxHandler->handle('ajax_followUserID','ajax_unfollowUserID');
+		
+		/*if(isset($this->Security)){
+			if($this->action == 'ajax_followUserID' || $this->action == 'ajax_unfollowUserID'){
+				$this->Security->enabled = false;
+				$this->Security->validatePost = false;
+				//$this->Security->blackHoleCallback = null;
+			}
+		}*/
 	}
 	
 	/**************** AJAX METHODS ************************/
@@ -183,5 +191,29 @@ class UserFollowingsController extends AppController {
 	public function isFollowing($user_id=null){
 		$auth_user_id = $this->Auth->user('id');
 		return $this->UserFollowing->isFollowing($auth_user_id,$user_id);
+	}
+	
+	/**
+	 * Checks to see if the logged in user is currently following the user passed.
+	 * @param String user_ids 
+	 * @return
+	 * 
+	*/
+	public function isFollowingAll($user_ids=null){
+		$auth_user_id = $this->Auth->user('id');
+		$user_ids = explode("&",$user_ids); //Build an array from the string
+		return $this->UserFollowing->isFollowingAll($auth_user_id,$user_ids);
+	}
+	
+	/**
+	 * Handles following a bulk of users
+	 * @param String user_ids
+	 * @return 
+	 * 
+	*/
+	public function followAll($user_ids=null){
+		$auth_user_id = $this->Auth->user('id');
+		$user_ids = explode("&",$user_ids); //Build an array from the string
+		return $this->UserFollowing->followAll($auth_user_id,$user_ids);
 	}
 }

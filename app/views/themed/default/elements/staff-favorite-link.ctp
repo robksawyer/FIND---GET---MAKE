@@ -1,3 +1,4 @@
+<?php if(Configure::read('FGM.allow_staff_favorites_on_users') == 1 && Configure::read('FGM.allow_staff_favorites') == 1): ?>
 <?php 
 	$staff_favorite = $this->requestAction("/staff_favorites/isFavorited/$model/$model_id");
 	if(empty($staff_favorite)){
@@ -23,3 +24,4 @@
 	}
 	echo $this->Html->script('elements/staff-favorites');
 ?>
+<?php endif; ?>

@@ -1,3 +1,3 @@
 <script type="text/javascript">
-	//self.close();
+	self.close();
 </script>

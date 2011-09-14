@@ -137,9 +137,11 @@
 		
 		<!-- STAFF FAVORITE -->
 		<?php 
-			//Don't allow the staff to like their own items
-			if($authUser['User']['id'] != $item['User']['id'] && $isAdmin || $isManager){
-				echo $this->element('staff-favorite-link',array('cache'=>false,'model_id'=>$item[$model]['id'],'model'=>$model));
+			if(Configure::read('FGM.allow_staff_favorites_on_all_items') == 1 && Configure::read('FGM.allow_staff_favorites') == 1){
+				//Don't allow the staff to like their own items
+				if($authUser['User']['id'] != $item['User']['id'] && $isAdmin || $isManager){
+					echo $this->element('staff-favorite-link',array('cache'=>false,'model_id'=>$item[$model]['id'],'model'=>$model));
+				}
 			}
 		?>
 		<!-- END STAFF FAVORITE -->

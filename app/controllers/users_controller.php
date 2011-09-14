@@ -55,16 +55,16 @@ class UsersController extends AppController {
 		
 		//$this->Auth->allow('login','logout','register','register_with_twitter','register_with_facebook','signup','forgot');
 		
-		$this->AjaxHandler->handle('ajax_hide_welcome');
-		
+		$this->AjaxHandler->handle('ajax_hide_welcome','ajax_find_users');
+	
 		//Disable the Security component for certain actions
-		if(isset($this->Security)){
+		/*if(isset($this->Security)){
 			if($this->action == 'ajax_find_users' || $this->action == 'ajax_find_twitter_users' || $this->action == 'ajax_find_facebook_users'){
 				$this->Security->enabled = false;
 				$this->Security->validatePost = false;
 				//$this->Security->blackHoleCallback = null;
 			}
-		}
+		}*/
 		
 		/*if (isset($this->params['admin'])) {
 			$this->Toolbar->verifyAdmin();
@@ -148,9 +148,10 @@ class UsersController extends AppController {
 	public function ajax_find_users($offset=0){
 		if($this->RequestHandler->isAjax()) {
 			Configure::write('debug',0);
-			$this->autoLayout = true;
-			$this->autoRender = true;
-			//$response = array('success' => false);
+			/*$this->layout = 'ajax';
+			$this->autoLayout = false;
+			$this->autoRender = false;*/
+			$response = array('success' => false);
 			if(!empty($this->data)){
 				$this->passedArgs['search'] = $this->data['User']['search'];
 				$results = $this->User->find('all',array('conditions'=>array(
@@ -162,8 +163,14 @@ class UsersController extends AppController {
 																			'limit'=>10,
 																			'contain'=>array('Product'=>array('Attachment','limit'=>'3','order'=>'created DESC'))
 																			));
-				$this->set(compact('results'));
-				//$this->AjaxHandler->response(true, $results );
+																			
+
+				$query = $this->passedArgs['search'];
+				$this->set(compact('results','query')); //Set the results for the render action
+				$this->render('/users/ajax_find_users');
+				
+				//$data['query'] = $this->passedArgs['search'];
+				//$this->AjaxHandler->response(true, $data);
 				//$this->AjaxHandler->respond();
 				return true;
 			}
@@ -220,28 +227,44 @@ class UsersController extends AppController {
 	 * @return 
 	 * 
 	*/
-	public function ajax_find_facebook_users($offset=0){
+	public function ajax_find_facebook_users($access_token=null,$offset=0){
 		if($this->RequestHandler->isAjax()) {
-			Configure::write ( 'debug', 2);
+			Configure::write ( 'debug', 0);
 			$this->autoLayout = true;
 			$this->autoRender = true;
-			
 			//Check to see if facebookUser is available or if the user has their account linked. If they do, 
 			//don't launch a popup and ask them to verify their results. Otherwise, launch a window and make the 
 			//user link their account.
+			$Facebook = new FB();
+			if(!empty($access_token)){
+				$Facebook->setAccessToken($access_token);
+				$this->Session->write("FB.Token",$access_token);
+			}else{
+				//$access_token = $Facebook->getAccessToken();
+				$access_token = $this->Session->read("FB.Token");
+				$Facebook->setAccessToken($access_token);
+			}
+			$this->Connect->uid = $Facebook->getUser();
 			$facebookUserDetails = $this->Connect->user();
 			debug($facebookUserDetails);
-			$Facebook = new FB();
 			$facebookFriends = $Facebook->api("/me/friends");
+			debug($facebookFriends);
 			$friends = array();
 			//Search the system for friends that contain a similar fullname
 			if(!empty($facebookFriends['data'])){
 				foreach($facebookFriends['data'] as $friend){
 					$friends[] = $friend['name'];
 				}
+				foreach($facebookFriends['data'] as $friend){
+					$friend_ids[] = $friend['id'];
+				}
+				debug($friend_ids);
 				//Search the friends array
 				$results = $this->User->find('all',array('conditions'=>array(
-																			'User.fullname'=>$friends
+																			'OR'=>array(
+																				array('User.fullname'=>$friends),
+																				array('User.facebook_id'=>$friend_ids)
+																			)
 																			),
 																			'limit'=>10,
 																			'contain'=>array('Product'=>array('Attachment','limit'=>'3'))
@@ -267,7 +290,7 @@ class UsersController extends AppController {
 			$this->autoLayout = true;
 			$this->autoRender = true;
 			//Controller::loadModel('TwitterKit.TwitterKitUser');
-			Configure::write('debug',2);
+			Configure::write('debug',0);
 			
 			//https://api.twitter.com/1/friends/ids.json?cursor=-1&screen_name=twitterapi
 			//On Error:
@@ -278,15 +301,40 @@ class UsersController extends AppController {
 			)
 			*/
 			//https://api.twitter.com/1/friends/ids.json?cursor=-1&screen_name=twitterapi
-			$token = $this->Session->read('Twitter.Token');
-			debug($token);
+			//$token = $this->Session->read('Twitter.Token');
+			//debug($token);
 			//$this->Twitter->setTwitterSource('twitter');
 			//$this->Twitter->setToken($token['oauth_token']);
 			$userDetails = $this->Session->read('Twitter.Details');
-			$results = $this->Twitter->friends_ids(array('id'=>$userDetails['id']));
-			//Get the facebook user's friends.
+			$twitter_friend_ids = $this->Twitter->friends_ids(array('id'=>$userDetails['id']));
+			$twitter_friends = array();
+			$limit = 25; //Set the limit to search
+			$counter = 0;
+			if(empty($twitter_friend_ids['error'])){
+				foreach($twitter_friend_ids as $friend_id){
+					if($counter >= $limit) break;
+					$temp = $this->Twitter->users_lookup(array('user_id'=>$friend_id));
+					if(!empty($temp)){
+						$twitter_friends['ids'][] = $temp[0]['id'];
+						$twitter_friends['names'][] = $temp[0]['name'];
+						$twitter_friends['screen_names'][] = $temp[0]['screen_name'];
+						$counter++;
+					}
+				}
+				//debug($twitter_friends);
+				$results = $this->User->find('all',array('conditions'=>array(
+																			'OR'=>array(
+																				array('User.username' => $twitter_friends['screen_names']),
+																				array('User.fullname' => $twitter_friends['names']),
+																				array('User.twitter_id' => $twitter_friend_ids)
+																			)
+																		)
+																	));
+			}else{
+				$results['error'] = $twitter_friend_ids['error'];
+			}
 			$this->set(compact('results'));
-			
+			return;
 		}
 		
 	}
@@ -332,12 +380,16 @@ class UsersController extends AppController {
 	public function login() {
 		$this->set('title_for_layout','Login');
 		$this->layout = 'clean';
-		$user = $this->Auth->user();
-		if($user && empty($this->data)){
-			$this->User->login($user);
-			$this->Session->delete('Forum');
-			$this->redirect($this->Auth->loginRedirect);
+		$userCheck = $this->Auth->user();
+		if(empty($this->data)){
+			if(!empty($userCheck)){
+				$this->Auth->login($userCheck);
+				$this->Auth->autoRedirect = false;
+				//$this->Session->delete('Forum');
+				$this->redirect($this->Auth->loginRedirect);
+			}
 		}
+		
 		
 		//Check for a Twitter user
 		$twitterUserDetails = $this->Session->read('Twitter.Details');
@@ -388,10 +440,16 @@ class UsersController extends AppController {
 			}
 		}
 		
+		//FACEBOOK OAUTH SETTINGS
+		$Facebook = new FB();
+		$loginURL = $Facebook->getLoginUrl(array('req_perms'=>'user_about_me,user_birthday,email,offline_access,publish_stream',
+												'next'=>'/facebook_signup'
+												)); //Get the login url to use
+		
 		//Set the Twitter authorize url
 		$this->Twitter->setTwitterSource("twitter");
 		$twitterAuthorizeURL = $this->Twitter->getAuthenticateUrl();
-		$this->set(compact('twitterAuthorizeURL'));
+		$this->set(compact('twitterAuthorizeURL','loginURL'));
 		
 		//$this->Toolbar->pageTitle(__('Login', true));
 	}
@@ -458,7 +516,9 @@ class UsersController extends AppController {
 				$avatar = false;
 			}
 			$this->set('avatar',$avatar);
-			
+		}else{
+			//Render the moderate action instead
+			return $this->setAction('moderate');
 		}
 		
 		$this->set('title_for_layout','Profile: '.$user['User']['username']);
@@ -965,7 +1025,7 @@ class UsersController extends AppController {
 		// get token
 		$this->Twitter->setTwitterSource('twitter');
 		$token = $this->Twitter->getAccessToken();
-		debug($token);
+		//debug($token);
 		//debug($this->Twitter->getAnywhereIdentity());
 		if (is_string($token)) {
 			$this->Session->setFlash(__('Failed to get the access token.', true) . $token, ' / ', 5);
@@ -984,7 +1044,7 @@ class UsersController extends AppController {
 		if(!empty($token['screen_name']) && !empty($token['user_id'])){
 			//Find out if the user's email address is already in the system
 			$userDetails = $this->Twitter->account_verify_credentials();
-			debug($userDetails);
+			//debug($userDetails);
 			//Save the session data so that we can use it in the sign up form.
 			$this->Session->write('Twitter.Details',$userDetails);
 			$this->Session->write('Twitter.Token',$token);
@@ -1091,8 +1151,42 @@ class UsersController extends AppController {
 	 * 
 	*/
 	public function find(){
+		Configure::write('debug',2);
 		//Do a check to see if the user's account is linked
+		$access_token = $this->Session->read('FB.Token');
+		$Facebook = new FB();
+		if(empty($access_token)){
+			$access_token = $Facebook->getAccessToken();
+			$token_check = explode("|",$access_token);
+			if(count($token_check) > 1){
+				//Delete the Facebook session
+				$this->Session->delete('FB');
+				//The token is not valid
+				$facebookUser = null;
+				$this->set(compact('facebookUser'));
+			}
+		}else{
+			$Facebook->setAccessToken($access_token);
+		}
 		
+		/*$favorites = $this->requestAction('/staff_favorites/getTenUsers');
+		if(!empty($favorites)){
+			$user_ids = array();
+			foreach($favorites as $favorite_user){
+				$user_ids[] = $favorite_user['User']['id']; 
+			}
+
+			$user_ids_string = implode('&',$user_ids);
+			//Check to see if the user is following all of the users in the list
+			$usersNotFollowing = $this->requestAction('/user_followings/isFollowingAll/'.$user_ids_string);
+
+			//If the user isn't following all of the users listed, show the follow all button.
+			if(!empty($usersNotFollowing)){
+				echo $this->element('follow-all-button',array('cache'=>false,'user_ids'=>$user_ids)); 
+			}
+		}else{
+			//none found
+		}*/
 	}
 	
 	
@@ -1154,4 +1248,5 @@ class UsersController extends AppController {
 	public function staff_favorites(){
 		return $this->User->getStaffFavorites();
 	}	
+
 }

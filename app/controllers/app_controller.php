@@ -60,7 +60,7 @@ class AppController extends Controller {
 															'getProfileData','find','getTags','getCount'
 									)
 									
-								),'RequestHandler','Session','Security','AutoLogin','Cookie',
+								),'Security','RequestHandler','Session','AutoLogin','Cookie',
 								'AjaxHandler', 'Forum.Toolbar','TwitterKit.Twitter','Facebook.Connect'
 								);
 
@@ -138,8 +138,13 @@ class AppController extends Controller {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		
-		//Security overrides
-		$this->Security->blackHoleCallback = 'submit_fail';
+		//Facebook API Properties
+		$this->Connect->createUser = false;
+		
+		//set special mobile rules here
+		/*if ($this->RequestHandler->isMobile()) {
+			$this->RequestHandler->enabled = false
+		}*/
 		
 		if(isset($this->Auth)) {
 			// Auth settings
@@ -166,19 +171,19 @@ class AppController extends Controller {
 			$this->Auth->authError = __('You do not have permission to access the page you just selected.', true);
 			
 			$referer = $this->referer();
-			if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' 
+			/*if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' 
 				|| $referer == '/login' || $referer == '/users/moderate') {
 				$referer = '/';
-			}
+			}*/
 			
 			if(empty($referer) || $referer == '/login' || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/'){
 				$login_referer = '/users/moderate';
 			}else{
 				$login_referer = $referer;
 			}
+			$this->Auth->autoRedirect = false;
 			$this->Auth->loginRedirect = $login_referer;
 			$this->Auth->logoutRedirect = $referer;
-			$this->Auth->autoRedirect = false;
 			
 			//Custom settings for AutoLogin component
 			//http://bakery.cakephp.org/articles/milesj/2009/07/05/autologin-component-an-auth-remember-me-feature
@@ -194,45 +199,28 @@ class AppController extends Controller {
 			$this->AutoLogin->expires = '+1 month';
 			
 		}
-
+		
+		//Security overrides
+		if(isset($this->Security)){
+			// Must be disabled or AJAX calls fail
+			$this->Security->validatePost = false;
+			$this->Security->blackHoleCallback = 'submit_fail';
+			if (!$this->RequestHandler->isAjax()) {
+				//$this->Security->blackHole($this,'You are not authorized to process this request!');
+				$this->Security->blackHole($this,'You are not authorized to process this request!');
+			} else {
+				if(strpos(env('HTTP_REFERER'), trim(env('HTTP_HOST'), '/')) === false) {
+					$this->Security->blackHole($this,'Invalid referrer detected for this request!');
+				}
+			}
+		}
+		
 		$this->Cookie->key = Configure::read('Security.salt');
-
+		
 		// Initialize
 		$this->Toolbar->initForum();
 		
-		//$this->Auth->allow('*');
-	}
-	
-	/**
-	 * This is the black hole method called by the Security component if tampering is found.
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	public function submit_fail(){
-		$this->Session->setFlash(__('Please, do not tamper with the forms.', true),'default',array('class'=>'error-message'));
-		$this->redirect('/');
-	}
-	
-	/**
-	 * Check page title and set for 1.3.
-	 */
-	public function beforeRender() {
-		parent::beforeRender();
-		if (isset($this->pageTitle) && !empty($this->pageTitle)) {
-			$this->set('title_for_layout', $this->pageTitle);
-		}
-		
-		//FACEBOOK OAUTH SETTINGS
-		$Facebook = new FB();
-		//$facebookFriends = $Facebook->api("/me/friends");
-		//debug($facebookFriends);
-		$loginURL = $Facebook->getLoginUrl(array('req_perms'=>'user_about_me,user_birthday,email,offline_access,publish_stream','next'=>'/facebook_signup')); //Get the login url to use
-		//$accessToken = $Facebook->getAccessToken(); //Get the access token
-		
 		/** SET GLOBAL VARIABLES **/
-		
-		$this->Connect->createUser = false;
 		$facebookUser = $this->Connect->user();
 		// get token
 		$this->Twitter->setTwitterSource('twitter');
@@ -254,10 +242,32 @@ class AppController extends Controller {
 				$isUser = true;
 			}
 		}
-
+		$this->set(compact('authUser','facebookUser','twitterUser','isAdmin','isManager','isUser'));
+		
+		//$this->Auth->allow('*');
+	}
+	
+	/**
+	 * This is the black hole method called by the Security component if tampering is found.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function submit_fail(){
+		//$this->Session->setFlash(__('Please, do not tamper with the forms.', true),'default',array('class'=>'error-message'));
+		//$this->redirect('/');
+	}
+	
+	/**
+	 * Check page title and set for 1.3.
+	 */
+	public function beforeRender() {
+		parent::beforeRender();
+		if (isset($this->pageTitle) && !empty($this->pageTitle)) {
+			$this->set('title_for_layout', $this->pageTitle);
+		}
 		
 		$this->set('base_url', 'http://'.$_SERVER['SERVER_NAME'].Router::url('/'));
-		$this->set(compact('authUser','facebookUser','twitterUser','loginURL','isAdmin','isManager','isUser'));
 	}
 	
 	/**

@@ -1,7 +1,14 @@
 <div class="user-block">
 	<?php echo $this->element('avatar',array('cache'=>false,'user'=>$user,'height'=>64,'follow'=>false)); ?>
 	<ul class="user-details">
-		<li class="username"><?php echo $this->Html->link($user['User']['username'],array('plugin'=>'','controller'=>'users','action'=>'profile',$user['User']['username']))?></li>
+		<li class="username"><?php echo $this->Html->link($user['User']['username'],array(
+																												'admin'=>false,
+																												'ajax'=>false,
+																												'plugin'=>'',
+																												'controller'=>'users',
+																												'action'=>'profile',
+																												$user['User']['username']
+																												))?></li>
 		<li><?php 
 			echo $user['User']['totalFollowers']." Followers";
 		?></li>
@@ -25,6 +32,7 @@
 				echo $this->Html->image($item['Attachment'][0]['path_small'],array('alt'=>$image_title,
 																												'url'=>array(
 																															'admin'=>false,
+																															'ajax'=>false,
 																															'controller'=>'products',
 																															'action'=>'view',
 																															$item['id']
@@ -46,3 +54,6 @@
 		<div class="clear"></div>
 	</div>
 </div>
+<?php 
+	echo $this->Js->writeBuffer(); // write cached scripts 
+?>

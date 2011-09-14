@@ -41,6 +41,25 @@
  * 
 */
 	$config['FGM']['allow_flagging'] = 1;
+
+/**
+ * Turns off all staff favorites
+ * 
+*/
+	$config['FGM']['allow_staff_favorites'] = 1;
+
+/**
+ * Allows admins/managers to staff favorite users.
+ * 
+*/
+	$config['FGM']['allow_staff_favorites_on_users'] = 1;
+
+
+/**
+ * Allows admins/managers to staff favorite items other than users.
+ * 
+*/
+	$config['FGM']['allow_staff_favorites_on_all_items'] = 0;
 	
 
 /**
