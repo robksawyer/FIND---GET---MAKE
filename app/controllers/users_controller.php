@@ -1169,24 +1169,23 @@ class UsersController extends AppController {
 			$Facebook->setAccessToken($access_token);
 		}
 		
-		/*$favorites = $this->requestAction('/staff_favorites/getTenUsers');
-		if(!empty($favorites)){
-			$user_ids = array();
-			foreach($favorites as $favorite_user){
-				$user_ids[] = $favorite_user['User']['id']; 
-			}
-
-			$user_ids_string = implode('&',$user_ids);
-			//Check to see if the user is following all of the users in the list
-			$usersNotFollowing = $this->requestAction('/user_followings/isFollowingAll/'.$user_ids_string);
-
-			//If the user isn't following all of the users listed, show the follow all button.
-			if(!empty($usersNotFollowing)){
-				echo $this->element('follow-all-button',array('cache'=>false,'user_ids'=>$user_ids)); 
-			}
-		}else{
-			//none found
-		}*/
+		$favorites = $this->User->StaffFavorite->getTenUserIds();
+		$user_id = $this->Auth->user('id');
+		$this->User->id = $user_id;
+		$follower_ids = $this->User->find('all',array('conditions'=>array(
+														'User.id'=>$user_id
+														),
+												'fields'=>array('User.username'),
+												'contain'=>array('UserFollowing'=>array('fields'=>'UserFollowing.follow_user_id'))
+										));
+		$follower_ids = Set::extract('/UserFollowing/follow_user_id', $follower_ids); //Extract only the friends (followed users)
+		//Return the results that the user isn't following
+		$unfollowed_user_ids = array_diff($follower_ids,$favorites);
+		$unfollowed_user_ids = array_values($unfollowed_user_ids); //Reset the array keys
+		$user_ids = array();
+		$user_ids['unfollowed_user_ids'] = $unfollowed_user_ids;
+		$user_ids['followed_user_ids'] = $follower_ids;
+		$this->set(compact('user_ids'));
 	}
 	
 	

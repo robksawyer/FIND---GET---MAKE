@@ -15,7 +15,7 @@
 		<h3><b>Follow people on FIND|GET|MAKE</b> to discover new products</h3>
 		<div id="staff-favorites">
 			<?php 
-				echo $this->element('staff-favorites',array('cache'=>false,'usersNotFollowing'=>$usersNotFollowing)); 
+				echo $this->element('staff-favorites',array('cache'=>false,'user_ids'=>$user_ids)); 
 			?>
 		</div
 		<div id="search-results-container">

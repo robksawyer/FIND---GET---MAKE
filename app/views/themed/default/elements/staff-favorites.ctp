@@ -1,11 +1,7 @@
 <?php
-	if(!empty($authUser)){
+	if(!empty($authUser) && !empty($user_ids)){
 		//If the user isn't following all of the users listed, show the follow all button.
-		if(!empty($usersNotFollowing)){
-			echo $this->element('follow-all-button',array('cache'=>false,'user_ids'=>$usersNotFollowing)); 
-		}else{
-			//The user is following all of the users listed
-		}
+		echo $this->element('follow-all-button',array('cache'=>false,'user_ids'=>$user_ids));
 	}
 ?>
 <h3>Staff Favorites</h3>

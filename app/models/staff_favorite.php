@@ -78,8 +78,8 @@ class StaffFavorite extends AppModel {
 	}
 	
 	/**
-	 * Returns the latest ten staff favorited item
-	 * @param 
+	 * Returns the latest ten staff favorited users
+	 * @param
 	 * @return 
 	 * 
 	*/
@@ -108,6 +108,27 @@ class StaffFavorite extends AppModel {
 		
 		return $users;
 	}
+	
+	/**
+	 * Returns the latest ten staff favorited user ids 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function getTenUserIds(){
+		$this->recursive = -1;
+		$data = $this->find('list',array(
+										'conditions'=>array(
+											'StaffFavorite.model'=>'User'
+										),
+										'fields'=>'StaffFavorite.model_id',
+										'limit'=>10,
+										'order'=>array('StaffFavorite.created'=>'desc')
+										));
+		$data = array_values($data);
+		return $data;
+	}
+	
 	
 	/**
 	 * Check to see if the item has been favorited by a certain user

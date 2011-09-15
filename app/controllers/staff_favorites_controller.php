@@ -162,6 +162,12 @@ class StaffFavoritesController extends AppController {
 		return $this->StaffFavorite->getTenUsers();
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid staff favorite', true));
@@ -182,6 +188,12 @@ class StaffFavoritesController extends AppController {
 		$this->set(compact('users'));
 	}
 
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for staff favorite', true));

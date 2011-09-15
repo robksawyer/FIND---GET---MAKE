@@ -9,7 +9,7 @@ class UserFollowingsController extends AppController {
 		//Make certain pages public
 		$this->Auth->allowedActions = array('following','followers','isFollowing','isFollowingAll');
 											
-		$this->AjaxHandler->handle('ajax_followUserID','ajax_unfollowUserID');
+		$this->AjaxHandler->handle('ajax_followUserID','ajax_unfollowUserID','ajax_follow_all','ajax_unfollow_all');
 		
 		/*if(isset($this->Security)){
 			if($this->action == 'ajax_followUserID' || $this->action == 'ajax_unfollowUserID'){
@@ -21,6 +21,66 @@ class UserFollowingsController extends AppController {
 	}
 	
 	/**************** AJAX METHODS ************************/
+	
+	 /**
+	 * Handles following a bulk of users
+	 * @param String user_ids
+	 * @return 
+	 * 
+	*/
+	public function ajax_follow_all(){
+		$this->UserFollowing->recursive = -1;
+		Configure::write('debug', 2);
+		if($this->RequestHandler->isAjax()) {
+			$this->autoLayout = false;
+			$this->autoRender = false;
+			$response = array('success' => false);
+			
+			//Get the user logged in
+			$user = $this->Auth->user();
+			if(!$user){
+				$this->Session->setFlash(__('You have to login before you can follow users.', true));
+				$this->redirect(array('ajax'=>false,'plugin'=>'','controller'=>'users','action' => 'login'));
+			}
+			debug($this->data);
+			//The save was successful
+			//$data = array('following'=>1,'user_id'=>$user['User']['id']);
+			$this->AjaxHandler->response(true, false);
+			$this->AjaxHandler->respond();
+			//return $this->UserFollowing->followAll($auth_user_id,$user_ids);
+		}
+	}
+	
+	 /**
+	 * Handles following a bulk of users
+	 * @param String user_ids
+	 * @return 
+	 * 
+	*/
+	public function ajax_unfollow_all(){
+		$this->UserFollowing->recursive = -1;
+		Configure::write('debug', 2);
+		if($this->RequestHandler->isAjax()) {
+			$this->autoLayout = false;
+			$this->autoRender = false;
+			$response = array('success' => false);
+			
+			//Get the user logged in
+			$user = $this->Auth->user();
+			if(!$user){
+				$this->Session->setFlash(__('You have to login before you can follow users.', true));
+				$this->redirect(array('ajax'=>false,'plugin'=>'','controller'=>'users','action' => 'login'));
+			}
+			
+			debug($this->data);
+			//The save was successful
+			//$data = array('following'=>1,'user_id'=>$user['User']['id']);
+			$this->AjaxHandler->response(true, array());
+			$this->AjaxHandler->respond();
+			//return $this->UserFollowing->followAll($auth_user_id,$user_ids);
+		}
+	}
+	
 	/**
 	 * This method handles following a user
 	 * @param user_id The user_id being followed
@@ -204,16 +264,5 @@ class UserFollowingsController extends AppController {
 		$user_ids = explode("&",$user_ids); //Build an array from the string
 		return $this->UserFollowing->isFollowingAll($auth_user_id,$user_ids);
 	}
-	
-	/**
-	 * Handles following a bulk of users
-	 * @param String user_ids
-	 * @return 
-	 * 
-	*/
-	public function followAll($user_ids=null){
-		$auth_user_id = $this->Auth->user('id');
-		$user_ids = explode("&",$user_ids); //Build an array from the string
-		return $this->UserFollowing->followAll($auth_user_id,$user_ids);
-	}
+
 }
