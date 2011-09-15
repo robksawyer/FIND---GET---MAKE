@@ -125,6 +125,7 @@ class StaffFavorite extends AppModel {
 										'limit'=>10,
 										'order'=>array('StaffFavorite.created'=>'desc')
 										));
+		
 		$data = array_values($data);
 		return $data;
 	}

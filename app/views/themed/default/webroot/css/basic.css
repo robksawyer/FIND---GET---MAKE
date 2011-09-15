@@ -2779,7 +2779,7 @@ span.total a:hover{
 	position: relative;
 	float: right;
 	font-size: 12px;
-	width: 65px;
+	width: auto;
 	padding: 10px 13px;
 	background: #000000;
 	color: #ffffff;

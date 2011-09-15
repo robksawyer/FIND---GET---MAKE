@@ -42,12 +42,27 @@ class UserFollowingsController extends AppController {
 				$this->Session->setFlash(__('You have to login before you can follow users.', true));
 				$this->redirect(array('ajax'=>false,'plugin'=>'','controller'=>'users','action' => 'login'));
 			}
-			debug($this->data);
-			//The save was successful
-			//$data = array('following'=>1,'user_id'=>$user['User']['id']);
-			$this->AjaxHandler->response(true, false);
+			//debug($this->data);
+			$unfollowed_users = $this->data['unfollowed_user_ids'];
+			$unfollowed_users = explode("&",$unfollowed_users); //Convert back to array
+			if(!empty($unfollowed_users)){
+				$counter = 0;
+				$saveData = array();
+				foreach($unfollowed_users as $follow_user){
+					$saveData['UserFollowing'][$counter] = array();
+					$saveData['UserFollowing'][$counter]['user_id'] = $user['User']['id'];
+					$saveData['UserFollowing'][$counter]['follow_user_id'] = $follow_user;
+					$counter++;
+				}
+				if($this->UserFollowing->saveAll($saveData['UserFollowing'])){
+					//The save was successful
+					$data = array('following'=>1,'user_id'=>$user['User']['id']);
+					$this->AjaxHandler->response(true, $data);
+				}
+			}
+		
 			$this->AjaxHandler->respond();
-			//return $this->UserFollowing->followAll($auth_user_id,$user_ids);
+			return;
 		}
 	}
 	
@@ -72,12 +87,28 @@ class UserFollowingsController extends AppController {
 				$this->redirect(array('ajax'=>false,'plugin'=>'','controller'=>'users','action' => 'login'));
 			}
 			
-			debug($this->data);
-			//The save was successful
-			//$data = array('following'=>1,'user_id'=>$user['User']['id']);
-			$this->AjaxHandler->response(true, array());
+			$followed_users = $this->data['followed_user_ids'];
+			$followed_users = explode("&",$followed_users); //Convert back to array
+			if(!empty($followed_users)){
+				$user_following_ids = $this->UserFollowing->find('list',array('conditions'=>array(
+																							"UserFollowing.user_id"=>$user['User']['id'],
+																							"AND"=>array(
+																									'UserFollowing.follow_user_id'=>$followed_users
+																								)
+																							),
+																			'fields'=>'UserFollowing.id'
+																		)
+																);
+				$user_following_ids = array_values($user_following_ids);
+				$conditions = array('UserFollowing.id'=>$user_following_ids);
+				if($this->UserFollowing->deleteAll($conditions)){
+					//The save was successful
+					$data = array('following'=>0,'user_id'=>$user['User']['id']);
+					$this->AjaxHandler->response(true, $data);
+				}
+			}
 			$this->AjaxHandler->respond();
-			//return $this->UserFollowing->followAll($auth_user_id,$user_ids);
+			return;
 		}
 	}
 	

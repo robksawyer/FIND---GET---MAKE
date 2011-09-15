@@ -1,11 +1,10 @@
 <div id="follow-all-btn">
 <?php 
 	if(empty($user_ids)) $user_ids = null;
-	
 	//Check to see if the user is following all of the users
 	if(!empty($authUser)){
 		//Only show if the user is logged in.
-		if(empty($user_ids)){
+		if(empty($user_ids['unfollowed_user_ids'])){
 			echo $this->Html->link('Unfollow all','#',
 															array(
 																	'title'=>'Unfollow all',
@@ -70,6 +69,10 @@ function hideFollowAllLoader(){
 function showUnfollowAll(){
 	$('#follow-all').hide();
 	$('#unfollow-all').show();
+	
+	//Show the unfollow button on all user blocks
+	$('.unfollow').show();
+	$('.follow').hide();
 }
 
 
@@ -82,21 +85,24 @@ function showUnfollowAll(){
 function showFollowAll(){
 	$('#follow-all').show();
 	$('#unfollow-all').hide();
+	
+	//Show the follow button on all user blocks
+	$('.unfollow').hide();
+	$('.follow').show();
 }
 
 /**
 * This method handles updating the follow and unfollow values in the view. 
 */
 function updateFollowUnfollowAll(data){
-	//var data = data.data;
-	hideFollowAllLoader(); //Hide that ajax loader
-	//alert(data.following);
 	console.log(data);
-	/*if(data.following > 0){
+	var data = data.data;
+	hideFollowAllLoader(); //Hide that ajax loader
+	if(data.following > 0){
 		showUnfollowAll();
 	}else{
 		showFollowAll();
-	}*/
+	}
 
 	return 0;
 }
@@ -108,19 +114,19 @@ function updateFollowUnfollowAll(data){
  * 
 */
 function submit_follow_all(){
-	var user_ids = new Array(<?php echo implode(',',$user_ids['unfollowed_user_ids']); ?>);
+	var data = <?php echo json_encode($user_ids); ?>;
 	
 	$.ajax({
-		traditional: true,
 		url:"\/ajax\/user_followings\/follow_all",
-		type:'post',
+		type:'POST',
 		beforeSend:function (XMLHttpRequest) {
 			showFollowAllLoader();
 		}, 
 		success:function (data, textStatus) {
 			updateFollowUnfollowAll(data);
 		}, 
-		data: user_ids
+		data: data,
+		dataType: 'json'
 	});
 	return false;
 }
@@ -132,19 +138,19 @@ function submit_follow_all(){
  * 
 */
 function submit_unfollow_all(){
-	var user_ids = new Array(<?php echo implode(',',$user_ids['followed_user_ids']); ?>);
+	var data = <?php echo json_encode($user_ids); ?>;
 	
 	$.ajax({
-		traditional: true,
 		url:"\/ajax\/user_followings\/unfollow_all",
-		type:'post',
+		type:'POST',
 		beforeSend:function (XMLHttpRequest) {
 			showFollowAllLoader();
 		}, 
 		success:function (data, textStatus) {
 			updateFollowUnfollowAll(data);
 		}, 
-		data: user_ids
+		data: data,
+		dataType: 'json'
 	});
 	return false;
 }

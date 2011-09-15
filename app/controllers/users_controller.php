@@ -1170,6 +1170,7 @@ class UsersController extends AppController {
 		}
 		
 		$favorites = $this->User->StaffFavorite->getTenUserIds();
+		$staff_favorites_details = $this->User->StaffFavorite->getTenUsers();
 		$user_id = $this->Auth->user('id');
 		$this->User->id = $user_id;
 		$follower_ids = $this->User->find('all',array('conditions'=>array(
@@ -1179,13 +1180,20 @@ class UsersController extends AppController {
 												'contain'=>array('UserFollowing'=>array('fields'=>'UserFollowing.follow_user_id'))
 										));
 		$follower_ids = Set::extract('/UserFollowing/follow_user_id', $follower_ids); //Extract only the friends (followed users)
+		$followed_user_ids = array();
 		//Return the results that the user isn't following
-		$unfollowed_user_ids = array_diff($follower_ids,$favorites);
+		foreach($follower_ids as $follower_id){
+			if(in_array($follower_id,$favorites)){
+				$followed_user_ids[] = $follower_id;
+			}
+		}
+		$unfollowed_user_ids = array_diff($favorites,$follower_ids);
 		$unfollowed_user_ids = array_values($unfollowed_user_ids); //Reset the array keys
 		$user_ids = array();
-		$user_ids['unfollowed_user_ids'] = $unfollowed_user_ids;
-		$user_ids['followed_user_ids'] = $follower_ids;
-		$this->set(compact('user_ids'));
+		//You have to send the items as a string, otherwise it'll fail to send the ajax request
+		$user_ids['unfollowed_user_ids'] = implode('&',$unfollowed_user_ids);
+		$user_ids['followed_user_ids'] = implode('&',$followed_user_ids);
+		$this->set(compact('user_ids','staff_favorites_details'));
 	}
 	
 	
