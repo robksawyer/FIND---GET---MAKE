@@ -53,47 +53,47 @@ ul.settings-nav li a.active{
 	height: 100px;
 }
 
-.left-panel{
+#left-panel{
 	display:inline-block;
 	float: left;
 	width: 70%;
 }
-.left-panel .full-name{
+#left-panel .full-name{
 	position: relative;
 	display: block;
 	margin: 10px 0;
 }
-.left-panel .submit{
+#left-panel .submit{
 	position: relative;
 	top: 10px;
 }
-.left-panel #change-password{
+#left-panel #change-password{
 	margin: 10px 0;
 }
-.left-panel #change-password .input{
+#left-panel #change-password .input{
 	width: 230px;
 }
-.left-panel #change-password .input a.after{
+#left-panel #change-password .input a.after{
 	position: relative;
 	top: 10px;
 }
 
-.left-panel #UserProfileForm .input{
+#left-panel #UserProfileForm .input{
 	margin: 0;
 	padding: 5px 0;
 	width: 230px;
 }
-.left-panel #UserAccountForm .input{
+#left-panel #UserAccountForm .input{
 	padding: 0;
 	margin: 0;
 }
-.left-panel #UserAccountForm .input input{
+#left-panel #UserAccountForm .input input{
 	width: 230px;
 	float: left;
 	clear: none;
 }
 
-.left-panel #UserAccountForm .warning{
+#left-panel #UserAccountForm .warning{
 	float: left;
 	clear: none;
 	padding: 0;
@@ -101,27 +101,27 @@ ul.settings-nav li a.active{
 	margin: 10px 0 0 10px;
 }
 
-.left-panel #UserAccountForm .after .username-preview{
+#left-panel #UserAccountForm .after .username-preview{
 	font-weight: bold;
 }
 
-.left-panel #UserProfileForm  .gender{
+#left-panel #UserProfileForm  .gender{
 	position: relative;
 	display: inline-block;
 	margin: 10px 0 10px 0;
 }
-.left-panel #UserProfileForm .input.textarea{
+#left-panel #UserProfileForm .input.textarea{
 	margin: 0;
 	padding: 0;
 	width: auto;
 	clear: both;
 }
-.left-panel #charlimitinfo{
+#left-panel #charlimitinfo{
 	clear: both;
 	margin-top: 10px;
 }
 
-/*.left-panel form label{
+/*#left-panel form label{
 	color: #333;
 	float: left;
 	font-size: 13px;

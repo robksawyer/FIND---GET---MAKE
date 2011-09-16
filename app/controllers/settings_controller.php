@@ -285,6 +285,12 @@ class SettingsController extends AppController {
 			}
 		}
 		
+		foreach ($user['User'] as $field => $value) {
+			if (empty($this->data['User'][$field])) {
+				$this->data['User'][$field] = $value;
+			}
+		}
+		
 	}
 	
 	/**
@@ -611,5 +617,7 @@ class SettingsController extends AppController {
 		} else {
 			$this->set(compact('avatar'));
 		}
-	}	
+	}
+	
+
 }

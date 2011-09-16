@@ -16,15 +16,19 @@
 			<?php 
 				echo $this->Form->input('email_on_follow',array('type'=>'checkbox','label'=>'Email when someone follows you')); 
 				echo $this->Form->input('email_on_show',array('type'=>'checkbox','label'=>'Email when someone shows you a product')); 
-				echo $this->Form->input('email_on_follow',array('type'=>'checkbox','label'=>'Email when someone comments on an item you\'ve added')); 
+				echo $this->Form->input('email_on_comment',array('type'=>'checkbox','label'=>'Email when someone comments on an item you\'ve added')); 
 			?>
 		</div>
 		
 		<div class="feed-notifications">
 			<?php echo $this->Form->label(__('Feed Notifications', true)); ?>
 			<?php
-				echo $this->Form->input('notify_on_add',array('label'=>'Notify when someone adds a product you found','type'=>'checkbox')); 
-				echo $this->Form->input('notify_on_follow',array('label'=>'Notify when someone follows you','type'=>'checkbox')); 
+				echo $this->Form->input('notify_on_follow',array('label'=>'Notify when someone follows you','type'=>'checkbox'));
+				echo $this->Form->input('notify_on_inspiration_like',array('label'=>'Notify when someone likes an inspiration you found','type'=>'checkbox'));
+				echo $this->Form->input('notify_on_collection_like',array('label'=>'Notify when someone likes a collection you found','type'=>'checkbox'));
+				echo $this->Form->input('notify_on_product_like',array('label'=>'Notify when someone likes a product you found','type'=>'checkbox'));
+				echo $this->Form->input('notify_on_source_like',array('label'=>'Notify when someone likes a source you found','type'=>'checkbox'));
+				echo $this->Form->input('notify_on_ufo_like',array('label'=>'Notify when someone likes a ufo you found','type'=>'checkbox'));
 			?>
 		</div>
 		

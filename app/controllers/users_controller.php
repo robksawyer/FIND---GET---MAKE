@@ -625,6 +625,7 @@ class UsersController extends AppController {
 				'username' => $user['User']['username'],
 				'password' => $user['User']['password']
 			);
+			$this->Auth->autoRedirect = false;
 			$this->Auth->login($user_data);
 			
 			//Redirect to moderate page
@@ -765,7 +766,7 @@ class UsersController extends AppController {
 					//$this->Session->setFlash(__('You have successfully signed up, you may now login and start your journey.', true));
 					// Send email
 					$this->sendSignupEmail();
-
+					$this->Auth->autoRedirect = false;
 					$this->Auth->login($this->data);
 					unset($this->data['User']);
 					$this->Session->setFlash(__('You have successfully created an account and may now start your journey.', true));
@@ -878,7 +879,7 @@ class UsersController extends AppController {
 					//$this->Session->setFlash(__('You have successfully signed up, you may now login and start your journey.', true));
 					// Send email
 					$this->sendSignupEmail();
-
+					$this->Auth->autoRedirect = false;
 					$this->Auth->login($this->data);
 					unset($this->data['User']);
 					$this->Session->setFlash(__('You have successfully created an account and may now start your journey.', true));

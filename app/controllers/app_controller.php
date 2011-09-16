@@ -60,7 +60,7 @@ class AppController extends Controller {
 									'logoutRedirect'=>array('controller'=>'pages','action'=>'display','home'),
 									'authError'=> 'You do not have permission to access the page you just selected.',
 									'userScope'=>array('User.banned'=>0,'User.active'=>1),
-									'autoRedirect'=>false,
+									'autoRedirect'=>true,
 									'allowedActions'=>array(
 															'display','key','generateKeycode','users','tags',
 															'getProfileData','find','getTags','getCount'
@@ -164,33 +164,6 @@ class AppController extends Controller {
 				)
 			);*/
 			
-			//$this->Auth->userModel = 'User';
-			
-			//Keep banned users from logging in and nonactive users
-			/*$this->Auth->userScope = array(
-											'User.banned'=>0,
-											'User.active'=>1
-											);*/
-			
-			//You have to keep view open for the photo tags to work.
-			//$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
-			//$this->Auth->authError = __('You do not have permission to access the page you just selected.', true);
-			
-			//$referer = $this->referer();
-			/*if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' 
-				|| $referer == '/login' || $referer == '/users/moderate') {
-				$referer = '/';
-			}*/
-			
-			/*if(empty($referer) || $referer == '/login' || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/'){
-				$login_referer = '/users/moderate';
-			}else{
-				$login_referer = $referer;
-			}*/
-			//$this->Auth->autoRedirect = false;
-			//$this->Auth->loginRedirect = $login_referer;
-			//$this->Auth->logoutRedirect = $referer;
-			
 			//Custom settings for AutoLogin component
 			//http://bakery.cakephp.org/articles/milesj/2009/07/05/autologin-component-an-auth-remember-me-feature
 			// AutoLogin settings
@@ -221,6 +194,7 @@ class AppController extends Controller {
 			}
 		}
 		
+		//Cookie settings
 		$this->Cookie->key = Configure::read('Security.salt');
 		
 		// Initialize
@@ -251,11 +225,11 @@ class AppController extends Controller {
 		$this->set(compact('authUser','facebookUser','twitterUser','isAdmin','isManager','isUser'));
 		
 		//Redirect the user to the previous page
-		$referer = $this->Session->read('Auth.redirect');
+		/*$referer = $this->Session->read('Auth.redirect');
 		if($referer){
 			$this->redirect($referer);
 			exit;
-		}
+		}*/
 		
 		//$this->Auth->allow('*');
 	}

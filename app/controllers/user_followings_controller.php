@@ -164,26 +164,34 @@ class UserFollowingsController extends AppController {
 				$this->redirect(array('plugin'=>'','controller'=>'users','action' => 'login'));
 			}
 			
-			if($user['User']['id'] != $user_id){
-				//Check to see if the record already exists
-				$followRecord = $this->UserFollowing->find('first',array('conditions'=>array('UserFollowing.follow_user_id'=>$user_id,'UserFollowing.user_id'=>$user['User']['id'])));
-				if(empty($followRecord)){
-					$this->UserFollowing->create();
-					$this->UserFollowing->set('user_id',$user['User']['id']);
-					$this->UserFollowing->set('follow_user_id',$user_id);
-					if($this->UserFollowing->save()){
-						//The save was successful
-						$data = array('following'=>1,'item_id'=>$user_id);
-						$this->AjaxHandler->response(true, $data);
+			//Double check to make sure the user exists
+			$user_to_follow = $this->UserFollowing->User->read(null,$user_id);
+			if(!empty($user_to_follow)){
+				if($user['User']['id'] != $user_id){
+					//Check to see if the record already exists
+					$followRecord = $this->UserFollowing->find('first',array('conditions'=>array('UserFollowing.follow_user_id'=>$user_to_follow['User']['id'],'UserFollowing.user_id'=>$user['User']['id'])));
+					if(empty($followRecord)){
+						$this->UserFollowing->create();
+						$this->UserFollowing->set('user_id',$user['User']['id']);
+						$this->UserFollowing->set('follow_user_id',$user_to_follow['User']['id']);
+						if($this->UserFollowing->save()){
+							//The save was successful
+							$data = array('following'=>1,'item_id'=>$user_to_follow['User']['id']);
+							$this->AjaxHandler->response(true, $data);
+						}
+					}else{
+						$this->ajax_unfollowUserID($user_to_follow['User']['id']);
 					}
 				}else{
-					$this->ajax_unfollowUserID($user_id);
+					//The user shouldn't even see the follow button
+					$data = array('following'=>0,'item_id'=>$user_to_follow['User']['id'],'error'=>'You are this user.');
+					$this->AjaxHandler->response(false, $data);
 				}
 			}else{
-				//The user shouldn't even see the follow button
-				$data = array('following'=>0,'item_id'=>$user_id);
+				$data = array('following'=>0,'item_id'=>$user_id,'error'=>'This user does not exist.');
 				$this->AjaxHandler->response(false, $data);
 			}
+			
 			
 			$this->AjaxHandler->respond();
 			
@@ -192,7 +200,10 @@ class UserFollowingsController extends AppController {
 			
 			//Update the other user's total followers
 			$this->UserFollowing->User->updateTotalFollowerCount($user_id);
-
+			
+			//Send an email to the person who was just followed
+			$this->send_email_on_follow($user_to_follow['User']['id']);
+			
 			return;
 		}
 	}
@@ -326,5 +337,48 @@ class UserFollowingsController extends AppController {
 		$user_ids = explode("&",$user_ids); //Build an array from the string
 		return $this->UserFollowing->isFollowingAll($auth_user_id,$user_ids);
 	}
+	
+	
+	/******************************** NOTIFICATIONS *******************************************/
+	
+	/**
+	 * Sends an email to the person that auth user just followed
+	 * @param Int followed_user_id The user id of the user just followed
+	 * @return 
+	 * 
+	*/
+	protected function send_email_on_follow($followed_user_id=null){
+		$followed_user = $this->UserFollowing->User->read(null,$followed_user_id);
+		if($followed_user['User']['email_on_follow'] == 1){
+			$user = $this->Auth->user();
+			if(!empty($followed_user)){
+				$site_name = $this->Toolbar->settings['site_name'];
+				//When auth user follows a user, send an email to the user 
 
+				$this->Email->to = $followed_user['User']['email'];
+				$this->Email->from = $site_name .' <'. $this->Toolbar->settings['site_email'] .'>';
+				
+				if(!empty($user['User']['fullname'])){
+					$this->Email->subject = $site_name.' - '.__($user['User']['fullname'].' just started following you.', true);
+				}else{
+					$this->Email->subject = $site_name.' - '.__($user['User']['username'].' just started following you.', true);
+				}
+				$this->Email->template = 'email_on_follow'; // note no '.ctp'
+
+				//Send as 'html', 'text' or 'both' (default is 'text')    
+				$this->Email->sendAs = 'both'; // because we like to send pretty mail
+				
+				$recent_products = array();
+				$followers_known['count'] = 10;
+				
+				//Set view variables as normal
+				$this->set(compact('user','site_name','recent_products','followers_known'));
+
+				//Do not pass any args to send()
+				$this->Email->send();
+			}
+		}
+	}
+	
+	/******************************** END NOTIFICATIONS *******************************************/
 }
