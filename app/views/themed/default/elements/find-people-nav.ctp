@@ -94,13 +94,13 @@
 															));
 		echo $this->Form->input('User.search', array('div' => false,'label'=>'','value'=>'Find people','style'=>'color:#999','id'=>'SearchQuery'));
 		echo $this->Js->get('#SearchQuery')->event('keypress','checkKeyPress(event);',array('stop'=>false));
-		echo $this->Js->submit('Submit',array('div'=>false,
+		echo $this->Form->submit('Submit',array('div'=>false,
 															'id'=>'SearchSubmit',
 															'style'=>'display:none',
 															'url'=>'/ajax/users/find_users',
-															'before'=>'startSearch()',
-															'complete'=>'searchComplete(XMLHttpRequest,textStatus)',
-															'success'=>'searchSuccess(data,textStatus);',
+															//'before'=>'onSearchStart()',
+															//'complete'=>'onSearchComplete(XMLHttpRequest,textStatus)',
+															//'success'=>'onSearchSuccess(data,textStatus);',
 															'update'=>'#search-results',
 															'type'=>'html'
 															));

@@ -1,12 +1,11 @@
 (function(window,undefined){
 	// Check Location
-	if ( document.location.protocol === 'file:' ) {
+	if( document.location.protocol === 'file:' ) {
 		alert('The HTML5 History API (and thus History.js) do not work on files, please upload it to a server.');
 	}
 
 	// Establish Variables
-	var
-		History = window.History, // Note: We are using a capital H instead of a lower h
+	var History = window.History, // Note: We are using a capital H instead of a lower h
 		State = History.getState(),
 		$log = $('#log');
 

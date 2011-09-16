@@ -33,8 +33,55 @@ echo $this->Html->script('elements/find-users');
 echo $this->Js->writeBuffer();
 ?>
 <script type="text/javascript">
-$(window).onstatechange = function(stateEventData){
-	console.log(stateEventData);
+var allowDeeplinking = true;
+var lastStateID;
+var searchInitiated = false;
+
+$('#searchbox #SearchQuery').focus(function(){
+	if($(this).val() == 'Find people') {
+		$(this).css({color:'#000',border:'1px solid #B9B9B9'}).val('');
+	}
+});
+$('#searchbox #SearchQuery').blur(function(){
+	if($(this).val() == '') {
+		$(this).css({color:'#999',border:'1px solid #B9B9B9'}).val('Find people');
+	}
+});
+
+$('#searchbox #SearchQuery').keydown(function(){
+	if($('#searchbox #SearchQuery').val().length > 1){
+		$("#SearchQuery").css({border:'1px solid #54d154'});
+	}else{
+		$("#SearchQuery").css({border:'1px solid #f9b3a8'});
+	}
+});
+
+window.onstatechange = function(event){
+	//console.log(event);
+	var State = History.getState();
+	console.log(State);
+	
+	var search_query = State.data.query;
+	console.log(search_query);
+	//Update the results
+	if(State.id != lastStateID && lastStateID != null && State.data.bypass != true){
+		if(search_query != "facebook-search" && search_query != "twitter-search" && search_query != "staff-favorites" && search_query != undefined){
+			//Set the value of the search input.
+			$("#SearchQuery").css({color:'#000',border:'1px solid #54d154'}).val(search_query).blur();
+
+			if(!searchInitiated) searchUsers();
+			
+		}else if(search_query === undefined){
+			$("#SearchQuery").css({color:'#999',border:'1px solid #B9B9B9'}).val('Find people').blur();
+			
+			//Show the staff favorites page
+			if($("#search-results-twitter").is(":visible")) $("#search-results-twitter").fadeOut();
+			if($("#search-results-facebook").is(":visible")) $("#search-results-facebook").fadeOut();
+			if($("#search-results").is(":visible")) $("#search-results").fadeOut();
+			$("#staff-favorites").fadeIn();
+		}
+	}
+	lastStateID = State.id;
 };
 
 $(window).load(function(){
@@ -48,36 +95,16 @@ $(window).load(function(){
 	//Check to see if any search params were passed 
 	if(passedParams.length > 2){
 		if(passedParams != "facebook-search" && passedParams != "twitter-search" && passedParams != "staff-favorites" && passedParams != ''){
-			var allowDeeplinking = true;
 			if(allowDeeplinking){
 				//Set the value of the search input.
-				$("#SearchQuery").val(passedParams);
-
-				$.ajax({
-					url:"\/ajax\/users\/find_users",
-					type:"post",
-					dataType:"html", 
-					data:$("#SearchSubmit").closest("form").serialize(),
-					beforeSend:function (XMLHttpRequest) {
-							//console.log(XMLHttpRequest);
-							startSearch();
-					},
-					success:function (data, textStatus) {
-						searchSuccess(data,textStatus);
-						$("#search-results").html(data);
-					},
-					complete:function (XMLHttpRequest, textStatus) {
-						searchComplete(XMLHttpRequest,textStatus)
-					}
-				});
+				$("#SearchQuery").css({color:'#000',border:'1px solid #54d154'}).val(passedParams).blur();
+				if(!searchInitiated) searchUsers();
 			}
 		}
 	}
 });
 
-
 $(document).ready(function() {
-	
 	var profiles = {
 		windowCenter:{
 			height:500,
@@ -118,6 +145,5 @@ $(document).ready(function() {
 			complete: socialSearchComplete("twitter")
 		});
 	}
-	
 });
 </script>

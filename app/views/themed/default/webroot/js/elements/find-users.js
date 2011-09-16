@@ -7,29 +7,7 @@
 var twitterSearchComplete = false;
 var facebookSearchComplete = false;
 var facebook_permissions = "user_about_me,user_birthday,email,offline_access,publish_stream";
-var stateCounter = 1;
-
-$('#searchbox #SearchQuery').focus(function(){
-	if($(this).val() == 'Find people') {
-		$(this).val('');
-		$(this).css('color','#000');
-	}
-});
-$('#searchbox #SearchQuery').blur(function(){
-	if($(this).val() == '') {
-		$(this).val('Find people');
-		$(this).css('color','#999');
-		$("#SearchQuery").css({border:'1px solid #B9B9B9'});
-	}
-});
-
-$('#searchbox #SearchQuery').keydown(function(){
-	if($('#searchbox #SearchQuery').val().length > 1){
-		$("#SearchQuery").css({border:'1px solid #54d154'});
-	}else{
-		$("#SearchQuery").css({border:'1px solid #f9b3a8'});
-	}
-});
+var searchInitiated = false;
 
 /**
  * Listens for the enter key to be pressed
@@ -43,7 +21,8 @@ function checkKeyPress(e){
 		e.preventDefault();
 		//Only submit if more than two characters are entered
 		if($('#searchbox #SearchQuery').val().length > 1){
-			$('#SearchSubmit').click();
+			//$('#SearchSubmit').click();
+			if(!searchInitiated) searchUsers();
 		}else{
 			$("#SearchQuery").css({border:'3px solid #f9b3a8'});
 		}
@@ -54,18 +33,47 @@ function checkKeyPress(e){
 }
 
 /**
- * Fired before the search bar search starts
- * @param String query The search query
+ * Fires the standard search
+ * @param 
  * @return 
  * 
 */
-function startSearch(){
+function searchUsers(){
+	searchInitiated = true;
+	$.ajax({
+		url:"\/ajax\/users\/find_users",
+		type:"post",
+		dataType:"html", 
+		data:$("#SearchSubmit").closest("form").serialize(),
+		beforeSend:function (XMLHttpRequest) {
+			//console.log(XMLHttpRequest);
+			onSearchStart();
+		},
+		success:function (data, textStatus) {
+			onSearchSuccess(data,textStatus);
+			$("#search-results").html(data);
+		},
+		complete:function (XMLHttpRequest, textStatus) {
+			searchInitiated = false;
+			onSearchComplete(XMLHttpRequest,textStatus)
+		}
+	});
+}
+
+/**
+ * Fired before the search bar search starts
+ * @param 
+ * @return 
+ * 
+*/
+function onSearchStart(){
+	searchInitiated = true;
 	//Show the ajax loader
 	$('#search-loader').show();
 	
 	//Change our States
-	var query = $("#SearchQuery").val();
-	History.pushState({state:stateCounter++,data:query}, "search for "+ query, '/users/find/'+query);
+	var search_query = $("#SearchQuery").val();
+	History.pushState({query:search_query}, "search for "+ search_query, '/users/find/'+search_query);
 }
 
 /**
@@ -150,7 +158,7 @@ function socialSearchComplete(className,message){
 	$("#search-results-"+className).fadeIn();
 
 	// Change our States
-	History.pushState({data:className+"-search"}, className+" search", "/users/find/"+className+"-search");
+	History.pushState({query:className+"-search"}, className+" search", "/users/find/"+className+"-search");
 	
 	//Hide the loader
 	$("#"+className+"-loader").hide();
@@ -173,7 +181,8 @@ function socialSearchSuccess(data){
  * @return 
  * 
 */
-function searchComplete(XMLHttpRequest,textStatus){
+function onSearchComplete(XMLHttpRequest,textStatus){
+	searchInitiated = false;
 	//Hide the loader
 	$('#search-loader').hide();
 }
@@ -185,7 +194,7 @@ function searchComplete(XMLHttpRequest,textStatus){
  * @return 
  * 
 */
-function searchSuccess(data,textStatus){
+function onSearchSuccess(data,textStatus){
 	
 	if($("#search-results-twitter").is(":visible")) $("#search-results-twitter").fadeOut();
 	if($("#search-results-facebook").is(":visible")) $("#search-results-facebook").fadeOut();
