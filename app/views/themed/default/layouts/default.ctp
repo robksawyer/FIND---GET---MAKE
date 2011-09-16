@@ -80,6 +80,12 @@
 				echo '//]]>'."\n";
 				echo '</script>'."\n";
 			}
+			//AJAX Deeplinking
+			echo $this->Html->script('history.adapter.jquery.js')."\n"; 
+			echo $this->Html->script('history')."\n";
+			echo $this->Html->script('history.html4')."\n";
+			echo $this->Html->script('init-history')."\n";
+			//END AJAX Deeplinking
 			
 			echo $this->Html->script('elements/nav')."\n";
 			echo $this->Html->script('common')."\n"; //Common helper scripts
@@ -88,9 +94,9 @@
 			echo $this->Html->script('jquery.autocomplete.min')."\n";
 			echo $this->Html->script('jquery.jeditable.mini')."\n";
 			echo $this->Html->script('jquery.mousewheel.min')."\n";
-			echo "<!-- Chosen Select Boxes (http://harvesthq.github.com/chosen/) -->"."\n";
+			//Chosen Select Boxes (http://harvesthq.github.com/chosen/)
 			echo $this->Html->script('chosen/chosen.jquery.min')."\n";
-			echo "<!-- Include jquery modal window apis -->"."\n";
+			//Include jQuery modal window APIs
 			echo $this->Html->script('modal/jquery.simplemodal.1.4.1.min')."\n";
 			echo $this->Html->script('modal/basic')."\n";
 			
@@ -114,6 +120,12 @@
 		</script>
 		<script type='text/javascript'>
 		GA_googleFetchAds();
+		</script>
+		<script type="text/javascript">
+		if(typeof window.JSON === 'undefined'){
+			//Include JSON if you want to support older browsers
+			document.write('<script type="text/javascript" src="/theme/default/js/json2.js"><\/script>'); 
+		}
 		</script>
 	</head>
 	<body>

@@ -165,11 +165,9 @@ class UsersController extends AppController {
 																			));
 																			
 				$result_ids = Set::extract('/User/id', $results);
-				debug($result_ids);
 				$query = $this->passedArgs['search'];
 				$user_id = $this->Auth->user('id');
 				$user_ids = $this->User->UserFollowing->getFollowedUnfollowedUserIds($user_id,$result_ids);
-				debug($user_ids);
 				
 				$this->set(compact('results','query','user_ids')); //Set the results for the render action
 				$this->render('/users/ajax_find_users');
@@ -232,11 +230,16 @@ class UsersController extends AppController {
 	 * @return 
 	 * 
 	*/
-	public function ajax_find_facebook_users($access_token=null,$offset=0){
+	public function ajax_find_facebook_users($access_token=null,$reset=false,$offset=0){
 		if($this->RequestHandler->isAjax()) {
 			Configure::write ( 'debug', 0);
 			$this->autoLayout = true;
 			$this->autoRender = true;
+			
+			if($reset){
+				if($this->Session->check("FB.Token")) $this->Session->delete("FB");
+			}
+			
 			//Check to see if facebookUser is available or if the user has their account linked. If they do, 
 			//don't launch a popup and ask them to verify their results. Otherwise, launch a window and make the 
 			//user link their account.
@@ -251,9 +254,7 @@ class UsersController extends AppController {
 			}
 			$this->Connect->uid = $Facebook->getUser();
 			$facebookUserDetails = $this->Connect->user();
-			debug($facebookUserDetails);
 			$facebookFriends = $Facebook->api("/me/friends");
-			debug($facebookFriends);
 			$friends = array();
 			//Search the system for friends that contain a similar fullname
 			if(!empty($facebookFriends['data'])){
@@ -263,24 +264,29 @@ class UsersController extends AppController {
 				foreach($facebookFriends['data'] as $friend){
 					$friend_ids[] = $friend['id'];
 				}
-				debug($friend_ids);
 				//Search the friends array
 				$results = $this->User->find('all',array('conditions'=>array(
 																			'OR'=>array(
-																				array('User.fullname'=>$friends),
-																				array('User.facebook_id'=>$friend_ids)
+																				array(
+																					'User.fullname'=>$friends,
+																					'User.facebook_id'=>$friend_ids
+																				)
 																			)
 																			),
-																			'limit'=>10,
+																			'limit'=>50,
 																			'contain'=>array('Product'=>array('Attachment','limit'=>'3'))
 																		));
 			}else{
 				$results = null;
 			}
 			
-			//Get the facebook user's friends.
-			$this->set(compact('results'));
+			//For the follow all button
+			$user_id = $this->Auth->user('id');
+			$result_ids = Set::extract('/User/id', $results);
+			$user_ids = $this->User->UserFollowing->getFollowedUnfollowedUserIds($user_id,$result_ids);
 			
+			//Get the facebook user's friends.
+			$this->set(compact('results','user_ids'));
 		}
 	}
 	
@@ -313,7 +319,7 @@ class UsersController extends AppController {
 			$userDetails = $this->Session->read('Twitter.Details');
 			$twitter_friend_ids = $this->Twitter->friends_ids(array('id'=>$userDetails['id']));
 			$twitter_friends = array();
-			$limit = 25; //Set the limit to search
+			$limit = 50; //Set the limit to search
 			$counter = 0;
 			if(empty($twitter_friend_ids['error'])){
 				foreach($twitter_friend_ids as $friend_id){
@@ -326,19 +332,26 @@ class UsersController extends AppController {
 						$counter++;
 					}
 				}
-				//debug($twitter_friends);
 				$results = $this->User->find('all',array('conditions'=>array(
 																			'OR'=>array(
-																				array('User.username' => $twitter_friends['screen_names']),
-																				array('User.fullname' => $twitter_friends['names']),
-																				array('User.twitter_id' => $twitter_friend_ids)
+																				array(
+																					'User.username' => $twitter_friends['screen_names'],
+																					'User.fullname' => $twitter_friends['names'],
+																					'User.twitter_id' => $twitter_friend_ids
+																				)
 																			)
 																		)
 																	));
 			}else{
 				$results['error'] = $twitter_friend_ids['error'];
 			}
-			$this->set(compact('results'));
+			
+			//For the follow all button
+			$user_id = $this->Auth->user('id');
+			$result_ids = Set::extract('/User/id', $results);
+			$user_ids = $this->User->UserFollowing->getFollowedUnfollowedUserIds($user_id,$result_ids);
+			
+			$this->set(compact('results','user_ids'));
 			return;
 		}
 		
@@ -390,7 +403,9 @@ class UsersController extends AppController {
 			if(!empty($userCheck)){
 				$this->Auth->login($userCheck);
 				$this->Auth->autoRedirect = false;
-				//$this->Session->delete('Forum');
+				$this->Session->delete('Forum');
+				$this->Session->delete('FB');
+				$this->Session->delete('Twitter');
 				$this->redirect($this->Auth->loginRedirect);
 			}
 		}
@@ -409,6 +424,8 @@ class UsersController extends AppController {
 				
 				$this->Auth->login($loginUser);
 				$this->Session->delete('Forum');
+				$this->Session->delete('FB');
+				$this->Session->delete('Twitter');
 				$this->redirect($this->Auth->loginRedirect);
 			}
 		}
@@ -425,6 +442,8 @@ class UsersController extends AppController {
 				
 				$this->Auth->login($loginUser);
 				$this->Session->delete('Forum');
+				$this->Session->delete('FB');
+				$this->Session->delete('Twitter');
 				$this->redirect($this->Auth->loginRedirect);
 				
 				//Save the user's facebook_id (This is automatically handled)
@@ -440,6 +459,8 @@ class UsersController extends AppController {
 				if ($user = $this->Auth->user()) {
 					$this->User->login($user);
 					$this->Session->delete('Forum');
+					$this->Session->delete('FB');
+					$this->Session->delete('Twitter');
 					$this->redirect($this->Auth->loginRedirect);
 				}
 			}
@@ -467,6 +488,7 @@ class UsersController extends AppController {
 	public function logout() {
 		if($this->Session->check('Forum')) $this->Session->delete('Forum');
 		if($this->Session->check('Twitter')) $this->Session->delete('Twitter');
+		if($this->Session->check('FB')) $this->Session->delete('FB');
 		if($this->Session->check('Challenge')) $this->Session->delete('Challenge');
 		if($this->Session->check('User')) $this->Session->delete('User');
 		if($this->Session->check('Auth')) $this->Session->delete('Auth');

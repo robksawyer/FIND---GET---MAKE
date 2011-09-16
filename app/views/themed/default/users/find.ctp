@@ -33,6 +33,9 @@ echo $this->Html->script('elements/find-users');
 echo $this->Js->writeBuffer();
 ?>
 <script type="text/javascript">
+$(window).onstatechange = function(stateEventData){
+	console.log(stateEventData);
+};
 
 $(window).load(function(){
 	//If the url contains a search query, do the search
@@ -47,30 +50,31 @@ $(window).load(function(){
 		if(passedParams != "facebook-search" && passedParams != "twitter-search" && passedParams != "staff-favorites" && passedParams != ''){
 			var allowDeeplinking = true;
 			if(allowDeeplinking){
-
 				//Set the value of the search input.
 				$("#SearchQuery").val(passedParams);
 
 				$.ajax({
-					beforeSend:function (XMLHttpRequest) {
-							startSearch(XMLHttpRequest)
-					}, 
-					complete:function (XMLHttpRequest, textStatus) {
-						searchComplete(XMLHttpRequest,textStatus)
-					}, 
-					data:$("#SearchSubmit").closest("form").serialize(), 
+					url:"\/ajax\/users\/find_users",
+					type:"post",
 					dataType:"html", 
+					data:$("#SearchSubmit").closest("form").serialize(),
+					beforeSend:function (XMLHttpRequest) {
+							//console.log(XMLHttpRequest);
+							startSearch();
+					},
 					success:function (data, textStatus) {
 						searchSuccess(data,textStatus);
 						$("#search-results").html(data);
-					}, 
-					type:"post", 
-					url:"\/ajax\/users\/find_users"
+					},
+					complete:function (XMLHttpRequest, textStatus) {
+						searchComplete(XMLHttpRequest,textStatus)
+					}
 				});
 			}
 		}
 	}
 });
+
 
 $(document).ready(function() {
 	
@@ -85,6 +89,7 @@ $(document).ready(function() {
 		}
 	}
 	
+	//TODO: Add this to the popup and generate it on the fly and redirect to the returned address
 	var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
 	$.getJSON(currentSiteAddress+'/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
    	$('#twitter-allow').attr('href', data.url);
@@ -97,13 +102,20 @@ $(document).ready(function() {
 		//Make an ajax call and retrieve the user's friends 
 		$.ajax({
 			url: '/ajax/users/find_twitter_users',
-			type:'POST',
+			type:'post',
 			dataType:'html',
 			success: function(data,textStatus){
 				socialSearchSuccess(data);
-				$('#search-results').html(data);
+				$('#search-results-twitter').html(data);
 				console.log(data);
-			}
+			},
+			error:function (xhr, ajaxOptions, thrownError){
+				socialSearchSuccess();
+				socialSearchComplete("twitter",thrownError);
+				console.log(xhr.status);
+				console.log(thrownError);
+			},
+			complete: socialSearchComplete("twitter")
 		});
 	}
 	

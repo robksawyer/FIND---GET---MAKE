@@ -6,6 +6,8 @@
 */
 var twitterSearchComplete = false;
 var facebookSearchComplete = false;
+var facebook_permissions = "user_about_me,user_birthday,email,offline_access,publish_stream";
+var stateCounter = 1;
 
 $('#searchbox #SearchQuery').focus(function(){
 	if($(this).val() == 'Find people') {
@@ -30,7 +32,7 @@ $('#searchbox #SearchQuery').keydown(function(){
 });
 
 /**
- * 
+ * Listens for the enter key to be pressed
  * @param 
  * @return 
  * 
@@ -52,23 +54,53 @@ function checkKeyPress(e){
 }
 
 /**
- * 
- * @param 
+ * Fired before the search bar search starts
+ * @param String query The search query
  * @return 
  * 
 */
 function startSearch(){
 	//Show the ajax loader
 	$('#search-loader').show();
+	
+	//Change our States
+	var query = $("#SearchQuery").val();
+	History.pushState({state:stateCounter++,data:query}, "search for "+ query, '/users/find/'+query);
 }
 
 /**
  * 
- * @param className The name of the class to select
+ * @param String className The name of the class to target
  * @return 
  * 
 */
 function startSocialSearch(className){
+	
+	//Show the ajax loader
+	$('.selected').removeClass('selected');
+	$('.'+className).parent('li').addClass('selected');
+	$("#"+className+"-loader").show();
+	
+	if(className == "facebook"){
+		//Check to make sure that the user is logged in
+		FB.getLoginStatus(function(response) {
+			console.log(response);
+			if(response.status == "connected") {
+				FB.api('/me/permissions', function(perms_response) {
+					//console.log(perms_response);
+					if(perms_response.data[0].offline_access != 1 && perms_response.data[0].email != 1 && perms_response.data[0].user_about_me != 1){
+						facebookSearchComplete = false;
+						doFacebookCheck(facebook_permissions,true);
+						return false;
+					}
+				});
+			}else{
+				facebookSearchComplete = false;
+				doFacebookCheck(facebook_permissions,true);
+				return false;
+			}
+		});
+	}
 	
 	//Check to see if the results have already loaded
 	if(facebookSearchComplete){
@@ -76,6 +108,7 @@ function startSocialSearch(className){
 		if($("#search-results").is(":visible")) $("#search-results").fadeOut();
 		if($("#staff-favorites").is(":visible")) $("#staff-favorites").fadeOut();
 		$("#search-results-facebook").fadeIn();
+		
 		return false;
 	}else if(twitterSearchComplete){
 		if($("#search-results-facebook").is(":visible")) $("#search-results-facebook").fadeOut();
@@ -84,50 +117,59 @@ function startSocialSearch(className){
 		$("#search-results-twitter").fadeIn();
 		return false;
 	}
-	
-	//Show the ajax loader
-	$('.selected').removeClass('selected');
-	$('.'+className).parent('li').addClass('selected');
-	$("#"+className+"-loader").show();
 }
 
 /**
  * 
- * @param 
+ * @param className The div className to target
+ * @param message A message to send to the results area.
  * @return 
  * 
 */
-function socialSearchComplete(className){
+function socialSearchComplete(className,message){
 	if($("#staff-favorites").is(":visible")) $("#staff-favorites").fadeOut();
 	if(className == "twitter"){
-		twitterSearchComplete = true;
+		if(!message){
+			twitterSearchComplete = true;
+		}
 		if($("#search-results-facebook").is(":visible")) $("#search-results-facebook").fadeOut();
 	}
 	if(className == "facebook"){
-		facebookSearchComplete = true;
+		if(!message){
+			facebookSearchComplete = true;
+		}
 		if($("#search-results-twitter").is(":visible")) $("#search-results-twitter").fadeOut();
 	}
 	if($("#search-results").is(":visible")) $("#search-results").fadeOut();
+	
+	if(message){
+		htmlData = "<h3 style='error'>"+message+"</h3>";
+		$("#search-results-"+className).html(htmlData);
+	}
+	
 	$("#search-results-"+className).fadeIn();
-	processAjaxData(null, '/users/find/'+className+"-search");
+
+	// Change our States
+	History.pushState({data:className+"-search"}, className+" search", "/users/find/"+className+"-search");
 	
 	//Hide the loader
 	$("#"+className+"-loader").hide();
 }
 
 /**
- * 
- * @param 
+ * Fired when a the controller returns data
+ * @param String data
  * @return 
  * 
 */
-function socialSearchSuccess(event){
-
+function socialSearchSuccess(data){
+	//Do something
 }
 
 /**
  * 
- * @param 
+ * @param ?? XMLHttpRequest
+ * @param String textStatus
  * @return 
  * 
 */
@@ -137,15 +179,14 @@ function searchComplete(XMLHttpRequest,textStatus){
 }
 
 /**
- * 
- * @param 
+ * The search returned the success state
+ * @param String data
+ * @param textStatus
  * @return 
  * 
 */
 function searchSuccess(data,textStatus){
-	var searchVal = $("#SearchQuery").val();
-	processAjaxData(data, '/users/find/'+searchVal);
-
+	
 	if($("#search-results-twitter").is(":visible")) $("#search-results-twitter").fadeOut();
 	if($("#search-results-facebook").is(":visible")) $("#search-results-facebook").fadeOut();
 	if($("#staff-favorites").is(":visible")) $("#staff-favorites").fadeOut();
@@ -154,54 +195,27 @@ function searchSuccess(data,textStatus){
 }
 
 /**
- * http://stackoverflow.com/questions/824349/modify-the-url-without-reloading-the-page
- * @param response
- * @param urlPath The path to add
+ * 
+ * @param String permissions
+ * @param Boolean reset Whether or not to reset the session data. 
  * @return 
  * 
 */
-function processAjaxData(response, urlPath){
-	if(response){
-		document.getElementById("search-results").innerHTML = response.html;
-		response.pageTitle = document.title;
-		window.history.pushState({"html":response.html,"pageTitle":response.pageTitle},"", urlPath);
-	}else{
-		window.history.pushState({"html":document.getElementById("container").innerHTML,"pageTitle":document.title},"", urlPath);
-	}
-	
-	//document.title = response.pageTitle;
-	//window.history.pushState({"html":response.html,"pageTitle":response.pageTitle},"", urlPath);
-	
-}
+function doFacebookCheck(permissions,reset){
+	if(!permissions) permissions = facebook_permissions;
+	if(!reset) reset = false;
 
-/**
- * Handles what happens when the back button is clicked.
- * @param 
- * @return 
- * 
-*/
-window.onpopstate = function(e){
-	//alert(e);
-	if(e.state){
-		document.getElementById("search-results").innerHTML = e.state.html;
-		document.title = e.state.pageTitle;
-	}
-};
-
-function doFacebookCheck(permissions){
-	startSocialSearch("facebook");
 	// check if the user is logged in + connected to the app
 	FB.getLoginStatus(function(response) {
-		//console.log(response);
-		if(response.status == "connected") {
+		if(response.status == "connected" && reset != true) {
 			// if the user is logged in, continue to check permissions
 			FB.api('/me/permissions', function(perms_response) {
 				//console.log(perms_response);
 				if(perms_response.data[0].offline_access == 1 && perms_response.data[0].email == 1 && perms_response.data[0].user_about_me == 1){
 					// user is logged in and granted some permissions.
-					findFacebookFriends(response.session.access_token);
+					findFacebookFriends(response.session.access_token,reset);
 				}else{
-					socialSearchComplete("facebook");
+					doFacebookCheck(false,true);
 				}
 			});
 		}else{
@@ -212,16 +226,16 @@ function doFacebookCheck(permissions){
 					if (response.perms) {
 						// user is logged in and granted some permissions.
 						//Send the access token to the find method and build the session variable in the controller
-						findFacebookFriends(response.session.access_token);
+						findFacebookFriends(response.session.access_token,reset);
 					} else {
 						// user is logged in, but did not grant any permissions
 						//Add some text that lets the user know that they have to grant permissions
-						socialSearchComplete("facebook");
+						socialSearchComplete("facebook","You must allow us permission to access your info to continue the search.");
 					}
 				} else {
 					// user is not logged in
 					//Add some text that lets the user know that they have to login
-					socialSearchComplete("facebook");
+					socialSearchComplete("facebook","You must allow us permission to access your info to continue the search.");
 				}
 			}, {perms:permissions});
 			FB.Event.subscribe('auth.login',function(){ return true; });
@@ -229,15 +243,22 @@ function doFacebookCheck(permissions){
 	});
 }
 
-function findFacebookFriends(token){
+/**
+ * 
+ * @param token The Facebook auth/access token
+ * @param reset Whether or not to reset the current session token
+ * @return 
+ * 
+*/
+function findFacebookFriends(token,reset){
 	//Make an ajax call and retrieve the user's friends 
 	$.ajax({
-		url: '/ajax/users/find_facebook_users/'+token,
-		type:'POST',
+		url: '/ajax/users/find_facebook_users/'+token+'/'+reset,
+		type:'post',
 		dataType:'html',
 		success: function(data,textStatus){
 			socialSearchSuccess(data);
-			$('#search-results').html(data);
+			$('#search-results-facebook').html(data);
 			//console.log(data);
 		},
 		complete: socialSearchComplete("facebook")
