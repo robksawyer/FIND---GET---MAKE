@@ -73,7 +73,7 @@ function onSearchStart(){
 	
 	//Change our States
 	var search_query = $("#SearchQuery").val();
-	History.pushState({query:search_query}, "search for "+ search_query, '/users/find/'+search_query);
+	History.pushState({query:search_query}, "FIND | MAKE | GET : User Search : "+ search_query, '/users/find/'+search_query);
 }
 
 /**
@@ -158,7 +158,7 @@ function socialSearchComplete(className,message){
 	$("#search-results-"+className).fadeIn();
 
 	// Change our States
-	History.pushState({query:className+"-search"}, className+" search", "/users/find/"+className+"-search");
+	History.pushState({query:className+"-search"}, "FIND | MAKE | GET : User Search : " + className, "/users/find/"+className+"-search");
 	
 	//Hide the loader
 	$("#"+className+"-loader").hide();
