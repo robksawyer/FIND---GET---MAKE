@@ -51,10 +51,16 @@ class AppController extends Controller {
 	 * @var array
 	 */
 	var $components = array('Acl','Auth'=>array(
+									'userModel'=>'User',
 									'authorize'=>'actions',
 									'actionPath'=>'controllers/',
-									'loginAction'=>'/login',
-									'logoutAction'=>'/logout',
+									'loginAction'=>array('controller'=>'users','action'=>'login'),
+									'loginRedirect'=>array('controller'=>'users','action'=>'moderate'),
+									'logoutAction'=>array('controller'=>'users','action'=>'logout'),
+									'logoutRedirect'=>array('controller'=>'pages','action'=>'display','home'),
+									'authError'=> 'You do not have permission to access the page you just selected.',
+									'userScope'=>array('User.banned'=>0,'User.active'=>1),
+									'autoRedirect'=>false,
 									'allowedActions'=>array(
 															'display','key','generateKeycode','users','tags',
 															'getProfileData','find','getTags','getCount'
@@ -158,32 +164,32 @@ class AppController extends Controller {
 				)
 			);*/
 			
-			$this->Auth->userModel = 'User';
+			//$this->Auth->userModel = 'User';
 			
 			//Keep banned users from logging in and nonactive users
-			$this->Auth->userScope = array(
+			/*$this->Auth->userScope = array(
 											'User.banned'=>0,
 											'User.active'=>1
-											);
+											);*/
 			
 			//You have to keep view open for the photo tags to work.
 			//$this->Auth->allow('home','display','index','view','find','collage','login','logout','key');
-			$this->Auth->authError = __('You do not have permission to access the page you just selected.', true);
+			//$this->Auth->authError = __('You do not have permission to access the page you just selected.', true);
 			
-			$referer = $this->referer();
+			//$referer = $this->referer();
 			/*if (empty($referer) || $referer == '/users/login' || $referer == '/admin/users/login' 
 				|| $referer == '/login' || $referer == '/users/moderate') {
 				$referer = '/';
 			}*/
 			
-			if(empty($referer) || $referer == '/login' || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/'){
+			/*if(empty($referer) || $referer == '/login' || $referer == '/users/login' || $referer == '/admin/users/login' || $referer == '/'){
 				$login_referer = '/users/moderate';
 			}else{
 				$login_referer = $referer;
-			}
-			$this->Auth->autoRedirect = false;
-			$this->Auth->loginRedirect = $login_referer;
-			$this->Auth->logoutRedirect = $referer;
+			}*/
+			//$this->Auth->autoRedirect = false;
+			//$this->Auth->loginRedirect = $login_referer;
+			//$this->Auth->logoutRedirect = $referer;
 			
 			//Custom settings for AutoLogin component
 			//http://bakery.cakephp.org/articles/milesj/2009/07/05/autologin-component-an-auth-remember-me-feature
@@ -243,6 +249,13 @@ class AppController extends Controller {
 			}
 		}
 		$this->set(compact('authUser','facebookUser','twitterUser','isAdmin','isManager','isUser'));
+		
+		//Redirect the user to the previous page
+		$referer = $this->Session->read('Auth.redirect');
+		if($referer){
+			$this->redirect($referer);
+			exit;
+		}
 		
 		//$this->Auth->allow('*');
 	}
