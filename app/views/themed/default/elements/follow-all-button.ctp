@@ -1,3 +1,10 @@
+<style type="text/css">
+#follow-all-ajax-status{
+	position: relative;
+	text-align: right;
+	clear: both;
+}
+</style>
 <div id="follow-all-btn">
 <?php 
 	if(empty($user_ids)) $user_ids = null;
@@ -40,6 +47,7 @@
 <div id="follow-all-ajax-status" style="display:none" class="ajax-status-small"><?php echo $this->Html->image('ajax-loader.gif',array('Loading...')); ?></div>
 <div class="clear"></div>
 <script type="text/javascript">
+var follow_all_user_id_data = <?php echo json_encode($user_ids); ?>;
 /**
  * Show the ajax loader
  * @param int id The div id to target
@@ -67,8 +75,8 @@ function hideFollowAllLoader(){
  * 
 */
 function showUnfollowAll(){
-	$('#follow-all').hide();
-	$('#unfollow-all').show();
+	$('#follow-all-btn #follow-all').hide();
+	$('#follow-all-btn #unfollow-all').show();
 	
 	//Show the unfollow button on all user blocks
 	$('.unfollow').show();
@@ -83,8 +91,8 @@ function showUnfollowAll(){
  * 
 */
 function showFollowAll(){
-	$('#follow-all').show();
-	$('#unfollow-all').hide();
+	$('#follow-all-btn #follow-all').show();
+	$('#follow-all-btn #unfollow-all').hide();
 	
 	//Show the follow button on all user blocks
 	$('.unfollow').hide();
@@ -97,6 +105,16 @@ function showFollowAll(){
 function updateFollowUnfollowAll(data){
 	console.log(data);
 	var data = data.data;
+	
+	//Update the data so that the next click sends the right info
+	if(data.followed_user_ids){
+		follow_all_user_id_data.followed_user_ids = data.followed_user_ids;
+		follow_all_user_id_data.unfollowed_user_ids = '';
+	}else if(data.unfollowed_user_ids){
+		follow_all_user_id_data.unfollowed_user_ids = data.unfollowed_user_ids;
+		follow_all_user_id_data.followed_user_ids = '';
+	}
+	
 	hideFollowAllLoader(); //Hide that ajax loader
 	if(data.following > 0){
 		showUnfollowAll();
@@ -114,8 +132,7 @@ function updateFollowUnfollowAll(data){
  * 
 */
 function submit_follow_all(){
-	var data = <?php echo json_encode($user_ids); ?>;
-	
+	var data = follow_all_user_id_data;
 	$.ajax({
 		url:"\/ajax\/user_followings\/follow_all",
 		type:'POST',
@@ -138,8 +155,7 @@ function submit_follow_all(){
  * 
 */
 function submit_unfollow_all(){
-	var data = <?php echo json_encode($user_ids); ?>;
-	
+	var data = follow_all_user_id_data;
 	$.ajax({
 		url:"\/ajax\/user_followings\/unfollow_all",
 		type:'POST',

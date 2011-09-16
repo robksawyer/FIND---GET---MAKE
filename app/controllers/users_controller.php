@@ -164,9 +164,14 @@ class UsersController extends AppController {
 																			'contain'=>array('Product'=>array('Attachment','limit'=>'3','order'=>'created DESC'))
 																			));
 																			
-
+				$result_ids = Set::extract('/User/id', $results);
+				debug($result_ids);
 				$query = $this->passedArgs['search'];
-				$this->set(compact('results','query')); //Set the results for the render action
+				$user_id = $this->Auth->user('id');
+				$user_ids = $this->User->UserFollowing->getFollowedUnfollowedUserIds($user_id,$result_ids);
+				debug($user_ids);
+				
+				$this->set(compact('results','query','user_ids')); //Set the results for the render action
 				$this->render('/users/ajax_find_users');
 				
 				//$data['query'] = $this->passedArgs['search'];
@@ -1151,7 +1156,6 @@ class UsersController extends AppController {
 	 * 
 	*/
 	public function find(){
-		Configure::write('debug',2);
 		//Do a check to see if the user's account is linked
 		$access_token = $this->Session->read('FB.Token');
 		$Facebook = new FB();
@@ -1169,33 +1173,15 @@ class UsersController extends AppController {
 			$Facebook->setAccessToken($access_token);
 		}
 		
-		$favorites = $this->User->StaffFavorite->getTenUserIds();
+		
 		$staff_favorites_details = $this->User->StaffFavorite->getTenUsers();
-		$user_id = $this->Auth->user('id');
-		$this->User->id = $user_id;
-		$follower_ids = $this->User->find('all',array('conditions'=>array(
-														'User.id'=>$user_id
-														),
-												'fields'=>array('User.username'),
-												'contain'=>array('UserFollowing'=>array('fields'=>'UserFollowing.follow_user_id'))
-										));
-		$follower_ids = Set::extract('/UserFollowing/follow_user_id', $follower_ids); //Extract only the friends (followed users)
-		$followed_user_ids = array();
-		//Return the results that the user isn't following
-		foreach($follower_ids as $follower_id){
-			if(in_array($follower_id,$favorites)){
-				$followed_user_ids[] = $follower_id;
-			}
-		}
-		$unfollowed_user_ids = array_diff($favorites,$follower_ids);
-		$unfollowed_user_ids = array_values($unfollowed_user_ids); //Reset the array keys
-		$user_ids = array();
-		//You have to send the items as a string, otherwise it'll fail to send the ajax request
-		$user_ids['unfollowed_user_ids'] = implode('&',$unfollowed_user_ids);
-		$user_ids['followed_user_ids'] = implode('&',$followed_user_ids);
-		$this->set(compact('user_ids','staff_favorites_details'));
-	}
 	
+		$favorites = $this->User->StaffFavorite->getTenUserIds();
+		$user_id = $this->Auth->user('id');
+		$user_ids = $this->User->UserFollowing->getFollowedUnfollowedUserIds($user_id,$favorites);
+		$this->set(compact('user_ids','staff_favorites_details'));
+		
+	}
 	
 	/**
 	 * Handles finding a user's Twitter friends that are also users of the site

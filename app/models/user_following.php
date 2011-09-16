@@ -168,4 +168,39 @@ class UserFollowing extends AppModel {
 	public function followAll($auth_user_id=null,$user_ids=null){
 		//if($this->save)
 	}
+	
+	/**
+	 * Handles setting up an array that contains the current followed and unfollowed users of the auth user.
+	 * @param int user_id The user id to pull results from 
+	 * @param Array unfollowed_user_compare_ids The ids to check against
+	 * @return Array user_ids The user ids that the auth user is following/not following
+	 * 
+	*/
+	public function getFollowedUnfollowedUserIds($user_id=null,$unfollowed_user_compare_ids=null){
+		$follower_ids = $this->User->find('all',array('conditions'=>array(
+														'User.id'=>$user_id
+														),
+												'fields'=>array('User.username'),
+												'contain'=>array('UserFollowing'=>array('fields'=>'UserFollowing.follow_user_id'))
+										));
+		$follower_ids = Set::extract('/UserFollowing/follow_user_id', $follower_ids); //Extract only the friends (followed users)
+		$followed_user_ids = array();
+		//Return the results that the user isn't following
+		foreach($follower_ids as $follower_id){
+			//Make sure to not add the auth user's id
+			if($user_id != $follower_id){
+				$followed_user_ids[] = $follower_id;	
+			}
+		}
+		$unfollowed_user_ids = array_diff($unfollowed_user_compare_ids,$follower_ids);
+		//Remove the auth user from the array if this user exists
+		$auth_user_key = array_search($user_id,$unfollowed_user_ids);
+		if(isset($auth_user_key)) unset($unfollowed_user_ids[$auth_user_key]);
+		$unfollowed_user_ids = array_values($unfollowed_user_ids); //Reset the array keys
+		$user_ids = array();
+		//You have to send the items as a string, otherwise it'll fail to send the ajax request
+		$user_ids['unfollowed_user_ids'] = implode('&',$unfollowed_user_ids);
+		$user_ids['followed_user_ids'] = implode('&',$followed_user_ids);
+		return $user_ids;
+	}
 }

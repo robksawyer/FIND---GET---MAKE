@@ -30,7 +30,7 @@ class UserFollowingsController extends AppController {
 	*/
 	public function ajax_follow_all(){
 		$this->UserFollowing->recursive = -1;
-		Configure::write('debug', 2);
+		Configure::write('debug', 0);
 		if($this->RequestHandler->isAjax()) {
 			$this->autoLayout = false;
 			$this->autoRender = false;
@@ -48,15 +48,35 @@ class UserFollowingsController extends AppController {
 			if(!empty($unfollowed_users)){
 				$counter = 0;
 				$saveData = array();
+				//Find all of the followed users to make sure that the user isn't already following someone
+				$current_follow_user_ids = $this->UserFollowing->find('list',array(
+																'conditions'=>array('UserFollowing.user_id'=>$user['User']['id']),
+																'fields'=>array('UserFollowing.follow_user_id')
+															));
+				$current_follow_user_ids = array_values($current_follow_user_ids);
 				foreach($unfollowed_users as $follow_user){
-					$saveData['UserFollowing'][$counter] = array();
-					$saveData['UserFollowing'][$counter]['user_id'] = $user['User']['id'];
-					$saveData['UserFollowing'][$counter]['follow_user_id'] = $follow_user;
-					$counter++;
+					//Check to make sure the user to be followed isn't the auth user
+					if($follow_user != $user['User']['id']){
+						if(!in_array($follow_user,$current_follow_user_ids)){
+							$saveData['UserFollowing'][$counter] = array();
+							$saveData['UserFollowing'][$counter]['user_id'] = $user['User']['id'];
+							$saveData['UserFollowing'][$counter]['follow_user_id'] = $follow_user;
+							$current_follow_user_ids[] = $follow_user; //Add the follower id to the stack 
+							$counter++;
+						}
+					}
 				}
-				if($this->UserFollowing->saveAll($saveData['UserFollowing'])){
-					//The save was successful
-					$data = array('following'=>1,'user_id'=>$user['User']['id']);
+				if(!empty($saveData)){
+					if($this->UserFollowing->saveAll($saveData['UserFollowing'])){
+						//The save was successful
+						//Reset the follow/unfollow count
+						$user_id = $this->Auth->user('id');
+						$user_ids = $this->UserFollowing->getFollowedUnfollowedUserIds($user_id,$unfollowed_users);
+						$data = array('following'=>1,'user_id'=>$user['User']['id'],'followed_user_ids'=>$user_ids['followed_user_ids']);
+						$this->AjaxHandler->response(true, $data);
+					}
+				}else{
+					$data = array('following'=>1,'user_id'=>$user['User']['id'],'error'=>'Nothing changed.');
 					$this->AjaxHandler->response(true, $data);
 				}
 			}
@@ -74,7 +94,7 @@ class UserFollowingsController extends AppController {
 	*/
 	public function ajax_unfollow_all(){
 		$this->UserFollowing->recursive = -1;
-		Configure::write('debug', 2);
+		Configure::write('debug', 0);
 		if($this->RequestHandler->isAjax()) {
 			$this->autoLayout = false;
 			$this->autoRender = false;
@@ -94,16 +114,27 @@ class UserFollowingsController extends AppController {
 																							"UserFollowing.user_id"=>$user['User']['id'],
 																							"AND"=>array(
 																									'UserFollowing.follow_user_id'=>$followed_users
+																								),
+																							"NOT"=>array(
+																									'UserFollowing.follow_user_id'=>$user['User']['id']
 																								)
 																							),
 																			'fields'=>'UserFollowing.id'
 																		)
 																);
 				$user_following_ids = array_values($user_following_ids);
-				$conditions = array('UserFollowing.id'=>$user_following_ids);
-				if($this->UserFollowing->deleteAll($conditions)){
-					//The save was successful
-					$data = array('following'=>0,'user_id'=>$user['User']['id']);
+				if(!empty($user_following_ids)){
+					$conditions = array('UserFollowing.id'=>$user_following_ids);
+					if($this->UserFollowing->deleteAll($conditions)){
+						//The save was successful
+						//Reset the follow/unfollow count
+						$user_id = $this->Auth->user('id');
+						$user_ids = $this->UserFollowing->getFollowedUnfollowedUserIds($user_id,$followed_users);
+						$data = array('following'=>0,'user_id'=>$user['User']['id'],'unfollowed_user_ids'=>$user_ids['unfollowed_user_ids']);
+						$this->AjaxHandler->response(true, $data);
+					}
+				}else{
+					$data = array('following'=>0,'user_id'=>$user['User']['id'],'error'=>'Nothing changed.');
 					$this->AjaxHandler->response(true, $data);
 				}
 			}
