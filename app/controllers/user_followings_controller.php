@@ -3,6 +3,8 @@ class UserFollowingsController extends AppController {
 
 	var $name = 'UserFollowings';
 	
+	var $components = array('Email');
+	
 	public function beforeFilter(){
 		parent::beforeFilter();
 		
