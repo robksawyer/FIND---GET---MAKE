@@ -3,6 +3,7 @@ class VotesController extends AppController {
 
 	var $name = 'Votes';
 	
+	var $components = array('Email');
 	/**
 	 * 
 	 * @param 
@@ -82,6 +83,9 @@ class VotesController extends AppController {
 					//Update the feed with the latest liked item.
 					$this->Vote->updateFeed($lastInsertId);
 					
+					//Send email notification
+					$this->sendNotificationEmail($model,$model_id);
+					
 					$types = $this->setLikesDislikes($model,$model_id,'up');
 					$this->AjaxHandler->response(true, $types);
 				}else{
@@ -99,6 +103,9 @@ class VotesController extends AppController {
 				
 				//Update the feed with the latest liked item.
 				$this->Vote->updateFeed($votes['Vote']['id']);
+				
+				//Send email notification
+				$this->sendNotificationEmail($model,$model_id);
 				
 				$types = $this->setLikesDislikes($model,$model_id,'up');
 				$this->AjaxHandler->response(true, $types);
@@ -413,17 +420,52 @@ class VotesController extends AppController {
 	/******************************** NOTIFICATIONS *******************************************/
 	
 	/**
-	 * Sends an email when someone likes an item
-	 * @param Int user_id The id of the user that added the product
+	 * Helper method to send email notifications
+	 * @param String model The model to target
+	 * @param Int model_id The model id to target
 	 * @return 
 	 * 
 	*/
-	protected function send_email_on_product_like($product_id=null){
-		Configure::write('debug', 2);
+	protected function sendNotificationEmail($model,$model_id){
+		$model_lower = strtolower($model);
+		switch($model_lower){
+			
+			case "product":
+				$this->send_email_on_product_like($model,$model_id);
+				break;
+
+			case "source":
+				$this->send_email_on_source_like($model,$model_id);
+				break;
+				
+			case "inspiration":
+				$this->send_email_on_inspiration_like($model,$model_id);
+				break;
+			
+			case "collection":
+				$this->send_email_on_collection_like($model,$model_id);
+				break;
+			
+			default:
+				break;
+		}
+	}
+	
+	
+	/**
+	 * Sends an email when someone likes an item
+	 * @param String model The model that was liked
+	 * @param Int model_id The model id that was liked
+	 * @return 
+	 * 
+	*/
+	protected function send_email_on_product_like($model=null,$model_id=null){
+		Configure::write('debug', 0);
 		//Find the product that the user wanted or has
-		$product = $this->Vote->Product->find('first',array('conditions'=>array('Product.id'=>$product_id),'contain'=>array('User','Attachment')));
-		if(!empty($product)){
-			if($product['User']['email_on_product_have_want'] == 1){
+		$item = $this->Vote->$model->find('first',array('conditions'=>array($model.'.id'=>$model_id),'contain'=>array('User','Attachment')));
+		if(!empty($item)){
+			$model_lower = strtolower($model);
+			if($item['User']['email_on_like'] == 1){
 				$user = $this->Auth->user();
 				
 				$site_name = $this->Toolbar->settings['site_name'];
@@ -433,11 +475,11 @@ class VotesController extends AppController {
 				$this->Email->from = $site_name .' <'. $this->Toolbar->settings['site_email'] .'>';
 				
 				if(!empty($user['User']['fullname'])){
-					$this->Email->subject = $site_name.' - '.__($user['User']['fullname'].' just started following you.', true);
+					$this->Email->subject = $site_name.' - '.__($user['User']['fullname'].' just liked a product that you added.', true);
 				}else{
-					$this->Email->subject = $site_name.' - '.__($user['User']['username'].' just started following you.', true);
+					$this->Email->subject = $site_name.' - '.__($user['User']['username'].' just liked a product that you added.', true);
 				}
-				$this->Email->template = 'email_on_product_like'; // note no '.ctp'
+				$this->Email->template = 'email_on_'.$model_lower.'_like'; // note no '.ctp'
 
 				//Send as 'html', 'text' or 'both' (default is 'text')
 				$this->Email->sendAs = 'html'; // because we like to send pretty mail
@@ -448,14 +490,167 @@ class VotesController extends AppController {
 				
 				//debug($smtp_errors);
 				//Set view variables as normal
-				$this->set(compact('user','site_name','recent_products','product','ownership_type','smtp_errors'));
+				$this->set(compact('user','site_name','recent_products','item','smtp_errors'));
 				
 				// uncomment this to debug EmailComponent instead of sending  
 				//$this->Email->delivery = 'debug';
 				
 				//Do not pass any args to send()
 				if($this->Email->send()){
-					CakeLog::write('activity','Email on product - '.$user['User']['username']. ' '.$ownership_type.' '. $product['User']['username']);
+					CakeLog::write('activity','Email on '.$model_lower.' - '.$user['User']['username']. ' liked '. $item[$model]['name']);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Sends an email when someone likes an item
+	 * @param String model The model that was liked
+	 * @param Int model_id The model id that was liked
+	 * @return 
+	 * 
+	*/
+	protected function send_email_on_source_like($model=null,$model_id=null){
+		Configure::write('debug', 0);
+		//Find the product that the user wanted or has
+		$item = $this->Vote->$model->find('first',array('conditions'=>array($model.'.id'=>$model_id),'contain'=>array('User','Attachment')));
+		if(!empty($item)){
+			$model_lower = strtolower($model);
+			if($item['User']['email_on_like'] == 1){
+				$user = $this->Auth->user();
+				
+				$site_name = $this->Toolbar->settings['site_name'];
+				
+				//When auth user follows a user, send an email to the user 
+				$this->Email->to = $user['User']['email'];
+				$this->Email->from = $site_name .' <'. $this->Toolbar->settings['site_email'] .'>';
+				
+				if(!empty($user['User']['fullname'])){
+					$this->Email->subject = $site_name.' - '.__($user['User']['fullname'].' just liked a source that you added.', true);
+				}else{
+					$this->Email->subject = $site_name.' - '.__($user['User']['username'].' just liked a source that you added.', true);
+				}
+				$this->Email->template = 'email_on_'.$model_lower.'_like'; // note no '.ctp'
+
+				//Send as 'html', 'text' or 'both' (default is 'text')
+				$this->Email->sendAs = 'html'; // because we like to send pretty mail
+				
+				$recent_products = $this->Vote->User->Product->getThreeFromUser($user['User']['id']);
+				/* Check for SMTP errors. */
+			    $smtp_errors = $this->Email->smtpError;
+				
+				//debug($smtp_errors);
+				//Set view variables as normal
+				$this->set(compact('user','site_name','recent_products','item','smtp_errors'));
+				
+				// uncomment this to debug EmailComponent instead of sending  
+				//$this->Email->delivery = 'debug';
+				
+				//Do not pass any args to send()
+				if($this->Email->send()){
+					CakeLog::write('activity','Email on '.$model_lower.' - '.$user['User']['username']. ' liked '. $item[$model]['name']);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Sends an email when someone likes an item
+	 * @param String model The model that was liked
+	 * @param Int model_id The model id that was liked
+	 * @return 
+	 * 
+	*/
+	protected function send_email_on_collection_like($model=null,$model_id=null){
+		Configure::write('debug', 0);
+		//Find the product that the user wanted or has
+		$item = $this->Vote->$model->find('first',array('conditions'=>array($model.'.id'=>$model_id),'contain'=>array('User','Product'=>array('Attachment'))));
+		if(!empty($item)){
+			$model_lower = strtolower($model);
+			if($item['User']['email_on_like'] == 1){
+				$user = $this->Auth->user();
+
+				$site_name = $this->Toolbar->settings['site_name'];
+
+				//When auth user follows a user, send an email to the user 
+				$this->Email->to = $user['User']['email'];
+				$this->Email->from = $site_name .' <'. $this->Toolbar->settings['site_email'] .'>';
+
+				if(!empty($user['User']['fullname'])){
+					$this->Email->subject = $site_name.' - '.__($user['User']['fullname'].' just liked a collection that you added.', true);
+				}else{
+					$this->Email->subject = $site_name.' - '.__($user['User']['username'].' just liked a collection that you added.', true);
+				}
+				$this->Email->template = 'email_on_'.$model_lower.'_like'; // note no '.ctp'
+
+				//Send as 'html', 'text' or 'both' (default is 'text')
+				$this->Email->sendAs = 'html'; // because we like to send pretty mail
+
+				$recent_products = $this->Vote->User->Product->getThreeFromUser($user['User']['id']);
+				/* Check for SMTP errors. */
+			    $smtp_errors = $this->Email->smtpError;
+
+				//debug($smtp_errors);
+				//Set view variables as normal
+				$this->set(compact('user','site_name','recent_products','item','smtp_errors'));
+
+				// uncomment this to debug EmailComponent instead of sending  
+				//$this->Email->delivery = 'debug';
+
+				//Do not pass any args to send()
+				if($this->Email->send()){
+					CakeLog::write('activity','Email on '.$model_lower.' - '.$user['User']['username']. ' liked '. $item[$model]['name']);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Sends an email when someone likes an item
+	 * @param String model The model that was liked
+	 * @param Int model_id The model id that was liked
+	 * @return 
+	 * 
+	*/
+	protected function send_email_on_inspiration_like($model=null,$model_id=null){
+		Configure::write('debug', 0);
+		//Find the product that the user wanted or has
+		$item = $this->Vote->$model->find('first',array('conditions'=>array($model.'.id'=>$model_id),'contain'=>array('User','Attachment')));
+		if(!empty($item)){
+			$model_lower = strtolower($model);
+			if($item['User']['email_on_like'] == 1){
+				$user = $this->Auth->user();
+				
+				$site_name = $this->Toolbar->settings['site_name'];
+				
+				//When auth user follows a user, send an email to the user 
+				$this->Email->to = $user['User']['email'];
+				$this->Email->from = $site_name .' <'. $this->Toolbar->settings['site_email'] .'>';
+				
+				if(!empty($user['User']['fullname'])){
+					$this->Email->subject = $site_name.' - '.__($user['User']['fullname'].' just liked an inspiration that you added.', true);
+				}else{
+					$this->Email->subject = $site_name.' - '.__($user['User']['username'].' just liked an inspiration that you added.', true);
+				}
+				$this->Email->template = 'email_on_'.$model_lower.'_like'; // note no '.ctp'
+
+				//Send as 'html', 'text' or 'both' (default is 'text')
+				$this->Email->sendAs = 'html'; // because we like to send pretty mail
+				
+				$recent_products = $this->Vote->User->Product->getThreeFromUser($user['User']['id']);
+				/* Check for SMTP errors. */
+			    $smtp_errors = $this->Email->smtpError;
+				
+				//debug($smtp_errors);
+				//Set view variables as normal
+				$this->set(compact('user','site_name','recent_products','item','smtp_errors'));
+				
+				// uncomment this to debug EmailComponent instead of sending  
+				//$this->Email->delivery = 'debug';
+				
+				//Do not pass any args to send()
+				if($this->Email->send()){
+					CakeLog::write('activity','Email on '.$model_lower.' - '.$user['User']['username']. ' liked '. $item[$model]['name']);
 				}
 			}
 		}

@@ -24,20 +24,6 @@
 			</div>
 		</div>
 		<!--- END TAGGABLE IMAGE SECTION -->
-		<div id="right-sidebar">
-			<?php
-			echo $this->element('like-dislike',array('model_id'=>$inspiration['Inspiration']['id'],
-																	'model'=>'Inspiration',
-																	'cache'=>false
-																	));
-			?>
-			<div class="added-by" style="text-align:center">
-				<?php
-					echo $this->element('avatar',array('cache'=>false,'user'=>$inspiration,'height'=>'32'));
-			 		echo "Added by ".$this->Html->link($inspiration['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$inspiration['User']['username'])); 
-				?>
-			</div>
-		</div>
 		<div class="clear"></div>
 	</div>
 	<!-- END LEFT CONTAINER -->
@@ -123,6 +109,21 @@
 		<div class="clear"></div>
 	</div>
 	<!-- END RIGHT CONTAINER -->
+	
+	<div id="right-sidebar">
+		<?php
+		echo $this->element('like-dislike',array('model_id'=>$inspiration['Inspiration']['id'],
+																'model'=>'Inspiration',
+																'cache'=>false
+																));
+		?>
+		<div class="added-by" style="text-align:center">
+			<?php
+				echo $this->element('avatar',array('cache'=>false,'user'=>$inspiration,'height'=>'32'));
+		 		echo "Added by ".$this->Html->link($inspiration['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$inspiration['User']['username'])); 
+			?>
+		</div>
+	</div>
 </div>
 <div class="clear"></div>
 <div class="bar">&nbsp;</div>

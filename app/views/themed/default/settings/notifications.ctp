@@ -25,11 +25,8 @@
 			<?php echo $this->Form->label(__('Feed Notifications', true)); ?>
 			<?php
 				echo $this->Form->input('notify_on_follow',array('label'=>'Notify when someone follows you','type'=>'checkbox'));
-				echo $this->Form->input('notify_on_inspiration_like',array('label'=>'Notify when someone likes an inspiration you found','type'=>'checkbox'));
-				echo $this->Form->input('notify_on_collection_like',array('label'=>'Notify when someone likes a collection you found','type'=>'checkbox'));
-				echo $this->Form->input('notify_on_product_like',array('label'=>'Notify when someone likes a product you found','type'=>'checkbox'));
-				echo $this->Form->input('notify_on_source_like',array('label'=>'Notify when someone likes a source you found','type'=>'checkbox'));
-				echo $this->Form->input('notify_on_ufo_like',array('label'=>'Notify when someone likes a ufo you found','type'=>'checkbox'));
+				echo $this->Form->input('notify_on_like',array('label'=>'Notify when someone likes an inspiration you found','type'=>'checkbox'));
+				echo $this->Form->input('notify_on_product_have_want',array('type'=>'checkbox','label'=>'Notify when someone has or wants a product that you\'ve added'));
 			?>
 		</div>
 		

@@ -69,7 +69,7 @@ class Source extends AppModel {
 		'Vote' => array(
 			'className' => 'Vote',
 			'foreignKey' => 'model_id',
-			'conditions' => array('Vote.model' => 'Product'),
+			'conditions' => array('Vote.model' => 'Source'),
 			'dependent' => true,
 			'exclusive' => true
 		),

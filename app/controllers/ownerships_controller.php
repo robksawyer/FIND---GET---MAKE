@@ -351,10 +351,13 @@ class OwnershipsController extends AppController {
 				$this->Email->to = $user['User']['email'];
 				$this->Email->from = $site_name .' <'. $this->Toolbar->settings['site_email'] .'>';
 				
+				if($ownership_type == "want") $ownership_type_nice = "wants";
+				if($ownership_type == "have") $ownership_type_nice = "has";
+				
 				if(!empty($user['User']['fullname'])){
-					$this->Email->subject = $site_name.' - '.__($user['User']['fullname'].' just started following you.', true);
+					$this->Email->subject = $site_name.' - '.__($user['User']['fullname']." $ownership_type_nice a product that you added.", true);
 				}else{
-					$this->Email->subject = $site_name.' - '.__($user['User']['username'].' just started following you.', true);
+					$this->Email->subject = $site_name.' - '.__($user['User']['username']." $ownership_type_nice a product that you added.", true);
 				}
 				$this->Email->template = 'email_on_product_have_want'; // note no '.ctp'
 

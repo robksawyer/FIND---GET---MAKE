@@ -540,9 +540,11 @@ class UsersController extends AppController {
 			$totalProducts = $this->User->Product->getCount($id);
 			if($totalProducts != $user['User']['totalProducts']) $this->User->updateTotalProducts($id);
 			$totalSources = $this->User->Source->getCount($id);
-			if($totalSources != $user['User']['totalSources']) $this->User->updateTotalProducts($id);
+			if($totalSources != $user['User']['totalSources']) $this->User->updateTotalSources($id);
 			$totalInspirations = $this->User->Inspiration->getCount($id);
-			if($totalInspirations != $user['User']['totalInspirations']) $this->User->updateTotalProducts($id);
+			if($totalInspirations != $user['User']['totalInspirations']) $this->User->updateTotalInspirations($id);
+			$totalCollections = $this->User->Collection->getCount($id);
+			if($totalCollections != $user['User']['totalCollections']) $this->User->updateTotalCollections($id);
 			
 			//Check for a local avatar details
 			if(!empty($user['User']['attachment_id'])){

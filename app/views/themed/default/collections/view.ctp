@@ -15,48 +15,54 @@
 <?php
 	echo $this->element('top_actions',array('item'=>$collection,'model'=>'Collection','rate'=>true,'cache'=>false));
 ?>
-<h2><?php  
-		if($collection['Collection']['total_products'] > 1) $ending = "products."; else $ending = "product.";
-		__($collection['Collection']['name']." <span class='includes'>includes ".$collection['Collection']['total_products']." ".$ending."</span>");
-		if(!empty($collection['Collection']['credit'])){
-			echo "<div class='credit'>&mdash;".$collection['Collection']['credit']."</div>";
-		}
-		?></h2>
-	<div id="right-sidebar">
+<div id="right-sidebar">
+	<?php
+	echo $this->element('like-dislike',array('model_id'=>$collection['Collection']['id'],
+															'model'=>'Collection',
+															'cache'=>false
+															));
+	?>
+	<div class="added-by" style="text-align:center">
 		<?php
-		echo $this->element('like-dislike',array('model_id'=>$collection['Collection']['id'],
-																'model'=>'Collection',
-																'cache'=>false
-																));
+			echo $this->element('avatar',array('cache'=>false,'user'=>$collection,'height'=>'32'));
+	 		echo "Added by ".$this->Html->link($collection['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$collection['User']['username'])); 
 		?>
 	</div>
-	<?php if(!empty($collection['Collection']['description'])): ?>
-	<div class="description">
-			<?php echo "<span class='light-grey'>".$collection['Collection']['description']."</span>"; ?>
-			&nbsp;
+</div>
+<div id="left-container">
+	<h2><?php  
+			if($collection['Collection']['total_products'] > 1) $ending = "products."; else $ending = "product.";
+			__($collection['Collection']['name']." <span class='includes'>includes ".$collection['Collection']['total_products']." ".$ending."</span>");
+			if(!empty($collection['Collection']['credit'])){
+				echo "<div class='credit'>&mdash;".$collection['Collection']['credit']."</div>";
+			}
+			?></h2>
+		<?php if(!empty($collection['Collection']['description'])): ?>
+		<div class="description">
+				<?php echo "<span class='light-grey'>".$collection['Collection']['description']."</span>"; ?>
+				&nbsp;
+		</div>
+		<?php endif; ?>
+		<br/>
+		<div class="sharing">
+		<?php 
+			echo $this->element('share-buttons',array('controller'=>'collections',
+																	'keycode'=>$collection['Collection']['keycode'],
+																	'cache'=>false
+																	));
+			echo $this->element('social-buttons',array(
+																	'controller'=>'collections',
+																	'keycode'=>$collection['Collection']['keycode'],
+																	'cache'=>false
+																	));
+		?>
+		</div>
+		<div class="clear"></div>
+		<?php echo $this->element('tags',array('model'=>$collection,'cache'=>false)); ?>
 	</div>
-	<?php endif; ?>
-	<div class="added-by">
-		<?php echo "Added by ".$this->Html->link($collection['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$collection['User']['username'])); ?>
-	</div>
-	<br/>
-	<div class="sharing">
-	<?php 
-		echo $this->element('share-buttons',array('controller'=>'collections',
-																'keycode'=>$collection['Collection']['keycode'],
-																'cache'=>false
-																));
-		echo $this->element('social-buttons',array(
-																'controller'=>'collections',
-																'keycode'=>$collection['Collection']['keycode'],
-																'cache'=>false
-																));
-	?>
-	</div>
-	<div class="clear"></div>
-	<?php echo $this->element('tags',array('model'=>$collection,'cache'=>false)); ?>
 </div>
 <div class="clear"></div>
+
 <div class="related collection">
 	<?php
 		//Check to see if the inspiration is private. Make sure that the user who owns this isn't viewing it.

@@ -9,37 +9,20 @@
 					$user_name = $user['User']['username'];
 				}
 			?>
-			<h1 style="font-size:20px;margin:40px 0 20px 0;color:#000000;"><?php echo $this->Html->link($user_name,Router::url(array('ajax'=>false,'controller'=>'users','action'=>'profile',$user['User']['username']),true),array('style'=>'color:#ef3f23')); ?> followed you</h1>
+			<h1 style="font-size:20px;margin:40px 0 20px 0;color:#000000;"><?php echo $this->Html->link($user_name,Router::url(array('ajax'=>false,'controller'=>'users','action'=>'profile',$user['User']['username']),true),array('style'=>'color:#ef3f23')); ?> liked the inspiration <?php echo $this->Html->link($item['Inspiration']['name'],Router::url(array('ajax'=>false,'plugin'=>'','controller'=>'inspirations','action'=>'view',$item['Inspiration']['id']),true),array('style'=>'color:#ef3f23')); ?>.</h1>
+			<div style="position:relative;text-align: center;">
 			<?php
-				echo $this->element('email-user-block',array('cache'=>false,'user'=>$user));
+			//Show the image of the source
+			if(!empty($item['Attachment'])):
+			$imagePath = Router::url($item['Attachment'][0]['path_med'],true);
+			echo $this->Html->image($imagePath,array('url'=>Router::url(array('ajax'=>false,'plugin'=>'','controller'=>'inspirations','action'=>'view',$item['Inspiration']['id']),true),
+												'alt'=>$item['Inspiration']['name']
+												)
+						);
+			endif;
 			?>
-			<h3><?php echo $user_name; ?> is followed by <?php echo $followers_known['count']; ?> you know.</h3>
-			<ul style="position: relative;font-size: 12px;left: 5px;color: #999;list-style-type: none;padding-left: 5px;">
-			<?php
-				/*
-					TODO Loop through $followers_known and spit out their avatar images.
-				*/
-				foreach($followers_known['people'] as $followed_user){
-					echo "<li>";
-					echo $this->element('email-avatar',array('cache'=>false,'user'=>$followed_user,'height'=>32));
-					echo "</li>";
-				}
-			?>
-			</ul>
+			</div>
 			<div style="width:100%;clear:both;"></div>
-			<?php
-			if($followers_known['count'] > 15){
-				echo "<div style='position: relative;font-size: 12px;'>";
-				echo $this->Html->link('See all followers',Router::url(array(
-																								'ajax'=>false,
-																								'plugin'=>'',
-																								'controller'=>'user_followings',
-																								'action'=>'followers',$followed_user['User']['username']
-																								),true)
-																						);
-				echo "</div>";
-			}
-			?>
 			<?php if(!empty($recent_products)): ?>
 			<h3 style="color:#000000;"><?php echo $user_name; ?> recently added the following products:</h3>
 			<div style="position: relative;text-align: center;margin: 10px 0 10px 0;">

@@ -19,6 +19,11 @@ function updateLikeDislike(data){
 		$('.liked').hide();
 		$('.dislike').hide();
 		$('.disliked').show();
+	}else{
+		$('.like').show();
+		$('.liked').hide();
+		$('.dislike').show();
+		$('.disliked').hide();
 	}
 	
 	$('.vote-val-like').text(data.likes);
