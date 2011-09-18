@@ -3,6 +3,8 @@ class OwnershipsController extends AppController {
 
 	var $name = 'Ownerships';
 	
+	var $components = array('Email');
+	
 	public function beforeFilter(){
 		parent::beforeFilter();
 		
@@ -13,6 +15,22 @@ class OwnershipsController extends AppController {
 											);
 											
 		$this->AjaxHandler->handle('ajax_set_ownership');
+		
+		/* SMTP Options */
+		$this->Email->smtpOptions = array(
+			'port'=>'25',
+			'timeout'=>'30',
+			'host' => 's64785.gridserver.com',
+			'username'=>'mailer@find-get-make.com',
+			'password'=>'fgmmailer',
+			'client' => 's64785.gridserver.com'
+		);
+
+	    /* Set delivery method */
+	    $this->Email->delivery = 'smtp';
+		
+		$this->Email->replyTo = '<noreply@'.env('HTTP_HOST').'>'; 
+		$this->Email->return = '<noreply@'.env('HTTP_HOST').'>';
 		
 	}
 	
@@ -46,8 +64,16 @@ class OwnershipsController extends AppController {
 				
 				//Double check to make sure the user is still logged in.
 				if($user_id){
-					$data = $this->Ownership->getFirst($user_id,$model,$model_id);
 					
+					//Return the type of ownership that was updated
+					$type_niceName = '';
+					for($i=0;$i<count($ownership_types);$i++){
+						if($ownership_types[$i]==$this->data['Ownership']['ownership']){
+							$type_niceName = $niceNames[$i];
+						}
+					}
+					
+					$data = $this->Ownership->getFirst($user_id,$model,$model_id);
 					//Make sure the user only has one want it, had it, or have it.
 					if(!empty($data)){
 						//Update an existing ownership for this user
@@ -72,6 +98,11 @@ class OwnershipsController extends AppController {
 						
 						if($this->Ownership->save()){
 							//The save was successful
+							
+							//Send a notification email
+							$this->send_email_on_product_have_want($model_id,$type_niceName);
+							
+							
 						}else{
 							$this->AjaxHandler->response(false, 'There was a problem saving your request. Please, try again.', 0);
 							$this->AjaxHandler->respond();
@@ -98,6 +129,10 @@ class OwnershipsController extends AppController {
 						}
 						if($this->Ownership->save()){
 							//The save was successful
+							
+							//Send a notification email
+							$this->send_email_on_product_have_want($model_id,$type_niceName);
+							
 						}else{
 							$this->AjaxHandler->response(false, 'There was a problem saving your request. Please, try again.', 0);
 							$this->AjaxHandler->respond();
@@ -105,13 +140,6 @@ class OwnershipsController extends AppController {
 						}
 					}
 					
-					//Return the type of ownership that was updated
-					$type_niceName = '';
-					for($i=0;$i<count($ownership_types);$i++){
-						if($ownership_types[$i]==$this->data['Ownership']['ownership']){
-							$type_niceName = $niceNames[$i];
-						}
-					}
 					//Return the total counts for each type
 					$total_who_have = $this->getHaveCount($model,$model_id);
 					$total_who_want = $this->getWantCount($model,$model_id);
@@ -123,8 +151,7 @@ class OwnershipsController extends AppController {
 										'total_who_had'=>$total_who_had,
 										'ownership_type'=>$type_niceName
 										);
-									
-					//return json_encode($return_data);
+										
 					$this->AjaxHandler->response(true, $return_data);
 					$this->AjaxHandler->respond();
 					
@@ -300,5 +327,59 @@ class OwnershipsController extends AppController {
 	public function getType($user_id=null,$model=null,$model_id=null){
 		return $this->Ownership->getOwnershipType($user_id,$model,$model_id);
 	}
+	
+	/******************************** NOTIFICATIONS *******************************************/
+	
+	/**
+	 * Sends an email when someone wants or has an item
+	 * @param Int user_id The id of the user that added the product
+	 * @param String ownership_type What the user that wanted or has the product
+	 * @return 
+	 * 
+	*/
+	protected function send_email_on_product_have_want($product_id=null,$ownership_type=null){
+		Configure::write('debug', 0);
+		//Find the product that the user wanted or has
+		$product = $this->Ownership->Product->find('first',array('conditions'=>array('Product.id'=>$product_id),'contain'=>array('User','Attachment')));
+		if(!empty($product)){
+			if($product['User']['email_on_product_have_want'] == 1){
+				$user = $this->Auth->user();
+				
+				$site_name = $this->Toolbar->settings['site_name'];
+				
+				//When auth user follows a user, send an email to the user 
+				$this->Email->to = $user['User']['email'];
+				$this->Email->from = $site_name .' <'. $this->Toolbar->settings['site_email'] .'>';
+				
+				if(!empty($user['User']['fullname'])){
+					$this->Email->subject = $site_name.' - '.__($user['User']['fullname'].' just started following you.', true);
+				}else{
+					$this->Email->subject = $site_name.' - '.__($user['User']['username'].' just started following you.', true);
+				}
+				$this->Email->template = 'email_on_product_have_want'; // note no '.ctp'
+
+				//Send as 'html', 'text' or 'both' (default is 'text')
+				$this->Email->sendAs = 'html'; // because we like to send pretty mail
+				
+				$recent_products = $this->Ownership->User->Product->getThreeFromUser($user['User']['id']);
+				/* Check for SMTP errors. */
+			    $smtp_errors = $this->Email->smtpError;
+				
+				//debug($smtp_errors);
+				//Set view variables as normal
+				$this->set(compact('user','site_name','recent_products','product','ownership_type','smtp_errors'));
+				
+				// uncomment this to debug EmailComponent instead of sending  
+				//$this->Email->delivery = 'debug';
+				
+				//Do not pass any args to send()
+				if($this->Email->send()){
+					CakeLog::write('activity','Email on product - '.$user['User']['username']. ' '.$ownership_type.' '. $product['User']['username']);
+				}
+			}
+		}
+	}
+	
+	/******************************** END NOTIFICATIONS *******************************************/
 	
 }

@@ -205,6 +205,7 @@ class Source extends AppModel {
 	 * 
 	*/	
 	public function afterSave($created){
+		$this->recursive = 1;
 		if($created){
 			//Update the total count for the user
 			$last = $this->read(null,$this->id);

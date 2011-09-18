@@ -144,6 +144,14 @@ class AppController extends Controller {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		
+		//Cookie settings
+		//$this->Cookie->name = 'FindGetMake';
+		//$this->Cookie->time =  '+1 month';  // or '1 hour'
+		//$this->Cookie->path = '/find_get_make/preferences/';
+		//$this->Cookie->domain = 'example.com';
+		//$this->Cookie->secure = false;  //i.e. only sent if using secure HTTPS
+		//$this->Cookie->key = Configure::read('Security.salt');
+		
 		//Facebook API Properties
 		$this->Connect->createUser = false;
 		
@@ -167,15 +175,13 @@ class AppController extends Controller {
 			//Custom settings for AutoLogin component
 			//http://bakery.cakephp.org/articles/milesj/2009/07/05/autologin-component-an-auth-remember-me-feature
 			// AutoLogin settings
+			$this->AutoLogin->cookieName = 'FindGetMake';
+			$this->AutoLogin->expires = '+1 month';
 			$this->AutoLogin->settings = array(
-				'admin'=>false,
-				'plugin' => '',
-				'controller' => 'users',
+				'controller' => 'Users',
 				'loginAction' => 'login',
 				'logoutAction' => 'logout'
 			);
-			$this->AutoLogin->cookieName = 'FindGetMake';
-			$this->AutoLogin->expires = '+1 month';
 			
 		}
 		
@@ -193,9 +199,6 @@ class AppController extends Controller {
 				}
 			}
 		}
-		
-		//Cookie settings
-		$this->Cookie->key = Configure::read('Security.salt');
 		
 		// Initialize
 		$this->Toolbar->initForum();

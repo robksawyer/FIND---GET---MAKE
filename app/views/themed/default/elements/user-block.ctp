@@ -1,5 +1,6 @@
 <div class="follower">
-	<?php echo $this->element('avatar',array('cache'=>false,'user'=>$user,'height'=>82,'follow'=>true)); ?>
+	<?php if(empty($follow)) $follow = true; ?>
+	<?php echo $this->element('avatar',array('cache'=>false,'user'=>$user,'height'=>82,'follow'=>$follow)); ?>
 	<ul class="follower-details">
 		<li class="username"><?php echo $this->Html->link($user['User']['username'],array('plugin'=>'','controller'=>'users','action'=>'profile',$user['User']['username']))?></li>
 		<li><?php 

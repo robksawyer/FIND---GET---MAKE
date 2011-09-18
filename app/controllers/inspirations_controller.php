@@ -22,12 +22,12 @@ class InspirationsController extends AppController {
 		parent::beforeFilter();
 		
 		//Make certain pages public
-		$this->Auth->allowedActions = array('index','view','userInspirations');
+		$this->Auth->allowedActions = array('index','view','userInspirations','getProfileData');
 		
 		//Disable the Security component for certain actions
-		if(isset($this->Security) && $this->action == 'addProducts'){
+		/*if(isset($this->Security) && $this->action == 'addProducts'){
 			$this->Security->enabled = false;
-		}
+		}*/
 		
 		//$this->passedArgs['comment_view_type'] = 'flat';
 		
@@ -37,7 +37,7 @@ class InspirationsController extends AppController {
 		$this->Uploader->tempDir = 'media/transfer/img/inspirations/';
 		//$this->Uploader->mime('image', 'gif', 'image/gif');
 		//$this->Uploader->maxNameLength = 50;
-		$this->Auth->allow('userInspirations','getProfileData');
+		//$this->Auth->allow('userInspirations','getProfileData');
 		$this->Auth->deny('view');
 	}
 	

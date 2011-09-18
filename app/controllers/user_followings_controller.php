@@ -13,6 +13,22 @@ class UserFollowingsController extends AppController {
 											
 		$this->AjaxHandler->handle('ajax_followUserID','ajax_unfollowUserID','ajax_follow_all','ajax_unfollow_all');
 		
+		/* SMTP Options */
+		$this->Email->smtpOptions = array(
+			'port'=>'25',
+			'timeout'=>'30',
+			'host' => 's64785.gridserver.com',
+			'username'=>'mailer@find-get-make.com',
+			'password'=>'fgmmailer',
+			'client' => 's64785.gridserver.com'
+		);
+
+	    /* Set delivery method */
+	    $this->Email->delivery = 'smtp';
+		
+		$this->Email->replyTo = '<noreply@'.env('HTTP_HOST').'>'; 
+		$this->Email->return = '<noreply@'.env('HTTP_HOST').'>';
+		
 		/*if(isset($this->Security)){
 			if($this->action == 'ajax_followUserID' || $this->action == 'ajax_unfollowUserID'){
 				$this->Security->enabled = false;
@@ -163,7 +179,7 @@ class UserFollowingsController extends AppController {
 			$user = $this->Auth->user();
 			if(!$user){
 				$this->Session->setFlash(__('You have to login before you can follow users.', true));
-				$this->redirect(array('plugin'=>'','controller'=>'users','action' => 'login'));
+				$this->redirect(array('ajax'=>false,'plugin'=>'','controller'=>'users','action' => 'login'));
 			}
 			
 			//Double check to make sure the user exists
@@ -171,12 +187,19 @@ class UserFollowingsController extends AppController {
 			if(!empty($user_to_follow)){
 				if($user['User']['id'] != $user_id){
 					//Check to see if the record already exists
-					$followRecord = $this->UserFollowing->find('first',array('conditions'=>array('UserFollowing.follow_user_id'=>$user_to_follow['User']['id'],'UserFollowing.user_id'=>$user['User']['id'])));
+					$followRecord = $this->UserFollowing->find('count',array('conditions'=>array(
+																								'UserFollowing.follow_user_id'=>$user_to_follow['User']['id'],
+																								'UserFollowing.user_id'=>$user['User']['id']
+																								)
+																			));
 					if(empty($followRecord)){
 						$this->UserFollowing->create();
 						$this->UserFollowing->set('user_id',$user['User']['id']);
 						$this->UserFollowing->set('follow_user_id',$user_to_follow['User']['id']);
 						if($this->UserFollowing->save()){
+							//Send an email to the person who was just followed
+							$this->send_email_on_follow($user_to_follow['User']['id']);
+							
 							//The save was successful
 							$data = array('following'=>1,'item_id'=>$user_to_follow['User']['id']);
 							$this->AjaxHandler->response(true, $data);
@@ -194,7 +217,6 @@ class UserFollowingsController extends AppController {
 				$this->AjaxHandler->response(false, $data);
 			}
 			
-			
 			$this->AjaxHandler->respond();
 			
 			//Update the user's total followings
@@ -202,9 +224,6 @@ class UserFollowingsController extends AppController {
 			
 			//Update the other user's total followers
 			$this->UserFollowing->User->updateTotalFollowerCount($user_id);
-			
-			//Send an email to the person who was just followed
-			$this->send_email_on_follow($user_to_follow['User']['id']);
 			
 			return;
 		}
@@ -227,8 +246,8 @@ class UserFollowingsController extends AppController {
 			//Get the user logged in
 			$user = $this->Auth->user();
 			if(!$user){
-				$this->Session->setFlash(__('You have to login before you can unfollow users.', true));
-				$this->redirect(array('plugin'=>'','controller'=>'users','action' => 'login'));
+				$this->Session->setFlash(__('You have to login before you can follow users.', true));
+				$this->redirect(array('ajax'=>false,'plugin'=>'','controller'=>'users','action' => 'login'));
 			}
 			
 			//Unfollow the user
@@ -350,13 +369,16 @@ class UserFollowingsController extends AppController {
 	 * 
 	*/
 	protected function send_email_on_follow($followed_user_id=null){
+		Configure::write('debug', 0);
 		$followed_user = $this->UserFollowing->User->read(null,$followed_user_id);
-		if($followed_user['User']['email_on_follow'] == 1){
-			$user = $this->Auth->user();
-			if(!empty($followed_user)){
+		
+		if(!empty($followed_user)){
+			if($followed_user['User']['email_on_follow'] == 1){
+				$user = $this->Auth->user();
+				
 				$site_name = $this->Toolbar->settings['site_name'];
+				
 				//When auth user follows a user, send an email to the user 
-
 				$this->Email->to = $followed_user['User']['email'];
 				$this->Email->from = $site_name .' <'. $this->Toolbar->settings['site_email'] .'>';
 				
@@ -367,17 +389,34 @@ class UserFollowingsController extends AppController {
 				}
 				$this->Email->template = 'email_on_follow'; // note no '.ctp'
 
-				//Send as 'html', 'text' or 'both' (default is 'text')    
-				$this->Email->sendAs = 'both'; // because we like to send pretty mail
+				//Send as 'html', 'text' or 'both' (default is 'text')
+				$this->Email->sendAs = 'html'; // because we like to send pretty mail
 				
-				$recent_products = array();
-				$followers_known['count'] = 10;
+				$recent_products = $this->UserFollowing->User->Product->getThreeFromUser($user['User']['id']);
+				$follower_count = $this->UserFollowing->getFollowerCount($user['User']['id']);
+				//Pull the followers known and compare these to the person who followed the user. It may be a friend of a friend
+				$followers_known['people'] = $this->UserFollowing->getSimilarFollowers($followed_user['User']['id'],$user['User']['id']);
 				
+				if(count($followers_known) == 1){
+					$followers_known['count'] = count($followers_known).' person';
+				}else{
+					$followers_known['count'] = count($followers_known).' people';
+				}
+				
+				/* Check for SMTP errors. */
+			    $smtp_errors = $this->Email->smtpError;
+				
+				//debug($smtp_errors);
 				//Set view variables as normal
-				$this->set(compact('user','site_name','recent_products','followers_known'));
-
+				$this->set(compact('user','site_name','recent_products','followers_known','similar_users','smtp_errors'));
+				
+				// uncomment this to debug EmailComponent instead of sending  
+				//$this->Email->delivery = 'debug';
+				
 				//Do not pass any args to send()
-				$this->Email->send();
+				if($this->Email->send()){
+					CakeLog::write('activity','Email on follow success - '.$user['User']['username']. ' followed '. $followed_user['User']['username']);
+				}
 			}
 		}
 	}

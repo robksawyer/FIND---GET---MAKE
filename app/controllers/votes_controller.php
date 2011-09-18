@@ -19,6 +19,22 @@ class VotesController extends AppController {
 											
 		//$this->Auth->allow('getLikes','getDislikes','getUserLikes','getUserDislikes');
 		$this->AjaxHandler->handle('ajax_vote_up','ajax_vote_down','ajax_remove_vote');
+		
+		/* SMTP Options */
+		$this->Email->smtpOptions = array(
+			'port'=>'25',
+			'timeout'=>'30',
+			'host' => 's64785.gridserver.com',
+			'username'=>'mailer@find-get-make.com',
+			'password'=>'fgmmailer',
+			'client' => 's64785.gridserver.com'
+		);
+
+	    /* Set delivery method */
+	    $this->Email->delivery = 'smtp';
+		
+		$this->Email->replyTo = '<noreply@'.env('HTTP_HOST').'>'; 
+		$this->Email->return = '<noreply@'.env('HTTP_HOST').'>';
 	}
 	
 	/**************** AJAX METHODS ************************/
@@ -330,22 +346,43 @@ class VotesController extends AppController {
 		return $types;
 	}
 	
-	/*
-		TODO Move the following methods into the model
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
 	*/
 	public function getLikes($model,$model_id){
 		return $this->Vote->getLikes($model,$model_id);
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	public function getDislikes($model,$model_id){
 		return $this->Vote->getDislikes($model,$model_id);
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	public function getUserLikes($model,$model_id){
 		$user_id = $this->Auth->user('id');
 		return $this->Vote->getUserLikes($model,$model_id,$user_id);
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	public function getUserDislikes($model,$model_id){
 		$user_id = $this->Auth->user('id');
 		return $this->Vote->getUserDislikes($model,$model_id,$user_id);
@@ -373,5 +410,57 @@ class VotesController extends AppController {
 		return $this->Vote->getAllUserDislikes($model,$user_id);
 	}
 	
+	/******************************** NOTIFICATIONS *******************************************/
+	
+	/**
+	 * Sends an email when someone likes an item
+	 * @param Int user_id The id of the user that added the product
+	 * @return 
+	 * 
+	*/
+	protected function send_email_on_product_like($product_id=null){
+		Configure::write('debug', 2);
+		//Find the product that the user wanted or has
+		$product = $this->Vote->Product->find('first',array('conditions'=>array('Product.id'=>$product_id),'contain'=>array('User','Attachment')));
+		if(!empty($product)){
+			if($product['User']['email_on_product_have_want'] == 1){
+				$user = $this->Auth->user();
+				
+				$site_name = $this->Toolbar->settings['site_name'];
+				
+				//When auth user follows a user, send an email to the user 
+				$this->Email->to = $user['User']['email'];
+				$this->Email->from = $site_name .' <'. $this->Toolbar->settings['site_email'] .'>';
+				
+				if(!empty($user['User']['fullname'])){
+					$this->Email->subject = $site_name.' - '.__($user['User']['fullname'].' just started following you.', true);
+				}else{
+					$this->Email->subject = $site_name.' - '.__($user['User']['username'].' just started following you.', true);
+				}
+				$this->Email->template = 'email_on_product_like'; // note no '.ctp'
+
+				//Send as 'html', 'text' or 'both' (default is 'text')
+				$this->Email->sendAs = 'html'; // because we like to send pretty mail
+				
+				$recent_products = $this->Vote->User->Product->getThreeFromUser($user['User']['id']);
+				/* Check for SMTP errors. */
+			    $smtp_errors = $this->Email->smtpError;
+				
+				//debug($smtp_errors);
+				//Set view variables as normal
+				$this->set(compact('user','site_name','recent_products','product','ownership_type','smtp_errors'));
+				
+				// uncomment this to debug EmailComponent instead of sending  
+				//$this->Email->delivery = 'debug';
+				
+				//Do not pass any args to send()
+				if($this->Email->send()){
+					CakeLog::write('activity','Email on product - '.$user['User']['username']. ' '.$ownership_type.' '. $product['User']['username']);
+				}
+			}
+		}
+	}
+	
+	/******************************** END NOTIFICATIONS *******************************************/
 	
 }

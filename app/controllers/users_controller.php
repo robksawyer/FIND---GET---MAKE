@@ -536,6 +536,14 @@ class UsersController extends AppController {
 			$this->set('topics', $this->Topic->getLatestByUser($id));
 			$this->set('posts', $this->Topic->Post->getLatestByUser($id));
 			
+			//Check to make sure the totals are ok
+			$totalProducts = $this->User->Product->getCount($id);
+			if($totalProducts != $user['User']['totalProducts']) $this->User->updateTotalProducts($id);
+			$totalSources = $this->User->Source->getCount($id);
+			if($totalSources != $user['User']['totalSources']) $this->User->updateTotalProducts($id);
+			$totalInspirations = $this->User->Inspiration->getCount($id);
+			if($totalInspirations != $user['User']['totalInspirations']) $this->User->updateTotalProducts($id);
+			
 			//Check for a local avatar details
 			if(!empty($user['User']['attachment_id'])){
 				$avatar = $this->User->Attachment->getAvatar($user['User']['attachment_id'],$user['User']['id']);
@@ -1179,6 +1187,7 @@ class UsersController extends AppController {
 	 * 
 	*/
 	public function find(){
+		
 		//Do a check to see if the user's account is linked
 		$access_token = $this->Session->read('FB.Token');
 		$Facebook = new FB();
@@ -1196,11 +1205,14 @@ class UsersController extends AppController {
 			$Facebook->setAccessToken($access_token);
 		}
 		
-		
 		$staff_favorites_details = $this->User->StaffFavorite->getTenUsers();
 	
 		$favorites = $this->User->StaffFavorite->getTenUserIds();
 		$user_id = $this->Auth->user('id');
+		
+		//Testing
+		$similarFollowers = $this->User->UserFollowing->getSimilarFollowers(14,$user_id);
+		
 		$user_ids = $this->User->UserFollowing->getFollowedUnfollowedUserIds($user_id,$favorites);
 		$this->set(compact('user_ids','staff_favorites_details'));
 		

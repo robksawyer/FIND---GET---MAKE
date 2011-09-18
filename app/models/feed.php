@@ -182,12 +182,6 @@ class Feed extends AppModel {
 		
 		$user_feed_data = array();
 		foreach($user_feed as $feed_item){
-			/*if($feed_item['Feed']['model'] == "Vote"){
-				$this->$feed_item['Feed']['model']->recursive = 2;
-			}else{
-				$this->$feed_item['Feed']['model']->recursive = 1;
-			}*/
-			//$temp_data = $this->$feed_item['Feed']['model']->read(null,$feed_item['Feed']['model_id']);
 			$the_model = $feed_item['Feed']['model'];
 			switch($the_model){
 				
@@ -205,6 +199,10 @@ class Feed extends AppModel {
 				
 				case "Ufo":
 					$temp_data = $this->getUfoFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+					
+				case "Product":
+					$temp_data = $this->getProductFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
 					break;
 					
 				default:
@@ -233,9 +231,7 @@ class Feed extends AppModel {
 		
 		$user_feed_data = array();
 		foreach($user_feed as $feed_item){
-
 			$the_model = $feed_item['Feed']['model'];
-			
 			switch($the_model){
 				
 				case "Ownership":

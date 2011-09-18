@@ -15,7 +15,8 @@
 			<?php echo $this->Form->label(__('Email Notifications', true)); ?>
 			<?php 
 				echo $this->Form->input('email_on_follow',array('type'=>'checkbox','label'=>'Email when someone follows you')); 
-				echo $this->Form->input('email_on_show',array('type'=>'checkbox','label'=>'Email when someone shows you a product')); 
+				echo $this->Form->input('email_on_product_have_want',array('type'=>'checkbox','label'=>'Email when someone has or wants a product that you\'ve added'));
+				echo $this->Form->input('email_on_like',array('type'=>'checkbox','label'=>'Email when someone likes an item that you\'ve added'));
 				echo $this->Form->input('email_on_comment',array('type'=>'checkbox','label'=>'Email when someone comments on an item you\'ve added')); 
 			?>
 		</div>

@@ -215,6 +215,7 @@ class Product extends AppModel {
 	 * 
 	*/	
 	public function afterSave($created){
+		$this->recursive = 1;
 		if($created){
 			//Update the total count for the user
 			$last = $this->read(null,$this->id);
@@ -421,6 +422,25 @@ class Product extends AppModel {
 														'User','Tag',
 														'Ownership','Vote','Inspiration','Collection'
 														)
+										)
+									);
+		//debug($data);
+		return $data;
+	}
+	
+	/**
+	 * Returns three products with attachments. 
+	 * @param int user_id The user id to return products for
+	 * @return 
+	 * 
+	*/
+	function getThreeFromUser($user_id=null){
+		$data = $this->find('all',array(
+										'conditions'=>array('Product.user_id'=>$user_id),
+										'recursive' => 1,
+										'contain'=>array('Attachment'),
+										'limit'=>3,
+										'order'=>array('Product.created'=>'desc')
 										)
 									);
 		//debug($data);

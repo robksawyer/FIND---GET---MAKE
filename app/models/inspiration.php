@@ -179,6 +179,7 @@ class Inspiration extends AppModel {
 	 * 
 	*/	
 	public function afterSave($created){
+		$this->recursive = 1;
 		if($created){
 			//Update the total count for the user
 			$last = $this->read(null,$this->id);
@@ -288,6 +289,15 @@ class Inspiration extends AppModel {
 		}
 		
 		return $items;
+	}
+	
+	/**
+	 * Get the total # of inspirations added in the system for a particular user
+	 * @param int user_id
+	 **/
+	function getCount($user_id=null){
+		$count = $this->find('count',array( 'conditions' => array('Inspiration.user_id'=>$user_id)));
+		return $count;
 	}
 	
 	/**

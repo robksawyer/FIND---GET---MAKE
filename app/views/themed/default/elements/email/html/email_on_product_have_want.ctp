@@ -8,38 +8,32 @@
 				}else{
 					$user_name = $user['User']['username'];
 				}
-			?>
-			<h1 style="font-size:20px;margin:40px 0 20px 0"><?php echo $this->Html->link($user_name,Router::url(array('ajax'=>false,'controller'=>'users','action'=>'profile',$user['User']['username']),true)); ?> followed you</h1>
-			<?php
-				echo $this->element('email-user-block',array('cache'=>false,'user'=>$user));
-			?>
-			<h3><?php echo $user_name; ?> is followed by <?php echo $followers_known['count']; ?> you know.</h3>
-			<ul style="position: relative;font-size: 12px;left: 5px;color: #999;list-style-type: none;padding-left: 5px;">
-			<?php
-				/*
-					TODO Loop through $followers_known and spit out their avatar images.
-				*/
-				foreach($followers_known['people'] as $followed_user){
-					echo "<li>";
-					echo $this->element('email-avatar',array('cache'=>false,'user'=>$followed_user,'height'=>32));
-					echo "</li>";
+				$ownership_type_nicename = "";
+				switch($ownership_type){
+					case "want":
+						$ownership_type_nicename = "wants";
+						break;
+					
+					case "has":
+						$ownership_type_nicename = "has";
+						break;
+						
 				}
 			?>
-			</ul>
-			<div style="width:100%;clear:both;"></div>
+			<h1 style="font-size:20px;margin:40px 0 20px 0"><?php echo $this->Html->link($user_name,Router::url(array('ajax'=>false,'controller'=>'users','action'=>'profile',$user['User']['username']),true)); ?> <?php echo $ownership_type_nicename; ?> the product <?php echo $this->Html->link($product['Product']['name'],Router::url(array('ajax'=>false,'plugin'=>'','controller'=>'products','action'=>'view',$product['Product']['id']),true)); ?>.</h1>
+			<div style="position:relative;text-align: center;">
 			<?php
-			if($followers_known['count'] > 15){
-				echo "<div style='position: relative;font-size: 12px;'>";
-				echo $this->Html->link('See all followers',Router::url(array(
-																								'ajax'=>false,
-																								'plugin'=>'',
-																								'controller'=>'user_followings',
-																								'action'=>'followers',$followed_user['User']['username']
-																								),true)
-																						);
-				echo "</div>";
-			}
+			//Show the image of the product
+			if(!empty($product['Attachment'])):
+			$imagePath = Router::url($product['Attachment'][0]['path_med'],true);
+			echo $this->Html->image($imagePath,array('url'=>array('ajax'=>false,'plugin'=>'','controller'=>'products','action'=>'view',$product['Product']['id']),
+												'alt'=>$product['Product']['name']
+												)
+						);
+			endif;
 			?>
+			</div>
+			<div style="width:100%;clear:both;"></div>
 			<?php if(!empty($recent_products)): ?>
 			<h3><?php echo $user_name."'s"; ?> recently added the following products:</h3>
 			<div style="position: relative;text-align: center;margin: 10px 0 10px 0;">

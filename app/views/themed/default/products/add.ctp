@@ -40,7 +40,7 @@
 		echo $this->element('add_tags',array('cache'=>false,'controller'=>'products'));
 		
 		if(!empty($collection)){
-			echo $this->Form->input('Collection.0',array('type'=>'hidden','value'=>$collection['Collection']['id']));
+			//echo $this->Form->input('Collection.0',array('type'=>'hidden','value'=>$collection['Collection']['id']));
 		}else{
 			//echo $this->Form->input('Collection',array('after'=>'<div class="extra">Select one or more (hold SHIFT) of the collections below to add the product to the collection(s). Hold COMMAND and click to remove a selection.</div>'));
 			?>

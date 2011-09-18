@@ -143,6 +143,7 @@ class Collection extends AppModel {
 	 * 
 	*/	
 	 public function afterSave($created){
+		$this->recursive = 1;
 		if($created){
 			//Update the total count for the user
 			$last = $this->read(null,$this->id);
@@ -271,6 +272,15 @@ class Collection extends AppModel {
 		//$this->data['Collection']['total_products'] = $total_products;
 		$this->id = $id;
 		$this->saveField('total_products', $total_products);
+	}
+	
+	/**
+	 * Get the total # of collections added in the system for a particular user
+	 * @param int user_id
+	 **/
+	function getCount($user_id=null){
+		$count = $this->find('count',array( 'conditions' => array('Collection.user_id'=>$user_id)));
+		return $count;
 	}
 	
 }

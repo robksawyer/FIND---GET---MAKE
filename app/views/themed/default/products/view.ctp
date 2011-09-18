@@ -93,9 +93,12 @@
 						if(!empty($product['Product']['price'])){ 
 							echo "Price: ".$product['Product']['price'];
 						} 
-						if(!empty($product['Product']['purchase_url'])){
-							echo $this->Html->link('Buy',$product['Product']['purchase_url'],array('title'=>$product['Product']['purchase_url'],'target'=>'_blank'));
-						}
+						if(!empty($product['Product']['purchase_url'])){ 
+							echo " &mdash; ".$this->Html->link('Buy',$product['Product']['purchase_url'],
+																	array(
+																		'title'=>$product['Product']['purchase_url'],'target'=>'_blank'
+																	)); 
+							}
 						?>
 						</li>
 					</ul>

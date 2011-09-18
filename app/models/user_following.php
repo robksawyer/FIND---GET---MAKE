@@ -203,4 +203,56 @@ class UserFollowing extends AppModel {
 		$user_ids['followed_user_ids'] = implode('&',$followed_user_ids);
 		return $user_ids;
 	}
+	
+	/**
+	 * Returns the similar users between two users. 
+	 * This can be used to give the followed user a better idea of why someone followed them.
+	 * @param Int followed_user_id The person being followed
+	 * @param Int auth_user_id The person  doing the following
+	 * @return The similar followers between the two users
+	 * 
+	*/
+	public function getSimilarFollowers($followed_user_id=null,$auth_user_id=null){
+		$auth_user_followers = $this->find('all',array('conditions'=>array(
+																'UserFollowing.user_id'=>$auth_user_id
+																),
+												'fields'=>array('UserFollowing.follow_user_id'),
+												'contain'=>array('User')
+												));
+		$auth_user_followers = Set::extract('/UserFollowing/follow_user_id', $auth_user_followers); //Extract only the friends (followed users)
+		$followed_user_followers = $this->find('all',array('conditions'=>array(
+																'UserFollowing.user_id'=>$followed_user_id
+																),
+												'fields'=>array('UserFollowing.follow_user_id'),
+												'contain'=>array('User')
+												));
+		$followed_user_followers = Set::extract('/UserFollowing/follow_user_id', $followed_user_followers); //Extract only the friends (followed users)
+		
+		$similar_user_ids = array_intersect($followed_user_followers,$auth_user_followers);
+		
+		if(!empty($similar_user_ids)){
+			$similar_users = $this->User->find('all',array('conditions'=>array(
+																	'User.id'=>$similar_user_ids
+																	),
+															'limit'=>15
+															));
+			//Add the profile image if it exists
+			if(!empty($similar_users)){
+				for($i=0;$i<count($similar_users);$i++){
+					if(!empty($similar_users[$i]['User']['attachment_id'])){
+						$similar_users[$i][] = $this->User->Attachment->find('first',array('conditions'=>array(
+																				'Attachment.id'=>$similar_users[$i]['User']['attachment_id']
+																				)
+																			));
+					}
+				}
+			}
+			
+		}else{
+			$similar_users = null;
+		}
+		
+		//If the user has an attachment id, add this to the final results
+		return $similar_users;
+	}
 }
