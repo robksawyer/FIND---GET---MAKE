@@ -14,6 +14,36 @@ class UserFollowing extends AppModel {
 		)
 	);
 	
+	var $hasMany = array(
+		'Feed' => array(
+			'className' => 'Feed',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Feed.model' => 'UserFollowing'),
+			'dependent' => true,
+			'exclusive' => true
+		)
+	);
+	
+	/**
+	 * Adds feed data 
+	 * @param created 
+	 * @return 
+	 * 
+	*/	
+	public function afterSave($created){
+		$this->recursive = 1;
+		if($created){
+			//Update the total count for the user
+			$last = $this->read(null,$this->id);
+			if(!empty($last['UserFollowing']['user_id'])){
+				$this->User->updateTotalFollowerCount($last['UserFollowing']['user_id']);
+				
+				//Add the feed data to the feed
+				$this->Feed->addFeedData('UserFollowing',$last);
+			}
+		}
+	}
+	
 	/**
 	 * Find the users that a certain user is following
 	 * @param 
@@ -254,5 +284,19 @@ class UserFollowing extends AppModel {
 		
 		//If the user has an attachment id, add this to the final results
 		return $similar_users;
+	}
+	
+	/**
+	 * Returns the needed feed data for a specific record
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	public function getFeedData($model_id=null){
+		$this->recursive = 1;
+		$this->User->recursive = -1;
+		$data = $this->read(null,$model_id);	
+		
+		return $data;
 	}
 }

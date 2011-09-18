@@ -67,6 +67,13 @@ class Feed extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'UserFollowing' => array(
+			'className' => 'UserFollowing',
+			'foreignKey' => 'model_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 	
@@ -204,6 +211,10 @@ class Feed extends AppModel {
 				case "Product":
 					$temp_data = $this->getProductFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
 					break;
+				
+				case "UserFollowing":
+					$temp_data = $this->getUserFollowingFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
 					
 				default:
 					$temp_data = $this->getStandardFeedData($the_model,$feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
@@ -253,7 +264,11 @@ class Feed extends AppModel {
 				case "Product":
 					$temp_data = $this->getProductFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
 					break;
-					
+				
+				case "UserFollowing":
+					$temp_data = $this->getUserFollowingFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+						
 				default:
 					$temp_data = $this->getStandardFeedData($the_model,$feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
 					break;
@@ -395,6 +410,26 @@ class Feed extends AppModel {
 																	)
 													)
 												);
+		return $data;
+	}
+	
+	/**
+	 * Find the data associated with the user following model
+	 * @param int feed_id The feed item id
+	 * @param int model_id The item id
+	 * @return 
+	 * 
+	*/
+	public function getUserFollowingFeedData($feed_id=null,$model_id=null){
+		$data = $this->UserFollowing->find('first',array(
+														'conditions'=>array(
+																			'UserFollowing.id'=>$model_id
+																			),
+														'contain'=>array('User',
+																		'Feed'=>array('conditions'=>array('Feed.id'=>$feed_id))
+																		)
+														)
+													);
 		return $data;
 	}
 	

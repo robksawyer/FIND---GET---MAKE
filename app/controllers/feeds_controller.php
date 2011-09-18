@@ -228,6 +228,16 @@ class FeedsController extends AppController {
 			$this->data[$counter]['Feed']['record_created'] = $item['created'];
 			$counter++;
 		}
+		
+		//UserFollowing
+		foreach($user['UserFollowing'] as $item){
+			$this->data[$counter]['Feed']['model'] = 'UserFollowing';
+			$this->data[$counter]['Feed']['user_id'] = $item['user_id'];
+			$this->data[$counter]['Feed']['name'] = strtolower('UserFollowing');
+			$this->data[$counter]['Feed']['model_id'] = $item['id'];
+			$this->data[$counter]['Feed']['record_created'] = $item['created'];
+			$counter++;
+		}
 		//debug($this->data);
 		//Save the feed to the database
 		if($this->Feed->saveAll($this->data)){

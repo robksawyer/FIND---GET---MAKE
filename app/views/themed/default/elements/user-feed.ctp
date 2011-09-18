@@ -30,6 +30,8 @@
 							echo $this->element('feed-ownership-item',array('cache'=>false,'model'=>'Ownership','feed_item'=>$feed_item));
 						}else if($model == 'Ufo'){
 							//echo $this->element('feed-image-item',array('cache'=>false,'model'=>'Ufo','feed_item'=>$feed_item));
+						}else	if($model == 'UserFollowing'){
+							echo $this->element('feed-follower-item',array('cache'=>false,'model'=>'UserFollowing','feed_item'=>$feed_item));
 						}
 					endif;
 				endfor;
