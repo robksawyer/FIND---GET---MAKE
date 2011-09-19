@@ -18,41 +18,40 @@ class FeedsController extends AppController {
 		parent::beforeFilter();
 		
 		//Make certain pages public
-		$this->Auth->allowedActions = array('user');
+		$this->Auth->allowedActions = array('user','getUsersFollowingFeedDataDetails');
 		
 	}
 	
 	/**
+	 * DEPRECATED: The Feed shows up on the moderate page.
 	 * Spits out the recent additions from user passed
 	 * @param string username 
 	 * @return 
 	 * 
 	*/
-	public function me(){
+	/*public function me(){
 		$user = $this->Auth->user();
 		$user = $this->Feed->User->read(null,$user['User']['id']);
 		//debug($user['UserFollowing']);
 		$user_ids = array();
 		$feed = array();
 		if(!empty($user)){
-			/*
-				TODO Set up pagination
-			*/
 			$feed = $this->Feed->User->getFeedDetails($user['User']['id']);
 			$this->set(compact('feed','user'));
 		}else{
 			$this->Session->setFlash(__('This is an invalid user.', true));
 			$this->redirect('/');
 		}
-	}
+	}*/
 	
 	/**
+	 * DEPRECATED: The Feed shows up on the profile page.
 	 * Spits out the recent additions from user passed
 	 * @param string username 
 	 * @return 
 	 * 
 	*/
-	public function user($username=null){
+	/*public function user($username=null){
 		if(is_int($username)){
 			$id = $username;
 			$user = $this->Feed->User->read(null,$id);
@@ -65,16 +64,13 @@ class FeedsController extends AppController {
 		$user_ids = array();
 		$feed = array();
 		if(!empty($user)){
-			/*
-				TODO Set up pagination
-			*/
 			$feed = $this->Feed->User->getFeedDetails($user['User']['id']);
 			$this->set(compact('feed','user'));
 		}else{
 			$this->Session->setFlash(__('This is an invalid user.', true));
 			$this->redirect('/');
 		}
-	}
+	}*/
 	
 	/**
 	 * Spits out the recent additions from followed users
@@ -97,11 +93,11 @@ class FeedsController extends AppController {
 	 * @return 
 	 * 
 	*/
-	public function getUsersFollowingFeedData($offset=0){
+	public function getUsersFollowingFeedDataDetails($offset=0){
 		$user_id = $this->Auth->user('id');
 		//$user = $this->Feed->User->read(null,$user_id);
 		$following_user_ids = $this->Feed->User->getFollowingUserIds($user_id);
-		$feed = $this->Feed->getUsersFollowingFeedData($following_user_ids,$offset);
+		$feed = $this->Feed->getUsersFollowingFeedDataDetails($following_user_ids,$offset);
 		return $feed;
 	}
 	

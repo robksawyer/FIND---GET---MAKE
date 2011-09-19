@@ -295,8 +295,10 @@ class UserFollowing extends AppModel {
 	public function getFeedData($model_id=null){
 		$this->recursive = 1;
 		$this->User->recursive = -1;
-		$data = $this->read(null,$model_id);	
-		
+		$data = $this->read(null,$model_id);
+		if(!empty($data)){
+			$data['UserFollowed'] = $this->read(null,$data['UserFollowing']['follow_user_id']);
+		}
 		return $data;
 	}
 }

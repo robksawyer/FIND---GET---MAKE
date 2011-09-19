@@ -195,7 +195,7 @@ class UsersController extends AppController {
 		if(!empty($user_id)){
 			//Find all of the followed users (with details) for this user
 			$following_user_ids = $this->User->getFollowingUserIds($user_id);
-			$feed = $this->User->Feed->getUsersFollowingFeedData($following_user_ids,$offset);
+			$feed = $this->User->Feed->getUsersFollowingFeedDataDetails($following_user_ids,$offset);
 			$this->set(compact('feed'));
 		}else{
 			$feed = null;

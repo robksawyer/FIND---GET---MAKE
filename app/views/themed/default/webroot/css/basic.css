@@ -3101,6 +3101,27 @@ span.total a:hover{
 	text-decoration: none;
 }
 
+#user-feed .grid-item .feed-follower-title{
+	font-size: 14px;
+	text-decoration: none;
+	padding: 15px;
+	border: 1px solid #e7e7e7;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	background: #f5f5f5;
+	color: #999999;
+}
+#user-feed .grid-item .feed-follower-title a:visited,
+#user-feed .grid-item .feed-follower-title a:active,
+#user-feed .grid-item .feed-follower-title a:link{
+	color: #ef3f23;
+	text-decoration: underline;
+}
+
+#user-feed .grid-item .feed-follower-title a:hover{
+	text-decoration: none;
+}
+
 #user-feed .grid-item .feed-text-title a{
 	font-weight: bold;
 	text-decoration: none;

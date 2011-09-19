@@ -288,7 +288,7 @@ class ConfigController extends AppController {
 		$this->Acl->allow($group, 'controllers/Feeds/me');
 		$this->Acl->allow($group, 'controllers/Feeds/user');
 		$this->Acl->allow($group, 'controllers/Feeds/display');
-		$this->Acl->allow($group, 'controllers/Feeds/getUsersFollowingFeedData');
+		$this->Acl->allow($group, 'controllers/Feeds/getUsersFollowingFeedDataDetails');
 		$this->Acl->allow($group, 'controllers/Feeds/getUsersFollowingFeedCount');
 		$this->Acl->allow($group, 'controllers/Feeds/getUserFeed');
 		$this->Acl->allow($group, 'controllers/Feeds/getUserFeedCount');

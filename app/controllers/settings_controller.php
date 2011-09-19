@@ -275,19 +275,24 @@ class SettingsController extends AppController {
 			
 			//if ($this->User->save($this->data)){
 			if($this->User->save()) {
-				$this->Session->setFlash(__('Your profile information has been updated!', true));
+				$this->Session->setFlash(__('Your profile notification information has been updated!', true));
 
 				foreach ($this->data['User'] as $field => $value) {
 					$this->_refreshAuth($field, $value);
+					if(empty($this->data['User'][$field])) {
+						$this->data['User'][$field] = $value;
+					}
 				}
 			} else{
-				$this->Session->setFlash(__('Your profile information could NOT be updated.', true),'default', array('class' => 'error-message'));
+				$this->Session->setFlash(__('Your profile notification information could NOT be updated.', true),'default', array('class' => 'error-message'));
 			}
 		}
 		
-		foreach ($user['User'] as $field => $value) {
-			if (empty($this->data['User'][$field])) {
-				$this->data['User'][$field] = $value;
+		if(empty($this->data)) {
+			foreach ($user['User'] as $field => $value) {
+				if(empty($this->data['User'][$field])) {
+					$this->data['User'][$field] = $value;
+				}
 			}
 		}
 		

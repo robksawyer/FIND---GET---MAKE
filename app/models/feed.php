@@ -236,7 +236,7 @@ class Feed extends AppModel {
 	 * @return array user_feed_data
 	 * 
 	*/
-	public function getUsersFollowingFeedData($user_ids=null,$offset=0){
+	public function getUsersFollowingFeedDataDetails($user_ids=null,$offset=0){
 		$this->recursive = -1;
 		$user_feed = $this->getUserFeedData($user_ids,$offset);
 		
@@ -401,15 +401,15 @@ class Feed extends AppModel {
 	*/
 	public function getVoteFeedData($feed_id=null,$model_id=null){
 		$data = $this->Vote->find('first',array(
-													'conditions'=>array(
-															'Vote.id'=>$model_id
-													),
-													'contain'=>array(
-																	'Product'=>array('Tag','Attachment','User'),
-																	'User','Feed'=>array('conditions'=>array('Feed.id'=>$feed_id))
-																	)
-													)
-												);
+												'conditions'=>array(
+														'Vote.id'=>$model_id
+												),
+												'contain'=>array(
+																'Product'=>array('Tag','Attachment','User'),
+																'User','Feed'=>array('conditions'=>array('Feed.id'=>$feed_id))
+																)
+												)
+											);
 		return $data;
 	}
 	
@@ -430,6 +430,7 @@ class Feed extends AppModel {
 																		)
 														)
 													);
+		$data['UserFollowed'] = $this->UserFollowing->User->read(null,$data['UserFollowing']['follow_user_id']);
 		return $data;
 	}
 	
@@ -467,13 +468,14 @@ class Feed extends AppModel {
 	}
 	
 	/**
+	 * DEPRECATED: This was used on the user and me pages.
 	 * Handles returning the feed details (items) for a particular user
 	 * @param id follow_user_id The followed user
 	 * @param offset The offset to pull data from in the query
 	 * @return array user_details 
 	 * 
 	*/
-	public function getFeedDetails($user_id=null,$offset=0){
+	/*public function getFeedDetails($user_id=null,$offset=0){
 		$this->recursive = 1;
 		$user_details = $this->getUserFeedData($user_id,$offset=0);
 		//debug($user_details);
@@ -482,6 +484,7 @@ class Feed extends AppModel {
 			$this->$feed_item['Feed']['model']->recursive = 1;
 			$user_feed_data[] = $this->$feed_item['Feed']['model']->getFeedData($feed_item['Feed']['model_id']);
 		}
+		debug($user_feed_data);
 		return $user_feed_data;
-	}
+	}*/
 }

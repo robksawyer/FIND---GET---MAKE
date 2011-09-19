@@ -14,7 +14,6 @@ if(!empty($feed_item[$target_model]['Attachment'][0])):
 $attachment0 = $feed_item[$target_model]['Attachment'][0];
 $target_item = $feed_item[$target_model];
 $controller = $target_controller;
-//debug($feed_item);
 ?>
 <div class='grid-item'>
 	<?php
@@ -43,7 +42,7 @@ $controller = $target_controller;
 	<div class="added-by"><?php echo "Found by ".$this->Html->link($target_item['User']['username'],array('admin'=>false,'controller'=>'users','plugin'=>'forum','action'=>'profile',$target_item['User']['username'])); ?></div>
 	<?php endif; ?>
 	<div class='bottom-detail'>
-		<span class='created'><?php echo $this->Time->timeAgoInWords($feed_item['Feed'][0]['modified'],null,null); ?></span>
+		<span class='created'><?php echo $this->Time->timeAgoInWords($feed_item['Feed'][0]['modified']); ?></span>
 		<span class="tags">
 			<?php
 			//Build a tag list of only two tags.

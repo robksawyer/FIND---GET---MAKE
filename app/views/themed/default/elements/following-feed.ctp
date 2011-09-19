@@ -1,5 +1,5 @@
 <?php
-	$feed = $this->requestAction('/feeds/getUsersFollowingFeedData');
+	$feed = $this->requestAction('/feeds/getUsersFollowingFeedDataDetails');
 	$num_items = $this->requestAction('/feeds/getUsersFollowingFeedCount');
 	$limit = 10;
 ?>
@@ -18,20 +18,22 @@
 						$feed_item = $feed[$i];
 						//Display the items 
 						if(!empty($feed_item)):
-							if($model == 'Product'){
+							if($model == 'Product' && $authUser['User']['notify_followers_on_add'] == 1){
 								echo $this->element('feed-image-item',array('cache'=>false,'model'=>'Product','feed_item'=>$feed_item,'controller'=>'products'));
-							}else if($model == 'Inspiration'){
+							}else if($model == 'Inspiration' && $authUser['User']['notify_followers_on_add'] == 1){
 								echo $this->element('feed-image-item',array('cache'=>false,'model'=>'Inspiration','feed_item'=>$feed_item,'controller'=>'inspirations'));
-							}else if($model == 'Source'){
+							}else if($model == 'Source' && $authUser['User']['notify_followers_on_add'] == 1){
 								echo $this->element('feed-text-item',array('cache'=>false,'model'=>'Source','feed_item'=>$feed_item,'controller'=>'sources'));
-							}else if($model == 'Collection'){
+							}else if($model == 'Collection' && $authUser['User']['notify_followers_on_add'] == 1){
 								echo $this->element('feed-collection-item',array('cache'=>false,'model'=>'Collection','feed_item'=>$feed_item,'controller'=>'collections'));
-							}else if($model == 'Vote'){
-								echo $this->element('feed-vote-item',array('cache'=>false,'model'=>'Vote','feed_item'=>$feed_item,'controller'=>'votes'));
-							}else if($model == 'Ownership'){
-								echo $this->element('feed-ownership-item',array('cache'=>false,'model'=>'Ownership','feed_item'=>$feed_item));
-							}else if($model == 'Ufo'){
+							}else if($model == 'Ufo' && $authUser['User']['notify_followers_on_add'] == 1){
 								//echo $this->element('feed-image-item',array('cache'=>false,'model'=>'Ufo','feed_item'=>$feed_item));
+							}else if($model == 'Vote' && $authUser['User']['notify_followers_on_like'] == 1){
+								echo $this->element('feed-following-vote-item',array('cache'=>false,'model'=>'Vote','feed_item'=>$feed_item,'controller'=>'votes'));
+							}else if($model == 'Ownership' && $authUser['User']['notify_followers_on_product_have_want'] == 1){
+								echo $this->element('feed-following-ownership-item',array('cache'=>false,'model'=>'Ownership','feed_item'=>$feed_item));
+							}else	if($model == 'UserFollowing' && $authUser['User']['notify_on_follow'] == 1){
+								echo $this->element('feed-follower-item',array('cache'=>false,'model'=>'UserFollowing','feed_item'=>$feed_item));
 							}
 						endif;
 					endfor;
