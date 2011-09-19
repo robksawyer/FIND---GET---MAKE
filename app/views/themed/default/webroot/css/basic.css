@@ -3102,9 +3102,9 @@ span.total a:hover{
 }
 
 #user-feed .grid-item .feed-follower-title{
-	font-size: 14px;
+	font-size: 13px;
 	text-decoration: none;
-	padding: 15px;
+	padding: 8px;
 	border: 1px solid #e7e7e7;
 	border-radius: 5px;
 	-moz-border-radius: 5px;

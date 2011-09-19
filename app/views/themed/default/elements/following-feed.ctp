@@ -29,9 +29,9 @@
 							}else if($model == 'Ufo' && $authUser['User']['notify_followers_on_add'] == 1){
 								//echo $this->element('feed-image-item',array('cache'=>false,'model'=>'Ufo','feed_item'=>$feed_item));
 							}else if($model == 'Vote' && $authUser['User']['notify_followers_on_like'] == 1){
-								echo $this->element('feed-following-vote-item',array('cache'=>false,'model'=>'Vote','feed_item'=>$feed_item,'controller'=>'votes'));
+								echo $this->element('feed-vote-item',array('cache'=>false,'model'=>'Vote','feed_item'=>$feed_item,'controller'=>'votes'));
 							}else if($model == 'Ownership' && $authUser['User']['notify_followers_on_product_have_want'] == 1){
-								echo $this->element('feed-following-ownership-item',array('cache'=>false,'model'=>'Ownership','feed_item'=>$feed_item));
+								echo $this->element('feed-ownership-item',array('cache'=>false,'model'=>'Ownership','feed_item'=>$feed_item));
 							}else	if($model == 'UserFollowing' && $authUser['User']['notify_on_follow'] == 1){
 								echo $this->element('feed-follower-item',array('cache'=>false,'model'=>'UserFollowing','feed_item'=>$feed_item));
 							}

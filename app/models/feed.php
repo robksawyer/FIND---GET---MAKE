@@ -405,11 +405,13 @@ class Feed extends AppModel {
 														'Vote.id'=>$model_id
 												),
 												'contain'=>array(
-																'Product'=>array('Tag','Attachment','User'),
+																//'Product'=>array('Tag','Attachment','User'),
 																'User','Feed'=>array('conditions'=>array('Feed.id'=>$feed_id))
 																)
 												)
 											);
+		$data_item = $this->$data['Vote']['model']->read(null,$data['Vote']['model_id']);
+		$data[$data['Vote']['model']] = $data_item[$data['Vote']['model']];
 		return $data;
 	}
 	

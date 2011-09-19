@@ -19,7 +19,7 @@ if(!empty($feed_item['UserFollowed']['User'])){
 	}
 }
 ?>
-<div class='grid-item'>
+<div class='grid-item' style="margin: 4px 0 4px 0;padding: 0 0 0 0;">
 	<div class="feed-follower-title"><?php echo $this->Html->link($follower_name,array('controller'=>'users',
 																												'action'=>'profile',
 																												'plugin'=>'',

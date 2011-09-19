@@ -67,7 +67,8 @@ class AppController extends Controller {
 									)
 									
 								),'Security','RequestHandler','Session','AutoLogin','Cookie',
-								'AjaxHandler', 'Forum.Toolbar','TwitterKit.Twitter','Facebook.Connect'
+								'AjaxHandler', 'Forum.Toolbar','TwitterKit.Twitter','Facebook.Connect',
+								'Comments.Comments' => array('userModelClass' => 'User')
 								);
 
 	/**
@@ -143,6 +144,9 @@ class AppController extends Controller {
 	 */
 	public function beforeFilter() {
 		parent::beforeFilter();
+		
+		//Comment settings
+		$this->passedArgs['comment_view_type'] = 'flat';
 		
 		//Cookie settings
 		//$this->Cookie->name = 'FindGetMake';
