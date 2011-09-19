@@ -322,25 +322,26 @@ input[type=submit] {
 	cursor: pointer !important;
 }*/
 
-form .submit input[type=submit] {
-	background:#b9b9b9;
+.submit input[type=submit] {
+	background:whiteSmoke;
 	margin: 0;
 	padding: 6px 8px 9px 8px;
-	/*background: -webkit-gradient(linear, left top, left bottom, from(#ef3f23), to(#b73824));
-	background-image: -moz-linear-gradient(top, #ef3f23, #f36c57);*/
+	/*background: -webkit-gradient(linear, left top, left bottom, from(#e7e7e7), to(#ffffff));*/
+	/*background-image: -moz-linear-gradient(top, #ef3f23, #f36c57);*/
 	/*border-color: #f44225;*/
-	color: #ffffff;
-	-webkit-border-radius:8px;
-	-moz-border-radius:8px;
-	border-radius:8px;
-	border: none !important;
-	cursor: pointer !important;
+	color: #262626;
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	border-radius:5px;
+	border: 1px solid #d3d3d3;
+	cursor: pointer;
 }
 
-form .submit input[type=submit]:hover {
-	background:#666666;
-	color: #ffffff;
-	border: none !important;
+.submit input[type=submit]:hover {
+	background:#d3d3d3;
+	color: #262626;
+	border: 1px solid #262626;
+	cursor: pointer;
 }
 
 /*form .submit input[type=submit]:hover {
@@ -350,7 +351,7 @@ form .submit input[type=submit]:hover {
 	background-image: -moz-linear-gradient(top, #ef3f23, #d84129);
 }*/
 
-input[type=submit]{
+/*input[type=submit]{
 	margin: 0;
 	font-weight:normal;
 	padding: 6px 8px;
@@ -364,7 +365,7 @@ input[type=submit]{
 input[type=submit]:hover{
 	background: #ff7202;
 	border: none !important;
-}
+}*/
 
 div.actions ul li a,
 td.actions a {

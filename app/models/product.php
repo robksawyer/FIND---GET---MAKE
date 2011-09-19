@@ -18,6 +18,7 @@ class Product extends AppModel {
 	);
 	
 	var $actsAs = array(
+					'Comments.Commentable',
 					'Tags.Taggable',
 					'Search.Searchable'
 			);

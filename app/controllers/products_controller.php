@@ -25,7 +25,7 @@ class ProductsController extends AppController {
 		parent::beforeFilter();
 		
 		//Make certain pages public
-		$this->Auth->allowedActions = array('index','view','verifyAddition','clearVerifySessions','getProductsForSource','getProductsForInspiration','userProducts');
+		$this->Auth->allowedActions = array('index','view','verifyAddition','clearVerifySessions','getProductsForSource','getProductsForInspiration','userProducts','comments');
 		
 		$this->Uploader->uploadDir = 'media/static/img/products/';
 		$this->Uploader->enableUpload = true;
@@ -50,7 +50,22 @@ class ProductsController extends AppController {
 		$this->set(compact('flagged','staff_favorite'));
 	}
 	
-
+	/**************** AJAX METHODS ************************/
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function comments($id = null) {
+		$product = $this->Product->read(null, $id);
+		$this->layout = 'ajax'; 
+		$this->set(compact('product', 'id'));
+	}
+	
+	/**************** END AJAX METHODS ************************/
+	
 	public function find() {
 		$this->Prg->commonProcess();
 		$this->paginate['conditions'] = $this->Product->parseCriteria($this->passedArgs);
@@ -146,8 +161,7 @@ class ProductsController extends AppController {
 				$this->Session->setFlash(__('Invalid product', true));
 				$this->redirect(array('action' => 'index','admin'=>false));
 			}
-			$this->set('product', $product);
-			
+			$this->set(compact('product'));
 		}
 		
 		/*$products = $this->Product->getAll();

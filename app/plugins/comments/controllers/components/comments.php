@@ -200,9 +200,8 @@ class CommentsComponent extends Object {
 		$this->modelName = $controller->modelClass;
 		$this->viewVariable = Inflector::variable($this->modelName);
 		$controller->helpers = array_merge($controller->helpers, array('Comments.CommentWidget', 'Time', 'Comments.Cleaner', 'Comments.Tree'));
-
-		if (!$controller->{$this->modelName}->Behaviors->attached('Commentable')) {
-			$controller->{$this->modelName}->Behaviors->attach('Comments.Commentable', array('userModelAlias' => $this->userModel, 'userModelClass' => $this->userModelClass));
+		if(!$controller->{$this->modelName}->Behaviors->attached('Commentable')) {
+				$controller->{$this->modelName}->Behaviors->attach('Comments.Commentable', array('userModelAlias' => $this->userModel, 'userModelClass' => $this->userModelClass));
 		}
 	}
 
@@ -415,6 +414,7 @@ class CommentsComponent extends Object {
  * @param string $displayType
  */
 	public function callback_add($modelId, $commentId, $displayType, $data = array()) {
+		debug($this->Controller->data);
 		if (!empty($this->Controller->data)) {
 			if (!empty($this->Controller->data['Comment']['title'])) {
 				$data['Comment']['title'] = $this->cleanHtml($this->Controller->data['Comment']['title']);
