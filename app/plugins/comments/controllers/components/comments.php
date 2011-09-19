@@ -1,18 +1,12 @@
 <?php
 /**
- * CakePHP Comments
- *
- * Copyright 2009 - 2010, Cake Development Corporation
- *                        1785 E. Sahara Avenue, Suite 490-423
- *                        Las Vegas, Nevada 89104
+ * Copyright 2009-2010, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright 2009 - 2010, Cake Development Corporation
- * @link      http://github.com/CakeDC/Comments
- * @package   plugins.comments
- * @license   MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @copyright Copyright 2009-2010, Cake Development Corporation (http://cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 /**
@@ -50,15 +44,15 @@
  *  comment_action
  *
  * @see CommentWidgetHelper
- * @package		plugins.comments
- * @subpackage	plugins.comments.controllers.components
+ * @package comments
+ * @subpackage comments.controllers.components
  */
 class CommentsComponent extends Object {
+
 /**
  * Components
  *
  * @var array $components
- * @access public
  */
 	public $components = array('Cookie', 'Session', 'Auth');
 
@@ -66,7 +60,6 @@ class CommentsComponent extends Object {
  * Enabled
  *
  * @var boolean $enabled
- * @access public
  */
 	public $enabled = true;
 
@@ -74,7 +67,6 @@ class CommentsComponent extends Object {
  * Controller
  *
  * @var mixed $controller
- * @access public
  */
 	public $controller = null;
 
@@ -84,7 +76,6 @@ class CommentsComponent extends Object {
  * Customizable in beforeFilter()
  *
  * @var array $actionNames
- * @access public
  */
 	public $actionNames = array('view', 'comments');
 
@@ -98,7 +89,6 @@ class CommentsComponent extends Object {
  * Customizable in beforeFilter()
  *
  * @var array $deleteActions
- * @access public
  */
 	public $deleteActions = array();
 
@@ -108,7 +98,6 @@ class CommentsComponent extends Object {
  * Customizable in beforeFilter(), or default controller's model name is used
  *
  * @var string Model name
- * @access public
  */
 	public $modelName = null;
 
@@ -118,7 +107,6 @@ class CommentsComponent extends Object {
  * Customizable in beforeFilter()
  *
  * @var string Association name
- * @access public
  */
 	public $assocName = 'Comment';
 
@@ -128,18 +116,16 @@ class CommentsComponent extends Object {
  * Customizable in beforeFilter()
  *
  * @var string Name of the user model
- * @access public
  */
 	public $userModel = 'UserModel';
 
 /**
- * Class Name for user model in ClassRegistry format. 
+ * Class Name for user model in ClassRegistry format.
  * Ex: For User model stored in User plugin need to use Users.User
  *
  * Customizable in beforeFilter()
  *
  * @var string user model class name
- * @access public
  */
 	public $userModelClass = 'User';
 
@@ -150,7 +136,6 @@ class CommentsComponent extends Object {
  * Customizable in beforeFilter()
  *
  * @var boolean
- * @access public
  */
 	public $unbindAssoc = false;
 
@@ -158,7 +143,6 @@ class CommentsComponent extends Object {
  * Parameters passed to view
  *
  * @var array
- * @access public
  */
 	public $commentParams = array();
 
@@ -170,7 +154,6 @@ class CommentsComponent extends Object {
  * Customizable in beforeFilter(), or default Inflector::variable($this->modelName)
  *
  * @var string
- * @access public
  */
 	public $viewVariable = null;
 
@@ -180,7 +163,6 @@ class CommentsComponent extends Object {
  * Customizable in beforeFilter()
  *
  * @var string
- * @access public
  */
 	public $viewComments = 'commentsData';
 
@@ -190,7 +172,6 @@ class CommentsComponent extends Object {
  * Customizable in beforeFilter()
  *
  * @var boolean
- * @access public
  */
 	public $allowAnonymousComment = false;
 
@@ -200,16 +181,14 @@ class CommentsComponent extends Object {
  * Customizable in beforeFilter()
  *
  * @var array
- * @access protected
  */
-	protected $_supportNamedParams = array('comment', 'comment_action', 'comment_view_type');
+	protected $_supportNamedParams = array('comment', 'comment_action', 'comment_view_type', 'quote');
 
 /**
  * Initialize Callback
  *
  * @param object
  * @return void
- * @access public
  */
 	public function initialize(Controller $controller, $settings) {
 		foreach ($settings as $setting => $value) {
@@ -232,7 +211,6 @@ class CommentsComponent extends Object {
  *
  * @param object Controller
  * @return void
- * @access public
  */
 	public function startup(Controller $controller) {
 		$this->Auth = $this->Controller->Auth;
@@ -256,7 +234,6 @@ class CommentsComponent extends Object {
  * Callback
  *
  * @return void
- * @access public
  */
 	public function beforeRender() {
 		try {
@@ -277,7 +254,6 @@ class CommentsComponent extends Object {
  * Determine used type of display (flat/threaded/tree)
  *
  * @return string Type of comment display
- * @access public
  */
 	public function callback_initType() {
 		$types = array('flat', 'threaded', 'tree');
@@ -307,10 +283,9 @@ class CommentsComponent extends Object {
  *
  * @param string $displayType
  * @return void
- * @access public
  */
 	public function callback_view($displayType, $processActions = true) {
-		if (!isset($this->Controller->{$this->modelName}) || 
+		if (!isset($this->Controller->{$this->modelName}) ||
 			(!array_key_exists($this->assocName, array_merge($this->Controller->{$this->modelName}->hasOne, $this->Controller->{$this->modelName}->hasMany)))) {
 			throw new Exception('CommentsComponent: model '.$this->modelName.' or association '.$this->assocName.' doesn\'t exist');
 		}
@@ -340,7 +315,6 @@ class CommentsComponent extends Object {
  *
  * @param array $options
  * @return array
- * @access public
  */
 	public function callback_fetchDataTree($options) {
 		$conditions = $this->_prepareModel($options);
@@ -363,7 +337,6 @@ class CommentsComponent extends Object {
  *
  * @param array $options
  * @return array
- * @access public
  */
 	public function callback_fetchDataFlat($options) {
 		$conditions = $this->_prepareModel($options);
@@ -375,17 +348,16 @@ class CommentsComponent extends Object {
  *
  * @param array $options
  * @return array
- * @access public
  */
 	public function callback_fetchDataThreaded($options) {
 		$Comment =& $this->Controller->{$this->modelName}->Comment;
 		$conditions = $this->_prepareModel($options);
 		$fields = array(
-			'Comment.id', 'Comment.user_id', 'Comment.foreign_key', 'Comment.parent_id', 'Comment.approved', 
-			'Comment.title', 'Comment.body', 'Comment.slug', 'Comment.created', 
-			$this->modelName . '.id', 
+			'Comment.id', 'Comment.user_id', 'Comment.foreign_key', 'Comment.parent_id', 'Comment.approved',
+			'Comment.title', 'Comment.body', 'Comment.slug', 'Comment.created',
+			$this->modelName . '.id',
 			$this->userModel . '.id',
-			$this->userModel . '.' . $Comment->{$this->userModel}->displayField, 
+			$this->userModel . '.' . $Comment->{$this->userModel}->displayField,
 			$this->userModel . '.slug');
 		$order = array(
 			'Comment.parent_id' => 'asc',
@@ -397,7 +369,6 @@ class CommentsComponent extends Object {
  * Default method. Flat method called.
  *
  * @param array $options
- * @access protected
  * @return array
  */
 	public function callback_fetchData($options) {
@@ -409,7 +380,6 @@ class CommentsComponent extends Object {
  *
  * @param array $options
  * @return boolean
- * @access protected
  */
 	protected function _prepareModel($options) {
 		$params = array(
@@ -423,14 +393,13 @@ class CommentsComponent extends Object {
  * Prepare passed parameters
  *
  * @return void
- * @access protected
  */
 	public function callback_prepareParams() {
 		$this->commentParams = array_merge($this->commentParams, array(
 			'viewComments' => $this->viewComments,
 			'modelName' => $this->modelName,
 			'userModel' => $this->userModel));
-		$allowedParams = array('comment', 'comment_action');
+		$allowedParams = array('comment', 'comment_action', 'quote');
 		foreach ($allowedParams as $param) {
 			if (isset($this->Controller->passedArgs[$param])) {
 				$this->commentParams[$param] = $this->Controller->passedArgs[$param];
@@ -444,7 +413,6 @@ class CommentsComponent extends Object {
  * @param integer $modelId
  * @param integer $commentId Parent comment id
  * @param string $displayType
- * @access public
  */
 	public function callback_add($modelId, $commentId, $displayType, $data = array()) {
 		if (!empty($this->Controller->data)) {
@@ -490,7 +458,35 @@ class CommentsComponent extends Object {
 					$this->flash(__d('comments', 'The Comment could not be saved. Please, try again.', true));
 				}
 			}
+		} else {
+			if (!empty($this->Controller->passedArgs['quote'])) {
+				if (!empty($this->Controller->passedArgs['comment'])) {
+					$message = $this->_call('getFormatedComment', array($this->Controller->passedArgs['comment']));;
+					if (!empty($message)) {
+						$this->Controller->data['Comment']['body'] = $message;
+					}
+				}
+			}
 		}
+	}
+
+/**
+ * Fetch and format comment message
+ *
+ * @param string $commentId
+ * @return string
+ */
+	public function callback_getFormatedComment($commentId) {
+		$comment = $this->Controller->{$this->modelName}->Comment->find('first', array(
+			'recursive' => -1,
+			'fields' => array('Comment.body', 'Comment.title'),
+			'conditions' => array('Comment.id' => $commentId)));
+		if (!empty($comment)) {
+
+		} else {
+			return null;
+		}
+		return "[quote]\n" . $comment['Comment']['body'] . "\n[end quote]";
 	}
 
 /**
@@ -498,10 +494,9 @@ class CommentsComponent extends Object {
  *
  * @param string $modelId
  * @param string $commentId
- * @access public
  */
 	public function callback_toggleApprove($modelId, $commentId) {
-		if (!isset($this->Controller->passedArgs['comment_action']) 
+		if (!isset($this->Controller->passedArgs['comment_action'])
 			|| !($this->Controller->passedArgs['comment_action'] == 'toggle_approve' && $this->Controller->Auth->user('is_admin') == true)) {
 			 throw new BlackHoleException(__d('comments', 'Nonrestricted operation', true));
 		}
@@ -518,7 +513,6 @@ class CommentsComponent extends Object {
  * @param string $modelId
  * @param string $commentId
  * @return void
- * @access public
  */
 	public function callback_delete($modelId, $commentId) {
 		if ($this->Controller->{$this->modelName}->commentDelete($commentId)) {
@@ -533,7 +527,6 @@ class CommentsComponent extends Object {
  * Flash message - Special behavior for ajax queries
  *
  * @return void
- * @access public
  */
 	public function flash($message) {
 		$isAjax = isset($this->Controller->params['isAjax']) ? $this->Controller->params['isAjax'] : false;
@@ -549,7 +542,6 @@ class CommentsComponent extends Object {
  *
  * @param array $urlBase
  * @return void
- * @access public
  */
 	public function redirect($urlBase = array()) {
 		$isAjax = isset($this->Controller->params['isAjax']) ? $this->Controller->params['isAjax'] : false;
@@ -576,7 +568,6 @@ class CommentsComponent extends Object {
  * Generate permalink to page
  *
  * @return string URL to the comment
- * @access public
  */
 	public function permalink() {
 		$params = array();
@@ -606,13 +597,12 @@ class CommentsComponent extends Object {
  * @param string $method
  * @param array $args
  * @return mixed
- * @access protected
  */
 	protected function _call($method, $args = array()) {
 		$methodName = 'callback_comments' .  Inflector::camelize(Inflector::underscore($method));
 		$localMethodName = 'callback_' .  $method;
-		if (method_exists($this->controller, $methodName)) {
-			return call_user_func_array(array(&$this->controller, $methodName), $args);
+		if (method_exists($this->Controller, $methodName)) {
+			return call_user_func_array(array(&$this->Controller, $methodName), $args);
 		} elseif (method_exists($this, $localMethodName)) {
 			return call_user_func_array(array(&$this, $localMethodName), $args);
 		} else {
@@ -625,7 +615,6 @@ class CommentsComponent extends Object {
  *
  * @param array
  * @return boolean
- * @access protected
  */
 	protected function _processActions($options) {
 		extract($options);
@@ -658,17 +647,14 @@ class CommentsComponent extends Object {
 
 /**
  * Wrapping method to clean incoming html contents
- * 
+ *
  * @param string $text
  * @param string $settings
  * @return string
- * @access public
  */
 	function cleanHtml($text, $settings = 'full') {
 		App::import('Helper', 'Comments.Cleaner');
 		$cleaner = & new CleanerHelper();
 		return $cleaner->clean($text, $settings);
 	}
-
 }
-?>
