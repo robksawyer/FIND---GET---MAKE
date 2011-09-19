@@ -34,6 +34,8 @@
 App::import('Sanitize');
 class AppModel extends Model {
 	
+	var $useTable = false;
+	
 	/**
 	 * Table prefix.
 	 *
