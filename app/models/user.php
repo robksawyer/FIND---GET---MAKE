@@ -211,7 +211,13 @@ class User extends AppModel {
 			'foreignKey' => 'user_id',
 			'dependent' => true,
 			'exclusive' => true
-		)
+		)/*,
+		'Comment' => array(
+			'className' => 'Comment',
+			'foreignKey' => 'user_id',
+			'dependent' => true,
+			'exclusive' => true
+		)*/
 	);
 	
 	/**

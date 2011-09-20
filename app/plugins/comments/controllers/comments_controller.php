@@ -49,39 +49,43 @@ class CommentsController extends CommentsAppController {
  * Admin index action
  *
  * @param string
+ * @return void
  */
-	public function admin_index($type = 'spam') {
+	public function admin_index($type = '') {
 		$this->presetVars = array(
-			  array('field' => 'approved', 'type' => 'value'),
-			  array('field' => 'is_spam', 'type' => 'value'));
+			array('field' => 'approved', 'type' => 'value'),
+			array('field' => 'is_spam', 'type' => 'value'));
+
 		$this->Comment->recursive = 0;
 		$this->Comment->bindModel(array(
 			'belongsTo' => array(
 				'UserModel'  => array(
-					'className' => 'Users.User', 
+					'className' => 'Users.User',
 					'foreignKey' => 'user_id'))), false);
 		$conditions = array();
+
 		if (App::import('Component', 'Search.Prg')) {
-			$this->Prg = new PrgComponent();
-			$this->Prg->initialize($this);
 			$this->Comment->Behaviors->attach('Search.Searchable');
 			$this->Comment->filterArgs = array(
 				array('name' => 'is_spam', 'type' => 'value'),
-				array('name' => 'approved', 'type' => 'value'),
-			);
+				array('name' => 'approved', 'type' => 'value'));
+			$this->Prg = new PrgComponent();
+			$this->Prg->initialize($this);
 			$this->Prg->commonProcess();
-			$this->Comment->parseCriteria($this->passedArgs);
+			$conditions = $this->Comment->parseCriteria($this->passedArgs);
+			$this->set('searchEnabled', true);
 		}
 
 		$this->paginate['Comment'] = array(
 			'conditions' => $conditions,
 			'contain' => array('UserModel'),
-			'order' => 'Comment.created DESC'); 
+			'order' => 'Comment.created DESC');
 		if ($type == 'spam') {
 			$this->paginate['Comment']['conditions'] = array('Comment.is_spam' => array('spam', 'spammanual'));
 		} elseif ($type == 'clean') {
 			$this->paginate['Comment']['conditions'] = array('Comment.is_spam' => array('ham', 'clean'));
 		}
+
 		$this->set('comments', $this->paginate('Comment'));
 	}
 
@@ -90,6 +94,7 @@ class CommentsController extends CommentsAppController {
  * Processes mailbox folders
  *
  * @param string $folder Name of the folder to process
+ * @return void
  */
 	public function admin_process($type = null) {
 		$addInfo = '';
@@ -97,7 +102,7 @@ class CommentsController extends CommentsAppController {
 			try {
 				$message = $this->Comment->process($this->data['Comment']['action'], $this->data);
 			} catch (Exception $ex) {
-				$message = $ex->getMessages();				
+				$message = $ex->getMessages();
 			}
 			$this->Session->setFlash($message);
 		}
@@ -105,7 +110,7 @@ class CommentsController extends CommentsAppController {
 		$url = Set::merge($url, $this->params['pass']);
 		$this->redirect(Set::merge($url, $this->params['named']));
 	}
-	
+
 /**
  * Admin mark comment as spam
  *
@@ -188,7 +193,7 @@ class CommentsController extends CommentsAppController {
 	}
 
 /**
- * Request comments 
+ * Request comments
  *
  * @param string user UUID
  * @return void
@@ -202,7 +207,7 @@ class CommentsController extends CommentsAppController {
 		if (!empty($this->params['named']['model'])) {
 			$conditions['Comment.model'] = $this->params['named']['model'];
 		}
-
+		$conditions['Comment.is_spam'] = array('ham','clean');
 		$this->paginate = array(
 			'conditions' => $conditions,
 			'order' => 'Comment.created DESC',
@@ -224,3 +229,4 @@ class CommentsController extends CommentsAppController {
 		return array_key_exists('requested', $this->params);
 	}
 }
+

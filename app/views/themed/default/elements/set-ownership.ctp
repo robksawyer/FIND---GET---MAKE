@@ -73,8 +73,9 @@
 			<?php 
 				if(empty($testing)){
 					echo $this->Form->submit('Submit',array('onClick'=>"doSubmit('".$model."',".$model_id.");"));
+					echo $this->Form->end();
 				}else{
-					echo $this->Form->end('Submit');
+					echo $this->Form->end(__('Submit',true));
 				}
 				echo $this->Js->writeBuffer(array('inline' => 'true')); //I'm not sure why this is added here.
 			?>

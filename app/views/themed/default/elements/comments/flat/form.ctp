@@ -20,27 +20,24 @@ foreach (array('page', 'order', 'sort', 'direction') as $named) {
 		$_url[$named] = $this->passedArgs[$named];
 	}
 }
-//debug($_url);
-//debug(array_merge($_url, array('comment' => $comment, '#' => 'comment' . $comment)));
 if ($target) {
 	$_url['action'] = r(Configure::read('Routing.admin') . '_', '', 'comments');
 	$ajaxUrl = $commentWidget->prepareUrl(array_merge($_url, array('comment' => $comment, '#' => 'comment' . $comment)));
-	echo $this->Form->create(null, array('url' => $ajaxUrl, 'target' => $target));
+	echo $this->Form->create(null, array('url' => $ajaxUrl, 'target' => $target,'id'=>'CommentAddForm'));
 } else {
-	echo $this->Form->create(null, array('url' => array_merge($_url, array('comment' => $comment, '#' => 'comment' . $comment))));
+	echo $this->Form->create(null, array('url' => array_merge($_url, array('comment' => $comment, '#' => 'comment' . $comment)),'id'=>'CommentAddForm'));
 }
 //echo $this->Form->input('Comment.title');
-echo $this->Form->input('Comment.body', array(
-	'label'=>'',
-    'error' => array(
-        'body_required' => __d('comments', 'This field cannot be left blank',true),
-        'body_markup' => sprintf(__d('comments', 'You can use only headings from %s to %s' ,true), 4, 7))));
+echo $this->Form->input('Comment.body', array('label'=>'',
+															'error' => array(
+																'body_required' => __d('comments', 'This field cannot be left blank',true),
+																'body_markup' => sprintf(__d('comments', 'You can use only headings from %s to %s' ,true), 4, 7)
+																)));
 // Bots will very likely fill this fields
 echo $this->Form->input('Other.title', array('type' => 'hidden'));
 echo $this->Form->input('Other.comment', array('type' => 'hidden'));
 echo $this->Form->input('Other.submit', array('type' => 'hidden'));
 ?>
-<div class="clear"></div><br/>
 <?php
 if ($target) {
 	echo $this->Js->submit(__d('comments', 'Submit', true), array_merge(array('url' => $ajaxUrl), $commentWidget->globalParams['ajaxOptions']));
@@ -53,7 +50,9 @@ echo $this->Form->end();
 var preFill = 'Add your comment here. Note: You can use @ to mention your friends.';
 
 $(document).ready(function(){
-	$('#CommentBody').val(preFill);
+	if($('#CommentBody').val() == ""){
+		$('#CommentBody').val(preFill);
+	}
 	
 	$('#CommentBody').focus(function(){
 		if($(this).val() == preFill){

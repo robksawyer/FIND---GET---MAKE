@@ -100,7 +100,14 @@ class Source extends AppModel {
 			'conditions' => array('StaffFavorite.model' => 'Source'),
 			'dependent' => true,
 			'exclusive' => true
-		)
+		)/*,
+		'Comment' => array(
+			'className' => 'Comment',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Comment.model' => 'Source'),
+			'dependent' => true,
+			'exclusive' => true
+		)*/
 	);
 
 	var $hasAndBelongsToMany = array(

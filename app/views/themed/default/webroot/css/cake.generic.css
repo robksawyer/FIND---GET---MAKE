@@ -323,8 +323,9 @@ input[type=submit] {
 }*/
 
 .submit input[type=submit] {
+	position: relative;
 	background:whiteSmoke;
-	margin: 0;
+	margin: 10px 0 0 0;
 	padding: 6px 8px 9px 8px;
 	/*background: -webkit-gradient(linear, left top, left bottom, from(#e7e7e7), to(#ffffff));*/
 	/*background-image: -moz-linear-gradient(top, #ef3f23, #f36c57);*/

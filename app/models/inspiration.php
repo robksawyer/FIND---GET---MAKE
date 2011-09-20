@@ -75,7 +75,14 @@ class Inspiration extends AppModel {
 			'conditions' => array('StaffFavorite.model' => 'Inspiration'),
 			'dependent' => true,
 			'exclusive' => true
-		)
+		)/*,
+		'Comment' => array(
+			'className' => 'Comment',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Comment.model' => 'Inspiration'),
+			'dependent' => true,
+			'exclusive' => true
+		)*/
 	);
 	
 	var $hasAndBelongsToMany = array(

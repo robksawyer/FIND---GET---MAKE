@@ -12,43 +12,21 @@
 App::import('Controller', 'Controller', false);
 App::import('Component', 'Comments.Comments');
 
-if (!class_exists('Article')) {
-	class Article extends CakeTestModel {
-	/**
-	 * 
-	 */
-		public $name = 'Article';
-	}
-}
-
-
-if (!class_exists('User')) {
-	class User extends CakeTestModel {
-	/**
-	 * 
-	 */
-		public $name = 'User';
-	}
-}
-
 if (!class_exists('ArticlesTestController')) {
 	class ArticlesTestController extends Controller {
 
 	/**
 	 * @var string
-	 * @access public
 	 */
 		public $name = 'ArticlesTest';
 
 	/**
 	 * @var array
-	 * @access public
 	 */
 		public $uses = array('Article');
 
 	/**
 	 * @var array
-	 * @access public
 	 */
 		public $components = array('Session', 'Comments.Comments' => array('userModelClass' => 'User'), 'Cookie', 'Auth');
 
@@ -75,7 +53,7 @@ if (!class_exists('ArticlesTestController')) {
 
 		public function callback_commentsToggleApprove($modelId, $commentId) {
 			return $this->Comments->callback_toggleApprove($modelId, $commentId);
-		}		
+		}
 	}
 }
 
@@ -145,7 +123,7 @@ class CommentsComponentTest extends CakeTestCase {
 		$this->Controller->Comments->unbindAssoc = true;
 		$this->Controller->Comments->startup($this->Controller);
 		$this->assertFalse(isset($this->Controller->Article->hasMany['Comment']));
-		
+
 		$User = ClassRegistry::init('User');
 
 		$this->Controller->Session->write('Auth', $User->find('first', array('conditions' => array('id' => '47ea303a-3b2c-4251-b313-4816c0a800fa'))));
@@ -513,7 +491,7 @@ class CommentsComponentTest extends CakeTestCase {
 	}
 
 /**
- * testFlash
+ * testRedirect
  *
  * @return void
  */
@@ -527,6 +505,29 @@ class CommentsComponentTest extends CakeTestCase {
 		$this->Controller->params['isAjax'] = true;
 		$this->Controller->Comments->redirect($url);
 		$this->assertEqual($this->Controller->viewVars['redirect'], $url);
+		$this->assertEqual($this->Controller->viewVars['ajaxMode'], true);
+	}
+
+/**
+ * testRedirect with passed arguments to be persisted in params
+ * Named parameters used internally by the component must not be persisted as it can
+ * lead to infinite loops
+ *
+ * @return void
+ */
+	public function testRedirectPersistParams() {
+		// Here 'comment_action' => 'add' is a named param used internally
+		$this->Controller->passedArgs = array('foo', 'custom' => 'important', 'comment_action' => 'add');
+		$url = array('controller' => 'tests', 'action' => 'index', 'other' => 'value');
+		$expected = array('controller' => 'tests', 'action' => 'index', 'foo', 'custom' => 'important', 'other' => 'value');
+
+		$this->Controller->params['isAjax'] = false;
+		$this->Controller->Comments->redirect($url);
+		$this->assertEqual($this->Controller->redirectUrl, $expected);
+
+		$this->Controller->params['isAjax'] = true;
+		$this->Controller->Comments->redirect($url);
+		$this->assertEqual($this->Controller->viewVars['redirect'], $expected);
 		$this->assertEqual($this->Controller->viewVars['ajaxMode'], true);
 	}
 

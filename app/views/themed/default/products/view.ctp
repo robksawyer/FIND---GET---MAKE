@@ -3,7 +3,7 @@
 	echo $this->element('top_actions',array(
 														'item'=>$product,
 														'model'=>'Product',
-														'rate'=>true,
+														'rate'=>false,
 														'cache'=>false
 														));
 ?>
@@ -151,4 +151,13 @@ echo $this->element('attachments',array('item'=>$product,
 echo $this->element('ownership-extended-counts',array('model'=>'Product','model_id'=>$product['Product']['id'],'cache'=>false));
 ?>
 <div class="bar">&nbsp;</div>
-<?php echo $this->element('comments',array('cache'=>false,'disable'=>false)); ?>
+<div id="product-comments">
+<?php
+	/*echo $this->element('comments', array('model' => 'Product',
+														'model_id' => $product['Product']['id'], 
+														'order_field' => 'created', 'order' => 'asc',
+														'cache'=>false
+														));*/
+	echo $this->element('comments',array('ajax'=>false,'cache'=>false));
+?>
+</div>

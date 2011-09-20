@@ -60,7 +60,18 @@
  * 
 */
 	$config['FGM']['allow_staff_favorites_on_all_items'] = 0;
-	
+
+/**
+ * Allows users to comment
+ * 
+*/
+	$config['FGM']['allow_comments'] = 1;
+
+/**
+ * Allows users to post anonymous comments
+ * 
+*/
+	$config['FGM']['allow_anonymous_comments'] = 1;		
 
 /**
  * 

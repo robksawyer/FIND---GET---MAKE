@@ -63,12 +63,11 @@ class AppController extends Controller {
 									'autoRedirect'=>true,
 									'allowedActions'=>array(
 															'display','key','generateKeycode','users','tags',
-															'getProfileData','find','getTags','getCount'
+															'getProfileData','find','getTags','getCount','blackHole'
 									)
 									
 								),'Security','RequestHandler','Session','AutoLogin','Cookie',
-								'AjaxHandler', 'Forum.Toolbar','TwitterKit.Twitter','Facebook.Connect',
-								'Comments.Comments'=>array('userModelClass'=>'User')
+								'AjaxHandler', 'Forum.Toolbar','TwitterKit.Twitter','Facebook.Connect'
 								);
 
 	/**
@@ -79,7 +78,7 @@ class AppController extends Controller {
 	 */
 	var $helpers = array('Form', 'Html', 'Time','Text','Session','Js' => array('Jquery'),
 						'Popup.Popup'=>array('Jquery'),'TwitterKit.Twitter','Facebook',
-						'Forum.Cupcake', 'Forum.Decoda' => array(),'String'
+						'Forum.Cupcake', 'Forum.Decoda' => array(),'String','Paginator'
 						);
 	
 	/**
@@ -145,9 +144,6 @@ class AppController extends Controller {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		
-		//Comment settings
-		$this->passedArgs['comment_view_type'] = 'flat';
-		
 		//Cookie settings
 		//$this->Cookie->name = 'FindGetMake';
 		//$this->Cookie->time =  '+1 month';  // or '1 hour'
@@ -193,15 +189,15 @@ class AppController extends Controller {
 		if(isset($this->Security)){
 			// Must be disabled or AJAX calls fail
 			$this->Security->validatePost = false;
-			$this->Security->blackHoleCallback = 'submit_fail';
-			if (!$this->RequestHandler->isAjax()) {
-				//$this->Security->blackHole($this,'You are not authorized to process this request!');
+			
+			$this->Security->blackHoleCallback = '_blackhole';
+			/*if(!$this->RequestHandler->isAjax()) {
 				$this->Security->blackHole($this,'You are not authorized to process this request!');
 			} else {
 				if(strpos(env('HTTP_REFERER'), trim(env('HTTP_HOST'), '/')) === false) {
 					$this->Security->blackHole($this,'Invalid referrer detected for this request!');
 				}
-			}
+			}*/
 		}
 		
 		// Initialize
@@ -242,14 +238,27 @@ class AppController extends Controller {
 	}
 	
 	/**
-	 * This is the black hole method called by the Security component if tampering is found.
-	 * @param 
-	 * @return 
-	 * 
+	* Unified handler for black-holed requests.
+	*
+	* @param string $error Error type passed automatically.
 	*/
-	public function submit_fail(){
-		//$this->Session->setFlash(__('Please, do not tamper with the forms.', true),'default',array('class'=>'error-message'));
-		//$this->redirect('/');
+	function blackHole($error) {
+		switch ($error) {
+			case 'secure':
+				$this->redirect('https://' . env('SERVER_NAME') . env('REQUEST_URI'));
+				break;
+			
+			case 'login':
+				// do something else
+				break;
+		
+			default:
+				// do something else
+				$this->Session->setFlash(__($error,true),'default',array('class'=>'error-message'));
+				//$error = null;
+				//$this->redirect($this->Auth->loginAction);
+				break;
+		}
 	}
 	
 	/**

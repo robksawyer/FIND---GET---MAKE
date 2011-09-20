@@ -30,7 +30,7 @@
 		<?php 
 			foreach($haveusers as $user){
 				echo "<div class='ownership-item'>";
-				echo $this->element('avatar',array('cache'=>false,'user'=>$user,'height'=>'64','follow'=>true));
+				echo $this->element('user-block-with-products',array('cache'=>false,'user'=>$user,'height'=>'64','follow'=>true));
 				//echo $this->Html->link(__($user['User']['username'],true),array('controller'=>'users','action'=>'view',$user['User']['slug']));
 				echo "</div>";
 			}

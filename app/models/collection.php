@@ -59,6 +59,13 @@ class Collection extends AppModel {
 			'dependent' => true,
 			'exclusive' => true
 		)
+		/*'Comment' => array(
+			'className' => 'Comment',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Comment.model' => 'Collection'),
+			'dependent' => true,
+			'exclusive' => true
+		)*/
 	);
 	
 	var $belongsTo = array(

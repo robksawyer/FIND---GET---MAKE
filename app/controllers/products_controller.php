@@ -2,8 +2,8 @@
 class ProductsController extends AppController {
 
 	var $name = 'Products';
+	var $components = array('Search.Prg','Uploader.Uploader','Comments.Comments' => array('userModel' => 'User'));
 	var $helpers = array('Tags.TagCloud');
-	var $components = array('Search.Prg','Uploader.Uploader');
 
 	var $paginate = array(
 		'limit' => 25
@@ -25,7 +25,9 @@ class ProductsController extends AppController {
 		parent::beforeFilter();
 		
 		//Make certain pages public
-		$this->Auth->allowedActions = array('index','view','verifyAddition','clearVerifySessions','getProductsForSource','getProductsForInspiration','userProducts','comments');
+		$this->Auth->allowedActions = array('index','view','verifyAddition','clearVerifySessions',
+											'getProductsForSource','getProductsForInspiration','userProducts',
+											'comments');
 		
 		$this->Uploader->uploadDir = 'media/static/img/products/';
 		$this->Uploader->enableUpload = true;
@@ -33,6 +35,13 @@ class ProductsController extends AppController {
 		$this->Uploader->tempDir = 'media/transfer/img/products/';
 		//$this->Uploader->mime('image', 'gif', 'image/gif');
 		//$this->Uploader->maxNameLength = 50;
+		
+		if(isset($this->Security)){
+			$this->Security->enabled = false;
+			$this->Security->validatePost = false;
+		}
+		
+		$this->passedArgs['comment_view_type'] = 'flat';
 	}
 	
 	/**
@@ -52,19 +61,14 @@ class ProductsController extends AppController {
 	
 	/**************** AJAX METHODS ************************/
 	
-	/**
-	 * 
-	 * @param 
-	 * @return 
-	 * 
-	*/
 	public function comments($id = null) {
-		$product = $this->Product->read(null, $id);
+		$products = $this->Product->read(null, $id);
 		$this->layout = 'ajax'; 
-		$this->set(compact('product', 'id'));
+		$this->set(compact('products', 'id'));
 	}
 	
 	/**************** END AJAX METHODS ************************/
+	
 	
 	public function find() {
 		$this->Prg->commonProcess();
@@ -163,7 +167,6 @@ class ProductsController extends AppController {
 			}
 			$this->set(compact('product'));
 		}
-		
 		/*$products = $this->Product->getAll();
 		$productList = $this->Product->getList();
 		$this->set('products','productList');*/

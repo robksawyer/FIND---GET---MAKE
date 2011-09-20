@@ -3137,3 +3137,45 @@ span.total a:hover{
 	padding-left: 5px;
 }
 /** END USER FEED **/
+
+
+/** COMMENTS **/
+.comments{
+}
+
+.comments #CommentAddForm{
+	width: 500px;
+}
+.comment{
+	position: relative;
+	margin: 10px 0;
+}
+
+.comment .actions{
+	float: right;
+	z-index: 2;
+}
+
+.comment .actions a{
+	border-left: 1px solid #262626;
+	padding: 0 5px;
+	margin: 0px;
+	vertical-align: baseline;
+	font-size: 11px;
+	text-decoration: none;
+}
+
+.comment .actions a:first-child{
+	border-left: none;
+}
+
+.comment .header .avatar{
+	float: left;
+	margin-right: 10px;
+}
+
+.comment .body{
+	position: relative;
+	margin: 0 0 10px 0;
+}
+/** END COMMENTS **/
