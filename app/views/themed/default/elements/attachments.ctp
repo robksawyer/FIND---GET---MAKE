@@ -11,9 +11,7 @@
 </style>
 <div class="related">
 	<!--<h3><?php //__('Related Attachments');?></h3>-->
-	<?php 
-		if (!empty($item['Attachment'])):
-	?>
+	<?php if (!empty($item['Attachment'])): ?>
 	<div id="attachments" <?php if(count($item['Attachment']) < 2 && !empty($removeFirst)) echo "style='display:none;'"; ?>>
 		<ul class="wrapper">
 		<?php
@@ -85,6 +83,8 @@
 		?>
 		</ul>
 	</div>
+<?php else: ?>
+	<div class="empty">There are no attachments related to this item.</div>
 <?php endif; ?>
 <?php if(!empty($authUser) && empty($disableAdding)): ?>
 	<div class="actions">

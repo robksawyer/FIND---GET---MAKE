@@ -12,12 +12,12 @@
 <div class="comments">
 <?php
 if (!$isAddMode || $isAddMode):
+	echo $commentWidget->element('paginator');
 	foreach (${$viewComments} as $viewComment):
 		echo $commentWidget->element('item', array('comment' => $viewComment));
 	endforeach;
-	echo $commentWidget->element('paginator');
 endif;
-
+echo "&mdash;";
 if ($allowAddByAuth):
 	if ($isAddMode && $allowAddByAuth): ?>
 		<?php

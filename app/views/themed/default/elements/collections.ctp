@@ -33,6 +33,8 @@
 		</tr>
 	<?php endforeach; ?>
 	</table>
+<?php else: ?>
+		<div class="empty">There are no collections related to this item.</div>
 <?php endif; ?>
 <?php if(!empty($authUser) && empty($disableAdding)): ?>
 	<div class="actions">

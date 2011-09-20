@@ -47,7 +47,8 @@ if ($target) {
 echo $this->Form->end();
 ?>
 <script type="text/javascript">
-var preFill = 'Add your comment here. Note: You can use @ to mention your friends.';
+//var preFill = 'Add your comment here. Note: You can use @ to mention your friends.';
+var preFill = 'Add your comment here.';
 
 $(document).ready(function(){
 	if($('#CommentBody').val() == ""){

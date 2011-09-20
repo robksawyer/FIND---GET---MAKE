@@ -1,10 +1,10 @@
 <div class="related">
-	<?php if(empty($header)): ?>
-		<h3><?php __('Related Inspirations');?></h3>
-	<?php else: ?>
-		<h3><?php __($header);?></h3>
-	<?php endif; ?>
 	<?php if (!empty($item['Inspiration'])):?>
+		<?php if(empty($header)): ?>
+			<h3><?php __('Related Inspirations');?></h3>
+		<?php else: ?>
+			<h3><?php __($header);?></h3>
+		<?php endif; ?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php __('Name'); ?></th>
