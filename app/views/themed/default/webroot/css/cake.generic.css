@@ -345,6 +345,23 @@ input[type=submit] {
 	cursor: pointer;
 }
 
+#UserDisplayForm .submit{
+	color: #ffffff;
+}
+
+#UserDisplayForm .submit input[type=submit] {
+	border: none;
+	margin: 0;
+	background: none;
+	color: #ffffff;
+}
+
+#UserDisplayForm .submit input[type=submit]:hover {
+	border: none;
+	margin: 0;
+	color: #ffffff;
+}
+
 /*form .submit input[type=submit]:hover {
 	background:#d84129;
 	color: #ffdcd7;

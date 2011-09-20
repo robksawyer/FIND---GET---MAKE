@@ -42,7 +42,6 @@
 			<div id="auto-pagination-loader" style="display: none;">
 				<span id="auto_pagination_loader_loading">
 					<div class="spinner"></div>
-					Loading more items...
 				</span>
 				<span id="auto_pagination_loader_failure" style="display: none;">More items could not be loaded.&nbsp;<a href="#" onclick="retry_auto_paginator_request(); return false;">Try again</a>.</span>
 			</div>
