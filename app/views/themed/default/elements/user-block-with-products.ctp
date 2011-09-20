@@ -22,10 +22,19 @@
 			//echo $user['User']['totalInspirations']." Inspirations<br/>";
 		?></li>
 	</ul>
-	<?php if(!empty($user['Product'])): ?>
+	<?php 
+		if(!empty($user['Product'])){
+			$productData = $user['Product'];
+		}else if(!empty($user['User']['Product'])){
+			$productData = $user['User']['Product'];
+		}else{
+			//debug("An error occured.");
+		}
+		if(!empty($productData)):
+	?>
 	<ul class="item-details">
 		<?php 
-		foreach($user['Product'] as $item): ?>
+		foreach($productData as $item): ?>
 		<li>
 			<?php 
 				if(!empty($item['Attachment'][0]['title'])) $image_title = $item['Attachment'][0]['title']; else $image_title = "image";

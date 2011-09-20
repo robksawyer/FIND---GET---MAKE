@@ -158,8 +158,14 @@ class Ownership extends AppModel {
 															'have_it'=>1,
 															"model_id"=>$model_id,
 															'model'=>$model
-															)));
-		return $this->_parseOwnershipInfo($data);
+															),
+										'contain'=>array('User'=>array('Product'=>array('Attachment',
+																						'limit'=>3,
+																						'order'=>array('Product.created'=>'desc')
+																						)))
+										));
+		//return $this->_parseOwnershipInfo($data);
+		return $data;
 	}
 	
 	/**
@@ -174,8 +180,14 @@ class Ownership extends AppModel {
 															'want_it'=>1,
 															"model_id"=>$model_id,
 															'model'=>$model
-															)));
-		return $this->_parseOwnershipInfo($data);
+															),
+										'contain'=>array('User'=>array('Product'=>array('Attachment',
+																						'limit'=>3,
+																						'order'=>array('Product.created'=>'desc')
+																						)))
+										));
+		//return $this->_parseOwnershipInfo($data);
+		return $data;
 	}
 	
 	/**
@@ -190,8 +202,11 @@ class Ownership extends AppModel {
 															'had_it'=>1,
 															"model_id"=>$model_id,
 															'model'=>$model
-															)));
-		return $this->_parseOwnershipInfo($data);
+															),
+										'contain'=>array('User'=>array('Product'=>array('Attachment','limit'=>3)))
+										));
+		//return $this->_parseOwnershipInfo($data);
+		return $data;
 	}
 	
 	
