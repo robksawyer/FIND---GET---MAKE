@@ -27,7 +27,7 @@ var fgmLoadJquery = function(){
 /*
  * FGM Jquery
  */
-var sv_jquery;
+var fgm_jquery;
 
 /*
  * Add jQuery if needed
@@ -82,7 +82,7 @@ function fgm_finder(){
 			this.build();
 			this.grab();
 
-			//this.selection["public_key"] = 'svpk_5eeeca1a0b2ed4c29df34327bf8e0ffe';
+			this.selection["public_key"] = 'fgmpk_5eeeca1a0b2ed4c29df34327bf8e0ffe';
 			this.selection["referringUrl"] = document.referrer;
 			this.selection["baseUrl"] = location.href; // document.baseURI;
 			this.selection["pageTitle"] = document.title;
@@ -91,9 +91,10 @@ function fgm_finder(){
 		}
 		
 		this.build = function() {
+			alert("Building...");
 			if(!document.getElementById("fgm_find")) {
 				var css = document.createElement("link");
-				css.setAttribute("href", "http://svpply.com/assets/css/bookmarklet.001.css");
+				css.setAttribute("href", "http://dev.find-get-make.com/theme/default/css/bookmarklet.001.css");
 				css.setAttribute("rel", "stylesheet");
 				css.setAttribute("type", "text/css");
 				document.getElementsByTagName("head")[0].appendChild(css);
@@ -110,46 +111,46 @@ function fgm_finder(){
 				fgm_user = (fgm_user) ? fgm_user : window['fgm_user'];
 
 
-				var html = '<div class="fgm_header">';
+				var html = '<div class="fgm_finder_header">';
 						html += '<img width="300" src="http://www.find-get-make.com/theme/default/img/logo.png"/>';
 						html += '<div onclick="fgm_find.close(0)">CLOSE <span>X</span></div>';
 					html += '</div>';
-					html += '<div id="fgm_flash" style="display:none;">';
-						html += '<div id="fgm_flash_header">Added!</div>';
-						html += '<p><a href="http://find-get-make.com/profile/robksawyer">Check it out on your profile.</a> (This window will close momentarily)</p>';
+					html += '<div id="fgm_finder_flash" style="display:none;">';
+						html += '<div id="fgm_finder_flash_header">Added!</div>';
+						html += '<p><a href="http://find-get-make.com/profile/'+fgm_user+'>Check it out on your profile.</a> (This window will close momentarily)</p>';
 					html += '</div>';
-					html += '<div id="fgm_category">';
+					html += '<div id="fgm_finder_category">';
 						html += '<div class="separator"></div>';
-						html += '<div class="fgm_label">SELECT A CATEGORY <span>(REQUIRED)</span></div>';
-						html += '<div class="fgm_selections">';
+						html += '<div class="fgm_finder_label">SELECT A CATEGORY <span>(REQUIRED)</span></div>';
+						html += '<div class="fgm_finder_selections">';
 						html += '<ul>';
 						for (var i = 0; i < this.array_category.length; i++) {
 							var cat = this.array_category[i];
 							if (i == 0) {
-								html += "<li class='fgm_first' onclick='fgm_finder.setCategory(" + cat.id + ")' id='fgm_cat_" + cat.id + "'>";
+								html += "<li class='fgm_finder_first' onclick='fgm_finder.setCategory(" + cat.id + ")' id='fgm_cat_" + cat.id + "'>";
 							} else {
 								html += "<li onclick='fgm_finder.setCategory(" + cat.id + ")' id='fgm_cat_" + cat.id + "'>";
 							}
 							html += cat.label + "</li>";
 						}
 						html += '</ul>';
-						html += '<br class="fgm_clear" />';
+						html += '<br class="fgm_finder_clear" />';
 					html += '</div>';
 					html += '<div class="separator"></div>';
-					html += '<div class="fgm_option" id="fgm_price">';
-						html += '<div class="fgm_label">SELECT A PRICE <span>(REQUIRED)</span></div>';
-						html += '<div class="fgm_selections">';
+					html += '<div class="fgm_finder_option" id="fgm_finder_price">';
+						html += '<div class="fgm_finder_label">SELECT A PRICE <span>(REQUIRED)</span></div>';
+						html += '<div class="fgm_finder_selections">';
 						html += '<ul>';
 						for (var i = 0; i < this.array_price.length; i++) {
 							if (i == 0) {
-								html += "<li class='fgm_first' onclick='fgm_finder.setPrice(" + i + ")' id='fgm_price_" + i + "'>";
+								html += "<li class='fgm_finder_first' onclick='fgm_finder.setPrice(" + i + ")' id='fgm_finder_price_" + i + "'>";
 							} else {
-								html += "<li onclick='fgm_finder.setPrice(" + i + ")' id='fgm_price_" + i + "'>";
+								html += "<li onclick='fgm_finder.setPrice(" + i + ")' id='fgm_finder_price_" + i + "'>";
 							}
 							html += this.array_price[i] + "</li>";
 						}
 						html += '</ul>';
-						html += '<br class="fgm_clear" />';
+						html += '<br class="fgm_finder_clear" />';
 						html += '</div>';
 					html += '</div>';
 					html += '</div>';
@@ -177,7 +178,7 @@ function fgm_finder(){
 						.css({ display: 'none' })
 						.load(function(){
 						  var width, height, left, top,
-								overlay = sv_jquery('<div>'),
+								overlay = fgm_jquery('<div>'),
 								id = self.id;
 
 						  if(this.width >= 100 && this.height >= 100){
@@ -286,10 +287,8 @@ function fgm_finder(){
 			}
 
 			if (pId == 0 || pId == 1 || pId == 2) {
-				this.needsGender = true;
-
-				document.getElementById("fgm_category").style.display = "none";
-				document.getElementById("fgm_gender").style.display = "block";
+				//document.getElementById("fgm_finder_category").style.display = "none";
+				//document.getElementById("fgm_gender").style.display = "block";
 			}
 
 			this.checkSend();
@@ -301,9 +300,9 @@ function fgm_finder(){
 
 			for (var i = 0; i < this.array_price.length; i++) {
 				if (i == pId) {
-					document.getElementById("fgm_price_" + i).style.color = "#fff100";
+					document.getElementById("fgm_finder_price_" + i).style.color = "#fff100";
 				} else {
-					document.getElementById("fgm_price_" + i).style.color = "#fff";
+					document.getElementById("fgm_finder_price_" + i).style.color = "#fff";
 				}
 			}
 
@@ -340,7 +339,7 @@ function fgm_finder(){
 							url: call
 				};
 				// only one of these can actually post, so just do it twice
-				var gateway = document.getElementsByClassName('fgm_gateway')[0];
+				var gateway = document.getElementsByClassName('fgm_finder_gateway')[0];
 				if(gateway){
 					gateway.contentWindow.postMessage(JSON.stringify(message), 'http://find-get-make.com');
 				}
@@ -357,16 +356,16 @@ function fgm_finder(){
 			}
 
 			for (var i = 0; i < this.array_price.length; i++) {
-				document.getElementById("fgm_price_" + i).style.color = "#FFF";
+				document.getElementById("fgm_finder_price_" + i).style.color = "#FFF";
 			}
 
 			this.selection["category"] = false;
 			this.selection["price"] = false;
 
 			if(pSuccess) {
-				document.getElementById("fgm_price").style.display = "none";
-				document.getElementById("fgm_category").style.display = "none";
-				document.getElementById("fgm_flash").style.display = "block";
+				document.getElementById("fgm_finder_price").style.display = "none";
+				document.getElementById("fgm_finder_category").style.display = "none";
+				document.getElementById("fgm_finder_flash").style.display = "block";
 				var _self = this;
 				setTimeout(function(){_self.cleanup();}, 1500);
 			} else {
@@ -392,7 +391,7 @@ function fgm_finder(){
 				type: 'cleanup',
 			};
 			// clean up the iframes if the user closes the scavenger
-			var gateway = document.getElementsByClassName('fgm_gateway')[0];
+			var gateway = document.getElementsByClassName('fgm_finder_gateway')[0];
 			if(gateway){
 				gateway.contentWindow.postMessage(JSON.stringify(message), 'http://find-get-make.com');
 			}
