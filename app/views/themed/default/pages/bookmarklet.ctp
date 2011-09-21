@@ -153,26 +153,6 @@
 	/****** END FGM FINDER ******/
 </style>
 <div id="bookmarklet-test">
-	<div id="bookmarklet-generate-container">
-		<?php 
-			//echo $userPublicKey = $this->requestAction('//'); 
-			//fgmpk_5eeeca1a0b2ed4c29df34327bf8e0ffe
-		?>
-		<div class="extra">
-			<h1>"Get It" Browser Button</h1>
-			<ul>
-				<li class="safari step" style="">1) In your browser, Safari, go to <strong>View</strong> and check <strong>Show Bookmarks Bar</strong></li>
-				<li class="chrome step" style="display: none;">1) In your browser, Chrome, go to <strong>View</strong> and check <strong>Always Show Bookmarks Bar</strong></li>
-				<li class="firefox step" style="display: none;">1) In your browser, Firefox, go to <strong>View</strong>, then select <strong>Toolbars</strong>, and check <strong>Bookmarks Toolbar</strong></li>
-				<li class="generic step" style="display: none;">1) In your browser, go to <strong>View</strong> and check <strong>Show Bookmarks Bar</strong></li>
-				<li class="step">2) Click and drag this button into your bookmarks bar: <a href="javascript:void((function(){var%20fgm=document.createElement('script');fgm.setAttribute('src','http://dev.find-get-make.com/theme/default/js/bookmarklet/fgm_bookmarklet.js?<?php echo rand(1000,9999999); ?>');fgm.setAttribute('type','text/javascript');document.getElementsByTagName('head')[0].appendChild(fgm);})());" class="get_it">Get It</a></li>
-				<li class="step">3) Now, press the <strong>Get It</strong> whenever you see something you want.</li>
-			</ul>
-			<span class="footnote">
-				
-			</span>
-		</div>
-	</div>
 	<div id="image-container">
 		<div id="main-image">
 			<?php echo $this->Html->image('http://fpoimg.com/500x550',array('alt' => 'Main image')); ?>
@@ -203,6 +183,27 @@
 			<li>Welted construction for outstanding support and durability</li>
 		</ul>
 		<?php echo $this->Html->link('Show more','#',array()); ?>
+	</div>
+</div>
+<div class="clear"></div>
+<div id="bookmarklet-generate-container">
+	<?php 
+		//echo $userPublicKey = $this->requestAction('//'); 
+		//fgmpk_5eeeca1a0b2ed4c29df34327bf8e0ffe
+	?>
+	<div class="extra">
+		<h1>"Get It" Browser Button</h1>
+		<ul>
+			<li class="safari step" style="">1) In your browser, Safari, go to <strong>View</strong> and check <strong>Show Bookmarks Bar</strong></li>
+			<li class="chrome step" style="display: none;">1) In your browser, Chrome, go to <strong>View</strong> and check <strong>Always Show Bookmarks Bar</strong></li>
+			<li class="firefox step" style="display: none;">1) In your browser, Firefox, go to <strong>View</strong>, then select <strong>Toolbars</strong>, and check <strong>Bookmarks Toolbar</strong></li>
+			<li class="generic step" style="display: none;">1) In your browser, go to <strong>View</strong> and check <strong>Show Bookmarks Bar</strong></li>
+			<li class="step">2) Click and drag this button into your bookmarks bar: <a href="javascript:void((function(){var%20fgm=document.createElement('script');fgm.setAttribute('src','http://dev.find-get-make.com/theme/default/js/bookmarklet/fgm_bookmarklet.js?<?php echo rand(1000,9999999); ?>');fgm.setAttribute('type','text/javascript');document.getElementsByTagName('head')[0].appendChild(fgm);})());" class="get_it">Get It</a></li>
+			<li class="step">3) Now, press the <strong>Get It</strong> whenever you see something you want.</li>
+		</ul>
+		<span class="footnote">
+			
+		</span>
 	</div>
 </div>
 <script type="text/javascript">

@@ -92,9 +92,10 @@ function fgm_finder(){
 	};
 		
 	this.build = function() {
-		if(!document.getElementById("fgm_find")) {
+		if(!document.getElementById("fgm_finder")) {
 			var css = document.createElement("link");
-			css.setAttribute("href", "http://dev.find-get-make.com/theme/default/css/bookmarklet.001.css");
+			var randNum=Math.floor(Math.random()*11);
+			css.setAttribute("href", "http://dev.find-get-make.com/theme/default/css/bookmarklet/bookmarklet.001.css?"+randNum);
 			css.setAttribute("rel", "stylesheet");
 			css.setAttribute("type", "text/css");
 			document.getElementsByTagName("head")[0].appendChild(css);
@@ -104,22 +105,21 @@ function fgm_finder(){
 			document.getElementsByTagName("body")[0].appendChild(container);
 
 			var overlay = document.createElement("div");
-			overlay.id = "fgm_find";
+			overlay.id = "fgm_finder";
 			overlay.setAttribute("class", "fgm_finder");
 
 			var fgm_user = 'robksawyer';
 			fgm_user = (fgm_user) ? fgm_user : window['fgm_user'];
 
-
 			var html = '<div class="fgm_finder_header">';
 					html += '<img width="300" src="http://www.find-get-make.com/theme/default/img/logo.png"/>';
-					html += '<div onclick="fgm_find.close(0)">CLOSE <span>X</span></div>';
+					html += '<div onclick="fgm_finder.close(0)">CLOSE <span>X</span></div>';
 				html += '</div>';
 				html += '<div id="fgm_finder_flash" style="display:none;">';
 					html += '<div id="fgm_finder_flash_header">Added!</div>';
-					html += '<p><a href="http://find-get-make.com/profile/'+fgm_user+'>Check it out on your profile.</a> (This window will close momentarily)</p>';
+					html += '<p><a href="http://find-get-make.com/profile/'+fgm_user+'">Check it out on your profile.</a> (This window will close momentarily)</p>';
 				html += '</div>';
-				html += '<div id="fgm_finder_category">';
+				html += '<div class="fgm_finder_option" id="fgm_finder_category">';
 					html += '<div class="separator"></div>';
 					html += '<div class="fgm_finder_label">SELECT A CATEGORY <span>(REQUIRED)</span></div>';
 					html += '<div class="fgm_finder_selections">';
@@ -157,7 +157,7 @@ function fgm_finder(){
 
 			overlay.innerHTML = html;
 			document.getElementsByTagName("body")[0].appendChild(overlay);
-			document.getElementById("fgm_find").style.display = "none";
+			document.getElementById("fgm_finder").style.display = "none";
 		}
 	};
 	
@@ -260,16 +260,16 @@ function fgm_finder(){
 	};
 	
 	this.showOverlay = function() {
-		var overlay = document.getElementById("fgm_find");
+		var overlay = document.getElementById("fgm_finder");
 		overlay.style.top = (((this.dimensions()[1] / 2) - 126) + this.dimensions()[2]) + "px";
 		overlay.style.left = (((this.dimensions()[0] / 2) - 250) + this.dimensions()[3]) + "px";
 		overlay.style.display = "block";
-		var dragable1 = dragHandler.attach(document.getElementById("fgm_find"));
+		var dragable1 = dragHandler.attach(document.getElementById("fgm_finder"));
 	};
 
 	this.moveOverlay = function() {
 		var dimensions = this.dimensions();
-		var overlay = document.getElementById("fgm_find");
+		var overlay = document.getElementById("fgm_finder");
 		overlay.style.top = (((dimensions[1] / 2) - 126) + dimensions[2]) + "px";
 		overlay.style.left = (((dimensions[0] / 2) - 250) + dimensions[3]) + "px";
 	};
@@ -369,7 +369,7 @@ function fgm_finder(){
 			var _self = this;
 			setTimeout(function(){_self.cleanup();}, 1500);
 		} else {
-			document.getElementById("fgm_find").style.display = "none";
+			document.getElementById("fgm_finder").style.display = "none";
 			this.cleanup();
 		}
 
@@ -383,7 +383,7 @@ function fgm_finder(){
 	this.cleanup = function() {
 		var body = document.getElementsByTagName('body')[0];
 		var container = document.getElementById("fgm_finder_container");
-		var fgm_finder = document.getElementById("fgm_find");
+		var fgm_finder = document.getElementById("fgm_finder");
 		body.removeChild(container);
 		body.removeChild(fgm_finder);
 

@@ -1,11 +1,11 @@
-div..fgm_finder *{border:0;font-family:inherit;font-size:100%;line-height:100%;font-style:inherit;font-weight:inherit;margin:0;outline:0;padding:0;vertical-align:baseline;list-style:none ;text-transform:none;}
+div.fgm_finder *{border:0;font-family:inherit;font-size:100%;line-height:100%;font-style:inherit;font-weight:inherit;margin:0;outline:0;padding:0;vertical-align:baseline;list-style:none ;text-transform:none;}
 div.fgm_finder{background:#000;font-family:Arial,sans-serif;padding:30px;position:absolute;width:550px;z-index:5000001;}
 div.fgm_finder br.fgm_finder_clear{clear:both;margin:0;padding:0;}
 div.fgm_finder div.separator{background:#d3d3d3;height:1px;margin:20px 0;}
-div.fgm_finder div.fgm_finder_heading img{float:left;}
-div.fgm_finder div.fgm_finder_heading div{color:#777;cursor:pointer;float:right;font-size:11px;text-align:left;}
-div.fgm_finder div.fgm_finder_heading div:hover{color:#999;} 
-div.fgm_finder div.fgm_finder_heading div span{color:#d3d3d3;}
+div.fgm_finder div.fgm_finder_header img{float:left;}
+div.fgm_finder div.fgm_finder_header div{color:#777;cursor:pointer;float:right;font-size:11px;text-align:left;}
+div.fgm_finder div.fgm_finder_header div:hover{color:#999;} 
+div.fgm_finder div.fgm_finder_header div span{color:#d3d3d3;}
 div.fgm_finder div.fgm_finder_option div.fgm_finder_label{color:#d3d3d3;font-size:11px;font-weight:bold;text-align:left;text-transform:uppercase;}
 div.fgm_finder div.fgm_finder_option div.fgm_finder_label span{color:#fff100;font-weight:bold;text-transform:uppercase;}
 div.fgm_finder div.fgm_finder_option div.fgm_finder_selections{font-size:16px;padding-top:10px;}
@@ -13,10 +13,10 @@ div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul{list-style-typ
 div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul li{cursor:pointer;float:left;margin:0 0 0 20px;}
 div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul li:hover{color:#858585 ;}
 div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul li.fgm_finder_first{margin:0;}
-div#fgm_finder div.fgm_finder_overlay{border:10px solid #ede500;cursor:pointer;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;padding:10px;position:absolute;z-index:5000000;}
-div#fgm_finder div.fgm_finder_overlay div{background:#ede500;color:#000;padding:10px;text-align:center;}
-div#fgm_finder div.fgm_finder_overlay:hover{border:10px solid #f6ff00;}
-div#fgm_finder div.fgm_finder_overlay div:hover{background:#f6ff00;}
+div#fgm_finder_container div.fgm_finder_overlay{border:10px solid #ede500;cursor:pointer;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;padding:10px;position:absolute;z-index:5000000;}
+div#fgm_finder_container div.fgm_finder_overlay div{background:#ede500;color:#000;padding:10px;text-align:center;}
+div#fgm_finder_container div.fgm_finder_overlay:hover{border:10px solid #f6ff00;}
+div#fgm_finder_container div.fgm_finder_overlay div:hover{background:#f6ff00;}
 #fgm_finder_flash{display:none;margin-top:20px;margin-bottom:10px;color:#fff;border-top:1px solid white;text-align:left;}
 #fgm_finder_flash_header{font-size:60px;color:#fff100;font-weight:bold;padding-top:20px;padding-bottom:2px;}
 #fgm_finder_flash p{color:#6b6b6b;font-size:11px;margin-top:0px;}
