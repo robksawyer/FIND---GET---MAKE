@@ -27,7 +27,7 @@ class ProductsController extends AppController {
 		//Make certain pages public
 		$this->Auth->allowedActions = array('index','view','verifyAddition','clearVerifySessions',
 											'getProductsForSource','getProductsForInspiration','userProducts',
-											'comments','b');
+											'comments','bookmarklet_product_add');
 		
 		$this->Uploader->uploadDir = 'media/static/img/products/';
 		$this->Uploader->enableUpload = true;
@@ -88,18 +88,32 @@ class ProductsController extends AppController {
 	 * @param 
 	 * @return 
 	 * 
+	 * Routing::prefix makes this http://site.com/b/
+	 * 
 	*/
-	public function b($pk = null){
+	public function bookmarklet_product_add($pk = null){
 		$this->autoRender = false;
-		//debug($pk);
-		if (!empty($this->data)) {
-			
+		$this->autoLayout = false;
+		$this->layout = 'ajax';
+		
+		//Check to make sure that params were passed
+		if (!empty($this->params['url'])) {
 			//Verify that the public key is a valid one.
-			//$pk = $this->data['']
-			$user = $this->User->verifyPublicKey($pk);
+			$user = $this->Product->User->verifyPublicKey($pk);
 			debug($user);
-			
+		
 			if(!empty($user)){
+				
+				$category = $this->params['url']['c'];
+				$price = $this->params['url']['p'];
+				$image = $this->params['url']['i'];
+				$baseURL = $this->params['url']['r'];
+				$pageTitle = $this->params['url']['t'];
+				$referringUrl = $this->params['url']['l'];
+
+				//Fill up a data array to be saved
+				$this->data['Attachment']['url'] = $image;
+				
 				//Cleanup
 				/*if(!empty($this->data['Product']['source_url'])){
 					$this->data['Product']['source_url'] = $this->cleanURL($this->data['Product']['source_url']); //Clean the URL

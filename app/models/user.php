@@ -818,8 +818,7 @@ class User extends AppModel {
 	*/
 	public function verifyPublicKey($passed_key=""){
 		$this->recursive = -1;
-		$pk = str_replace($passed_key,"fgmpk_");
-		debug($pk);
+		$pk = str_replace("fgmpk_","",$passed_key);
 		$user = $this->find('first',array('conditions'=>array(
 															'User.public_key'=>$pk
 															)));

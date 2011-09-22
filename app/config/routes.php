@@ -45,6 +45,9 @@
 	//Router::connect('/users/index',array('plugin'=>'','controller'=>'users','action'=>'listing'));
 	//Router::connect('/users',array('plugin'=>'','controller'=>'users','action'=>'listing'));
 	
+	//API
+	Router::connect('/b/*',array('plugin'=>'','controller'=>'products','action'=>'bookmarklet_product_add'));
+	
 	//Sitemap
 	Router::connect('/sitemap', array('controller' => 'sitemaps', 'action' => 'index')); 
 	Router::connect('/sitemap/:action/*', array('controller' => 'sitemaps')); 

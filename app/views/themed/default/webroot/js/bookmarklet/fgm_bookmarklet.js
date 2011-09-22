@@ -61,7 +61,7 @@ function fgm_finder(){
 	this.selection = new Object();
 	this.needsCategory = true;
 	this.needsPrice = true;
-	this.base_url = "http://find-get-make.local/b/";
+	this.base_url = "http://find-get-make.local/";
 	this.array_category = [
 		{"id":0,"label":"Apparel"},
 		{"id":1,"label":"Accessories"},
@@ -317,7 +317,7 @@ function fgm_finder(){
 	};
 	
 	this.send = function() {
-		var call = this.base_url; //The site base url
+		var call = this.base_url+"b/"; //The site base url
 		call += this.selection["public_key"]; //Check to make sure the key is valid
 		call += "?";
 		call += "c=" + encodeURIComponent(this.selection["category"]) + "&";
@@ -342,7 +342,7 @@ function fgm_finder(){
 			// only one of these can actually post, so just do it twice
 			var gateway = document.getElementsByClassName('fgm_finder_gateway')[0];
 			if(gateway){
-				gateway.contentWindow.postMessage(JSON.stringify(message), 'http://find-get-make.com');
+				gateway.contentWindow.postMessage(JSON.stringify(message), this.base_url);
 			}
 		}
 		document.getElementById("fgm_finder_inner_" + this.selection["id"]).style.display = "block";
@@ -394,7 +394,7 @@ function fgm_finder(){
 		// clean up the iframes if the user closes the scavenger
 		var gateway = document.getElementsByClassName('fgm_finder_gateway')[0];
 		if(gateway){
-			gateway.contentWindow.postMessage(JSON.stringify(message), 'http://find-get-make.com');
+			gateway.contentWindow.postMessage(JSON.stringify(message), this.base_url);
 		}
 
 		window.fgm_needs_x_domain = null;
