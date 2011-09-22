@@ -809,4 +809,25 @@ class User extends AppModel {
 		return $favorites;
 	}
 	
+	/**
+	 * This handles verifying that the key passed, matches the lo
+	 * @param Int username The username to verify against
+	 * @param String passed_key The key to verify
+	 * @return 
+	 * 
+	*/
+	public function verifyPublicKey($passed_key=""){
+		$this->recursive = -1;
+		$pk = str_replace($passed_key,"fgmpk_");
+		debug($pk);
+		$user = $this->find('first',array('conditions'=>array(
+															'User.public_key'=>$pk
+															)));
+		if(!empty($user['User']['id'])){
+			return $user;
+		}else{
+			return false;
+		}
+	}
+	
 }

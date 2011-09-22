@@ -61,6 +61,7 @@ function fgm_finder(){
 	this.selection = new Object();
 	this.needsCategory = true;
 	this.needsPrice = true;
+	this.base_url = "http://find-get-make.local/b/";
 	this.array_category = [
 		{"id":0,"label":"Apparel"},
 		{"id":1,"label":"Accessories"},
@@ -82,7 +83,7 @@ function fgm_finder(){
 			this.build();
 			this.finder();
 
-			this.selection["public_key"] = 'fgmpk_5eeeca1a0b2ed4c29df34327bf8e0ffe';
+			this.selection["public_key"] = 'fgmpk_77fc888390ec0f54f25a79e11c04b27c08865afe';
 			this.selection["referringUrl"] = document.referrer;
 			this.selection["baseUrl"] = location.href; // document.baseURI;
 			this.selection["pageTitle"] = document.title;
@@ -112,7 +113,7 @@ function fgm_finder(){
 			fgm_user = (fgm_user) ? fgm_user : window['fgm_user'];
 
 			var html = '<div class="fgm_finder_header">';
-					html += '<img width="300" src="http://www.find-get-make.com/theme/default/img/logo.png"/>';
+					html += '<img width="300" height="" src="http://www.find-get-make.com/theme/default/img/logo.png"/>';
 					html += '<div onclick="fgm_finder.close(0)">CLOSE <span>X</span></div>';
 				html += '</div>';
 				html += '<div id="fgm_finder_flash" style="display:none;">';
@@ -316,7 +317,7 @@ function fgm_finder(){
 	};
 	
 	this.send = function() {
-		var call = "http://find-get-make.com/b/";
+		var call = this.base_url; //The site base url
 		call += this.selection["public_key"]; //Check to make sure the key is valid
 		call += "?";
 		call += "c=" + encodeURIComponent(this.selection["category"]) + "&";

@@ -27,7 +27,7 @@ class ProductsController extends AppController {
 		//Make certain pages public
 		$this->Auth->allowedActions = array('index','view','verifyAddition','clearVerifySessions',
 											'getProductsForSource','getProductsForInspiration','userProducts',
-											'comments');
+											'comments','b');
 		
 		$this->Uploader->uploadDir = 'media/static/img/products/';
 		$this->Uploader->enableUpload = true;
@@ -69,6 +69,83 @@ class ProductsController extends AppController {
 	
 	/**************** END AJAX METHODS ************************/
 	
+	/**************** API METHODS ************************/
+	
+	/**
+	 * This method handles adding a product to the system using the bookmarklet tool
+	 * 
+	 * Example string: http://find-get-make.com/b/fgmpk_5eeeca1a0b2ed4c29df34327bf8e0ffe?c=1&p=2&i=http://fpoimg.com/500x550&r=http://find-get-make.local/pages/bookmarklet&t=FIND | GET | MAKE : Bookmarklet&l=http://find-get-make.local/pages/bookmarklet
+	 * var call = "http://find-get-make.com/b/";
+	 * call += this.selection["public_key"]; //Check to make sure the key is valid
+	 * call += "?";
+	 * call += "c=" + encodeURIComponent(this.selection["category"]) + "&";
+	 * call += "p=" + encodeURIComponent(this.selection["price"]) + "&";
+	 * call += "i=" + encodeURIComponent(this.selection["image"]) + "&";
+	 * call += "r=" + encodeURIComponent(this.selection["baseUrl"]) + "&";
+	 * call += "t=" + encodeURIComponent(this.selection["pageTitle"]) + "&";
+	 * call += "l=" + encodeURIComponent(this.selection["referringUrl"]);
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function b($pk = null){
+		$this->autoRender = false;
+		//debug($pk);
+		if (!empty($this->data)) {
+			
+			//Verify that the public key is a valid one.
+			//$pk = $this->data['']
+			$user = $this->User->verifyPublicKey($pk);
+			debug($user);
+			
+			if(!empty($user)){
+				//Cleanup
+				/*if(!empty($this->data['Product']['source_url'])){
+					$this->data['Product']['source_url'] = $this->cleanURL($this->data['Product']['source_url']); //Clean the URL
+				}
+				if(!empty($this->data['Product']['purchase_url'])){
+					$this->data['Product']['purchase_url'] = $this->cleanURL($this->data['Product']['purchase_url']); //Clean the URL
+				}
+				$this->data['Product']['slug'] = $this->toSlug($this->data['Product']['name']);
+
+				//Check for a redirect variable
+				if(!empty($this->data['Product']['redirect'])){
+					$redirect = $this->data['Product']['redirect'];
+					unset($this->data['Product']['redirect']);
+				}
+
+				//Upload the attachments
+				$this->uploadAttachments('Product');
+
+				if(!empty($this->data['Attachment'])){
+
+					$this->Product->create();
+					if ($this->Product->save($this->data)) {
+						$this->Session->setFlash(__('The product has been saved', true));
+						$id = $this->Product->getLastInsertID();
+						//Generate and create keycode
+						$this->generateKeycode($id,true);
+
+						if(!empty($redirect)){
+							$this->redirect($redirect);
+						}else{
+							$this->redirect(array('action' => 'view','admin'=>false,$id));
+						}
+					} else {
+						$this->Session->setFlash(__('The product could not be saved. Please, try again.', true));
+					}
+				}else{
+					$this->Session->setFlash(__('You didn\'t add any attachments or the filetype is not valid. Try saving the file to your computer and trying again.', true),'default',array('class'=>'error-message'));
+					if(!empty($redirect)){
+						$this->redirect($redirect);
+					}
+				}*/
+			}
+		}
+	}
+	
+	/**************** API METHODS ************************/
 	
 	public function find() {
 		$this->Prg->commonProcess();
