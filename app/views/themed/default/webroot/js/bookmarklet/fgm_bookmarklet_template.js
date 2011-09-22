@@ -61,7 +61,7 @@ function fgm_finder(){
 	this.selection = new Object();
 	this.needsCategory = true;
 	this.needsPrice = true;
-	this.base_url = "http://find-get-make.local/";
+	this.base_url = REPLACE_BASE_URL;
 	this.array_category = [
 		{"id":1,"label":"Accessory"},
 		{"id":5,"label":"Furniture"},
@@ -83,7 +83,7 @@ function fgm_finder(){
 			this.build();
 			this.finder();
 
-			this.selection["public_key"] = 'fgmpk_77fc888390ec0f54f25a79e11c04b27c08865afe';
+			this.selection["public_key"] = REPLACE_PUBLIC_KEY;
 			this.selection["referringUrl"] = document.referrer;
 			this.selection["baseUrl"] = location.href; // document.baseURI;
 			this.selection["pageTitle"] = document.title;
@@ -96,7 +96,7 @@ function fgm_finder(){
 		if(!document.getElementById("fgm_finder")) {
 			var css = document.createElement("link");
 			var randNum=Math.floor(Math.random()*11);
-			css.setAttribute("href", "http://dev.find-get-make.com/theme/default/css/bookmarklet/bookmarklet.001.css?"+randNum);
+			css.setAttribute("href", this.base_url+"theme/default/css/bookmarklet/bookmarklet.001.css?"+randNum);
 			css.setAttribute("rel", "stylesheet");
 			css.setAttribute("type", "text/css");
 			document.getElementsByTagName("head")[0].appendChild(css);
@@ -109,16 +109,16 @@ function fgm_finder(){
 			overlay.id = "fgm_finder";
 			overlay.setAttribute("class", "fgm_finder");
 
-			var fgm_user = 'robksawyer';
+			var fgm_user = REPLACE_USERNAME;
 			fgm_user = (fgm_user) ? fgm_user : window['fgm_user'];
 
 			var html = '<div class="fgm_finder_header">';
-					html += '<img width="300" height="" src="http://www.find-get-make.com/theme/default/img/logo.png"/>';
+					html += '<img width="300" height="" src="'+this.base_url+'theme/default/img/logo.png"/>';
 					html += '<div onclick="fgm_finder.close(0)">CLOSE <span>X</span></div>';
 				html += '</div>';
 				html += '<div id="fgm_finder_flash" style="display:none;">';
 					html += '<div id="fgm_finder_flash_header">Added!</div>';
-					html += '<p><a href="http://find-get-make.com/profile/'+fgm_user+'">Check it out on your profile.</a> (This window will close momentarily)</p>';
+					html += '<p><a href='+this.base_url+'"profile/'+fgm_user+'">Check it out on your profile.</a> (This window will close momentarily)</p>';
 				html += '</div>';
 				html += '<div class="fgm_finder_option" id="fgm_finder_category">';
 					html += '<div class="separator"></div>';

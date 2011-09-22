@@ -201,7 +201,7 @@
 			<li class="chrome step" style="display: none;">1) In your browser, Chrome, go to <strong>View</strong> and check <strong>Always Show Bookmarks Bar</strong></li>
 			<li class="firefox step" style="display: none;">1) In your browser, Firefox, go to <strong>View</strong>, then select <strong>Toolbars</strong>, and check <strong>Bookmarks Toolbar</strong></li>
 			<li class="generic step" style="display: none;">1) In your browser, go to <strong>View</strong> and check <strong>Show Bookmarks Bar</strong></li>
-			<li class="step">2) Click and drag this button into your bookmarks bar: <a href="javascript:void((function(){var%20fgm=document.createElement('script');fgm.setAttribute('src','http://dev.find-get-make.com/theme/default/js/bookmarklet/fgm_bookmarklet.js?<?php echo rand(1000,9999999); ?>');fgm.setAttribute('type','text/javascript');document.getElementsByTagName('head')[0].appendChild(fgm);})());" class="get_it">Get It</a></li>
+			<li class="step">2) Click and drag this button into your bookmarks bar: <a href="javascript:void((function(){var%20fgm=document.createElement('script');fgm.setAttribute('src','<?php echo $user_bookmarklet_path; ?>?<?php echo rand(1000,9999999); ?>');fgm.setAttribute('type','text/javascript');document.getElementsByTagName('head')[0].appendChild(fgm);})());" class="get_it">Get It</a></li>
 			<li class="step">3) Now, press the <strong>Get It</strong> whenever you see something you want.</li>
 		</ul>
 		<span class="footnote">

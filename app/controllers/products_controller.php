@@ -100,34 +100,61 @@ class ProductsController extends AppController {
 		if (!empty($this->params['url'])) {
 			//Verify that the public key is a valid one.
 			$user = $this->Product->User->verifyPublicKey($pk);
-			debug($user);
-		
 			if(!empty($user)){
 				
-				$category = $this->params['url']['c'];
-				$price = $this->params['url']['p'];
+				$categoryId = $this->params['url']['c'];
+				$priceKey = $this->params['url']['p'];
 				$image = $this->params['url']['i'];
 				$baseURL = $this->params['url']['r'];
 				$pageTitle = $this->params['url']['t'];
 				$referringUrl = $this->params['url']['l'];
-
+				
+				//Check to see if the source url matches a source
+				$urlString = parse_url($referringUrl);
+				$referringSourceUrl = $urlString['host'];
+				
+				$source = $this->Product->Source->find('first',array('conditions'=>array(
+																					'Source.url'=>$referringSourceUrl
+																					)));
+				
 				//Fill up a data array to be saved
+				if(!empty($source)) $this->data['Product']['source_id'] = $source['Source']['id']; //Add the source to the product
+				
+				/*
+					TODO Parse pageTitle i.e., 'Amazon.com:' etc.
+				*/
+				$this->data['Product']['name'] = $pageTitle;
+				
+				//this.array_price = new Array("$1-20", "$20-50", "$50-100", "$100-200", "$200-500", "$500-5000", "$5000+");
+				$priceValues = array("$1-20", "$20-50", "$50-100", "$100-200", "$200-500", "$500-5000", "$5000+"); 
+				$this->data['Product']['price'] = $priceValues[$priceKey];
+				/*
+				this.array_category = [
+					{"id":1,"label":"Accessory"},
+					{"id":5,"label":"Furniture"},
+					{"id":7,"label":"Lighting"},
+					{"id":15,"label":"Textile"},
+					{"id":16,"label":"Wallcovering or Finish"},
+					{"id":5,"label":"Rug or Mat"},
+					{"id":2,"label":"Art or Antique"},
+					{"id":43,"label":"Other"}
+				];
+				*/
+				$this->data['Product']['product_category_id'] = $categoryId;
+				$this->data['Product']['source_url'] = $referringSourceUrl;
+				$this->data['Product']['purchase_url'] = $referringUrl;
+				$this->data['Product']['bookmarklet_add'] = 1; //Because it was added with the bookmarklet
+				$this->data['Product']['user_id'] = $user['User']['id'];
 				$this->data['Attachment']['url'] = $image;
 				
 				//Cleanup
-				/*if(!empty($this->data['Product']['source_url'])){
+				if(!empty($this->data['Product']['source_url'])){
 					$this->data['Product']['source_url'] = $this->cleanURL($this->data['Product']['source_url']); //Clean the URL
 				}
 				if(!empty($this->data['Product']['purchase_url'])){
 					$this->data['Product']['purchase_url'] = $this->cleanURL($this->data['Product']['purchase_url']); //Clean the URL
 				}
 				$this->data['Product']['slug'] = $this->toSlug($this->data['Product']['name']);
-
-				//Check for a redirect variable
-				if(!empty($this->data['Product']['redirect'])){
-					$redirect = $this->data['Product']['redirect'];
-					unset($this->data['Product']['redirect']);
-				}
 
 				//Upload the attachments
 				$this->uploadAttachments('Product');
@@ -136,25 +163,16 @@ class ProductsController extends AppController {
 
 					$this->Product->create();
 					if ($this->Product->save($this->data)) {
-						$this->Session->setFlash(__('The product has been saved', true));
 						$id = $this->Product->getLastInsertID();
 						//Generate and create keycode
 						$this->generateKeycode($id,true);
-
-						if(!empty($redirect)){
-							$this->redirect($redirect);
-						}else{
-							$this->redirect(array('action' => 'view','admin'=>false,$id));
-						}
+						return true;
 					} else {
-						$this->Session->setFlash(__('The product could not be saved. Please, try again.', true));
+						return false;
 					}
 				}else{
-					$this->Session->setFlash(__('You didn\'t add any attachments or the filetype is not valid. Try saving the file to your computer and trying again.', true),'default',array('class'=>'error-message'));
-					if(!empty($redirect)){
-						$this->redirect($redirect);
-					}
-				}*/
+					return false;
+				}
 			}
 		}
 	}
