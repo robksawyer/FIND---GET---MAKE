@@ -2,7 +2,7 @@
 class ProductsController extends AppController {
 
 	var $name = 'Products';
-	var $components = array('Search.Prg','Uploader.Uploader','Comments.Comments' => array('userModel' => 'User'));
+	var $components = array('Search.Prg','Uploader.Uploader');
 	var $helpers = array('Tags.TagCloud');
 
 	var $paginate = array(
@@ -140,7 +140,8 @@ class ProductsController extends AppController {
 					{"id":43,"label":"Other"}
 				];
 				*/
-				$this->data['Product']['product_category_id'] = $categoryId;
+				$categoryValues = array(1,5,7,15,16,5,2,43); //Actual category values in the database
+				$this->data['Product']['product_category_id'] = $categoryValues[$categoryId];
 				$this->data['Product']['source_url'] = $referringSourceUrl;
 				$this->data['Product']['purchase_url'] = $referringUrl;
 				$this->data['Product']['bookmarklet_add'] = 1; //Because it was added with the bookmarklet
@@ -350,17 +351,18 @@ class ProductsController extends AppController {
 				unset($this->data['Product']['redirect']);
 			}
 			
-			//Upload the attachments
-			$this->uploadAttachments('Product');
-			
 			if(!empty($this->data['Attachment'])){
 				
 				$this->Product->create();
 				if ($this->Product->save($this->data)) {
 					$this->Session->setFlash(__('The product has been saved', true));
 					$id = $this->Product->getLastInsertID();
+					
 					//Generate and create keycode
 					$this->generateKeycode($id,true);
+					
+					//Upload the attachments
+					$this->uploadAttachments('Product',$id);
 					
 					if(!empty($redirect)){
 						$this->redirect($redirect);

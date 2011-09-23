@@ -189,7 +189,12 @@
 ?>
 <div class="clear"></div>
 <div class="bar">&nbsp;</div>
-<?php echo $this->element('comments',array('cache'=>false,'disable'=>false)); ?>
+<div id="inspiration-comments">
+<div>&mdash;</div>
+<?php
+	echo $this->element('comments',array('ajax'=>false,'cache'=>false));
+?>
+</div>
 <script type="text/javascript">
 
 $(document).ready(function() {

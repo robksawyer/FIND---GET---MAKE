@@ -62,6 +62,13 @@ class Product extends AppModel {
 	);
 	
 	var $hasMany = array(
+		'Attachment' => array(
+			'className' => 'Attachment',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Attachment.model' => 'Product'),
+			'dependent' => true,
+			'exclusive' => true
+		),
 		'Rating' => array(
 			'className' => 'Rating',
 			'foreignKey' => 'model_id',
@@ -126,21 +133,6 @@ class Product extends AppModel {
 			'joinTable' => 'collections_products',
 			'foreignKey' => 'product_id',
 			'associationForeignKey' => 'collection_id',
-			'unique' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
-		),
-		'Attachment' => array(
-			'className' => 'Attachment',
-			'joinTable' => 'attachments_products',
-			'foreignKey' => 'product_id',
-			'associationForeignKey' => 'attachment_id',
 			'unique' => true,
 			'conditions' => '',
 			'fields' => '',

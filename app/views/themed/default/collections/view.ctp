@@ -126,6 +126,13 @@ echo $this->element('product-selector',array(
 	?>
 	</div>
 </div>
+<div class="clear"></div>
+<div id="collection-comments">
+<div>&mdash;</div>
+<?php
+	echo $this->element('comments',array('ajax'=>false,'cache'=>false));
+?>
+</div>
 <!-- preload the images -->
 <div style='display:none'>
 	<?php 

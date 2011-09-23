@@ -132,4 +132,9 @@
 ?>
 <?php //debug($source); ?>
 <div class="clear"></div>
-<?php echo $this->element('comments',array('cache'=>false,'disable'=>false)); ?>
+<div id="source-comments">
+<div>&mdash;</div>
+<?php
+	echo $this->element('comments',array('ajax'=>false,'cache'=>false));
+?>
+</div>

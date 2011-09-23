@@ -63,14 +63,14 @@ function fgm_finder(){
 	this.needsPrice = true;
 	this.base_url = REPLACE_BASE_URL;
 	this.array_category = [
-		{"id":1,"label":"Accessory"},
-		{"id":5,"label":"Furniture"},
-		{"id":7,"label":"Lighting"},
-		{"id":15,"label":"Textile"},
-		{"id":16,"label":"Wallcovering or Finish"},
+		{"id":0,"label":"Accessory"},
+		{"id":1,"label":"Furniture"},
+		{"id":2,"label":"Lighting"},
+		{"id":3,"label":"Textile"},
+		{"id":4,"label":"Wallcovering or Finish"},
 		{"id":5,"label":"Rug or Mat"},
-		{"id":2,"label":"Art or Antique"},
-		{"id":43,"label":"Other"}
+		{"id":6,"label":"Art or Antique"},
+		{"id":7,"label":"Other"}
 	];
 	this.array_price = new Array("$1-20", "$20-50", "$50-100", "$100-200", "$200-500", "$500-5000", "$5000+");
 	

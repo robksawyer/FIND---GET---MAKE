@@ -29,6 +29,48 @@ class Attachment extends AppModel {
 			
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 	var $belongsTo = array(
+		'Client' => array(
+			'className' => 'Client',
+			'foreignKey' => 'model_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Contractor' => array(
+			'className' => 'Contractor',
+			'foreignKey' => 'model_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'House' => array(
+			'className' => 'House',
+			'foreignKey' => 'model_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Inspiration' => array(
+			'className' => 'Inspiration',
+			'foreignKey' => 'model_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Product' => array(
+			'className' => 'Product',
+			'foreignKey' => 'model_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Source' => array(
+			'className' => 'Source',
+			'foreignKey' => 'model_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
 		'User' => array(
 			'className' => 'User',
 			'foreignKey' => 'user_id',
@@ -82,59 +124,6 @@ class Attachment extends AppModel {
 							'exclusive' => false
 						)
 					);
-	
-	var $hasAndBelongsToMany = array(
-		'Contractor' => array(
-			'className' => 'Contractor',
-			'joinTable' => 'attachments_contractors',
-			'foreignKey' => 'attachment_id',
-			'associationForeignKey' => 'contractor_id',
-			'unique' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
-		),
-		'House' => array(
-			'className' => 'House',
-			'joinTable' => 'attachments_houses',
-			'foreignKey' => 'attachment_id',
-			'associationForeignKey' => 'house_id',
-			'unique' => true
-		),
-		'Source' => array(
-			'className' => 'Source',
-			'joinTable' => 'attachments_sources',
-			'foreignKey' => 'attachment_id',
-			'associationForeignKey' => 'source_id',
-			'unique' => true
-		),
-		'Client' => array(
-			'className' => 'Client',
-			'joinTable' => 'attachments_clients',
-			'foreignKey' => 'attachment_id',
-			'associationForeignKey' => 'client_id',
-			'unique' => true
-		),
-		'Inspiration' => array(
-			'className' => 'Inspiration',
-			'joinTable' => 'attachments_inspirations',
-			'foreignKey' => 'attachment_id',
-			'associationForeignKey' => 'inspiration_id',
-			'unique' => true
-		),
-		'Product' => array(
-			'className' => 'Product',
-			'joinTable' => 'attachments_products',
-			'foreignKey' => 'attachment_id',
-			'associationForeignKey' => 'product_id',
-			'unique' => true
-		)
-	);
 	
 	/**
 	 * Sanitize all data saved
@@ -213,6 +202,12 @@ class Attachment extends AppModel {
 		return $keycode;
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	public function str_rand($length = 8, $output = 'alphanum'){
 		// Possible seeds
 		$outputs['alpha'] = 'abcdefghijklmnopqrstuvwqyz';

@@ -829,4 +829,32 @@ class User extends AppModel {
 		}
 	}
 	
+	/**
+	 * Generates and saves a public key into the database for a user.
+	 * @param Array user The user to add a key for
+	 * @return 
+	 * 
+	*/
+	public function generateAndSavePublicKey($user){
+		$pk = $this->generatePublicKey($user['User']['username']);
+		$this->id = $user['User']['id'];
+		if($this->saveField('public_key',$pk)){
+			return $pk;
+		}else{
+			return false;
+		}
+	}
+	
+	/**
+	 * Handles generating a random string for the auth user. This is used so that the user can 
+	 * use items like the bookmarklet helper without having to login each time.
+	 * @param username The name to generate the key from.
+	 * @return 
+	 * 
+	*/
+	protected function generatePublicKey($username=null){
+		$pk = Security::hash($username.Configure::read('Security.salt'));
+		return $pk;
+	}
+	
 }

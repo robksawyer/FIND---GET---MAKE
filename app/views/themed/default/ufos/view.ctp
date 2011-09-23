@@ -50,4 +50,10 @@
 <div class="clear"></div>
 <?php endif; ?>
 <div class="added-by"><?php echo "Found by ".$this->Html->link($ufo['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$ufo['User']['username'])); ?></div>
-<?php echo $this->element('comments',array('cache'=>false,'disable'=>false)); ?>
+<div class="clear"></div>
+<div id="ufo-comments">
+<div>&mdash;</div>
+<?php
+	echo $this->element('comments',array('ajax'=>false,'cache'=>false));
+?>
+</div>>

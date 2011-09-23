@@ -654,7 +654,7 @@ class UsersController extends AppController {
 				$this->data['User']['password'] = $this->Auth->password($this->data['User']['newPassword']);
 				$this->data['User'][$this->User->columnMap['locale']] = $this->Toolbar->settings['default_locale'];
 				$this->data['User']['slug'] = $this->toSlug($this->data['User']['username']);
-				$this->data['User']['public_key'] = $this->generatePublicKey($this->data['User']['username']);
+				$this->data['User']['public_key'] = $this->User->generatePublicKey($this->data['User']['username']);
 				
 				if(empty($this->data['User']['twitter_id'])) $this->data['User']['twitter_id'] = 0;
 				
@@ -1150,7 +1150,10 @@ class UsersController extends AppController {
 		$user = $this->Auth->user();
 		
 		//Generate a public key for the user if it doesn't exist
-		if(empty($user['User']['public_key'])) $this->generateAndSavePublicKey();
+		if(empty($user['User']['public_key'])){
+			$user = $this->Auth->user();
+			$this->User->generateAndSavePublicKey($user);
+		}
 		
 		if (!$user['User']['id']) {
 			$this->Session->setFlash(__('Invalid user', true));
@@ -1282,34 +1285,5 @@ class UsersController extends AppController {
 	public function staff_favorites(){
 		return $this->User->getStaffFavorites();
 	}	
-	
-	/**
-	 * Handles generating a random string for the auth user. This is used so that the user can 
-	 * use items like the bookmarklet helper without having to login each time.
-	 * @param username The name to generate the key from.
-	 * @return 
-	 * 
-	*/
-	protected function generatePublicKey($username=null){
-		$pk = Security::hash($username.Configure::read('Security.salt'));
-		return $pk;
-	}
-	
-	/**
-	 * Generates and saves a public key into the database for a user.
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	protected function generateAndSavePublicKey(){
-		$user = $this->Auth->user();
-		$pk = $this->generatePublicKey($user['User']['username']);
-		$this->User->id = $user['User']['id'];
-		if($this->User->saveField('public_key',$pk)){
-			return true;
-		}else{
-			return false;
-		}
-	}
 
 }

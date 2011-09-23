@@ -67,7 +67,8 @@ class AppController extends Controller {
 									)
 									
 								),'Security','RequestHandler','Session','AutoLogin','Cookie',
-								'AjaxHandler', 'Forum.Toolbar','TwitterKit.Twitter','Facebook.Connect'
+								'AjaxHandler', 'Forum.Toolbar','TwitterKit.Twitter','Facebook.Connect',
+								'Comments.Comments' => array('userModel' => 'User')
 								);
 
 	/**
@@ -323,6 +324,12 @@ class AppController extends Controller {
 		return $cleanURL;
 	}
 	
+	/**
+	 * Generates a unique string
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	protected function uniqueName($str){
 		
 		$ext_point = strripos($str,"."); // Changed to strripos to avoid issues with ‘.’ Thanks nico.
@@ -337,8 +344,40 @@ class AppController extends Controller {
 		return $return;	
 	}
 	
+	/**
+	 * Generates a unique name for files
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	protected function uniqueFilename($id,$ext){
+		$return = uniqid($this->randomPrefix(3)).$id.'.'.$ext;
+		return $return;	
+	}
 	
-	protected function cleanFileName( $str ) {
+	/**
+	 * Generates a random number length 
+	 * @param Int length The length you need the random number
+	 * @return 
+	 * 
+	*/
+	protected function randomPrefix($length) { 
+		$random= "";
+		srand((double)microtime()*1000000);
+		$data = "012345678934589724592458735";
+		for($i = 0; $i < $length; $i++) { 
+			$random .= substr($data, (rand()%(strlen($data))), 1); 
+		}
+		return $random; 
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	protected function cleanFileName( $str , $ext) {
 		$cleaner = array();
 		$cleaner[] = array('expression'=>"/[àáäãâª]/",'replace'=>"a");
 		$cleaner[] = array('expression'=>"/[èéêë]/",'replace'=>"e");
@@ -349,10 +388,7 @@ class AppController extends Controller {
 		$cleaner[] = array('expression'=>"/[ç]/",'replace'=>"c");
 		
 		$str = strtolower($str);
-		$ext_point = strripos($str,"."); // Changed to strripos to avoid issues with ‘.’ Thanks nico.
-		if ($ext_point===false) return false;
-		$ext = substr($str,$ext_point,strlen($str));
-		$str = substr($str,0,$ext_point);
+		$str = ereg_replace("[^A-Za-z0-9]", "", $str ); //Strip non-alpha chars
 		foreach( $cleaner as $cv ) $str = preg_replace($cv["expression"],$cv["replace"],$str);
 		return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
 	}
@@ -410,10 +446,10 @@ class AppController extends Controller {
 	/**
 	 * Helper method to upload the attachments. 
 	 * @param model The current model to attach the attachments to
-	 * @param id The id of the current item you're editing
+	 * @param model_id The id of the current item you're editing
 	 */
 	
-	public function uploadAttachments($model=null,$id = null){
+	public function uploadAttachments($model=null,$model_id = null){
 		
 		if(!empty($model)){
 			$controller = Inflector::pluralize(strtolower($model));
@@ -422,7 +458,7 @@ class AppController extends Controller {
 		}
 	
 		//Find all current attachments and save them.
-		$item = $this->$model->read(null,$id);
+		$item = $this->$model->read(null,$model_id);
 		$current_attachments = Set::extract('Attachment.{n}.id',$item);
 		if(!empty($current_attachments)){
 			$current_attachments = Set::sort($current_attachments,'{n}.{n}','desc');
@@ -434,11 +470,11 @@ class AppController extends Controller {
 			unset($this->data['Attachment']['url']); //Choose the local file over the url
 		}
 		if(!empty($this->data['Attachment']['url'])){
-			$this->saveAttachments($this->data['Attachment']['url'],$model,$current_attachments);	
+			$this->saveAttachments($this->data['Attachment']['url'],$model,$model_id,$current_attachments);	
 		}else if(!empty($this->data['Attachment']['file']['name'])){
 			//Save the local file
 			unset($this->data['Attachment']['url']);
-			$this->saveAttachments(null,$model,$current_attachments);
+			$this->saveAttachments(null,$model,$model_id,$current_attachments);
 		}else{
 			//debug($current_attachments);
 			unset($this->data['Attachment']['title']);
@@ -446,30 +482,32 @@ class AppController extends Controller {
 			unset($this->data['Attachment']['url']);
 			unset($this->data['Attachment']['file']);
 			if(!empty($current_attachments)){
-				$this->data['Attachment']['Attachment'] = $current_attachments; //Add the current attachments
+				$this->data['Attachment'] = $current_attachments; //Add the current attachments
 			}
 		}
 	}
 	
 	/**
 	 * Save attachments from a URL
-	 * @param model: The current model
-	 * @param folder: The folder for the final image
 	 * @param url: The url of the image you're trying to download
-	 * @param filename: The name you want the file renamed to
+	 * @param model: The current model
+	 * @param model_id: The current model id
+	 * @param current_attachments: The current attachments for the item
 	 * @version 1.0
 	 * 			1.1 Updated to check for a image name that already exists
 	 * 			1.2 There was a bug overriding the currently saved attachments.
 	 * 				- This has been fixed and now the current attachments are passed along and added to the final array.
 	 *			1.3 
 	 */
-	protected function saveAttachments($url = null,$model=null,$current_attachments = null){
+	protected function saveAttachments($url = null,$model=null,$model_id=null,$current_attachments = null){
 		
 		if(!empty($model)){
 			$controller = Inflector::pluralize(strtolower($model));
 		}else{
 			$this->log('You did not enter a model.');
 		}
+		
+		debug($model_id);
 		
 		if(empty($this->Attachment)){
 			$current_model = $this->$model->Attachment;
@@ -480,6 +518,9 @@ class AppController extends Controller {
 		
 		//Clean the image url passed
 		if(!empty($url)){
+			/*
+				TODO Explode the periods in the name and check to see which is a valid extension. Remove the rest and then use the name.
+			*/
 			$this->data['Attachment']['url'] = $this->simplifyFileName(trim($url));
 			$url = $this->data['Attachment']['url'];
 
@@ -547,18 +588,21 @@ class AppController extends Controller {
 			$this->data['Attachment']['file']['source_url'] = $source;
 			
 			//Check to see if the file name exists
-			$checker_name = $this->cleanFileName($this->data['Attachment']['file']['name']);
-			$aCheck = $current_model->findByName($checker_name);
+			$ext = $this->Uploader->ext($this->data['Attachment']['file']['path']); //Returns just the extension
+			$withoutExt = preg_replace("/\\.[^.\\s]{3,4}$/", "", $this->data['Attachment']['file']['name']);
 
-			/*if(empty($aCheck)){
+			//Generate a random key for the file name 
+			$this->data['Attachment']['file']['name'] = $this->cleanFileName($this->data['Attachment']['file']['name'],$ext);
+			$this->data['Attachment']['file']['name'] = $this->uniqueFileName($model_id,$ext);
+			$withoutExt = preg_replace("/\\.[^.\\s]{3,4}$/", "", $this->data['Attachment']['file']['name']); //Refresh it
+			
+			/*$aCheck = $current_model->findByName($this->data['Attachment']['file']['name']);
+			if(empty($aCheck)){
 				$this->data['Attachment']['file']['name'] = $this->cleanFileName($this->data['Attachment']['file']['name']);
 			}else{
 				$this->data['Attachment']['file']['name'] = $this->cleanFileName($this->data['Attachment']['file']['name']);
 				$this->data['Attachment']['file']['name'] = $this->uniqueName($this->data['Attachment']['file']['name']);
 			}*/
-			
-			$ext = $this->Uploader->ext($this->data['Attachment']['file']['path']); //Returns just the extension
-			$withoutExt = preg_replace("/\\.[^.\\s]{3,4}$/", "", $this->data['Attachment']['file']['name']);
 			
 			//FIX: The move method ads a forward slash
 			$new_path = 'media/static/img/'.$controller.DS.$this->data['Attachment']['file']['name'];
@@ -584,6 +628,7 @@ class AppController extends Controller {
 			$user_id = $this->data[$model]['user_id'];
 			$this->data['Attachment']['file']['user_id'] = $user_id;
 			
+			
 			/*
 				TODO Figure out how to get the last id of the attachment
 			*/
@@ -593,6 +638,8 @@ class AppController extends Controller {
 			
 			//Save all of the attachments and then attach the id
 			$this->data['Attachment'] = $this->data['Attachment']['file'];
+			$this->data['Attachment']['model'] = $model;
+			$this->data['Attachment']['model_id'] = $model_id;
 			unset($this->data['Attachment']['file']);
 			
 			$current_model->create();
@@ -601,10 +648,10 @@ class AppController extends Controller {
 				$lastID = $current_model->getLastInsertId();
 				unset($this->data['Attachment']);
 				if(!empty($current_attachments)){
-					$this->data['Attachment']['Attachment'] = $current_attachments; //Add the current attachments
+					$this->data['Attachment'] = $current_attachments; //Add the current attachments
 					//$this->data['Attachment']['Attachment'] = array_reverse($this->data['Attachment']['Attachment']);
 				}
-				$this->data['Attachment']['Attachment'][] = $lastID;
+				$this->data['Attachment'][] = $lastID;
 			}else{
 				$this->Session->setFlash(__('The attachment could not be saved. Please, try again.', true));
 			}
@@ -616,10 +663,11 @@ class AppController extends Controller {
 	
 	/**
 	 * This is the method used to add attachments
-	 * @param id 
+	 * @param model: The model to add an attachment to
+	 * @param model_id: The model id of the model
 	 * @version 1.0
 	 */
-	public function add_attachment($id = null, $model = null){
+	public function add_attachment($model_id = null, $model = null){
 	
 		if(!empty($model)){
 			$controller = Inflector::pluralize(strtolower($model));
@@ -634,7 +682,7 @@ class AppController extends Controller {
 		}
 		
 		//Check to make sure it's a valid item
-		$item = $this->$model->read(null, $id);
+		$item = $this->$model->read(null, $model_id);
 		if(empty($item) && empty($this->data)){
 			$this->Session->setFlash(__('Invalid '.$item, true));
 			$this->redirect(array('controller'=>$controller,'action' => 'index'));
@@ -643,7 +691,7 @@ class AppController extends Controller {
 		if (!empty($this->data)) {
 			
 			//Upload the attachments
-			$this->uploadAttachments($model,$controller,$id);
+			$this->uploadAttachments($model,$controller,$model_id);
 
 			//Check for a redirect variable
 			if(!empty($this->data[$model]['redirect'])){
@@ -652,7 +700,7 @@ class AppController extends Controller {
 			}
 
 			if(!empty($this->data['Attachment'])){
-				$id = $this->data[$model]['id'];
+				$model_id = $this->data[$model]['id'];
 
 				if ($this->$model->Attachment->save($this->data)) {
 					$this->Session->setFlash(__('The '.$name.' attachments has been saved', true));
@@ -660,7 +708,7 @@ class AppController extends Controller {
 					if(!empty($redirect)){
 						$this->redirect($redirect);
 					}else{
-						$this->redirect(array('controller'=>$controller,'action' => 'view',$id));
+						$this->redirect(array('controller'=>$controller,'action' => 'view',$model_id));
 					}
 					
 				} else {
@@ -674,9 +722,9 @@ class AppController extends Controller {
 				}
 			}
 		}
-		
+		$id = $model_id;
 		$this->set(compact('controller','id','model','item'));
-		$this->set($name, $this->$model->read(null, $id));
+		$this->set($name, $this->$model->read(null, $model_id));
 	}
 	
 	/**

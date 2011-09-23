@@ -187,13 +187,6 @@
 </div>
 <div class="clear"></div>
 <div id="bookmarklet-generate-container">
-	<?php 
-		//echo $userPublicKey = $this->requestAction('//'); 
-		//fgmpk_5eeeca1a0b2ed4c29df34327bf8e0ffe
-		
-		//Generate a file for the user
-		//fgm_bookmarklet_5eeeca1a0b2ed4c29df34327bf8e0ffe.js
-	?>
 	<div class="extra">
 		<h1>"Get It" Browser Button</h1>
 		<ul>

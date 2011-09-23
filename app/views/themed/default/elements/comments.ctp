@@ -1,5 +1,5 @@
 <?php
-if($ajax){
+if(!empty($ajax)){
 	$commentWidget->options(array('target' => '#product-comments',
 											'ajaxAction' => "comments"));
 	echo $this->element('ajax', array('plugin' => 'comments'));
