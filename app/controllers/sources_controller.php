@@ -193,6 +193,7 @@ class SourcesController extends AppController {
 				$this->Session->setFlash(__('Invalid source', true));
 				$this->redirect(array('action' => 'index','admin'=>false));
 			}
+			$this->set("title_for_layout", "Source : ".$source['Source']['name']);
 		}
 		$contractors = $this->Source->Contractor->find('list');
 		$inspirations = $this->Source->Inspiration->find('list');

@@ -61,7 +61,9 @@ class HousesController extends AppController {
 				$this->Session->setFlash(__('Invalid house', true));
 				$this->redirect(array('action' => 'index','admin'=>false));
 			}
-			$this->set('house', $this->House->read(null, $id));
+			$house = $this->House->read(null, $id);
+			$this->set("title_for_layout", "House : ".$house['House']['name']);
+			$this->set('house', $house);
 			
 		}
 	}

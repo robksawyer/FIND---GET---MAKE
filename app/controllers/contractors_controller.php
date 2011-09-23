@@ -55,7 +55,11 @@ class ContractorsController extends AppController {
 			$contractorSpecialties = $this->Contractor->ContractorSpecialty->find('list');
 			$tags = $this->Contractor->Tag->find('list');
 			$tags_cloud = $this->Contractor->Tagged->find('cloud', array('limit' => 10));
-			$this->set('contractor', $this->Contractor->read(null, $id));
+			
+			$contractor = $this->Contractor->read(null, $id);
+			$this->set("title_for_layout", "Contractor : ".$contractor['Contractor']['name']);
+			
+			$this->set('contractor', $contractor);
 			$this->set(compact('countries', 'tags', 'sources','tags_cloud','contractorSpecialties'));
 			
 		}else{

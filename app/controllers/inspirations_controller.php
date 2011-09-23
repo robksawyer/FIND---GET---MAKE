@@ -151,6 +151,7 @@ class InspirationsController extends AppController {
 		}
 		
 		$inspiration = $this->Inspiration->getViewData($id);
+		$this->set("title_for_layout", "Inspiration : ".$inspiration['Inspiration']['name']);
 		
 		$countries = $this->Inspiration->Country->find('list');
 		$sources = $this->Inspiration->Source->find('list');

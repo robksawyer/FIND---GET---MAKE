@@ -53,7 +53,10 @@ class ClientsController extends AppController {
 				$this->Session->setFlash(__('Invalid client', true));
 				$this->redirect(array('action' => 'index','admin'=>false));
 			}
-			$this->set('client', $this->Client->read(null, $id));
+			$client = $this->Client->read(null, $id);
+			$this->set("title_for_layout", "Client : ".$client['Client']['name']);
+			
+			$this->set('client', $client);
 			
 		}
 	}

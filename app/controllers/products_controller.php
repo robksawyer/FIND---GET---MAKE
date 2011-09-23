@@ -275,6 +275,7 @@ class ProductsController extends AppController {
 				$this->Session->setFlash(__('Invalid product', true));
 				$this->redirect(array('action' => 'index','admin'=>false));
 			}
+			$this->set("title_for_layout", "Product : ".$product['Product']['name']);
 			$this->set(compact('product'));
 		}
 		/*$products = $this->Product->getAll();

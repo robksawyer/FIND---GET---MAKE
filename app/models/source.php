@@ -56,7 +56,7 @@ class Source extends AppModel {
 		'Attachment' => array(
 			'className' => 'Attachment',
 			'foreignKey' => 'model_id',
-			'conditions' => array('Attachment.model' => 'Source'),
+			'conditions' => array('Attachment.model' => 'Source', 'Attachment.model_id' => 'Source.id'),
 			'dependent' => true,
 			'exclusive' => true
 		),

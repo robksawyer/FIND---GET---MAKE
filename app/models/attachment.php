@@ -32,49 +32,49 @@ class Attachment extends AppModel {
 		'Client' => array(
 			'className' => 'Client',
 			'foreignKey' => 'model_id',
-			'conditions' => '',
+			'conditions' => array('Attachment.model' => 'Client'),
 			'fields' => '',
 			'order' => ''
 		),
 		'Contractor' => array(
 			'className' => 'Contractor',
 			'foreignKey' => 'model_id',
-			'conditions' => '',
+			'conditions' => array('Attachment.model' => 'Contractor'),
 			'fields' => '',
 			'order' => ''
 		),
 		'House' => array(
 			'className' => 'House',
 			'foreignKey' => 'model_id',
-			'conditions' => '',
+			'conditions' => array('Attachment.model' => 'House'),
 			'fields' => '',
 			'order' => ''
 		),
 		'Inspiration' => array(
 			'className' => 'Inspiration',
 			'foreignKey' => 'model_id',
-			'conditions' => '',
+			'conditions' => array('Attachment.model' => 'Inspiration'),
 			'fields' => '',
 			'order' => ''
 		),
 		'Product' => array(
 			'className' => 'Product',
 			'foreignKey' => 'model_id',
-			'conditions' => '',
+			'conditions' => array('Attachment.model' => 'Product'),
 			'fields' => '',
 			'order' => ''
 		),
 		'Source' => array(
 			'className' => 'Source',
 			'foreignKey' => 'model_id',
-			'conditions' => '',
+			'conditions' => array('Attachment.model' => 'Source'),
 			'fields' => '',
 			'order' => ''
 		),
 		'User' => array(
 			'className' => 'User',
 			'foreignKey' => 'user_id',
-			'conditions' => '',
+			'conditions' => array('Attachment.model' => 'User'),
 			'fields' => '',
 			'order' => ''
 		)

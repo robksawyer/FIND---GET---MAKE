@@ -34,6 +34,7 @@
 App::import('Sanitize');
 class AppModel extends Model {
 	
+	//Prevents the following Error: Missing database table 'app_models' for model 'AppModel'
 	//var $useTable = false; //This will screw up crap.
 	
 	/**

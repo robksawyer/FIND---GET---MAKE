@@ -65,7 +65,7 @@ class Product extends AppModel {
 		'Attachment' => array(
 			'className' => 'Attachment',
 			'foreignKey' => 'model_id',
-			'conditions' => array('Attachment.model' => 'Product'),
+			'conditions' => array('Attachment.model' => 'Product','Attachment.model_id'=>'Product.id'),
 			'dependent' => true,
 			'exclusive' => true
 		),
@@ -117,14 +117,7 @@ class Product extends AppModel {
 			'conditions' => array('StaffFavorite.model' => 'Product'),
 			'dependent' => true,
 			'exclusive' => true
-		)/*,
-		'Comment' => array(
-			'className' => 'Comment',
-			'foreignKey' => 'model_id',
-			'conditions' => array('Comment.model' => 'Product'),
-			'dependent' => true,
-			'exclusive' => true
-		)*/
+		)
 	);
 
 	var $hasAndBelongsToMany = array(

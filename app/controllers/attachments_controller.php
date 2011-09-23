@@ -67,7 +67,9 @@ class AttachmentsController extends AppController {
 			$this->Session->setFlash(__('Invalid attachment', true));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->set('attachment', $this->Attachment->read(null, $id));
+		$attachment = $this->Attachment->read(null, $id);
+		$this->set("title_for_layout", "Attachment : ".$attachment['Attachment']['name']);
+		$this->set('attachment', $attachment);
 		
 	}
 	

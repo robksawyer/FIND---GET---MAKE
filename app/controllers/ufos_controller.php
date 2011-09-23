@@ -84,7 +84,9 @@ class UfosController extends AppController {
 			$this->Session->setFlash(__('Invalid ufo', true));
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}
-		$this->set('ufo', $this->Ufo->read(null, $id));
+		$ufo = $this->Ufo->read(null, $id);
+		$this->set("title_for_layout", "Ufo : ".$ufo['Ufo']['name']);
+		$this->set('ufo', $ufo);
 	}
 	
 	/**

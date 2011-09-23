@@ -161,6 +161,7 @@ class CollectionsController extends AppController {
 		$productList = $this->Collection->Product->getList();
 		$products = $this->Collection->Product->getProductSelectorData();
 		$collection = $this->Collection->getViewData($id);
+		$this->set("title_for_layout", "Collection : ".$collection['Collection']['name']);
 		$this->set(compact('collection','productCategoryList','sourceList','products','productList'));
 	}
 	

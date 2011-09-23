@@ -3,50 +3,11 @@
 		echo $this->element('top_actions',array('item'=>$attachment,'model'=>'Attachment','rate'=>false,'cache'=>false));
 	?>
 	<?php
-		//debug($attachment);
-		if(!empty($attachment['Ufo'])){
-			$item = $attachment['Ufo'];
-			$type = "ufo";
-			$controller = "ufos";
+		if(!empty($attachment['Attachment']['model']) && !empty($attachment['Attachment']['model_id'])){
+			$item = $attachment[$attachment['Attachment']['model']];
+			$type = strtolower($attachment['Attachment']['model']);
+			$controller = Inflector::pluralize(strtolower($attachment['Attachment']['model']));
 			$action = "view";
-		}
-		if(!empty($attachment['Product'])){
-			$item = $attachment['Product'];
-			$type = "product";
-			$controller = "products";
-			$action = "view";
-		}
-		if(!empty($attachment['Source'])){
-			$item = $attachment['Source'];
-			$type = "source";
-			$controller = "sources";
-			$action = "view";
-		}
-		if(!empty($attachment['Inspiration'])){
-			$item = $attachment['Inspiration'];
-			$type = "inspiration";
-			$controller = "inspirations";
-			$action = "view";
-		}
-		if(Configure::read('FGM.private_solution') == 1){
-			if(!empty($attachment['Client'])){
-				$item = $attachment['Client'];
-				$type = "client";
-				$controller = "clients";
-				$action = "view";
-			}
-			if(!empty($attachment['House'])){
-				$item = $attachment['House'];
-				$type = "house";
-				$controller = "houses";
-				$action = "view";
-			}
-			if(!empty($attachment['Contractor'])){
-				$item = $attachment['Contractor'];
-				$type = "contractor";
-				$controller = "contractors";
-				$action = "view";
-			}
 		}
 	?>
 	<div class="item">
@@ -57,7 +18,7 @@
 		?>
 		<h3>
 			<?php 
-				echo "You can find more info about this attachment in the $type named ".$this->Html->link($item[0]['name'],array('plugin'=>'','controller'=>$controller,'action'=>$action,$item[0]['id']))."."; 
+				echo "You can find more info about this attachment in the $type named ".$this->Html->link($item['name'],array('plugin'=>'','controller'=>$controller,'action'=>$action,$item['id']))."."; 
 			?>
 		</h3>
 		<?php

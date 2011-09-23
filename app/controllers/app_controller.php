@@ -505,9 +505,6 @@ class AppController extends Controller {
 		}else{
 			$this->log('You did not enter a model.');
 		}
-		
-		debug($model_id);
-		
 		if(empty($this->Attachment)){
 			$current_model = $this->$model->Attachment;
 		}else{
@@ -675,22 +672,22 @@ class AppController extends Controller {
 			$this->log('You did not enter a model.');
 		}
 		
-		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid '.$item, true));
+		if (!$model_id && empty($this->data)) {
+			$this->Session->setFlash(__('Invalid '.$model, true));
 			$this->redirect(array('controller'=>$controller,'action' => 'index'));
 		}
 		
 		//Check to make sure it's a valid item
 		$item = $this->$model->read(null, $model_id);
 		if(empty($item) && empty($this->data)){
-			$this->Session->setFlash(__('Invalid '.$item, true));
+			$this->Session->setFlash(__('Invalid '.$model, true));
 			$this->redirect(array('controller'=>$controller,'action' => 'index'));
 		}
 		
 		if (!empty($this->data)) {
 			
 			//Upload the attachments
-			$this->uploadAttachments($model,$controller,$model_id);
+			$this->uploadAttachments($model,$model_id);
 
 			//Check for a redirect variable
 			if(!empty($this->data[$model]['redirect'])){
