@@ -42,6 +42,13 @@ class Contractor extends AppModel {
 	);
 	
 	var $hasMany = array(
+		'Attachment' => array(
+			'className' => 'Attachment',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Attachment.model' => 'Contractor'),
+			'dependent' => true,
+			'exclusive' => true
+		),
 		'Rating' => array(
 			'className' => 'Rating',
 			'foreignKey' => 'model_id',
@@ -52,21 +59,6 @@ class Contractor extends AppModel {
 	);
 
 	var $hasAndBelongsToMany = array(
-		'Attachment' => array(
-			'className' => 'Attachment',
-			'joinTable' => 'attachments_contractors',
-			'foreignKey' => 'contractor_id',
-			'associationForeignKey' => 'attachment_id',
-			'unique' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
-		),
 		'Source' => array(
 			'className' => 'Source',
 			'joinTable' => 'contractors_sources',

@@ -2,7 +2,7 @@
 class ProductsController extends AppController {
 
 	var $name = 'Products';
-	var $components = array('Search.Prg','Uploader.Uploader');
+	var $components = array('Search.Prg','Uploader.Uploader','Comments.Comments' => array('userModel' => 'User'));
 	var $helpers = array('Tags.TagCloud');
 
 	var $paginate = array(
@@ -157,14 +157,14 @@ class ProductsController extends AppController {
 				}
 				$this->data['Product']['slug'] = $this->toSlug($this->data['Product']['name']);
 
-				//Upload the attachments
-				$this->uploadAttachments('Product');
-
 				if(!empty($this->data['Attachment'])){
 
 					$this->Product->create();
 					if ($this->Product->save($this->data)) {
 						$id = $this->Product->getLastInsertID();
+						//Upload the attachments
+						$this->uploadAttachments('Product',$id);
+						
 						//Generate and create keycode
 						$this->generateKeycode($id,true);
 						return true;

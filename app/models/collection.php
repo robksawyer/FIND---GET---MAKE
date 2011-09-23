@@ -24,6 +24,13 @@ class Collection extends AppModel {
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 	
 	var $hasMany = array(
+		'Attachment' => array(
+			'className' => 'Attachment',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Attachment.model' => 'Collection'),
+			'dependent' => true,
+			'exclusive' => true
+		),
 		'Rating' => array(
 			'className' => 'Rating',
 			'foreignKey' => 'model_id',
@@ -59,13 +66,6 @@ class Collection extends AppModel {
 			'dependent' => true,
 			'exclusive' => true
 		)
-		/*'Comment' => array(
-			'className' => 'Comment',
-			'foreignKey' => 'model_id',
-			'conditions' => array('Comment.model' => 'Collection'),
-			'dependent' => true,
-			'exclusive' => true
-		)*/
 	);
 	
 	var $belongsTo = array(

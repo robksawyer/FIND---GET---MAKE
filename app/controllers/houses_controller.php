@@ -2,7 +2,7 @@
 class HousesController extends AppController {
 
 	var $name = 'Houses';
-	var $components = array('Search.Prg','Uploader.Uploader');
+	var $components = array('Search.Prg','Uploader.Uploader','Comments.Comments' => array('userModel' => 'User'));
 	var $helpers = array('Tags.TagCloud');
 	
 	function beforeFilter(){
@@ -79,11 +79,13 @@ class HousesController extends AppController {
 				//Clean the image url
 				$this->data['Attachment']['url'] = $this->simplifyFileName($this->data['Attachment']['url']);
 			
-				//Upload the attachments
-				$this->uploadAttachments('House');
-			
 				$this->House->create();
 				if ($this->House->save($this->data)) {
+					
+					$id = $this->House->lastInsertID();
+					//Upload the attachments
+					$this->uploadAttachments('House',$id);
+					
 					$this->Session->setFlash(__('The house has been saved', true));
 					$this->redirect(array('action' => 'index','admin'=>false));
 				} else {
@@ -125,12 +127,14 @@ class HousesController extends AppController {
 	
 				//Clean the image url
 				$this->data['Attachment']['url'] = $this->simplifyFileName($this->data['Attachment']['url']);
-			
-				//Upload the attachments
-				$this->uploadAttachments('House');
-			
+				
 				$this->House->create();
 				if ($this->House->save($this->data)) {
+					
+					$id = $this->House->lastInsertID();
+					//Upload the attachments
+					$this->uploadAttachments('House',$id);
+					
 					$this->Session->setFlash(__('The house has been saved', true));
 					$this->redirect(array('action' => 'index','admin'=>false));
 				} else {

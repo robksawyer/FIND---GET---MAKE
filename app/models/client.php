@@ -35,6 +35,13 @@ class Client extends AppModel {
 	);
 
 	var $hasMany = array(
+		'Attachment' => array(
+			'className' => 'Attachment',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Attachment.model' => 'Client'),
+			'dependent' => true,
+			'exclusive' => true
+		),
 		'House' => array(
 			'className' => 'House',
 			'foreignKey' => 'client_id',
@@ -54,24 +61,6 @@ class Client extends AppModel {
 			'conditions' => array('Rating.model' => 'Client'),
 			'dependent' => true,
 			'exclusive' => true
-		)
-	);
-	
-	var $hasAndBelongsToMany = array(
-		'Attachment' => array(
-			'className' => 'Attachment',
-			'joinTable' => 'attachments_clients',
-			'foreignKey' => 'client_id',
-			'associationForeignKey' => 'attachment_id',
-			'unique' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
 		)
 	);
 	

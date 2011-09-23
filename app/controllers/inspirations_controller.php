@@ -5,7 +5,8 @@ class InspirationsController extends AppController {
 	var $helpers = array('Tags.TagCloud');
 	var $components = array('Search.Prg',
 							'Uploader.Uploader',
-							'RequestHandler'
+							'RequestHandler',
+							'Comments.Comments' => array('userModel' => 'User')
 							);
 	
 	var $paginate = array(
@@ -203,13 +204,13 @@ class InspirationsController extends AppController {
 				$this->data['Inspiration']['url'] = $this->cleanURL($this->data['Inspiration']['url']); //Clean the URL
 			}
 			
-			//Upload the attachments
-			$this->uploadAttachments('Inspiration');
-			
 			$this->Inspiration->create();
 			if ($this->Inspiration->save($this->data)) {
 				$this->Session->setFlash(__('The inspiration has been saved', true));
 				$id = $this->Inspiration->getLastInsertID();
+				//Upload the attachments
+				$this->uploadAttachments('Inspiration',$id);
+				
 				//Generate and create keycode
 				$this->generateKeycode($id,true);
 				$this->redirect(array('action' => 'view','admin'=>false,$id));
@@ -237,13 +238,14 @@ class InspirationsController extends AppController {
 				$this->data['Inspiration']['url'] = $this->cleanURL($this->data['Inspiration']['url']); //Clean the URL
 			}
 			
-			//Upload the attachments
-			$this->uploadAttachments('Inspiration');
-			
 			$this->Inspiration->create();
 			if ($this->Inspiration->save($this->data)) {
 				$this->Session->setFlash(__('The inspiration has been saved', true));
+				
 				$id = $this->Inspiration->getLastInsertID();
+				//Upload the attachments
+				$this->uploadAttachments('Inspiration',$id);
+				
 				//Generate and create keycode
 				$this->generateKeycode($id,true);
 				$this->redirect(array('action' => 'view','admin'=>false,$id));

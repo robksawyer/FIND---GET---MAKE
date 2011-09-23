@@ -3,7 +3,7 @@ class UfosController extends AppController {
 
 	var $name = 'Ufos';
 	var $helpers = array('Tags.TagCloud');
-	var $components = array('Uploader.Uploader');
+	var $components = array('Uploader.Uploader','Comments.Comments' => array('userModel' => 'User'));
 	
 	function beforeFilter(){
 		parent::beforeFilter();
@@ -96,14 +96,17 @@ class UfosController extends AppController {
 	function add() {
 		if (!empty($this->data)) {
 			
-			//Upload the attachments
-			$this->uploadAttachments('Ufo');
 			//debug($this->data);
 			$this->data['Ufo']['attachment_id'] = $this->data['Attachment']['Attachment'][0];
 			unset($this->data['Attachment']);
 			
 			$this->Ufo->create();
 			if ($this->Ufo->save($this->data)) {
+				
+				$id = $this->Ufo->getLastInsertID();
+				//Upload the attachments
+				$this->uploadAttachments('Ufo',$id);
+				
 				$this->Session->setFlash(__('The ufo has been saved', true));
 				$id = $this->Ufo->getLastInsertID();
 				$this->redirect(array('admin'=>false,'action' => 'view',$id));

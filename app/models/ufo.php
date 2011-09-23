@@ -62,14 +62,7 @@ class Ufo extends AppModel {
 			'conditions' => array('StaffFavorite.model' => 'Ufo'),
 			'dependent' => true,
 			'exclusive' => true
-		)/*,
-		'Comment' => array(
-			'className' => 'Comment',
-			'foreignKey' => 'model_id',
-			'conditions' => array('Comment.model' => 'Ufo'),
-			'dependent' => true,
-			'exclusive' => true
-		)*/
+		)
 	);
 	
 	/**

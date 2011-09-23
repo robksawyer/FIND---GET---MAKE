@@ -77,12 +77,14 @@ class ClientsController extends AppController {
 					}
 					$this->data['Client']['slug'] = $this->toSlug($this->data['Client']['name']);
 			
-					//Upload the attachments
-					$this->uploadAttachments('Client');
-			
 					$this->Client->create();
 					if ($this->Client->save($this->data)) {
 						$this->clearVerifySessions();
+						
+						$id = $this->Client->lastInsertID();
+						//Upload the attachments
+						$this->uploadAttachments('Client',$id);
+						
 						$this->Session->setFlash(__('The client has been saved.', true));
 						$this->redirect(array('action' => 'index','admin'=>false));
 					} else {
@@ -119,12 +121,14 @@ class ClientsController extends AppController {
 					}
 					$this->data['Client']['slug'] = $this->toSlug($this->data['Client']['name']);
 			
-					//Upload the attachments
-					$this->uploadAttachments('Client');
-			
 					$this->Client->create();
 					if ($this->Client->save($this->data)) {
 						$this->clearVerifySessions();
+						
+						$id = $this->Client->lastInsertID();
+						//Upload the attachments
+						$this->uploadAttachments('Client',$id);
+						
 						$this->Session->setFlash(__('The client has been saved.', true));
 						$this->redirect(array('action' => 'index','admin'=>false));
 					} else {

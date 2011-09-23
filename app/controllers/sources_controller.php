@@ -5,7 +5,7 @@ class SourcesController extends AppController {
 	
 	var $helpers = array('Tags.TagCloud');
 	
-	var $components = array('Search.Prg','Uploader.Uploader');
+	var $components = array('Search.Prg','Uploader.Uploader','Comments.Comments' => array('userModel' => 'User'));
 
 	var $paginate = array(
 		'limit' => 25
@@ -319,15 +319,16 @@ class SourcesController extends AppController {
 					unset($this->data['Product']['redirect']);
 				}
 				
-				//Upload the attachments
-				$this->uploadAttachments('Source');
-				
 				$this->Source->create();
 				if ($this->Source->save($this->data)) {
 					$this->clearVerifySessions();
-					$this->Session->setFlash(__('The source has been saved', true));
 					
 					$id = $this->Source->getLastInsertID();
+					//Upload the attachments
+					$this->uploadAttachments('Source',$id);
+					
+					$this->Session->setFlash(__('The source has been saved', true));
+
 					//Generate and create keycode
 					$this->generateKeycode($id,true);
 				

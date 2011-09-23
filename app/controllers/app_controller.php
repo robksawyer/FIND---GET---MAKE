@@ -67,8 +67,7 @@ class AppController extends Controller {
 									)
 									
 								),'Security','RequestHandler','Session','AutoLogin','Cookie',
-								'AjaxHandler', 'Forum.Toolbar','TwitterKit.Twitter','Facebook.Connect',
-								'Comments.Comments' => array('userModel' => 'User')
+								'AjaxHandler', 'Forum.Toolbar','TwitterKit.Twitter','Facebook.Connect'
 								);
 
 	/**

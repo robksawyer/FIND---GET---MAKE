@@ -17,7 +17,7 @@ if (!$isAddMode || $isAddMode):
 		echo $commentWidget->element('item', array('comment' => $viewComment));
 	endforeach;
 endif;
-echo "&mdash;";
+echo "&mdash;<br/>";
 if ($allowAddByAuth):
 	if ($isAddMode && $allowAddByAuth): ?>
 		<?php

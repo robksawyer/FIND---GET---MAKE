@@ -2,7 +2,7 @@
 class ContractorsController extends AppController {
 
 	var $name = 'Contractors';
-	var $components = array('Search.Prg','Uploader.Uploader');
+	var $components = array('Search.Prg','Uploader.Uploader','Comments.Comments' => array('userModel' => 'User'));
 	var $helpers = array('Tags.TagCloud');
 	
 	function beforeFilter(){
@@ -102,12 +102,14 @@ class ContractorsController extends AppController {
 			
 				if($passed_check){
 				
-					//Upload the attachments
-					$this->uploadAttachments('Contractor');
-				
 					$this->Contractor->create();
 					if ($this->Contractor->save($this->data)) {
 						$this->clearVerifySessions();
+						
+						$id = $this->Contractor->lastInsertID();
+						//Upload the attachments
+						$this->uploadAttachments('Contractor',$id);
+							
 						$this->Session->setFlash(__('The contractor has been saved', true));
 						$this->redirect(array('action' => 'index','admin'=>false));
 					} else {
@@ -165,12 +167,14 @@ class ContractorsController extends AppController {
 			
 				if($passed_check){
 				
-					//Upload the attachments
-					$this->uploadAttachments('Contractor');
-				
 					$this->Contractor->create();
 					if ($this->Contractor->save($this->data)) {
 						$this->clearVerifySessions();
+						
+						$id = $this->Contractor->lastInsertID();
+						//Upload the attachments
+						$this->uploadAttachments('Contractor',$id);
+						
 						$this->Session->setFlash(__('The contractor has been saved', true));
 						$this->redirect(array('action' => 'index','admin'=>false));
 					} else {

@@ -90,6 +90,11 @@ class User extends AppModel {
 	);
 	
 	var $hasMany = array(
+		'Attachment' => array(
+			'className' => 'Attachment',
+			'foreignKey' => 'user_id',
+			'dependent' => false
+		),
 		'Collection' => array(
 			'className' => 'Collection',
 			'foreignKey' => 'user_id',
@@ -110,11 +115,6 @@ class User extends AppModel {
 		),
 		'Contractor' => array(
 			'className' => 'Contractor',
-			'foreignKey' => 'user_id',
-			'dependent' => false
-		),
-		'Attachment' => array(
-			'className' => 'Attachment',
 			'foreignKey' => 'user_id',
 			'dependent' => false
 		),
@@ -211,13 +211,7 @@ class User extends AppModel {
 			'foreignKey' => 'user_id',
 			'dependent' => true,
 			'exclusive' => true
-		)/*,
-		'Comment' => array(
-			'className' => 'Comment',
-			'foreignKey' => 'user_id',
-			'dependent' => true,
-			'exclusive' => true
-		)*/
+		)
 	);
 	
 	/**

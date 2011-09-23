@@ -41,30 +41,19 @@ class House extends AppModel {
 	);
 
 	var $hasMany = array(
+		'Attachment' => array(
+			'className' => 'Attachment',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Attachment.model' => 'House'),
+			'dependent' => true,
+			'exclusive' => true
+		),
 		'Rating' => array(
 			'className' => 'Rating',
 			'foreignKey' => 'model_id',
 			'conditions' => array('Rating.model' => 'House'),
 			'dependent' => true,
 			'exclusive' => true
-		)
-	);
-	
-	var $hasAndBelongsToMany = array(
-		'Attachment' => array(
-			'className' => 'Attachment',
-			'joinTable' => 'attachments_houses',
-			'foreignKey' => 'house_id',
-			'associationForeignKey' => 'attachment_id',
-			'unique' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
 		)
 	);
 

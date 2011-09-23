@@ -53,6 +53,13 @@ class Source extends AppModel {
 	);
 	
 	var $hasMany = array(
+		'Attachment' => array(
+			'className' => 'Attachment',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Attachment.model' => 'Source'),
+			'dependent' => true,
+			'exclusive' => true
+		),
 		'Product' => array(
 			'className' => 'Product',
 			'foreignKey' => 'source_id',
@@ -100,32 +107,10 @@ class Source extends AppModel {
 			'conditions' => array('StaffFavorite.model' => 'Source'),
 			'dependent' => true,
 			'exclusive' => true
-		)/*,
-		'Comment' => array(
-			'className' => 'Comment',
-			'foreignKey' => 'model_id',
-			'conditions' => array('Comment.model' => 'Source'),
-			'dependent' => true,
-			'exclusive' => true
-		)*/
+		)
 	);
 
 	var $hasAndBelongsToMany = array(
-		'Attachment' => array(
-			'className' => 'Attachment',
-			'joinTable' => 'attachments_sources',
-			'foreignKey' => 'source_id',
-			'associationForeignKey' => 'attachment_id',
-			'unique' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
-		),
 		'Contractor' => array(
 			'className' => 'Contractor',
 			'joinTable' => 'contractors_sources',
