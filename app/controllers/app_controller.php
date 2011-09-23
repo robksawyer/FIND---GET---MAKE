@@ -558,50 +558,35 @@ class AppController extends Controller {
 				$contentType = trim($headers[1]);
 				$ext = $contentsMaping[$contentType];
 				$full_path = 'media'.DS.'transfer'.DS.'img'.DS.'temp'.DS;
-				$external_path = Router::url($full_path,true);
+				$external_path = Router::url(DS.$full_path,true);
 				$tmp_image_name = $this->randomPrefix(5).'.'.$ext;
-				$file = new File(WWW_ROOT.$full_path.$tmp_image_name, true);
-				$file->write($results);
+				$file = new File(WWW_ROOT.$full_path.$tmp_image_name,"w", true);
+				if($file->writable()){
+					$file->write($results);
+				}else{
+					echo "The file isn't writable.";
+				}
 				$file->close();
 				$target_file_path = $external_path.$tmp_image_name;
-
-				if(empty($file)){
-					//$local_path = Router::url($file->path,true);
-					//$url = $local_path;
-					//$data = $this->Uploader->importRemote($url,array('name'=>'temp_'.$this->randomPrefix(5)));
-					/*$this->data['Attachment']['file']['name'] = $file->name;
-					$this->data['Attachment']['file']['tmp_name'] = $file->path;
-					$this->data['Attachment']['file']['type'] = $contentType;
-					$this->data['Attachment']['file']['error'] = 0;
-					$this->data['Attachment']['file']['size'] = filesize($external_path);*/
-					//debug($this->data['Attachment']);
-					//$data = $this->Uploader->uploadAll();
-					//debug($data);
-					/*if(!empty($data)){
-						$file->delete(); //Delete the file
-						$this->data['Attachment']['file'] = $data['Attachment.file'];
-						unset($data['Attachment.file']);
-						$data = $this->data['Attachment']['file'];
-					}*/
-				}
+				
 				//Save the file from the url
-				/*$filename = basename($target_file_path);
+				$filename = basename($target_file_path);
+				//debug($target_file_path);
 				$data = $this->Uploader->importRemote($target_file_path,array('name'=>$filename));
 				if(!empty($data)){
 					$file->delete(); //Delete the file because it's no longer needed
-					debug($data);
-				}*/
-				
-				/* EXAMPLE
-				[path] => /media/static/img/inspirations/01tubopyramid_rect5402.jpg
-			    [type] => image/jpeg
-			    [ext] => jpg
-			    [group] => image
-			    [name] => 01tubopyramid_rect5402.jpg
-			    [uploaded] => 2011-07-09 03:23:35
-			    [filesize] => 108 KB
-			    [width] => 359
-			    [height] => 540*/
+					//debug($data);
+					/* EXAMPLE
+					[path] => /media/static/img/inspirations/01tubopyramid_rect5402.jpg
+				    [type] => image/jpeg
+				    [ext] => jpg
+				    [group] => image
+				    [name] => 01tubopyramid_rect5402.jpg
+				    [uploaded] => 2011-07-09 03:23:35
+				    [filesize] => 108 KB
+				    [width] => 359
+				    [height] => 540*/
+				}
 			
 				$this->data['Attachment']['file'] = $data;
 			}else{
