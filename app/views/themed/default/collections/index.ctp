@@ -54,7 +54,7 @@
 						$limit = 4;
 						//debug($collection['Product'][$i]);
 						for($i=0;$i<count($collection['Product']);$i++){
-							if(!empty($collection['Product'][$i])){
+							if(!empty($collection['Product'][$i]['Attachment'][0])){
 								if($i < $limit){
 									if(count($collection['Product']) > 1){
 										echo $this->Html->image($collection['Product'][$i]['Attachment'][0]['path_small'],array(

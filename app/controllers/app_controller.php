@@ -510,22 +510,88 @@ class AppController extends Controller {
 		}else{
 			$current_model = $this->Attachment;
 		}
-		
+		//debug($this->data);
+		/*[Attachment] => Array
+		        (
+		            [title] => 
+		            [source_url] => 
+		            [file] => Array
+		                (
+		                    [name] => Screen shot 2011-08-12 at 12.57.35 PM.jpg
+		                    [type] => image/jpeg
+		                    [tmp_name] => /Applications/MAMP/tmp/php/phpOzN1dc
+		                    [error] => 0
+		                    [size] => 104359
+		                )
+
+		        )*/
 		
 		//Clean the image url passed
 		if(!empty($url)){
 			/*
 				TODO Explode the periods in the name and check to see which is a valid extension. Remove the rest and then use the name.
 			*/
-			$this->data['Attachment']['url'] = $this->simplifyFileName(trim($url));
+			//$this->data['Attachment']['url'] = $this->simplifyFileName(trim($url));
+			$this->data['Attachment']['url'] = trim($url);
 			$url = $this->data['Attachment']['url'];
-
 			if($url){
 				unset($this->data['Attachment']['url']);
+				
+				//Save a local copy
+				//This allows links like http://www.aandgmerch.com/index.php?image=5279 to work
+				App::import('Core', 'HttpSocket'); 
+				$HttpSocket = new HttpSocket();
+				$results = $HttpSocket->get($url);
+				$contentsMaping=array( 
+					"image/gif" => "gif", 
+					"image/jpeg" => "jpg", 
+					"image/pjpeg" => "jpg", 
+					"image/x-png" => "png", 
+					"image/jpg" => "jpg", 
+					"image/png" => "png",
+					"image/tif" => "tif",
+					"image/tiff" => "tiff",
+					"image/x-tif" => "tif",
+					"image/x-tiff" => "tiff"
+				);
+				$headers = split("Content-Type:",$HttpSocket->response['raw']['header']); //Parse the content-type
+				$contentType = trim($headers[1]);
+				$ext = $contentsMaping[$contentType];
+				$full_path = 'media'.DS.'transfer'.DS.'img'.DS.'temp'.DS;
+				$external_path = Router::url($full_path,true);
+				$tmp_image_name = $this->randomPrefix(5).'.'.$ext;
+				$file = new File(WWW_ROOT.$full_path.$tmp_image_name, true);
+				$file->write($results);
+				$file->close();
+				$target_file_path = $external_path.$tmp_image_name;
+
+				if(empty($file)){
+					//$local_path = Router::url($file->path,true);
+					//$url = $local_path;
+					//$data = $this->Uploader->importRemote($url,array('name'=>'temp_'.$this->randomPrefix(5)));
+					/*$this->data['Attachment']['file']['name'] = $file->name;
+					$this->data['Attachment']['file']['tmp_name'] = $file->path;
+					$this->data['Attachment']['file']['type'] = $contentType;
+					$this->data['Attachment']['file']['error'] = 0;
+					$this->data['Attachment']['file']['size'] = filesize($external_path);*/
+					//debug($this->data['Attachment']);
+					//$data = $this->Uploader->uploadAll();
+					//debug($data);
+					/*if(!empty($data)){
+						$file->delete(); //Delete the file
+						$this->data['Attachment']['file'] = $data['Attachment.file'];
+						unset($data['Attachment.file']);
+						$data = $this->data['Attachment']['file'];
+					}*/
+				}
 				//Save the file from the url
-				$filename = basename($url);
-				$data = $this->Uploader->importRemote($url,array('name'=>$filename));
-				//debug($data);
+				/*$filename = basename($target_file_path);
+				$data = $this->Uploader->importRemote($target_file_path,array('name'=>$filename));
+				if(!empty($data)){
+					$file->delete(); //Delete the file because it's no longer needed
+					debug($data);
+				}*/
+				
 				/* EXAMPLE
 				[path] => /media/static/img/inspirations/01tubopyramid_rect5402.jpg
 			    [type] => image/jpeg
@@ -538,7 +604,6 @@ class AppController extends Controller {
 			    [height] => 540*/
 			
 				$this->data['Attachment']['file'] = $data;
-
 			}else{
 				$this->Session->setFlash(__('This is not a valid image file path. Please, try again.', true));
 			}
@@ -655,6 +720,52 @@ class AppController extends Controller {
 		}else{
 			$this->Session->setFlash(__('The attachment could not be uploaded. Please, try again.', true));
 		}
+	}
+	
+	/* 
+	 * Get a web file (HTML, XHTML, XML, image, etc.) from a URL.  Return an 
+	 * array containing the HTTP server response header fields and content. 
+	 */ 
+	protected function get_final_url( $url ) { 
+		$options = array( 
+			CURLOPT_RETURNTRANSFER => false,		// return web page 
+			CURLOPT_HEADER		   => true,	// don't return headers 
+			CURLOPT_FOLLOWLOCATION => true,		// follow redirects 
+			CURLOPT_ENCODING	   => "",		// handle all encodings 
+			CURLOPT_USERAGENT	   => "spider", // who am i 
+			CURLOPT_AUTOREFERER	   => true,		// set referer on redirect 
+			CURLOPT_CONNECTTIMEOUT => 120,		// timeout on connect 
+			CURLOPT_TIMEOUT		   => 120,		// timeout on response 
+			CURLOPT_MAXREDIRS	   => 10,		// stop after 10 redirects 
+			CURLOPT_BINARYTRANSFER => true,
+		); 
+
+		$ch		 = curl_init( $url ); 
+		curl_setopt_array( $ch, $options ); 
+		$content = curl_exec( $ch ); 
+		$retVal = array();
+		$fields = explode("\r\n", preg_replace('/\x0D\x0A[\x09\x20]+/', ' ', $header));
+		foreach( $fields as $field ) {
+			if( preg_match('/([^:]+): (.+)/m', $field, $match) ) {
+				$match[1] = preg_replace('/(?<=^|[\x09\x20\x2D])./e', 'strtoupper("\0")', strtolower(trim($match[1])));
+				if( isset($retVal[$match[1]]) ) {
+					$retVal[$match[1]] = array($retVal[$match[1]], $match[2]);
+				} else {
+					$retVal[$match[1]] = trim($match[2]);
+				}
+			}
+		}
+
+		$err	 = curl_errno( $ch ); 
+		$errmsg	 = curl_error( $ch ); 
+		$header	 = curl_getinfo( $ch ); 
+		curl_close( $ch ); 
+
+		//$header['errno']	 = $err; 
+	   // $header['errmsg']	 = $errmsg; 
+		//$header['content'] = $content; 
+		//print($header[0]); 
+		return $retVal; 
 	}
 	
 	/**
