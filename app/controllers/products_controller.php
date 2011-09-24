@@ -123,10 +123,10 @@ class ProductsController extends AppController {
 				$baseSourceUrl = $baseUrlString['scheme']."://".$baseUrlString['host'];
 				$sourceName = $this->getStoreNameFromURL($baseUrlString['host']);
 				$source = $this->Product->Source->find('first',array('conditions'=>array(
-																					'Source.url'=>"$baseSourceUrl",
 																					'OR'=>array(
-																						'Source.url'=>"$baseSourceUrl/",
-																						'Source.name'=>"$sourceName"
+																						array('Source.url'=>"$baseSourceUrl"),
+																						array('Source.url'=>"$baseSourceUrl/"),
+																						array('Source.name'=>"$sourceName")
 																					)
 																					)));
 				

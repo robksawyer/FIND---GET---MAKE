@@ -267,10 +267,8 @@ class UsersController extends AppController {
 				//Search the friends array
 				$results = $this->User->find('all',array('conditions'=>array(
 																			'OR'=>array(
-																				array(
-																					'User.fullname'=>$friends,
-																					'User.facebook_id'=>$friend_ids
-																				)
+																				array('User.fullname'=>$friends),
+																				array('User.facebook_id'=>$friend_ids)
 																			)
 																			),
 																			'limit'=>50,
@@ -334,10 +332,9 @@ class UsersController extends AppController {
 				}
 				$results = $this->User->find('all',array('conditions'=>array(
 																			'OR'=>array(
-																				array(
-																					'User.username' => $twitter_friends['screen_names'],
-																					'User.fullname' => $twitter_friends['names'],
-																					'User.twitter_id' => $twitter_friend_ids
+																					array('User.username' => $twitter_friends['screen_names']),
+																					array('User.fullname' => $twitter_friends['names']),
+																					array('User.twitter_id' => $twitter_friend_ids)
 																				)
 																			)
 																		)
