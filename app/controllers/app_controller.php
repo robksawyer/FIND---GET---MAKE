@@ -395,7 +395,12 @@ class AppController extends Controller {
 		return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
 	}
 	
-	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	protected function getLetterOfDay($date=null){
 		if(!isset($date)){
 			$day = date("D");
@@ -406,6 +411,12 @@ class AppController extends Controller {
 		return $letterOfDay;
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	protected function getDayOfWeek($date=null){
 		if(!isset($date)){
 			//$day = date("l");
@@ -416,6 +427,12 @@ class AppController extends Controller {
 		return $day;
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	public function str_rand($length = 8, $output = 'alphanum'){
 		// Possible seeds
 		$outputs['alpha'] = 'abcdefghijklmnopqrstuvwqyz';

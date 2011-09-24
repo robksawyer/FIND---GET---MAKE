@@ -95,7 +95,7 @@ class ProductsController extends AppController {
 		Configure::write('debug',0);
 		$this->autoRender = false;
 		$this->autoLayout = false;
-		$this->layout = 'ajax';
+		//$this->layout = 'ajax';
 		
 		//Check to make sure that params were passed
 		if (!empty($this->params['url'])) {
@@ -110,8 +110,7 @@ class ProductsController extends AppController {
 				$pageTitle = $this->params['url']['t'];
 				$referringUrl = $this->params['url']['l'];
 				
-				//Check to see if the source url matches a source
-				$urlString = parse_url(trim($referringUrl));
+
 				//debug($urlString);
 				/*Array
 				(
@@ -119,12 +118,14 @@ class ProductsController extends AppController {
 				    [host] => shop.acontinuouslean.com
 				    [path] => /collections/all
 				)*/
-				$referringSourceUrl = $urlString['scheme']."://".$urlString['host'];
-				$sourceName = $this->getStoreNameFromURL($urlString['host']);
+				$baseUrlString = parse_url(trim($baseURL));
+				$urlString = parse_url(trim($referringUrl));
+				$baseSourceUrl = $baseUrlString['scheme']."://".$baseUrlString['host'];
+				$sourceName = $this->getStoreNameFromURL($baseUrlString['host']);
 				$source = $this->Product->Source->find('first',array('conditions'=>array(
-																					'Source.url'=>"$referringSourceUrl",
+																					'Source.url'=>"$baseSourceUrl",
 																					'OR'=>array(
-																						'Source.url'=>"$referringSourceUrl/",
+																						'Source.url'=>"$baseSourceUrl/",
 																						'Source.name'=>"$sourceName"
 																					)
 																					)));
@@ -134,14 +135,25 @@ class ProductsController extends AppController {
 					$this->data['Product']['source_id'] = $source['Source']['id']; //Add the source to the product
 				}else{
 					//Do some post processing and add the source
+					$sourceCategoryValues = array(1,6,9,12,13,47,49,48); //Actual category values in the database
 					$sourceData['Source']['name'] = $sourceName; //Build a name from the url
-					$sourceData['Source']['url'] = $referringSourceUrl;
+					$sourceData['Source']['url'] = $baseSourceUrl;
+					$sourceData['Source']['user_id'] = $user['User']['id'];
+					$sourceData['Source']['source_category_id'] = $sourceCategoryValues[$categoryId];
+					$this->data['Source']['slug'] = $this->toSlug($this->data['Source']['name']);
 					
 					$this->Product->Source->create();
 					if($this->Product->Source->save($sourceData['Source'])){
 						//Success
 						CakeLog::write('events','BOOKMARKLET::The source '.$sourceName.' was added via the bookmarklet.');
 						$source_id = $this->Product->Source->getLastInsertID();
+						//Generate and create keycode
+						$keycode = $this->str_rand(8,'mixed');
+						$keycode .= $source_id;
+
+						$this->Product->Source->id = $source_id;
+						$this->Product->Source->saveField('keycode',$keycode);
+						
 						$this->data['Product']['source_id'] = $source_id;
 					}else{
 						CakeLog::write('error_events','BOOKMARKLET::There was an error adding the source named '.$sourceName.' from '.$baseURL.'.');
@@ -168,10 +180,10 @@ class ProductsController extends AppController {
 					{"id":43,"label":"Other"}
 				];
 				*/
-				$categoryValues = array(1,5,7,15,16,5,2,43); //Actual category values in the database
-				$this->data['Product']['product_category_id'] = $categoryValues[$categoryId];
-				$this->data['Product']['source_url'] = $referringSourceUrl;
-				$this->data['Product']['purchase_url'] = $referringUrl;
+				$productCategoryValues = array(1,5,7,15,16,5,2,43); //Actual category values in the database
+				$this->data['Product']['product_category_id'] = $productCategoryValues[$categoryId];
+				$this->data['Product']['source_url'] = $baseSourceUrl;
+				$this->data['Product']['purchase_url'] = $baseURL;
 				$this->data['Product']['bookmarklet_add'] = 1; //Because it was added with the bookmarklet
 				$this->data['Product']['user_id'] = $user['User']['id'];
 				$this->data['Attachment']['url'] = $image;
