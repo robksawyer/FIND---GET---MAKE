@@ -12,7 +12,7 @@
 		<h3 class="header"><?php 
 				__($product['Product']['name']);
 				if(!empty($product['Source']['name'])){
-					echo "<span class='light-grey'> &mdash; ".$this->Html->link($product['Source']['name'], array('controller' => 'sources', 'action' => 'view', $product['Source']['id']))."</span>";
+					echo "<span class='light-grey'> &mdash; ".$this->Html->link(__($product['Source']['name'],true), array('controller' => 'sources', 'action' => 'view', $product['Source']['id']))."</span>";
 				}
 			?></h3>
 		<div id="right-sidebar">

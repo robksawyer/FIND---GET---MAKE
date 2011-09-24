@@ -67,14 +67,14 @@
 			<div class="section">
 					<?php 
 						if(empty($client)){
-							echo $this->Html->link($product['name'],array('controller'=>'products','action'=>'view',$product['id']),array('title'=>$product['description']));
+							echo $this->Html->link(__($product['name']),array('controller'=>'products','action'=>'view',$product['id']),array('title'=>$product['description']));
 						}else{
 							//Check for keycode
 							if(empty($product['keycode'])){
 								//Generate a keycode
-								echo $this->Html->link($product['name'],array('controller'=>'products','action'=>'generateKeycode',$product['id']),array('title'=>$product['description']));
+								echo $this->Html->link(__($product['name']),array('controller'=>'products','action'=>'generateKeycode',$product['id']),array('title'=>$product['description']));
 							}else{
-								echo $this->Html->link($product['name'],array('controller'=>'products','action'=>'key',$product['keycode']),array('title'=>$product['description']));
+								echo $this->Html->link(__($product['name']),array('controller'=>'products','action'=>'key',$product['keycode']),array('title'=>$product['description']));
 							}
 						}
 					?>

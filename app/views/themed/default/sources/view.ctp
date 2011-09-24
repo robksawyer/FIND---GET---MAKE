@@ -24,7 +24,7 @@
 		<h2><?php 
 					__($source['Source']['name']);
 					if(!empty($source['SourceCategory']['name'])){
-						echo "<span class='light-grey'> &mdash; ".$this->Html->link($source['SourceCategory']['name'],array('controller'=>'source_categories','action'=>'view',$source['SourceCategory']['id']))."</span>";
+						echo "<span class='light-grey'> &mdash; ".$this->Html->link(__($source['SourceCategory']['name'],true),array('controller'=>'source_categories','action'=>'view',$source['SourceCategory']['id']))."</span>";
 					}
 					if(!empty($source['Source']['url'])):
 						echo "<br/>&#x21B3;"."<span class='link'>".$this->Html->link($source['Source']['url'],$source['Source']['url'],array('target'=>'_blank'))."</span>";

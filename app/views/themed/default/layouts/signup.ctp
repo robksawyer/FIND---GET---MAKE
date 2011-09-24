@@ -17,11 +17,12 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
+<?php header('Content-type: text/html; charset=UTF-8') ;?>
 <?php echo $this->Html->docType('xhtml-trans'); ?> 
 <!--<html xmlns="http://www.w3.org/1999/xhtml">-->
 <?php echo $this->Facebook->html(); ?>
 	<head>
-		<?php echo $this->Html->charset(); ?>
+		<?php echo $this->Html->charset('utf-8'); ?>
 		<title>
 			<?php echo 'FIND | GET | MAKE : '.$title_for_layout; ?>
 			<?php //echo $this->Cupcake->settings['site_name']; ?>

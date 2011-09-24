@@ -59,10 +59,10 @@
 						echo $this->Html->image($product['Attachment'][0]['path_med'],array('alt'=>'','url'=>array('action'=>'view',$product['Product']['id']))); 
 					}
 				?>
-				<div class="title"><?php echo $this->Html->link($product['Product']['name'],array('controller'=>'products','action'=>'view',$product['Product']['id'])); ?></div>
+				<div class="title"><?php echo $this->Html->link(__($product['Product']['name']),array('controller'=>'products','action'=>'view',$product['Product']['id'])); ?></div>
 				<div class="description"><?php echo $this->String->truncate($product['Product']['description'],250); ?></div>
 				<?php if(!empty($product['Product']['designer'])) echo "<div class='designer'>Designed by ".$product['Product']['designer']."</div>"; ?>
-				<div class="designer"><?php echo "Found by ".$this->Html->link($product['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$product['User']['username'])); ?></div>
+				<div class="designer"><?php echo "Found by ".$this->Html->link(__($product['User']['username']),array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$product['User']['username'])); ?></div>
 				<div class="bottom-detail">
 					<span class="date"><?php echo $this->Time->niceShort($product['Product']['created'],null,null)." / "; ?>&nbsp;</span>
 					<span class="tags"><?php
@@ -75,9 +75,9 @@
 								if($counter == $limit) break;
 						
 								if($counter == ($limit - 1) || count($product['Tag']) < 2){
-									echo $this->Html->link($tag['name'],array('controller'=>'products','action'=>'index/by:'.$tag['keyname']));
+									echo $this->Html->link(__($tag['name']),array('controller'=>'products','action'=>'index/by:'.$tag['keyname']));
 								}else{
-									echo $this->Html->link($tag['name'],array('controller'=>'products','action'=>'index/by:'.$tag['keyname'])).", ";
+									echo $this->Html->link(__($tag['name']),array('controller'=>'products','action'=>'index/by:'.$tag['keyname'])).", ";
 								}
 
 								$counter++;
