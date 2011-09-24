@@ -92,6 +92,7 @@ class ProductsController extends AppController {
 	 * 
 	*/
 	public function bookmarklet_product_add($pk = null){
+		Configure::write('debug',0);
 		$this->autoRender = false;
 		$this->autoLayout = false;
 		$this->layout = 'ajax';
@@ -111,10 +112,21 @@ class ProductsController extends AppController {
 				
 				//Check to see if the source url matches a source
 				$urlString = parse_url(trim($referringUrl));
-				$referringSourceUrl = $urlString['host'];
-				
+				//debug($urlString);
+				/*Array
+				(
+				    [scheme] => http
+				    [host] => shop.acontinuouslean.com
+				    [path] => /collections/all
+				)*/
+				$referringSourceUrl = $urlString['scheme']."://".$urlString['host'];
+				$sourceName = $this->getStoreNameFromURL($urlString['host']);
 				$source = $this->Product->Source->find('first',array('conditions'=>array(
-																					'Source.url LIKE'=>"%$referringSourceUrl%"
+																					'Source.url'=>"$referringSourceUrl",
+																					'OR'=>array(
+																						'Source.url'=>"$referringSourceUrl/",
+																						'Source.name'=>"$sourceName"
+																					)
 																					)));
 				
 				//Fill up a data array to be saved
@@ -122,7 +134,6 @@ class ProductsController extends AppController {
 					$this->data['Product']['source_id'] = $source['Source']['id']; //Add the source to the product
 				}else{
 					//Do some post processing and add the source
-					$sourceName = $this->getStoreNameFromURL($referringSourceUrl);
 					$sourceData['Source']['name'] = $sourceName; //Build a name from the url
 					$sourceData['Source']['url'] = $referringSourceUrl;
 					
@@ -132,10 +143,8 @@ class ProductsController extends AppController {
 						CakeLog::write('events','BOOKMARKLET::The source '.$sourceName.' was added via the bookmarklet.');
 						$source_id = $this->Product->Source->getLastInsertID();
 						$this->data['Product']['source_id'] = $source_id;
-						return true;
 					}else{
 						CakeLog::write('error_events','BOOKMARKLET::There was an error adding the source named '.$sourceName.' from '.$baseURL.'.');
-						return false;
 					}
 				}
 				
@@ -206,14 +215,17 @@ class ProductsController extends AppController {
 	 * 
 	*/
 	protected function getStoreNameFromURL($url=""){
-		$url = parse_url($url);
-		$nameClean = explode(".",$url['host']);
-		if($nameClean[0] != "www"){
-			$name = $nameClean[0].".".$nameClean[1];
+		$nameClean = explode(".",$url);
+		if(!empty($nameClean)){
+			if($nameClean[0] != "www"){
+				$name = $nameClean[0].".".$nameClean[1];
+			}else{
+				$name = $nameClean[1];
+			}
+			return ucfirst($name);
 		}else{
-			$name = $nameClean[1];
+			return false;
 		}
-		return $name;
 	}
 	
 	/**************** API METHODS ************************/

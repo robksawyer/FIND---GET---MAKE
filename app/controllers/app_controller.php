@@ -345,12 +345,15 @@ class AppController extends Controller {
 	
 	/**
 	 * Generates a unique name for files
-	 * @param 
+	 * @param String append: What to append to the front
+	 * @param Int id: A unique id to append
+	 * @param String ext: The file extension
 	 * @return 
 	 * 
 	*/
-	protected function uniqueFilename($id,$ext){
-		$return = uniqid($this->randomPrefix(3)).$id.'.'.$ext;
+	protected function uniqueFilename($append,$id,$ext){
+		//$return = uniqid($this->randomPrefix(3)).$id.'.'.$ext;
+		$return = strtolower($append).$this->randomPrefix(3).$id.'.'.$ext;
 		return $return;	
 	}
 	
@@ -499,11 +502,11 @@ class AppController extends Controller {
 	 *			1.3 
 	 */
 	protected function saveAttachments($url = null,$model=null,$model_id=null,$current_attachments = null){
-		
+		Configure::write('debug',0);
 		if(!empty($model)){
 			$controller = Inflector::pluralize(strtolower($model));
 		}else{
-			$this->log('You did not enter a model.');
+			CakeLog::write('error','BOOKMARKLET::You did not enter a model.');
 		}
 		if(empty($this->Attachment)){
 			$current_model = $this->$model->Attachment;
@@ -542,21 +545,37 @@ class AppController extends Controller {
 				App::import('Core', 'HttpSocket'); 
 				$HttpSocket = new HttpSocket();
 				$results = $HttpSocket->get($url);
-				$contentsMaping=array( 
-					"image/gif" => "gif", 
-					"image/jpeg" => "jpg", 
-					"image/pjpeg" => "jpg", 
-					"image/x-png" => "png", 
-					"image/jpg" => "jpg", 
+				$contentsMapping=array(
+					"image/gif" => "gif",
+					"image/jpeg" => "jpeg",
+					"image/pjpeg" => "jpeg",
+					"image/x-png" => "png",
+					"image/jpg" => "jpg",
 					"image/png" => "png",
 					"image/tif" => "tif",
 					"image/tiff" => "tiff",
 					"image/x-tif" => "tif",
 					"image/x-tiff" => "tiff"
 				);
-				$headers = split("Content-Type:",$HttpSocket->response['raw']['header']); //Parse the content-type
-				$contentType = trim($headers[1]);
-				$ext = $contentsMaping[$contentType];
+				$repsonse = $HttpSocket->response;
+				$contentType = trim($HttpSocket->response['header']['Content-Type']); //Parse the content-type
+				//debug($headers);
+				//$contentType = trim($headers[1]);
+				$contentType = str_replace(" ","",$contentType); //Remove whitespaces
+				$contentType = str_replace("'","",$contentType); //Remove rogue quotes
+				$contentType = str_replace('"',"",$contentType); //Remove rogue quotes
+				$contentType = preg_replace("/[!<>@&\s0-9_]/","", $contentType);
+				if(!empty($contentType)){
+					$ext = $contentsMapping["$contentType"];
+					if(empty($ext)){
+						CakeLog::write('error',"BOOKMARKLET::There was an error finding the image extension.");
+						return false;
+					}
+				}else{
+					CakeLog::write('error',"BOOKMARKLET::There was an error finding the content type in the headers: <pre>".$headers."</pre>");
+					return false;
+				}
+				
 				$full_path = 'media'.DS.'transfer'.DS.'img'.DS.'temp'.DS;
 				$external_path = Router::url(DS.$full_path,true);
 				$tmp_image_name = $this->randomPrefix(5).'.'.$ext;
@@ -564,7 +583,8 @@ class AppController extends Controller {
 				if($file->writable()){
 					$file->write($results);
 				}else{
-					echo "The file isn't writable.";
+					CakeLog::write('error',"BOOKMARKLET::The file isn't writable.");
+					return false;
 				}
 				$file->close();
 				$target_file_path = $external_path.$tmp_image_name;
@@ -573,6 +593,7 @@ class AppController extends Controller {
 				$filename = basename($target_file_path);
 				//debug($target_file_path);
 				$data = $this->Uploader->importRemote($target_file_path,array('name'=>$filename));
+				CakeLog::write('debug',"<pre>".var_dump($data)."</pre>");
 				if(!empty($data)){
 					$file->delete(); //Delete the file because it's no longer needed
 					//debug($data);
@@ -586,6 +607,9 @@ class AppController extends Controller {
 				    [filesize] => 108 KB
 				    [width] => 359
 				    [height] => 540*/
+				}else{
+					
+					return false;
 				}
 			
 				$this->data['Attachment']['file'] = $data;
@@ -634,12 +658,10 @@ class AppController extends Controller {
 			$this->data['Attachment']['file']['source_url'] = $source;
 			
 			//Check to see if the file name exists
-			$ext = $this->Uploader->ext($this->data['Attachment']['file']['path']); //Returns just the extension
-			$withoutExt = preg_replace("/\\.[^.\\s]{3,4}$/", "", $this->data['Attachment']['file']['name']);
-
+			if(empty($ext)) $ext = $this->Uploader->ext($this->data['Attachment']['file']['path']); //Returns just the extension
 			//Generate a random key for the file name 
-			$this->data['Attachment']['file']['name'] = $this->cleanFileName($this->data['Attachment']['file']['name'],$ext);
-			$this->data['Attachment']['file']['name'] = $this->uniqueFileName($model_id,$ext);
+			//$this->data['Attachment']['file']['name'] = $this->cleanFileName($this->data['Attachment']['file']['name'],$ext);
+			$this->data['Attachment']['file']['name'] = $this->uniqueFileName($model,$model_id,$ext);
 			$withoutExt = preg_replace("/\\.[^.\\s]{3,4}$/", "", $this->data['Attachment']['file']['name']); //Refresh it
 			
 			/*$aCheck = $current_model->findByName($this->data['Attachment']['file']['name']);
@@ -699,58 +721,12 @@ class AppController extends Controller {
 				}
 				$this->data['Attachment'][] = $lastID;
 			}else{
-				$this->Session->setFlash(__('The attachment could not be saved. Please, try again.', true));
+				//$this->Session->setFlash(__('The attachment could not be saved. Please, try again.', true));
 			}
 		
 		}else{
-			$this->Session->setFlash(__('The attachment could not be uploaded. Please, try again.', true));
+			//$this->Session->setFlash(__('The attachment could not be uploaded. Please, try again.', true));
 		}
-	}
-	
-	/* 
-	 * Get a web file (HTML, XHTML, XML, image, etc.) from a URL.  Return an 
-	 * array containing the HTTP server response header fields and content. 
-	 */ 
-	protected function get_final_url( $url ) { 
-		$options = array( 
-			CURLOPT_RETURNTRANSFER => false,		// return web page 
-			CURLOPT_HEADER		   => true,	// don't return headers 
-			CURLOPT_FOLLOWLOCATION => true,		// follow redirects 
-			CURLOPT_ENCODING	   => "",		// handle all encodings 
-			CURLOPT_USERAGENT	   => "spider", // who am i 
-			CURLOPT_AUTOREFERER	   => true,		// set referer on redirect 
-			CURLOPT_CONNECTTIMEOUT => 120,		// timeout on connect 
-			CURLOPT_TIMEOUT		   => 120,		// timeout on response 
-			CURLOPT_MAXREDIRS	   => 10,		// stop after 10 redirects 
-			CURLOPT_BINARYTRANSFER => true,
-		); 
-
-		$ch		 = curl_init( $url ); 
-		curl_setopt_array( $ch, $options ); 
-		$content = curl_exec( $ch ); 
-		$retVal = array();
-		$fields = explode("\r\n", preg_replace('/\x0D\x0A[\x09\x20]+/', ' ', $header));
-		foreach( $fields as $field ) {
-			if( preg_match('/([^:]+): (.+)/m', $field, $match) ) {
-				$match[1] = preg_replace('/(?<=^|[\x09\x20\x2D])./e', 'strtoupper("\0")', strtolower(trim($match[1])));
-				if( isset($retVal[$match[1]]) ) {
-					$retVal[$match[1]] = array($retVal[$match[1]], $match[2]);
-				} else {
-					$retVal[$match[1]] = trim($match[2]);
-				}
-			}
-		}
-
-		$err	 = curl_errno( $ch ); 
-		$errmsg	 = curl_error( $ch ); 
-		$header	 = curl_getinfo( $ch ); 
-		curl_close( $ch ); 
-
-		//$header['errno']	 = $err; 
-	   // $header['errmsg']	 = $errmsg; 
-		//$header['content'] = $content; 
-		//print($header[0]); 
-		return $retVal; 
 	}
 	
 	/**
