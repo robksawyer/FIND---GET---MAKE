@@ -61,15 +61,15 @@ function fgm_finder(){
 	this.selection = new Object();
 	this.needsCategory = true;
 	this.needsPrice = true;
-	this.base_url = REPLACE_BASE_URL;
+	this.base_url = "http://find-get-make.local/";
 	this.array_category = [
 		{"id":0,"label":"Accessory"},
 		{"id":1,"label":"Furniture"},
 		{"id":2,"label":"Lighting"},
 		{"id":3,"label":"Textile"},
-		{"id":4,"label":"Wallcovering"},
-		{"id":5,"label":"Rug"},
-		{"id":6,"label":"Art/Antique"},
+		{"id":4,"label":"Wallcovering or Finish"},
+		{"id":5,"label":"Rug or Mat"},
+		{"id":6,"label":"Art or Antique"},
 		{"id":7,"label":"Other"}
 	];
 	this.array_price = new Array("$1-20", "$20-50", "$50-100", "$100-200", "$200-500", "$500-5000", "$5000+");
@@ -83,7 +83,7 @@ function fgm_finder(){
 			this.build();
 			this.finder();
 
-			this.selection["public_key"] = REPLACE_PUBLIC_KEY;
+			this.selection["public_key"] = "fgmpk_";
 			this.selection["referringUrl"] = document.referrer;
 			this.selection["baseUrl"] = location.href; // document.baseURI;
 			this.selection["pageTitle"] = document.title;
@@ -109,30 +109,19 @@ function fgm_finder(){
 			overlay.id = "fgm_finder";
 			overlay.setAttribute("class", "fgm_finder");
 
-			var fgm_user = REPLACE_USERNAME;
+			var fgm_user = "";
 			fgm_user = (fgm_user) ? fgm_user : window['fgm_user'];
-			
+
 			var html = '<div class="fgm_finder_header">';
-					html += '<img width="386" height="33" src="'+this.base_url+'theme/default/img/logo_dark.jpg"/>';
+					html += '<img width="300" height="" src="'+this.base_url+'theme/default/img/logo.png"/>';
 					html += '<div onclick="fgm_finder.close(0)">CLOSE <span>X</span></div>';
 				html += '</div>';
-				html += '<br class="fgm_finder_clear" />';
 				html += '<div id="fgm_finder_flash" style="display:none;">';
 					html += '<div id="fgm_finder_flash_header">Added!</div>';
 					html += '<p><a href='+this.base_url+'"profile/'+fgm_user+'">Check it out on your profile.</a> (This window will close momentarily)</p>';
 				html += '</div>';
 				html += '<br class="fgm_finder_clear" />';
 				html += '<div class="separator"></div>';
-				//End Header
-				html += '<form id="fgm_bookmarklet_add_product" action="" name="fgm_add_product_form">';
-				html += '<div class="fgm_finder_option" id="fgm_finder_name">';
-					html += '<div class="fgm_finder_label">NAME <span>(REQUIRED)</span></div>';
-					html += '<input type="text" name="name" value="'+document.title+'" onclick="fgm_finder.selectInput(this);" onblur="fgm_finder.deselectInput(this);" />';
-					html += '<div class="extra">If the product isn\'t already in the system, this name will be used.</div>';
-				html += '</div>';
-				html += '<br class="fgm_finder_clear" />';
-				html += '<div class="separator"></div>';
-				//
 				html += '<div class="fgm_finder_option" id="fgm_finder_category">';
 					html += '<div class="fgm_finder_label">SELECT A CATEGORY <span>(REQUIRED)</span></div>';
 					html += '<div class="fgm_finder_selections">';
@@ -168,32 +157,15 @@ function fgm_finder(){
 				html += '</div>';
 				html += '<div class="separator"></div>';
 				html += '<div class="fgm_finder_option" id="fgm_finder_tags">';
-					html += '<input type="text" name="tags" onclick="fgm_finder.selectInput(this);" onblur="fgm_finder.deselectInput(this);"/>';
+					html += '<input type="text" name="data[Product][tags]" />';
 					html += '<div class="extra">Separate each keyword with a comma e.g., modern, red, furniture.</div>';
 				html += '</div>';
-				html += '<div class="submit"><input id="submit-btn" type="submit" value="ADD" style="display: none;"/></div>';
-				html += '</form>';
 				html += '</div>';
 
 			overlay.innerHTML = html;
 			document.getElementsByTagName("body")[0].appendChild(overlay);
 			document.getElementById("fgm_finder").style.display = "none";
-			//Handle form submission
-			document.fgm_add_product_form.onsubmit = function(){
-				fgm_finder.send();
-				return false;
-			}
 		}
-	};
-	
-	this.selectInput = function(item){
-		var dragable1 = dragHandler.detach(document.getElementById("fgm_finder"));
-		item.value = "";
-		item.focus();
-	};
-	
-	this.deselectInput = function(item){
-		var dragable1 = dragHandler.attach(document.getElementById("fgm_finder"));
 	};
 	
 	this.finder = function() {
@@ -236,7 +208,7 @@ function fgm_finder(){
 							left: left,
 							top: top
 						 })
-						 .html("<div id='fgm_finder_inner_" + self.id + "'>WANT IT</div>").appendTo('#fgm_finder_container');
+						 .html("<div id='fgm_finder_inner_" + self.id + "'>CLICK TO ADD</div>").appendTo('#fgm_finder_container');
 
 						 // append this internal counter
 						 self.id++;
@@ -315,9 +287,9 @@ function fgm_finder(){
 
 		for (var i = 0; i < this.array_category.length; i++) {
 			if (i == pId) {
-				document.getElementById("fgm_finder_cat_" + i).style.color = "#ef3f23";
+				document.getElementById("fgm_finder_cat_" + i).style.color = "#fff100";
 			} else {
-				document.getElementById("fgm_finder_cat_" + i).style.color = "#262626";
+				document.getElementById("fgm_finder_cat_" + i).style.color = "#fff";
 			}
 		}
 
@@ -335,9 +307,9 @@ function fgm_finder(){
 
 		for (var i = 0; i < this.array_price.length; i++) {
 			if (i == pId) {
-				document.getElementById("fgm_finder_price_" + i).style.color = "#ef3f23";
+				document.getElementById("fgm_finder_price_" + i).style.color = "#fff100";
 			} else {
-				document.getElementById("fgm_finder_price_" + i).style.color = "#262626";
+				document.getElementById("fgm_finder_price_" + i).style.color = "#fff";
 			}
 		}
 
@@ -346,8 +318,7 @@ function fgm_finder(){
 	
 	this.checkSend = function() {
 		if (!this.needsCategory && !this.needsPrice) {
-			document.getElementById("submit-btn").style.display = "block";
-			//this.send();
+			this.send();
 		}
 	};
 	
@@ -359,13 +330,8 @@ function fgm_finder(){
 		call += "p=" + encodeURIComponent(this.selection["price"]) + "&";
 		call += "i=" + encodeURIComponent(this.selection["image"]) + "&";
 		call += "r=" + encodeURIComponent(this.selection["baseUrl"]) + "&";
-		if(this.selection["pageTitle"] != document.fgm_add_product_form.elements['name'].value && document.fgm_add_product_form.elements['name'].value != ""){
-			call += "t=" + encodeURIComponent(document.fgm_add_product_form.elements['name'].value) + "&";
-		}else{
-			call += "t=" + encodeURIComponent(this.selection["pageTitle"]) + "&";
-		}
-		call += "l=" + encodeURIComponent(this.selection["referringUrl"]) + "&";
-		call += "g=" + encodeURIComponent(document.fgm_add_product_form.elements['tags'].value);
+		call += "t=" + encodeURIComponent(this.selection["pageTitle"]) + "&";
+		call += "l=" + encodeURIComponent(this.selection["referringUrl"]);
 
 		// check to see if the bookmarklet needs to communicate through an iframe
 		if(!window['fgm_needs_x_domain']){
@@ -406,7 +372,6 @@ function fgm_finder(){
 		if(pSuccess) {
 			document.getElementById("fgm_finder_price").style.display = "none";
 			document.getElementById("fgm_finder_category").style.display = "none";
-			document.getElementById("fgm_bookmarklet_add_product").style.display = "none"; //Hide the form
 			document.getElementById("fgm_finder_flash").style.display = "block";
 			var _self = this;
 			setTimeout(function(){_self.cleanup();}, 1500);
@@ -473,13 +438,6 @@ function fgm_finder(){
 			oElem.dragBegin = new Function();
 			oElem.drag = new Function();
 			oElem.dragEnd = new Function();
-			return oElem;
-		},
-		detach : function(oElem) {
-			oElem.onmousedown = undefined;
-			oElem.dragBegin = undefined;
-			oElem.drag = undefined;
-			oElem.dragEnd = undefined;
 			return oElem;
 		},
 		_dragBegin : function(e) {

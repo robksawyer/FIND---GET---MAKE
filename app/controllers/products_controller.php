@@ -92,7 +92,7 @@ class ProductsController extends AppController {
 	 * 
 	*/
 	public function bookmarklet_product_add($pk = null){
-		Configure::write('debug',0);
+		Configure::write('debug',2);
 		$this->autoRender = false;
 		$this->autoLayout = false;
 		//$this->layout = 'ajax';
@@ -102,15 +102,13 @@ class ProductsController extends AppController {
 			//Verify that the public key is a valid one.
 			$user = $this->Product->User->verifyPublicKey($pk);
 			if(!empty($user)){
-				
 				$categoryId = $this->params['url']['c'];
 				$priceKey = $this->params['url']['p'];
 				$image = $this->params['url']['i'];
 				$baseURL = $this->params['url']['r'];
 				$pageTitle = $this->params['url']['t'];
 				$referringUrl = $this->params['url']['l'];
-				
-
+				$tags = $this->params['url']['g'];
 				//debug($urlString);
 				/*Array
 				(
@@ -160,62 +158,72 @@ class ProductsController extends AppController {
 					}
 				}
 				
-				/*
-					TODO Parse pageTitle i.e., 'Amazon.com:' etc.
-				*/
-				$this->data['Product']['name'] = $pageTitle;
+				//Check to make sure that the product doesn't already exist
+				$productCheck = $this->Product->find('first',array('conditions'=>array('Product.purchase_url'=>$baseURL)));
 				
-				//this.array_price = new Array("$1-20", "$20-50", "$50-100", "$100-200", "$200-500", "$500-5000", "$5000+");
-				$priceValues = array("$1-20", "$20-50", "$50-100", "$100-200", "$200-500", "$500-5000", "$5000+"); 
-				$this->data['Product']['price'] = $priceValues[$priceKey];
-				/*
-				this.array_category = [
-					{"id":1,"label":"Accessory"},
-					{"id":5,"label":"Furniture"},
-					{"id":7,"label":"Lighting"},
-					{"id":15,"label":"Textile"},
-					{"id":16,"label":"Wallcovering or Finish"},
-					{"id":5,"label":"Rug or Mat"},
-					{"id":2,"label":"Art or Antique"},
-					{"id":43,"label":"Other"}
-				];
-				*/
-				$productCategoryValues = array(1,5,7,15,16,5,2,43); //Actual category values in the database
-				$this->data['Product']['product_category_id'] = $productCategoryValues[$categoryId];
-				$this->data['Product']['source_url'] = $baseSourceUrl;
-				$this->data['Product']['purchase_url'] = $baseURL;
-				$this->data['Product']['bookmarklet_add'] = 1; //Because it was added with the bookmarklet
-				$this->data['Product']['user_id'] = $user['User']['id'];
-				$this->data['Attachment']['url'] = $image;
-				
-				//Cleanup
-				if(!empty($this->data['Product']['source_url'])){
-					$this->data['Product']['source_url'] = $this->cleanURL($this->data['Product']['source_url']); //Clean the URL
-				}
-				if(!empty($this->data['Product']['purchase_url'])){
-					$this->data['Product']['purchase_url'] = $this->cleanURL($this->data['Product']['purchase_url']); //Clean the URL
-				}
-				$this->data['Product']['slug'] = $this->toSlug($this->data['Product']['name']);
+				//Don't add the product if it already exists
+				if(empty($productCheck)){
+					/*
+						TODO Parse pageTitle i.e., 'Amazon.com:' etc.
+					*/
+					$this->data['Product']['name'] = $pageTitle;
+					$this->data['Product']['tags'] = $tags;
+					//this.array_price = new Array("$1-20", "$20-50", "$50-100", "$100-200", "$200-500", "$500-5000", "$5000+");
+					$priceValues = array("$1-20", "$20-50", "$50-100", "$100-200", "$200-500", "$500-5000", "$5000+"); 
+					$this->data['Product']['price'] = $priceValues[$priceKey];
+					/*
+					this.array_category = [
+						{"id":1,"label":"Accessory"},
+						{"id":5,"label":"Furniture"},
+						{"id":7,"label":"Lighting"},
+						{"id":15,"label":"Textile"},
+						{"id":16,"label":"Wallcovering or Finish"},
+						{"id":5,"label":"Rug or Mat"},
+						{"id":2,"label":"Art or Antique"},
+						{"id":43,"label":"Other"}
+					];
+					*/
+					$productCategoryValues = array(1,5,7,15,16,5,2,43); //Actual category values in the database
+					$this->data['Product']['product_category_id'] = $productCategoryValues[$categoryId];
+					$this->data['Product']['source_url'] = $baseSourceUrl;
+					$this->data['Product']['purchase_url'] = $baseURL;
+					$this->data['Product']['bookmarklet_add'] = 1; //Because it was added with the bookmarklet
+					$this->data['Product']['user_id'] = $user['User']['id'];
+					$this->data['Attachment']['url'] = $image;
 
-				if(!empty($this->data['Attachment'])){
+					//Cleanup
+					if(!empty($this->data['Product']['source_url'])){
+						$this->data['Product']['source_url'] = $this->cleanURL($this->data['Product']['source_url']); //Clean the URL
+					}
+					if(!empty($this->data['Product']['purchase_url'])){
+						$this->data['Product']['purchase_url'] = $this->cleanURL($this->data['Product']['purchase_url']); //Clean the URL
+					}
+					$this->data['Product']['slug'] = $this->toSlug($this->data['Product']['name']);
 
-					$this->Product->create();
-					if ($this->Product->save($this->data)) {
-						
-						$id = $this->Product->getLastInsertID();
-						//Upload the attachments
-						$this->uploadAttachments('Product',$id);
-						
-						//Generate and create keycode
-						$this->generateKeycode($id,true);
-						return true;
-					} else {
-						CakeLog::write('error_events','BOOKMARKLET::There was an error adding the product named '.$pageTitle.' from '.$baseURL.'.');
+					if(!empty($this->data['Attachment'])){
+
+						$this->Product->create();
+						if ($this->Product->save($this->data)) {
+
+							$id = $this->Product->getLastInsertID();
+							//Upload the attachments
+							$this->uploadAttachments('Product',$id);
+
+							//Generate and create keycode
+							$this->generateKeycode($id,true);
+							return true;
+						} else {
+							CakeLog::write('error_events','BOOKMARKLET::There was an error adding the product named '.$pageTitle.' from '.$baseURL.'.');
+							return false;
+						}
+					}else{
 						return false;
 					}
 				}else{
-					return false;
+					//The product exists already add it to the user's stash
+					$this->Product->Ownership->setWant($user['User']['id'],'Product',$productCheck['Product']['id']);
 				}
+				
 			}
 		}
 	}

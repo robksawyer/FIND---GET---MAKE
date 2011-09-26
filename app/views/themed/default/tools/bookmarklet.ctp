@@ -188,14 +188,14 @@
 <div class="clear"></div>
 <div id="bookmarklet-generate-container">
 	<div class="extra">
-		<h1>"Get It" Browser Button</h1>
+		<h1>"Want It" Browser Button</h1>
 		<ul>
 			<li class="safari step" style="">1) In your browser, Safari, go to <strong>View</strong> and check <strong>Show Bookmarks Bar</strong></li>
 			<li class="chrome step" style="display: none;">1) In your browser, Chrome, go to <strong>View</strong> and check <strong>Always Show Bookmarks Bar</strong></li>
 			<li class="firefox step" style="display: none;">1) In your browser, Firefox, go to <strong>View</strong>, then select <strong>Toolbars</strong>, and check <strong>Bookmarks Toolbar</strong></li>
 			<li class="generic step" style="display: none;">1) In your browser, go to <strong>View</strong> and check <strong>Show Bookmarks Bar</strong></li>
-			<li class="step">2) Click and drag this button into your bookmarks bar: <a href="javascript:void((function(){var%20fgm=document.createElement('script');fgm.setAttribute('src','<?php echo $user_bookmarklet_path; ?>?<?php echo rand(1000,9999999); ?>');fgm.setAttribute('type','text/javascript');document.getElementsByTagName('head')[0].appendChild(fgm);})());" class="get_it">Get It</a></li>
-			<li class="step">3) Now, press the <strong>Get It</strong> whenever you see something you want.</li>
+			<li class="step">2) Click and drag this button into your bookmarks bar: <a href="javascript:void((function(){var%20fgm=document.createElement('script');fgm.setAttribute('src','<?php echo $user_bookmarklet_path; ?>?<?php echo rand(1000,9999999); ?>');fgm.setAttribute('type','text/javascript');document.getElementsByTagName('head')[0].appendChild(fgm);})());" class="get_it">Want It</a></li>
+			<li class="step">3) Now, press the <strong>Want It</strong> whenever you see something you want.</li>
 		</ul>
 		<span class="footnote">
 			

@@ -1,23 +1,114 @@
-div.fgm_finder *{border:0;font-family:inherit;font-size:100%;line-height:100%;font-style:inherit;font-weight:inherit;margin:0;outline:0;padding:0;vertical-align:baseline;list-style:none ;text-transform:none;}
-div.fgm_finder{background:#000;font-family:Arial,sans-serif;padding:30px;position:absolute;width:550px;z-index:5000001;}
+div.fgm_finder *{
+	border:0;
+	font-family:inherit;
+	font-size:100%;
+	line-height:100%;
+	font-style:inherit;
+	font-weight:inherit;
+	margin:0;outline:0;padding:0;
+	vertical-align:baseline;
+	list-style:none ;
+	text-transform:none;
+}
+div.fgm_finder{
+	background:#ffffff;
+	border-top: 17px solid #000000;
+	border-bottom: 17px solid #000000;
+	font-family:Arial,sans-serif;
+	padding:30px;
+	position:absolute;
+	width:695px;
+	color: #262626;
+	z-index:5000001;
+	-moz-box-shadow: 0 0 25px #888;
+	-webkit-box-shadow: 0 0 25px #888;
+	box-shadow: 0 0 25px #888;
+	/* For IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
+	/* For IE 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+}
 div.fgm_finder br.fgm_finder_clear{clear:both;margin:0;padding:0;}
 div.fgm_finder div.separator{background:#d3d3d3;height:1px;margin:20px 0;}
 div.fgm_finder div.fgm_finder_header img{float:left;}
-div.fgm_finder div.fgm_finder_header div{color:#777;cursor:pointer;float:right;font-size:11px;text-align:left;}
-div.fgm_finder div.fgm_finder_header div:hover{color:#999;} 
+div.fgm_finder div.fgm_finder_header div{color:#777777;cursor:pointer;float:right;font-size:11px;font-weight: bold;text-align:left;}
+div.fgm_finder div.fgm_finder_header div:hover{color:#999999;} 
 div.fgm_finder div.fgm_finder_header div span{color:#d3d3d3;}
-div.fgm_finder div.fgm_finder_option div.fgm_finder_label{color:#d3d3d3;font-size:11px;font-weight:bold;text-align:left;text-transform:uppercase;}
-div.fgm_finder div.fgm_finder_option div.fgm_finder_label span{color:#fff100;font-weight:bold;text-transform:uppercase;}
-div.fgm_finder div.fgm_finder_option div.fgm_finder_selections{font-size:16px;padding-top:10px;}
-div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul{list-style-type:none;margin:0;padding:0;color:#fff;}
-div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul li{cursor:pointer;float:left;margin:0 0 0 20px;}
-div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul li:hover{color:#858585 ;}
+div.fgm_finder div.fgm_finder_option div.fgm_finder_label{
+	padding-bottom:7px;
+	color:#777777;
+	font-size:11px;
+	font-weight:bold;
+	text-align:left;
+	text-transform:uppercase;
+}
+div.fgm_finder div.fgm_finder_option div.fgm_finder_label span{color:#ef3f23;font-weight:bold;text-transform:uppercase;}
+div.fgm_finder div.fgm_finder_option div.fgm_finder_selections{font-size:16px;font-weight: bold;padding-top:10px;text-align: left;}
+div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul{list-style-type:none;margin:0;padding:0;color:#262626;}
+div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul li{cursor:pointer;display:inline;margin:0 0 0 10px;}
+div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul li:hover{color:#ef3f23 ;}
 div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul li.fgm_finder_first{margin:0;}
-div#fgm_finder_container div.fgm_finder_overlay{border:10px solid #ede500;cursor:pointer;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;padding:10px;position:absolute;z-index:5000000;}
-div#fgm_finder_container div.fgm_finder_overlay div{background:#ede500;color:#000;padding:10px;text-align:center;}
-div#fgm_finder_container div.fgm_finder_overlay:hover{border:10px solid #f6ff00;}
-div#fgm_finder_container div.fgm_finder_overlay div:hover{background:#f6ff00;}
-#fgm_finder_flash{display:none;margin-top:20px;margin-bottom:10px;color:#fff;border-top:1px solid white;text-align:left;}
-#fgm_finder_flash_header{font-size:60px;color:#fff100;font-weight:bold;padding-top:20px;padding-bottom:2px;}
+div.fgm_finder div.fgm_finder_option div.extra{ color: #777777;}
+div#fgm_finder_container div.fgm_finder_overlay{
+	border:10px dashed #ef3f23;
+	cursor:pointer;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:16px;
+	font-weight:bold;
+	padding:10px;
+	position:absolute;
+	z-index:5000000;
+}
+div#fgm_finder_container div.fgm_finder_overlay div{
+	background:#ef3f23;
+	color:#000;
+	padding:10px;
+	text-align:center;
+}
+div#fgm_finder_container div.fgm_finder_overlay:hover{border:10px dashed #f8492d;}
+div#fgm_finder_container div.fgm_finder_overlay div:hover{background:#f8492d;}
+#fgm_finder_flash{display:none;margin-top:20px;margin-bottom:10px;color:#262626;border-top:1px solid #d3d3d3;text-align:left;}
+#fgm_finder_flash_header{font-size:60px;color:#262626;font-weight:bold;padding-top:20px;padding-bottom:2px;}
 #fgm_finder_flash p{color:#6b6b6b;font-size:11px;margin-top:0px;}
-#fgm_finder_flash a{color:#fff100;cursor:pointer;text-decoration:underline;}
+#fgm_finder_flash a{color:#262626;cursor:pointer;text-decoration:underline;}
+
+div.fgm_finder div.fgm_finder_option input, 
+div.fgm_finder div.fgm_finder_option textarea {
+	position: relative;
+	padding: 9px;
+	border: solid 1px #E5E5E5;
+	margin: 0 0 10px 0;
+	outline: 0;
+	font: normal 13px/100% Verdana, Tahoma, sans-serif;
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top, #ffffff 0%, #f7f7f7 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f7f7f7)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #ffffff 0%,#f7f7f7 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #ffffff 0%,#f7f7f7 100%); /* Opera11.10+ */
+	background: -ms-linear-gradient(top, #ffffff 0%,#f7f7f7 100%); /* IE10+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f7f7f7',GradientType=0 ); /* IE6-9 */
+	background: linear-gradient(top, #ffffff 0%,#f7f7f7 100%); /* W3C */
+	z-index:5000003;
+}
+div.fgm_finder div.fgm_finder_option input:hover, 
+div.fgm_finder div.fgm_finder_option textarea:hover,
+div.fgm_finder div.fgm_finder_option input:focus, 
+div.fgm_finder div.fgm_finder_option textarea:focus {
+	border-color: #C9C9C9;
+}
+div.fgm_finder .submit{
+	text-align: right;
+}
+div.fgm_finder input[type="submit"]{
+	background: #000000 !important;
+	color: #ffffff !important;
+	margin: 5px;
+	border-radius: 0 !important;
+	-moz-border-radius: 0 !important;
+	-webkit-border-radius: 0 !important;
+}
+div.fgm_finder input[type="submit"]:hover{
+	background: #262626 !important;
+	color: #ffffff !important;
+	cursor: pointer;
+}

@@ -338,7 +338,7 @@ class UsersController extends AppController {
 																				)
 																			)
 																		)
-																	));
+																	);
 			}else{
 				$results['error'] = $twitter_friend_ids['error'];
 			}

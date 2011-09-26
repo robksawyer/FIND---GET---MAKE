@@ -43,6 +43,9 @@ class ToolsController extends AppController {
 	*/
 	public function generateUserBookmarklet(){
 		$user = $this->Auth->user();
+		if(empty($user)){
+			$this->redirect($this->Auth->loginAction);
+		}
 		if(empty($user['User']['public_key'])){
 			$user['User']['public_key'] = $this->User->generateAndSavePublicKey($user);
 		}

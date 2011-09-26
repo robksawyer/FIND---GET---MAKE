@@ -279,6 +279,85 @@ class Ownership extends AppModel {
 	}
 	
 	/**
+	 * Sets the ownership status of an item to want
+	 * @param int user_id
+	 * @param string model 
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	public function setWant($user_id=null,$model=null,$model_id=null){
+		Configure::write('debug', 2);
+		$type="want_it";
+		$type_niceName = "want";
+		$controller = Inflector::pluralize(strtolower($model));
+		$data = $this->getFirst($user_id,$model,$model_id);
+		//Make sure the user only has one want it, had it, or have it.
+		if(!empty($data)){
+			//Update an existing ownership for this user
+			$this->read(null,$data['Ownership']['id']);
+			
+			foreach($ownership_types as $ownership_type){
+				if($type == $ownership_type){
+					$this->set(array(
+									'name' => $controller,
+									'model' => $model,
+									'model_id' => $model_id,
+									$ownership_type => 1
+									)
+								);
+				}else{
+					$this->set(array(
+									$ownership_type => 0
+									)
+								);
+				}
+			}
+			
+			if($this->save()){
+				//The save was successful
+				
+				//Send a notification email
+				//$this->send_email_on_product_have_want($model_id,$type_niceName);
+				
+			}else{
+				return;
+			}
+
+		}else{
+			//Create a new ownership for this user
+			$this->create();
+			$this->set(array(
+							'user_id' => $user_id,
+							'model' => $model,
+							'model_id' => $model_id,
+							'name' => $controller
+							)
+						);
+			
+			$this->set($type, 1);
+			
+			if($this->save()){
+				//The save was successful
+				
+				//Send a notification email
+				//$this->send_email_on_product_have_want($model_id,$type_niceName);
+				
+			}else{
+				return;
+			}
+		}
+		
+		if(!empty($data['Ownership']['id'])){
+			$last = $this->read(null,$data['Ownership']['id']);
+		}else{
+			$last = $this->read(null,$this->getLastInsertID());
+		}
+		$this->Feed->addFeedData('Ownership',$last);
+		return;
+	}
+	
+	/**
 	 * Parses the user id from the Ownership table and returns more of the user's info
 	 * @param data
 	 * @return userData
