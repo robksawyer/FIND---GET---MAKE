@@ -51,6 +51,7 @@ class Vote extends AppModel {
 							'order' => ''
 						)
 						);
+						
 	var $hasMany = array(
 		'Feed' => array(
 			'className' => 'Feed',

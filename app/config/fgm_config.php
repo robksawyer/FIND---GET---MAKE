@@ -34,8 +34,23 @@
 */
 	$config['FGM']['allow_rating'] = 0;
 
+/**
+ * Allow users to like items.
+ * 0: Hide the like component globally
+ * 1: Show the like component globally
+ * 
+*/
+	$config['FGM']['allow_likes'] = 0;
 
-		
+/**
+ * Allow users to set the ownership of items.
+ * 0: Hide the ownership component globally
+ * 1: Show the ownership component globally
+ * 
+*/
+	$config['FGM']['allow_ownerships'] = 0;
+	
+	
 /**
  * Allows users to flag items.
  * 
@@ -71,7 +86,7 @@
  * Allows users to post anonymous comments
  * 
 */
-	$config['FGM']['allow_anonymous_comments'] = 1;		
+	$config['FGM']['allow_anonymous_comments'] = 0;
 
 /**
  * 

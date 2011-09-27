@@ -1,4 +1,7 @@
 <?php
+
+if(Configure::read('FGM.likes') == 1):
+
 	//Count the likes and dislikes
 	$likes = $this->requestAction('/votes/getLikes/'.$model.'/'.$model_id);
 	$dislikes = $this->requestAction('/votes/getDislikes/'.$model.'/'.$model_id);
@@ -127,4 +130,6 @@
 <?php 
 	echo $this->Html->script('elements/like-dislike');
 	echo $this->Js->writeBuffer();
+	
+endif; //Make sure likes are enabled
 ?>

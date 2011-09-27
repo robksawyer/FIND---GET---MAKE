@@ -317,6 +317,70 @@ class Product extends AppModel {
 		return $products;
 	}
 	
+	/**
+	 * Find other products that the user may like
+	 * @param int user_id The user id that added the product
+	 * @param int product_id The product id to ignore
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	function getOtherProductsForUser($user_id=null,$product_id=null,$limit=6){
+		//Search for products added by a couple of user followers
+		$userFollowingList = $this->User->UserFollowing->getFollowerList($user_id,25);
+		$products = $this->find('all',array(
+											'conditions'=>array(
+													'Product.user_id'=>$userFollowingList,
+													'NOT'=>array(
+														'Product.id'=>$product_id,
+													)
+													
+												),
+											'limit'=>$limit,
+											'order' => array('Product.created DESC'),
+											'recursive'=>1,
+											'contain'=>array('Attachment','Source','User')
+											)
+										);
+		/*if(!empty($products)){
+			if(count($products) < $limit){
+				
+			}else{
+				
+			}
+		}else{
+			
+		
+		}*/
+		return $products;
+	}
+	
+	/**
+	 * Get the products related to a source
+	 * @param int model_id The model id to target
+	 * @param int product_id We don't want to pull the same product
+	 * @param int limit The number to return
+	 * @return 
+	 * 
+	*/
+	function getProductsFromSource($model_id=null,$product_id=null,$limit=3){
+		$products = $this->find('all',array(
+											'conditions'=>array(
+													'Product.source_id'=>$model_id,
+													'NOT'=>array(
+														'Product.id'=>$product_id,
+													)
+													
+												),
+											'limit'=>$limit,
+											'order' => array('Product.created DESC'),
+											'recursive'=>1,
+											'contain'=>array('Attachment','Source','User')
+											)
+										);
+		return $products;
+	}
+	
 	/** 
 	 * Returns all of the product categories in the system
 	 * @param 

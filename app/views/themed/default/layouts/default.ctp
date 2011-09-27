@@ -41,21 +41,20 @@
 				echo $this->Html->css('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/base/jquery-ui.css')."\n";
 			}
 			
-			echo $this->Html->css('cake.generic')."\n";
-			echo $this->Html->css('basic')."\n";
-			echo $this->Html->css('elements/nav')."\n";
+			//echo $this->Html->css('cake.generic')."\n";
+			echo $this->Html->css('screen')."\n";
+			//echo $this->Html->css('basic')."\n";
+			//echo $this->Html->css('elements/nav')."\n";
 			//Chosen Select Boxes (http://harvesthq.github.com/chosen/)
 			echo $this->Html->css('chosen/chosen')."\n";
 			//Used for the autocomplete tags element
 			//echo $this->Html->css('jquery.autocomplete');
-			echo $this->Html->css('auto-complete')."\n";
-			
+			echo $this->Html->css('auto-complete')."\n";	
 			echo $this->Html->css('jquery.tablescroll')."\n";
 			echo $this->Html->css('/rating/css/rating')."\n";
 			
 			//Cupcake Forum
 			echo $this->Html->css('forum/style.css')."\n";
-			
 			
 			//Modal windows
 			echo $this->Html->css('modal/basic')."\n";
@@ -63,7 +62,8 @@
 			echo '<!--[if lt IE 7]>'."\n";
 			echo $this->Html->css('modal/basic_ie')."\n";
 			echo '<![endif]-->';
-			
+		?>
+		<?php
 			if(Configure::read('FGM.local') == true){
 				echo $this->Html->script('jquery-1.4.1.min')."\n";
 				echo $this->Html->script('jquery-ui/jquery-ui-1.8.2.custom.min')."\n";
@@ -132,32 +132,26 @@
 	<body>
 		<!-- This is for the popup plugin -->
 		<div id="popups" style="z-index: 1000;"></div>
-		<div id="container">
-			<div id="header">
-				<?php 
-					if(!empty($authUser)){
-						if($authUser['User']['group_id'] == 1){
-							echo $this->element('admin-nav',array('cache'=>false));
-						}else if($authUser['User']['group_id'] == 2){
-							echo $this->element('manager-nav',array('cache'=>false));
+		<div id="wrapper_extra">
+			<div id="wrapper">
+				<div id="header">
+					<!-- Navigation -->
+					<?php echo $this->element('nav', array('cache' => false)); ?>
+					<!-- End Navigation -->
+					<?php 
+						if(!empty($authUser)){
+							if($authUser['User']['group_id'] == 1){
+								echo $this->element('nav-admin',array('cache'=>false));
+							}else if($authUser['User']['group_id'] == 2){
+								echo $this->element('nav-manager',array('cache'=>false));
+							}else{
+								echo $this->element('nav-user',array('cache'=>false));
+							}
 						}else{
-							echo $this->element('user-nav',array('cache'=>false));
+							echo $this->element('nav-user',array('cache'=>false));
 						}
-					}else{
-						echo $this->element('user-nav',array('cache'=>false));
-					}
-					
-				?>
-				<div id="logo-container">
-					<div class="app-name"><?php echo $this->Html->image('/img/logo.png',array('alt'=>'FIND | GET | MAKE','url'=>'/','style'=>'position: relative; float: none; margin: 0px 0px 2px 0px; padding: 0px;','title'=>'FIND | GET | MAKE')); ?></div>
+					?>
 				</div>
-				<div class="clear"></div>
-			
-				<!-- Navigation -->
-				<?php echo $this->element('nav', array('cache' => false)); ?>
-				<!-- End Navigation -->
-			</div>
-			<div id="content">
 				<?php
 					if ($this->params['action'] == 'display' || $this->params['action'] == 'moderate') {
 						//The challenge was here.
@@ -171,7 +165,6 @@
 				<?php echo $this->Session->flash(); ?>
 				<?php echo $this->Session->flash('email'); ?>
 				<?php echo $content_for_layout;?>
-
 			</div>
 			<div id="footer">
 				<h3>FIND | GET | MAKE is an intricate, multi-layered database for all the resources you could ever want to use in an interior decor project.</h3>
@@ -184,7 +177,7 @@
 			<div id="sub-footer">
 			<?php echo $this->Facebook->like(); ?>
 			</div>
-		</div>
+		</div><!-- close div#wrapper_extra -->
 		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
 	</body>
 	<?php echo $this->Facebook->init(); ?>

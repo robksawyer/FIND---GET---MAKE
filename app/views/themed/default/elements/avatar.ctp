@@ -1,71 +1,69 @@
 <style type="text/css">
 	<?php 
-	if(empty($height)){
-		$height = 32;
-	}
+		if(empty($height)){ $height = 32; $width = height; } else { $width = $height; }
+		$unique_id = uniqid('avatar-'.$height.'-');
 	?>
-	.avatar {
-		position: relative;
-		margin-right: 3px;
-		width: auto;
-		vertical-align: baseline;
-	}
-	.avatar img{
-		width: auto;
-		height: <?php echo $height; ?>px;
-		vertical-align: baseline;
-		display: inline-block;
-	}
+	#<?php echo $unique_id;?> img{ width: <?php echo $height; ?>px; height: <?php echo $height; ?>px; }
 </style>
 <?php
 	//If the avatar isn't passed along, try to get it.
 	if(empty($avatar)) $avatar = $this->requestAction('/users/getAvatar/'.$user['User']['id']);
 ?>
+<div id='<?php echo $unique_id; ?>' class="avatar">
 <?php
 if(empty($avatar['Attachment']['path_small'])){
 	// Gravatar
 	if ($this->Cupcake->settings['enable_gravatar'] == 1) {
 		if ($avatar = $this->Cupcake->gravatar($user['User']['email'])) {
-			echo "<div class='avatar'>";
-			echo $this->Html->link($avatar,array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$user['User']['username']),array('title'=>$user['User']['username'],'escape'=>false));
+			echo $this->Html->link($avatar,
+				array('admin'=>false,
+						'plugin'=>'',
+						'controller'=>'users',
+						'action'=>'profile',$user['User']['username']),
+				array(
+					'title'=>$user['User']['username'],
+					'height'=>$height,
+					'width'=>$width,
+					'escape'=>false
+				));
 			if(!empty($follow)){
 				if($follow == true){
 					echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$user['User']['id']));
 				}
 			}
-			echo "</div>";
 		}else{
-			echo "<div class='avatar'>";
 			echo $this->Html->image('no_gravatar.jpg',array(
 																		'url'=>array('admin'=>false,'plugin'=>'','controller'=>'users',
 																							'action'=>'profile',$user['User']['username']
 																							),
-																		'title'=>$user['User']['username']
+																		'title'=>$user['User']['username'],
+																		'alt'=>'',
+																		'height'=>$height,
+																		'width'=>$width
 																	));
 			if(!empty($follow)){
 				if($follow == true){
 					echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$user['User']['id']));
 				}
-			} 
-			echo "</div>";
+			}
 		} 
 	}
 }else{
 	//Show the local avatar
-	echo "<div class='avatar'>";
 	echo $this->Html->image($avatar['Attachment']['path_small'],array(
-																							'alt'=>'Avatar image',
+																							'alt'=>'',
 																							'url'=>array('admin'=>false,'plugin'=>'','controller'=>'users',
 																												'action'=>'profile',$user['User']['username']
 																												),
 																							'title'=>$user['User']['username'],
-																							'height'=>$height
+																							'height'=>$height,
+																							'width'=>$width
 																							));
 	if(!empty($follow)){
 		if($follow == true){
 			echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$user['User']['id']));
 		}
 	}
-	echo "</div>";
 }
 ?>
+</div>

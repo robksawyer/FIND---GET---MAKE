@@ -73,6 +73,23 @@ class UserFollowing extends AppModel {
 	}
 	
 	/**
+	 * Find the users that a certain user is following
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function getFollowingList($user_id=null,$limit=10){
+		$users_following = $this->find('list',array('conditions'=>array(
+													'UserFollowing.user_id'=>$user_id
+													),
+													'fields'=>array('UserFollowing.follow_user_id'),
+													'limit'=>$limit
+													));
+		$users_following = array_values($users_following);
+		return $users_following;
+	}
+	
+	/**
 	 * Find the users following the passed user
 	 * @param int user_id
 	 * @return array users_following The users following the user
@@ -91,6 +108,23 @@ class UserFollowing extends AppModel {
 													'limit'=>$limit
 													));
 		return $followers;
+	}
+	
+	/**
+	 * Find the users that a certain user is following
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function getFollowerList($user_id=null,$limit=10){
+		$users_following = $this->find('list',array('conditions'=>array(
+													'UserFollowing.user_id'=>$user_id
+													),
+													'fields'=>array('UserFollowing.follow_user_id'),
+													'limit'=>$limit
+													));
+		$users_following = array_values($users_following);
+		return $users_following;
 	}
 	
 	/**

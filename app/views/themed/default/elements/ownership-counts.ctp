@@ -8,6 +8,7 @@
 	 * @return 
 	 * 
 	*/
+if(Configure::read('FGM.ownerships') == 1):
 	$haveuser_count = $this->requestAction('/ownerships/getHaveCount/'.$model.'/'.$model_id);
 	//debug($haveuser_count);
 	$wantuser_count = $this->requestAction('/ownerships/getWantCount/'.$model.'/'.$model_id);
@@ -47,3 +48,6 @@
 	</ul>
 </div>
 <div class="clear"></div>
+<?php
+endif;
+?>

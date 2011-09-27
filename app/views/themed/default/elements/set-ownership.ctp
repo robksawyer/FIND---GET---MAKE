@@ -8,7 +8,8 @@
 	 * @return 
 	 * 
 	*/
-	
+if(Configure::read('FGM.ownerships') == 1):
+
 	$testing = false;
 	$ownership_type = $this->requestAction('/ownerships/getType/'.$user_id.'/'.$model.'/'.$model_id);
 	echo $this->Html->css('elements/ownerships');
@@ -87,4 +88,7 @@
 </div>
 <div class="debug-data"></div>
 <div class="clear"></div>
-<?php echo $this->Html->script('elements/ownership',array('inline'=>false)); ?>
+<?php 
+	echo $this->Html->script('elements/ownership',array('inline'=>false)); 
+endif;
+?>

@@ -1,3 +1,4 @@
+<?php if(Configure::read('FGM.ownerships') == 1): ?>
 <div class="ownership-item">
 	<?php echo $this->element('avatar',array('cache'=>false,'user'=>$user,'height'=>82,'follow'=>true)); ?>
 	<ul class="ownership-details">
@@ -14,3 +15,4 @@
 	</ul>
 	<div class="clear"></div>
 </div>
+<?php endif; ?>
