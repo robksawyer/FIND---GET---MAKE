@@ -116,11 +116,12 @@
 			?>
 		</div>
 		<?php	endif; ?>
-		<?php if(!empty($product['User'])): ?>
+		<?php if(!empty($usersStoring)): ?>
 		<div class="mdash">&mdash;</div>
 		<div id="user_items_block" class="inner_block">
-			<h4>This product was added by <?php echo count($product['User']); ?> members</h4>
+			<h4>This product was added by <?php echo count($usersStoring); ?> members</h4>
 			<?php
+				debug($usersStoring);
 				//Check to see how many users have this in their storage (holds)
 				//echo $this->element('related-products-grid-block',array('cache'=>false,'items'=>$otherProducts));
 			?>

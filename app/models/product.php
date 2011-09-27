@@ -117,6 +117,13 @@ class Product extends AppModel {
 			'conditions' => array('StaffFavorite.model' => 'Product'),
 			'dependent' => true,
 			'exclusive' => true
+		),
+		'Storage' => array(
+			'className' => 'Storage',
+			'foreignKey' => 'model_id',
+			'conditions' => array('Storage.model' => 'Product'),
+			'dependent' => true,
+			'exclusive' => true
 		)
 	);
 
@@ -350,7 +357,6 @@ class Product extends AppModel {
 			}
 		}else{
 			
-		
 		}*/
 		return $products;
 	}

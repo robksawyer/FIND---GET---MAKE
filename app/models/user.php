@@ -98,15 +98,7 @@ class User extends AppModel {
 		'Collection' => array(
 			'className' => 'Collection',
 			'foreignKey' => 'user_id',
-			'dependent' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => true
 		),
 		'Client' => array(
 			'className' => 'Client',
@@ -208,6 +200,12 @@ class User extends AppModel {
 		),
 		'StaffFavorite' => array(
 			'className' => 'StaffFavorite',
+			'foreignKey' => 'user_id',
+			'dependent' => true,
+			'exclusive' => true
+		),
+		'Storage' => array(
+			'className' => 'Storage',
 			'foreignKey' => 'user_id',
 			'dependent' => true,
 			'exclusive' => true

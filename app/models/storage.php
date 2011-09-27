@@ -22,9 +22,9 @@ class Storage extends AppModel {
 	
 	var $hasMany = array(
 		'Feed' => array(
-			'className' => 'Feed',
+			'className' => 'Storage',
 			'foreignKey' => 'model_id',
-			'conditions' => array('Feed.model' => 'Vote'),
+			'conditions' => array('Feed.model' => 'Storage'),
 			'dependent' => true,
 			'exclusive' => true
 		)
@@ -59,5 +59,36 @@ class Storage extends AppModel {
 		$this->User->recursive = -1;
 		$data = $this->read(null,$model_id);
 		return $data;
+	}
+	
+	/**
+	 * Returns the user's storing a certain item.
+	 * @param int user_id 
+	 * @param int model_id the id of the item to target
+	 * @param string model the item type to target
+	 * @return 
+	 * 
+	*/
+	public function getUsersStoring($user_id,$model_id,$model="Product",$limit=50){
+		$this->recursive = -1;
+		$users = $this->find('all',array('conditions'=>array(
+												'AND'=>array(
+													array("Storage.id" => $model_id),
+													array("Storage.model" => $model)
+												),
+												'NOT'=>array(
+													array("Storage.user_id" => $user_id)
+												)
+											),
+											'limit'=>$limit,
+											'contain'=>array(
+												'Product'=>array('Attachment',
+																'order' => 'Product.id DESC',
+																'limit'=>3
+																)
+											)
+										));
+		
+		return $users;
 	}
 }

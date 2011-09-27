@@ -74,6 +74,13 @@ class Feed extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'Storage' => array(
+			'className' => 'Storage',
+			'foreignKey' => 'model_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 	

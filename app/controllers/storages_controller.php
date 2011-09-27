@@ -4,6 +4,7 @@ class StoragesController extends AppController {
 	var $name = 'Storages';
 	
 	var $components = array('Email');
+	
 	/**
 	 * 
 	 * @param 
@@ -14,10 +15,10 @@ class StoragesController extends AppController {
 		parent::beforeFilter();
 		
 		//Make certain pages public
-		//$this->Auth->allowedActions = array('');
+		$this->Auth->allowedActions = array('ajax_toggle');
 											
 		//$this->Auth->allow('getLikes','getDislikes','getUserLikes','getUserDislikes');
-		//$this->AjaxHandler->handle('ajax_vote_up','ajax_vote_down','ajax_remove_vote');
+		$this->AjaxHandler->handle('ajax_toggle');
 		
 		/* SMTP Options */
 		$this->Email->smtpOptions = array(
@@ -45,7 +46,7 @@ class StoragesController extends AppController {
 	 * @return 
 	 * 
 	*/
-	public function toggle($model="Product",$model_id){
+	public function ajax_toggle($model="Product",$model_id){
 		$this->Storage->recursive = -1;
 		Configure::write('debug', 0);
 

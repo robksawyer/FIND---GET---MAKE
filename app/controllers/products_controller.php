@@ -351,7 +351,8 @@ class ProductsController extends AppController {
 		
 		$relatedProducts = $this->Product->getProductsFromSource($product['Product']['source_id'],$product['Product']['id'],3); //Find three other products from the source
 		$otherProducts = $this->Product->getOtherProductsForUser($product['Product']['user_id'],$product['Product']['id'],6);
-		$this->set(compact('relatedProducts','otherProducts'));
+		$usersStoring = $this->Product->Storage->getUsersStoring($product['Product']['user_id'],$product['Product']['id'],'Product',50);
+		$this->set(compact('relatedProducts','otherProducts','usersStoring'));
 		/*$products = $this->Product->getAll();
 		$productList = $this->Product->getList();
 		$this->set('products','productList');*/
