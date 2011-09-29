@@ -23,6 +23,27 @@
 				</div>
 			<?php endif; ?>
 		</div>
+		<?php
+			//Check to see if the item is in the user's storage already
+			if(!empty($authUser)):
+				if($authUser['Storage']['model'] == "Product" && $authUser['Storage']['model_id'] == $product['Product']['id']){
+					$dot_class = 'storage-dot-remove';
+				}else{
+					$dot_class = 'storage-dot-add';
+				}
+		?>
+			<div id="storage-dot" class="<?php echo $dot_class; ?>">
+				<?php 
+					echo $this->Html->link('Add', '/ajax/toggle/Product/'.$product['Product']['id'],array('title'=>'Add this product to your storage.')); 
+				?>
+				<span></span>
+			</div>
+		<?php
+			else:
+				//The user isn't logged in
+			
+			endif;
+		?>
 	</div>
 	<div id="block_2">
 		<h3 class="header">

@@ -48,7 +48,7 @@ class StoragesController extends AppController {
 	*/
 	public function ajax_toggle($model="Product",$model_id){
 		$this->Storage->recursive = -1;
-		Configure::write('debug', 0);
+		Configure::write('debug', 2);
 
 		if($this->RequestHandler->isAjax()) {
 			$this->autoLayout = false;
@@ -63,10 +63,28 @@ class StoragesController extends AppController {
 				$this->redirect(array('controller'=>'users','action' => 'login'));
 			}
 			
-			if($this->Storage->save()){
-				$this->AjaxHandler->response(true, array());
+			//Check to see if the item is already being stored. If it is, remove it, otherwise add it.
+			$storageCheck = $this->Storage->getItem($model,$model_id);
+			if(!empty($storageCheck)){
+				//Remove the item
+				if($this->Storage->delete($storageCheck['Storage']['id'])){
+					//Delete successful
+				}else{
+					$this->AjaxHandler->response(false, 'There was a problem adding this item to your storage. Please, try again.', 0);
+				}
 			}else{
-				$this->AjaxHandler->response(false, 'There was a problem adding this item to your storage. Please, try again.', 0);
+				//Add the item
+				$this->data['Storage']['model'] = $model;
+				$this->data['Storage']['model_id'] = $model_id;
+				$this->data['Storage']['user_id'] = $user_id;
+				$this->data['Storage']['name'] = Inflector::pluralize(strtolower($model));
+				$this->Storage->create();
+				if($this->Storage->save($this->data)){
+					//Save successful
+					$this->AjaxHandler->response(true, $this->data);
+				}else{
+					$this->AjaxHandler->response(false, 'There was a problem adding this item to your storage. Please, try again.', 0);
+				}
 			}
 		}
 		

@@ -20,7 +20,7 @@ class Storage extends AppModel {
 		)
 	);
 	
-	var $hasMany = array(
+	/*var $hasMany = array(
 		'Feed' => array(
 			'className' => 'Storage',
 			'foreignKey' => 'model_id',
@@ -28,7 +28,7 @@ class Storage extends AppModel {
 			'dependent' => true,
 			'exclusive' => true
 		)
-	);
+	);*/
 	
 	
 	/**
@@ -38,7 +38,7 @@ class Storage extends AppModel {
 	 * 
 	*/
 	public function updateFeed($id=null){
-		$this->recursive = 1;
+		$this->recursive = -1;
 		if($id){			
 			$last = $this->read(null,$id);
 			if(!empty($last['Storage']['user_id'])){
@@ -59,6 +59,26 @@ class Storage extends AppModel {
 		$this->User->recursive = -1;
 		$data = $this->read(null,$model_id);
 		return $data;
+	}
+	
+	/**
+	 * Returns the item details that was stored
+	 * @param string model
+	 * @param int model_id
+	 * @return array
+	 * 
+	*/
+	public function getItem($model="Product",$model_id){
+		$stored_item = $this->find('first',array('conditions'=>array(
+																	'AND'=>array(
+																		array('Storage.model'=>$model),
+																		array('Storage.model_id'=>$model_id)
+																	)
+																),
+												'contain'=>array($model)
+												)
+											);
+		return $stored_item;
 	}
 	
 	/**
