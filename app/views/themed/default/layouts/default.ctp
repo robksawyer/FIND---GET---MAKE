@@ -51,7 +51,6 @@
 			//echo $this->Html->css('jquery.autocomplete');
 			echo $this->Html->css('auto-complete')."\n";	
 			echo $this->Html->css('jquery.tablescroll')."\n";
-			echo $this->Html->css('/rating/css/rating')."\n";
 			
 			//Cupcake Forum
 			echo $this->Html->css('forum/style.css')."\n";
@@ -88,9 +87,8 @@
 			echo $this->Html->script('init-history')."\n";
 			//END AJAX Deeplinking
 			
-			echo $this->Html->script('elements/nav')."\n";
-			echo $this->Html->script('common')."\n"; //Common helper scripts
-			if(Configure::read('FGM.allow_rating') == 1) echo $this->Html->script('/rating/js/rating_jquery_min')."\n";
+			echo $this->Html->script('fgm_api')."\n";
+			echo $this->Html->script('utils')."\n"; //Common helper scripts
 			echo $this->Html->script('jquery.form')."\n";
 			echo $this->Html->script('jquery.autocomplete.min')."\n";
 			echo $this->Html->script('jquery.jeditable.mini')."\n";

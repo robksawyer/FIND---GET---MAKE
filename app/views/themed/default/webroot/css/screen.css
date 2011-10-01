@@ -656,10 +656,12 @@ ul.tags a:hover{text-decoration:none;background:none; color: #000; border-bottom
 #left-panel-index .sorter a:link,
 #left-panel-index .sorter a:visited{ color: #666666; line-height: 20px; }
 #left-panel-index .sorter a:hover{ color: #333333; }
-#right-panel{
-	float: left;
-	width: 650px;
-}
+#right-panel{ float: left; width: 650px; }
+#left-container-with-sidebar{ position: relative; float: left; margin: 0 0 10px 0; padding: 0; width: 650px; }
+#right-sidebar{ position: relative; float: left; z-index: 2; width: 255px;margin: 0; padding: 0; }
+.view #right-sidebar{ float: right; margin-top: 10px; }
+.view #right-sidebar .added-by{ padding: 10px; margin: 10px; font-size: 11px; }
+.view #right-sidebar .added-by img{ height: 48px !important; }
 /** END MAIN INDEX VIEWS **/
 
 /** GRIDDED INDEX **/
@@ -856,24 +858,18 @@ div.attachments.view .attachments.box img{ /*max-width: 800px; max-height: 800px
 
 /* END FIND PEOPLE */
 /** PROFILE PAGES **/
-.profile {
-	width: 90%;
-	clear: both;
-	padding-bottom: 10px;
-	margin-bottom: 10px;
-	border-bottom: 1px dotted #e7e7e7;
-}
+.profile { clear: both; padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px dotted #e7e7e7; }
 .profile button{ float: right; clear: both; cursor: pointer; margin: 0; }
 .profile .about{ padding: 10px 0; color: #999; }
 .profile .avatar{ display: inline-block; margin: 5px; width: 20%; padding-right: 10px; }
 .profile .avatar img{ width: 64px; height: 64px; margin: 0 15px 5px 0; }
-.profile .user-details{ display: inline-block; width: 100%; }
+.profile .user-details{ font-size: 12px; display: inline-block; width: 100%; }
 .profile .user-details .avatar{ padding: 0; margin: 10px 0 0 0; }
 .profile .user-details .value{ color: #262626; }
 .profile .user-details ul,
 .profile .user-details ul li{ padding: 2px 0; color: #999999; margin: 0; }
 .profile .user-details ul li.about{ padding: 0; margin: 10px 0; }
-.profile .user-details .name{ font-size: 18px; color: #000000; display: block; }
+.profile .user-details .name{ font-size: 14px; color: #000000; display: block; }
 .profile .user-details .name i{ color: #666666; }
 .profile .user-details .serif{ font-family: Georgia, serif; font-style: italic; color: #666666; }
 .profile .user-details .signature{
@@ -897,6 +893,25 @@ div.attachments.view .attachments.box img{ /*max-width: 800px; max-height: 800px
 span.total a{ text-decoration: none !important; border-bottom: 1px solid #262626; padding: 1px; }
 span.total a:hover{ text-decoration: none !important; border-bottom: none; }
 .profile span.total i{ font-family: Georgia, serif; color: #666666; font-size: 15px; }
+ul.btn-actions{ position: relative; float: right; margin: 0; padding: 0; right: 0px; }
+.minibutton > span{ font-size: 11px; display: inline-block; height: 21px; line-height: 21px; padding: 0px 9px 0px 7px; }
+.minibutton, .minibutton.disabled:hover{
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F4F4F4), to(#ECECEC));
+	border: 1px solid #D4D4D4; color: #333333;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	cursor: pointer;
+	display: inline-block; overflow: visible;
+	text-shadow: #ffffff 1px 1px 0px;
+	white-space: nowrap; text-decoration: none;
+	margin: 0; padding: 0;
+}
+.minibutton:hover{
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3bb796), to(#2f9177));
+	border-color: #3bb796; color: #ffffff;
+	text-decoration: none; font-weight: normal;
+	text-shadow: #000000 1px 1px 0px;
+}
 /*** STANDARD USER BLOCK ***/
 .user-block{ position: relative; margin: 20px 0; }
 .user-block .avatar{ width: 65px; padding: 0;margin: 0; float: left; }
@@ -966,3 +981,96 @@ span.total a:hover{ text-decoration: none !important; border-bottom: none; }
 }
 #follow-user a:hover{ color: #000000; text-decoration: underline; }
 /** END PROFILE PAGES **/
+/** USER FEED **/
+#auto-pagination-loader{
+	background-color: #ffffff;
+	border-top: 1px solid #f7f7f7;
+	color: #999999;
+	width: 600px;
+	display: block;
+	font-size: 34px;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	clear: both;
+	text-shadow: #e7e7e7 2px 2px 3px;
+}
+#auto-pagination-loader .spinner{
+	background: url('img/auto_pagination_loader.gif') center center no-repeat;
+	display: block;
+	text-align: center;
+	height: 15px;
+	width: 600px;
+	clear: both;
+	margin: 10px 0;
+	opacity:.75;
+	filter:alpha(opacity=75);
+}
+#auto-pagination-finished{
+	border-top: 1px solid #f7f7f7;
+	color: #999999;
+	width: 600px;
+	display: block;
+	font-size: 34px;
+	font-weight: bold;
+	padding: 25px 5px;
+	text-align: center;
+	text-decoration: none;
+	text-shadow: #e7e7e7 2px 2px 3px;
+}
+#user-feed { position: relative; margin-top: 10px; width: 600px; }
+#user-feed .grid-item{ width: 600px !important; }
+#user-feed .grid-item img{ width: auto; max-width: 500px !important; text-align: center; }
+#user-feed .grid-item .like_dislike li.likes{ padding: 0; margin: 0; }
+#user-feed .grid-item .like_dislike li.likes div{
+	display: inline;
+	padding: 0;
+	margin: 0;
+	text-align: right;
+	clear: none;
+}
+#user-feed .grid-item .voteblock ul{ text-align: right; padding: 3px 0; }
+#user-feed .grid-item .voteblock ul li{ display: inline; padding: 0; margin: 0; }
+#user-feed .grid-item .added-by{ padding: 2px 0; }
+#user-feed .grid-item .title{ padding: 0px 0px 5px 0; }
+#user-feed .grid-item .feed-text-title{ font-size: 32px; text-decoration: none; }
+#user-feed .grid-item .feed-follower-title{
+	font-size: 13px;
+	text-decoration: none;
+	padding: 8px;
+	/*border: 1px solid #e7e7e7;*/
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	background: #fff8da;
+	color: #000000;
+}
+#user-feed .grid-item .feed-follower-title a:visited,
+#user-feed .grid-item .feed-follower-title a:active,
+#user-feed .grid-item .feed-follower-title a:link{ color: #ef3f23; text-decoration: underline; }
+#user-feed .grid-item .feed-follower-title a:hover{ text-decoration: none; }
+#user-feed .grid-item .feed-text-title a{ font-weight: bold; text-decoration: none; }
+#user-feed .grid-item .text-title{ font-size: 14px; text-align: left; font-weight: bold; }
+#user-feed .grid-item .description{ text-align: left; padding-left: 5px; }
+/** END USER FEED **/
+/** USER STATS **/
+ul.stats{
+	width: 250px;
+	background-color: #ffffff;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	padding: 10px 0;
+	margin: 0;
+	clear: both;
+}
+ul.stats .title{
+	font-size: 15px;
+	color: #BBBBBB;
+	font-weight: bold;
+	margin: 5px 0;
+	text-shadow: #ffffff 1px 1px 0px;
+}
+ul.stats li{ list-style-type: none; clear: both; text-align: center; }
+ul.stats li .total{ font-size: 36px; font-weight: bold; color: #000000; display: inline; float: left; width: 100px; }
+ul.stats li .total a{ font-weight: bold; text-decoration: none; }
+ul.stats li .total span{ font-size: 11px; font-weight: normal; color: #999999; display: block; }
+/** END USER STATS **/

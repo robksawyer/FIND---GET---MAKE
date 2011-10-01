@@ -35,8 +35,8 @@ if(Configure::read('FGM.likes') == 1):
 													array(
 														'class'=>'btn auth vote dup like',
 														'title'=>'like',
-														'beforeSend'=>'showLoader();',
-														'success'=>'updateLikeDislike(data);'
+														'beforeSend'=>'fgm_api.showLoader();',
+														'success'=>'fgm_api.updateLikeDislike(data);'
 														));
 				echo $this->Js->link('liked', array('ajax'=>true,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
 													array(
@@ -44,8 +44,8 @@ if(Configure::read('FGM.likes') == 1):
 														'style'=>'display:none;',
 														'id'=>'like',
 														'title'=>'liked',
-														'beforeSend'=>'showLoader();',
-														'success'=>'updateLikeDislike(data);'
+														'beforeSend'=>'fgm_api.showLoader();',
+														'success'=>'fgm_api.updateLikeDislike(data);'
 														));
 			}else{
 				echo $this->Js->link('like', array('ajax'=>true,'controller'=>'votes','action'=>'vote_up',$model,$model_id), 
@@ -53,15 +53,15 @@ if(Configure::read('FGM.likes') == 1):
 														'class'=>'btn auth vote dup like',
 														'style'=>'display:none;',
 														'title'=>'like',
-														'beforeSend'=>'showLoader();',
-														'success'=>'updateLikeDislike(data);'
+														'beforeSend'=>'fgm_api.showLoader();',
+														'success'=>'fgm_api.updateLikeDislike(data);'
 														));
 				echo $this->Js->link('liked', array('ajax'=>true,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
 													array(
 														'class'=>'btn auth vote dup liked',
 														'title'=>'liked',
-														'beforeSend'=>'showLoader();',
-														'success'=>'updateLikeDislike(data);'
+														'beforeSend'=>'fgm_api.showLoader();',
+														'success'=>'fgm_api.updateLikeDislike(data);'
 														));
 			}
 		?>
@@ -91,16 +91,16 @@ if(Configure::read('FGM.likes') == 1):
 													array(
 														'class'=>'btn auth vote ddown dislike',
 														'title'=>'dislike',
-														'beforeSend'=>'showLoader();',
-														'success'=>'updateLikeDislike(data);'	
+														'beforeSend'=>'fgm_api.showLoader();',
+														'success'=>'fgm_api.updateLikeDislike(data);'	
 														));
 				echo $this->Js->link('disliked', array('ajax'=>true,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
 													array(
 														'class'=>'btn auth vote ddown disliked',
 														'style'=>'display:none;',
 														'title'=>'disliked',
-														'beforeSend'=>'showLoader();',
-														'success'=>'updateLikeDislike(data);'
+														'beforeSend'=>'fgm_api.showLoader();',
+														'success'=>'fgm_api.updateLikeDislike(data);'
 														));
 			}else{
 				echo $this->Js->link('dislike', array('ajax'=>true,'controller'=>'votes','action'=>'vote_down',$model,$model_id), 
@@ -108,15 +108,15 @@ if(Configure::read('FGM.likes') == 1):
 														'class'=>'btn auth vote ddown dislike',
 														'style'=>'display:none;',
 														'title'=>'dislike',
-														'beforeSend'=>'showLoader();',
-														'success'=>'updateLikeDislike(data);'
+														'beforeSend'=>'fgm_api.showLoader();',
+														'success'=>'fgm_api.updateLikeDislike(data);'
 														));
 				echo $this->Js->link('disliked', array('ajax'=>true,'controller'=>'votes','action'=>'remove_vote',$model,$model_id), 
 													array(
 														'class'=>'btn auth vote ddown disliked',
 														'title'=>'disliked',
-														'beforeSend'=>'showLoader();',
-														'success'=>'updateLikeDislike(data);'
+														'beforeSend'=>'fgm_api.showLoader();',
+														'success'=>'fgm_api.updateLikeDislike(data);'
 														));
 			}
 		?>
@@ -128,7 +128,7 @@ if(Configure::read('FGM.likes') == 1):
 </div>
 <div class="clear"></div>
 <?php 
-	echo $this->Html->script('elements/like-dislike');
+	//echo $this->Html->script('elements/like-dislike');
 	echo $this->Js->writeBuffer();
 	
 endif; //Make sure likes are enabled

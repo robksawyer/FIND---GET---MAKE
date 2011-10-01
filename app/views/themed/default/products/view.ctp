@@ -44,7 +44,7 @@
 				if(count($product['Storage']) > 0){
 					$users_storing = array();
 					foreach($product['Storage'] as $storage){
-						if($storage['user_id'] != $authUser['User']['id']){
+						if($storage['user_id'] != $product['User']['id']){
 							$users_storing[] = $storage;
 						}
 					}
@@ -91,7 +91,33 @@
 						if(!empty($product['Product']['source_url'])):
 							echo $this->Html->link('Source',$product['Product']['source_url'],array('title'=>$product['Product']['source_url'],'target'=>'_blank','class'=>'source'))."<span class='list-sep'>|</span>";
 						endif;
-						echo $this->Html->link('Have it?',"#",array('title'=>"Have it?",'class'=>'have-it'))."<span class='list-sep'>|</span>";
+						if(!empty($authUser)):
+							//Replace the name if the user already has the item
+							$isOwner = false;
+							foreach($product['Ownership'] as $ownership){
+								if($ownership['user_id'] == $authUser['User']['id']){
+									$isOwner = true;
+								}
+							}
+							if($isOwner){
+								$ownership_title = "You own it.";
+								$have_it = 1;
+							}else{
+								$ownership_title = "Have it?";
+								$have_it = 0;
+							}
+							echo $this->Js->link($ownership_title,array('ajax'=>true,
+																						'admin'=>false,
+																						'controller'=>'ownerships',
+																						'action'=>'toggle_ownership',
+																						'Product',$product['Product']['id']),
+																					array('title'=>$ownership_title,
+																							'class'=>'have-it',
+																							'success'=>'fgm_api.ownershipSuccess(data);'
+																						)
+																					);
+							echo "<span class='list-sep'>|</span>";
+						endif;
 						echo $this->element('share-buttons',array('controller'=>'products',
 																				'keycode'=>$product['Product']['keycode'],
 																				'cache'=>false

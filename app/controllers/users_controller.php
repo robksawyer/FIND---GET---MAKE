@@ -1177,7 +1177,6 @@ class UsersController extends AppController {
 		$this->User->UserFollowing->recursive = 1;
 		$followers = $this->User->UserFollowing->findFollowers($user['User']['id'],5);
 		$this->User->Ownership->recursive = 1;
-		$user_wants = $this->User->Ownership->getUserWantCount('Product',$user['User']['id']);
 		$user_haves = $this->User->Ownership->getUserHaveCount('Product',$user['User']['id']);
 		$this->set(compact('user_wants','user_haves','followers'));
 		//$this->set('user', $this->User->read(null, $user['User']['id']));

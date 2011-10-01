@@ -110,37 +110,6 @@ class Ownership extends AppModel {
 		//debug($data);
 		return $data;
 	}
-	/**
-	 * This method returns the total number of people who want a particular item.
-	 * @param model
-	 * @param model_id
-	 * @return data
-	 * 
-	*/
-	function getWantCount($model=null,$model_id=null){
-		$data = $this->find('count',array('conditions'=>array(
-															'want_it'=>1,
-															"model_id"=>$model_id,
-															"model"=>$model
-															)));
-		//debug($data);
-		return $data;
-	}
-	/**
-	 * This method returns the total number of people who had a particular item.
-	 * @param model
-	 * @param model_id
-	 * @return data
-	 * 
-	*/
-	function getHadCount($model=null,$model_id=null){
-		$data = $this->find('count',array('conditions'=>array(
-															'had_it'=>1,
-															"model_id"=>$model_id,
-															"model"=>$model
-															)));
-		return $data;
-	}
 	
 	
 	// =============================
@@ -169,66 +138,6 @@ class Ownership extends AppModel {
 	}
 	
 	/**
-	 * This method returns the details of people who want a particular item.
-	 * @param model
-	 * @param model_id
-	 * @return data
-	 * 
-	*/
-	function getWantUsers($model=null,$model_id=null){
-		$data = $this->find('all',array('conditions'=>array(
-															'want_it'=>1,
-															"model_id"=>$model_id,
-															'model'=>$model
-															),
-										'contain'=>array('User'=>array('Product'=>array('Attachment',
-																						'limit'=>3,
-																						'order'=>array('Product.created'=>'desc')
-																						)))
-										));
-		//return $this->_parseOwnershipInfo($data);
-		return $data;
-	}
-	
-	/**
-	 * This method returns the details of people who had a particular item.
-	 * @param model
-	 * @param model_id
-	 * @return data
-	 * 
-	*/
-	function getHadUsers($model=null,$model_id=null){
-		$data = $this->find('all',array('conditions'=>array(
-															'had_it'=>1,
-															"model_id"=>$model_id,
-															'model'=>$model
-															),
-										'contain'=>array('User'=>array('Product'=>array('Attachment','limit'=>3)))
-										));
-		//return $this->_parseOwnershipInfo($data);
-		return $data;
-	}
-	
-	
-	/**
-	 * This method returns the wants of a particular user
-	 * @param string model The model to target
-	 * @param int user_id The user id to target
-	 * @return data
-	 * 
-	*/
-	function getUserWants($model=null,$user_id=null){
-		$data = $this->find('all',array('conditions'=>array(
-															'want_it'=>1,
-															"Ownership.user_id"=>$user_id,
-															'model'=>$model
-															),
-										'contain'=>array('Product'=>array('Attachment'))	
-										));
-		return $data;
-	}
-	
-	/**
 	 * This method returns the haves of a particular user
 	 * @param string model The model to target
 	 * @param int user_id The user id to target
@@ -247,22 +156,6 @@ class Ownership extends AppModel {
 	}
 	
 	/**
-	 * This method returns the wants of a particular user
-	 * @param string model The model to target
-	 * @param int user_id The user id to target
-	 * @return data
-	 * 
-	*/
-	function getUserWantCount($model=null,$user_id=null){
-		$data = $this->find('count',array('conditions'=>array(
-															'want_it'=>1,
-															"Ownership.user_id"=>$user_id,
-															'model'=>$model
-															)));
-		return $data;
-	}
-	
-	/**
 	 * This method returns the haves of a particular user
 	 * @param string model The model to target
 	 * @param int user_id The user id to target
@@ -277,86 +170,7 @@ class Ownership extends AppModel {
 															)));
 		return $data;
 	}
-	
-	/**
-	 * Sets the ownership status of an item to want
-	 * @param int user_id
-	 * @param string model 
-	 * @param int model_id
-	 * @return 
-	 * 
-	*/
-	public function setWant($user_id=null,$model=null,$model_id=null){
-		Configure::write('debug', 2);
-		$type="want_it";
-		$type_niceName = "want";
-		$controller = Inflector::pluralize(strtolower($model));
-		$data = $this->getFirst($user_id,$model,$model_id);
-		//Make sure the user only has one want it, had it, or have it.
-		if(!empty($data)){
-			//Update an existing ownership for this user
-			$this->read(null,$data['Ownership']['id']);
-			
-			foreach($ownership_types as $ownership_type){
-				if($type == $ownership_type){
-					$this->set(array(
-									'name' => $controller,
-									'model' => $model,
-									'model_id' => $model_id,
-									$ownership_type => 1
-									)
-								);
-				}else{
-					$this->set(array(
-									$ownership_type => 0
-									)
-								);
-				}
-			}
-			
-			if($this->save()){
-				//The save was successful
-				
-				//Send a notification email
-				//$this->send_email_on_product_have_want($model_id,$type_niceName);
-				
-			}else{
-				return;
-			}
-
-		}else{
-			//Create a new ownership for this user
-			$this->create();
-			$this->set(array(
-							'user_id' => $user_id,
-							'model' => $model,
-							'model_id' => $model_id,
-							'name' => $controller
-							)
-						);
-			
-			$this->set($type, 1);
-			
-			if($this->save()){
-				//The save was successful
-				
-				//Send a notification email
-				//$this->send_email_on_product_have_want($model_id,$type_niceName);
-				
-			}else{
-				return;
-			}
-		}
 		
-		if(!empty($data['Ownership']['id'])){
-			$last = $this->read(null,$data['Ownership']['id']);
-		}else{
-			$last = $this->read(null,$this->getLastInsertID());
-		}
-		$this->Feed->addFeedData('Ownership',$last);
-		return;
-	}
-	
 	/**
 	 * Parses the user id from the Ownership table and returns more of the user's info
 	 * @param data

@@ -13,42 +13,34 @@
 				if($user_likes < 1){
 					echo $this->Html->link('like', '#', 
 														array(
-															'onclick'=>'submit_like("'.$model.'","'.$model_id.'"); return false;',
+															'onclick'=>'fgm_api.submit_like("'.$model.'","'.$model_id.'"); return false;',
 															'id'=>"vote-".strtolower($model)."-up-".$model_id,
 															'class'=>'vote dup like vote-'.$model_id,
 															'title'=>'like'
-															//'beforeSend'=>'showLoader('.$model_id.');',
-															//'success'=>'updateLikeDislike(data);'
 															));
 					echo $this->Html->link('dislike', '#', 
 														array(
-															'onclick'=>'submit_dislike("'.$model.'","'.$model_id.'"); return false;',
+															'onclick'=>'fgm_api.submit_dislike("'.$model.'","'.$model_id.'"); return false;',
 															'id'=>"vote-".strtolower($model)."-down-".$model_id,
 															'class'=>'vote ddown dislike vote-'.$model_id,
 															'title'=>'dislike',
 															'style'=>'display:none'
-															//'beforeSend'=>'showLoader('.$model_id.');',
-															//'success'=>'updateLikeDislike(data);'
 															));
 				}else{
 					echo $this->Html->link('dislike', '#', 
 														array(
-															'onclick'=>'submit_dislike("'.$model.'","'.$model_id.'"); return false;',
+															'onclick'=>'fgm_api.submit_dislike("'.$model.'","'.$model_id.'"); return false;',
 															'id'=>"vote-".strtolower($model)."-down-".$model_id,
 															'class'=>'vote ddown dislike vote-'.$model_id,
 															'title'=>'dislike'
-															//'beforeSend'=>'showLoader('.$model_id.');',
-															//'success'=>'updateLikeDislike(data);'
 															));
 					echo $this->Html->link('like', '#', 
 														array(
-															'onclick'=>'submit_like("'.$model.'","'.$model_id.'"); return false;',
+															'onclick'=>'fgm_api.submit_like("'.$model.'","'.$model_id.'"); return false;',
 															'id'=>"vote-".strtolower($model)."-up-".$model_id,
 															'class'=>'vote dup like vote-'.$model_id,
 															'title'=>'like',
 															'style'=>'display:none'
-															//'beforeSend'=>'showLoader('.$model_id.');',
-															//'success'=>'updateLikeDislike(data);'
 															));
 				}
 			?>
@@ -60,6 +52,6 @@
 </div>
 <div class="clear"></div>
 <?php
-echo $this->Html->script('elements/feed-like-dislike', array('inline'=>false));
+//echo $this->Html->script('elements/feed-like-dislike', array('inline'=>false));
 echo $this->Js->writeBuffer(array('inline'=>true));
 ?>

@@ -6,8 +6,6 @@ if(empty($model_id)) $model_id = $feed_item[$model]['id'];
 
 if($feed_item[$model]['have_it'] > 0){
 	$status_by = ' owns ';
-}else if($feed_item[$model]['want_it'] > 0){
-	$status_by = ' wants ';
 }
 
 $added_by = "Found by";

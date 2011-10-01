@@ -13,7 +13,7 @@ if(!empty($authUser)):
 																		'class'=>'auth follow',
 																		'title'=>'follow',
 																		'id'=>'follow-'.$user_id,
-																		'onclick'=>'submit_follow("'.$user_id.'"); return false;',
+																		'onclick'=>'fgm_api.submit_follow("'.$user_id.'"); return false;',
 																		));
 					echo $this->Html->link('Unfollow',"#",
 																	array(
@@ -21,7 +21,7 @@ if(!empty($authUser)):
 																		'id'=>'unfollow-'.$user_id,
 																		'style'=>'display:none',
 																		'title'=>'unfollow',
-																		'onclick'=>'submit_unfollow("'.$user_id.'"); return false;',
+																		'onclick'=>'fgm_api.submit_unfollow("'.$user_id.'"); return false;',
 																		));
 			?></div>
 		<?php else: ?>
@@ -31,7 +31,7 @@ if(!empty($authUser)):
 																		'class'=>'auth unfollow',
 																		'id'=>'unfollow-'.$user_id,
 																		'title'=>'unfollow',
-																		'onclick'=>'submit_unfollow("'.$user_id.'"); return false;',
+																		'onclick'=>'fgm_api.submit_unfollow("'.$user_id.'"); return false;',
 																		));
 					echo $this->Html->link('Follow',"#",
 																	array(
@@ -39,7 +39,7 @@ if(!empty($authUser)):
 																		'id'=>'follow-'.$user_id,
 																		'style'=>'display:none',
 																		'title'=>'follow',
-																		'onclick'=>'submit_follow("'.$user_id.'"); return false;',
+																		'onclick'=>'fgm_api.submit_follow("'.$user_id.'"); return false;',
 																		));
 				
 			?></div>
@@ -48,6 +48,6 @@ if(!empty($authUser)):
 <?php endif; ?>
 <div id="ajax-status-<?php echo $user_id;?>" style="display:none" class="ajax-status-small"><?php echo $this->Html->image('ajax-loader.gif',array('Loading...')); ?></div>
 <?php 
-	echo $this->Html->script('elements/follow-unfollow',array('inline'=>false)); 
+	//echo $this->Html->script('elements/follow-unfollow',array('inline'=>false)); 
 	echo $this->Js->writeBuffer(array('inline'=>true));
 ?>

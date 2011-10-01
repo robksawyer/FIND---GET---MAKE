@@ -26,8 +26,8 @@ if(Configure::read('FGM.allow_storage_adding') == 1):
 													array(
 														'id'=>'storage-'.strtolower($model).'-'.$model_id,
 														'title'=>$dot_title,
-														'beforeSend'=>'showDotLoader("'.strtolower($model).'-'.$model_id.'","'.$loader.'");',
-														'success'=>'updateDotLink(data);'
+														'beforeSend'=>'fgm_api.showDotLoader("'.strtolower($model).'-'.$model_id.'","'.$loader.'");',
+														'success'=>'fgm_api.updateDotLink(data);'
 													));
 		?>
 		<span></span>
@@ -45,7 +45,5 @@ if(Configure::read('FGM.allow_storage_adding') == 1):
 			TODO Show the deactivated dot
 		*/
 	endif;
-	
-	echo $this->Html->script('elements/dot');
 endif;
 ?>
