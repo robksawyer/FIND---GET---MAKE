@@ -23,27 +23,7 @@
 				</div>
 			<?php endif; ?>
 		</div>
-		<?php
-			//Check to see if the item is in the user's storage already
-			if(!empty($authUser)):
-				if($authUser['Storage']['model'] == "Product" && $authUser['Storage']['model_id'] == $product['Product']['id']){
-					$dot_class = 'storage-dot-remove';
-				}else{
-					$dot_class = 'storage-dot-add';
-				}
-		?>
-			<div id="storage-dot" class="<?php echo $dot_class; ?>">
-				<?php 
-					echo $this->Html->link('Add', '/ajax/toggle/Product/'.$product['Product']['id'],array('title'=>'Add this product to your storage.')); 
-				?>
-				<span></span>
-			</div>
-		<?php
-			else:
-				//The user isn't logged in
-			
-			endif;
-		?>
+		<?php echo $this->element('dot',array('cache'=>false,'model'=>'Product','model_id'=>$product['Product']['id'])); ?>
 	</div>
 	<div id="block_2">
 		<h3 class="header">
@@ -60,7 +40,18 @@
 		<div class="added-by">
 			<?php
 				echo $this->element('avatar',array('cache'=>false,'user'=>$product,'height'=>'20'));
-		 		echo "Found by ".$this->Html->link($product['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$product['User']['username'])).'and ?? others.';
+		 		echo "Found by ".$this->Html->link($product['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$product['User']['username']));
+				if(count($product['Storage']) > 0){
+					$users_storing = array();
+					foreach($product['Storage'] as $storage){
+						if($storage['user_id'] != $authUser['User']['id']){
+							$users_storing[] = $storage;
+						}
+					}
+					if(count($users_storing) > 0){
+						echo ' and '.count($users_storing).' others.';
+					}
+				}
 			?>
 		</div>
 		<!--- DETAILS SECTION -->
@@ -86,7 +77,7 @@
 				<li class="view-actions">
 					<?php
 					if(!empty($product['Product']['purchase_url'])){ 
-						if(!empty($product['Product']['price'])) echo " &mdash; ";
+						if(!empty($product['Product']['price'])) echo " &mdash; <br/>";
 						echo $this->Html->link('Buy',$product['Product']['purchase_url'],
 																array(
 																	'title'=>$product['Product']['purchase_url'],'target'=>'_blank','class'=>'buy'
@@ -114,7 +105,6 @@
 	</div>
 	<div id="block_bottom">
 		<div id="product-comments" class="inner-block">
-			<div>&mdash;</div>
 			<?php
 				echo $this->element('comments',array('ajax'=>false,'cache'=>false));
 			?>

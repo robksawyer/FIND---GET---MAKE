@@ -15,7 +15,7 @@ class StoragesController extends AppController {
 		parent::beforeFilter();
 		
 		//Make certain pages public
-		$this->Auth->allowedActions = array('ajax_toggle');
+		$this->Auth->allowedActions = array('ajax_toggle','isStoring');
 											
 		//$this->Auth->allow('getLikes','getDislikes','getUserLikes','getUserDislikes');
 		$this->AjaxHandler->handle('ajax_toggle');
@@ -48,7 +48,7 @@ class StoragesController extends AppController {
 	*/
 	public function ajax_toggle($model="Product",$model_id){
 		$this->Storage->recursive = -1;
-		Configure::write('debug', 2);
+		Configure::write('debug', 0);
 
 		if($this->RequestHandler->isAjax()) {
 			$this->autoLayout = false;
@@ -69,6 +69,8 @@ class StoragesController extends AppController {
 				//Remove the item
 				if($this->Storage->delete($storageCheck['Storage']['id'])){
 					//Delete successful
+					$storageCheck['Storage']['deleted'] = true;
+					$this->AjaxHandler->response(true, $storageCheck);
 				}else{
 					$this->AjaxHandler->response(false, 'There was a problem adding this item to your storage. Please, try again.', 0);
 				}
@@ -93,4 +95,31 @@ class StoragesController extends AppController {
 	}
 	
 	/**************** END AJAX METHODS ************************/
+	
+	/**
+	 * Check to see if the user is storing the item in their storage bin
+	 * @param string model
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	public function isStoring($model="Product",$model_id=null){
+		if (!empty($this->params['requested'])) {
+			//Check to see if the user is storing this item
+			$user_id = $this->Auth->user('id');
+			$user = $this->Storage->User->find('first',array('conditions'=>array('User.id'=>$user_id),'contain'=>array('Storage')));
+			if(!empty($user['Storage'])){
+				if($user['Storage'][0]['model'] == $model && $user['Storage'][0]['model_id'] == $model_id){
+					//The user is storing this item.
+					return true;
+				}else{
+					return false;
+				}
+			}else{
+				return false;
+			}
+		} else {
+			//
+		}
+	}
 }

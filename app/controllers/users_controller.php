@@ -407,7 +407,6 @@ class UsersController extends AppController {
 			}
 		}
 		
-		
 		//Check for a Twitter user
 		$twitterUserDetails = $this->Session->read('Twitter.Details');
 		if(!empty($twitterUserDetails) && empty($this->data)){

@@ -49,8 +49,10 @@
 		?>
 			<div class="grid-item">
 				<?php 
-					if(!empty($inspiration['Attachment'][0]['path_med'])){
-						echo $this->Html->image($inspiration['Attachment'][0]['path_med'],array('alt'=>'','url'=>array('action'=>'view',$inspiration['Inspiration']['id']))); 
+					if(!empty($inspiration['Attachment'])){
+						if(!empty($inspiration['Attachment'][0]['path_med'])){
+							echo $this->Html->image($inspiration['Attachment'][0]['path_med'],array('alt'=>'','url'=>array('action'=>'view',$inspiration['Inspiration']['id']))); 
+						}
 					}
 				?>
 				<br/>

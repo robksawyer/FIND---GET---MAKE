@@ -137,9 +137,7 @@
 			<div id="wrapper">
 				<div id="header">
 					<!-- Navigation -->
-					<?php echo $this->element('nav', array('cache' => false)); ?>
-					<!-- End Navigation -->
-					<?php 
+					<?php  //User Nav
 						if(!empty($authUser)){
 							if($authUser['User']['group_id'] == 1){
 								echo $this->element('nav-admin',array('cache'=>false));
@@ -152,6 +150,8 @@
 							echo $this->element('nav-user',array('cache'=>false));
 						}
 					?>
+					<?php echo $this->element('nav', array('cache' => false)); ?>
+					<!-- End Navigation -->
 				</div>
 				<?php
 					if ($this->params['action'] == 'display' || $this->params['action'] == 'moderate') {

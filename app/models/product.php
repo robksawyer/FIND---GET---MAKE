@@ -482,7 +482,9 @@ class Product extends AppModel {
 														'Source',
 														'ProductCategory',
 														'User','Tag',
-														'Ownership','Vote','Inspiration','Collection'
+														'Ownership','Vote',
+														'Inspiration','Collection',
+														'Storage'
 														)
 										)
 									);

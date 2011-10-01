@@ -64,22 +64,21 @@
 				<?php if(!empty($product['Product']['designer'])) echo "<div class='designer'>Designed by ".$product['Product']['designer']."</div>"; ?>
 				<div class="designer"><?php echo "Found by ".$this->Html->link(__($product['User']['username'],true),array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$product['User']['username'])); ?></div>
 				<div class="bottom-detail">
-					<span class="date"><?php echo $this->Time->niceShort($product['Product']['created'],null,null)." / "; ?>&nbsp;</span>
+					<span class="date"><?php echo $this->Time->niceShort($product['Product']['created'],null,null); ?></span>
 					<span class="tags"><?php
 						//Build a tag list of only two tags.
 						$limit = 2;
 						$counter = 0;
 						//debug($product['Tag']);
 						if(!empty($product['Tag'])){
+							echo "/ ";
 							foreach($product['Tag'] as $tag){
 								if($counter == $limit) break;
-						
 								if($counter == ($limit - 1) || count($product['Tag']) < 2){
 									echo $this->Html->link(__($tag['name'],true),array('controller'=>'products','action'=>'index/by:'.$tag['keyname']));
 								}else{
 									echo $this->Html->link(__($tag['name'],true),array('controller'=>'products','action'=>'index/by:'.$tag['keyname'])).", ";
 								}
-
 								$counter++;
 							}
 						}

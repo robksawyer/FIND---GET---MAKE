@@ -49,6 +49,14 @@
  * 
 */
 	$config['FGM']['allow_ownerships'] = 0;
+
+/**
+ * Allow users to set the ownership of items.
+ * 0: Hide the ownership component globally
+ * 1: Show the ownership component globally
+ * 
+*/
+	$config['FGM']['allow_storage_adding'] = 1;
 	
 	
 /**

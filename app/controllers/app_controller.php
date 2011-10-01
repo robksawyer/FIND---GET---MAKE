@@ -182,7 +182,6 @@ class AppController extends Controller {
 				'loginAction' => 'login',
 				'logoutAction' => 'logout'
 			);
-			
 		}
 		
 		//Security overrides

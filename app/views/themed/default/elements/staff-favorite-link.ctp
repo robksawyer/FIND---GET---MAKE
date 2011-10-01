@@ -17,7 +17,7 @@
 																'success'=>'updateStaffFavoriteLink(data);'
 															));
 ?>
-		<div id="ajax-status-<?php echo $model.'-'.$model_id; ?>" style="display:none" class="ajax-status-small"><?php echo $this->Html->image('ajax-loader.gif',array('Loading...')); ?></div>
+		<div id="ajax-status-<?php echo $model.'-'.$model_id; ?>" style="display:none" class="ajax-status-small"><?php echo $this->Html->image('ajax-loader.gif',array('alt'=>'Loading...')); ?></div>
 <?php
 	}else{
 		echo '<span class="staff-favorite" style="text-decoration: line-through;" title="You\'ve already added this item to the staff favorites.">Staff favorite</span>';
