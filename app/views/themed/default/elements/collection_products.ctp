@@ -1,6 +1,5 @@
 <?php
 	echo $this->Html->css('elements/products','stylesheet',array('inline'=>false));
-	
 	//Make the controller name
 	$controller = strtolower(Inflector::pluralize($model));
 ?>
@@ -30,6 +29,7 @@
 							echo $this->Html->image($product['Attachment'][0]['path_small'],
 															array(
 																'alt'=>'product_'.$i,
+																'class'=>'collection-product',
 																'url'=>array(
 																'controller'=>'products',
 																'action'=>'view',$product['id']
@@ -42,6 +42,7 @@
 								echo $this->Html->image($product['Attachment'][0]['path_small'],
 																array(
 																	'alt'=>'product_'.$i,
+																	'class'=>'collection-product',
 																	'url'=>array(
 																	'controller'=>'products',
 																	'action'=>'generateKeycode',$product['id']
@@ -52,6 +53,7 @@
 								echo $this->Html->image($product['Attachment'][0]['path_small'],
 																array(
 																	'alt'=>'product_'.$i,
+																	'class'=>'collection-product',
 																	'url'=>array(
 																	'controller'=>'products',
 																	'action'=>'key',$product['keycode']

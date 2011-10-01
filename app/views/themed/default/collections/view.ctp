@@ -29,7 +29,7 @@
 		?>
 	</div>
 </div>
-<div id="left-container">
+<div id="block_2">
 	<h2><?php  
 			if($collection['Collection']['total_products'] > 1) $ending = "products."; else $ending = "product.";
 			__($collection['Collection']['name']." <span class='includes'>includes ".$collection['Collection']['total_products']." ".$ending."</span>");
@@ -61,8 +61,6 @@
 		<?php echo $this->element('tags',array('model'=>$collection,'cache'=>false)); ?>
 	</div>
 </div>
-<div class="clear"></div>
-
 <div class="related collection">
 	<?php
 		//Check to see if the inspiration is private. Make sure that the user who owns this isn't viewing it.
@@ -81,14 +79,12 @@
 																		));
 	?>
 </div>
-<div class="clear"></div>
 <?php 
 if(!empty($authUser)): 
 	if(!$disableProductAdding):
 ?>	
 		<div class="actions">
 			<ul>
-				<li><?php echo $this->Html->link(__('Add Product', true),'javascript:return false;',array('class'=>'add-product-modal-button'));?> </li>
 				<li><?php echo $this->Html->link(__('Add Existing Product', true),'javascript:return false;',array('class'=>'product-selector-modal-button')); ?></li>
 			</ul>
 		</div>
@@ -109,24 +105,6 @@ echo $this->element('product-selector',array(
 														'productList'=>$productList
 														));
 ?>
-<!-- ADD PRODUCTS MODAL CONTENT -->
-<div id="add-product-modal-button" style="display:none">
-	<div class="wrapper">
-	<?php 
-		$redirect = '/collections/view/'.$collection['Collection']['id'];
-		echo $this->element('products'.DS.'add',array('cache'=>false,
-																	'sourceList'=>$sourceList,
-																	'productCategoryList' => $productCategoryList,
-																	'collection_id'=>$collection['Collection']['id'],
-																	'redirect'=>$redirect
-																	)
-																); 
-		//echo $this->element('add_product',array('cache'=>false,'collection'=>$collection,'redirect'=>$redirect)); 
-		
-	?>
-	</div>
-</div>
-<div class="clear"></div>
 <div id="collection-comments">
 <div>&mdash;</div>
 <?php
@@ -142,19 +120,3 @@ echo $this->element('product-selector',array(
 </div>
 <!-- END ADD PRODUCTS MODAL CONTENT -->
 <?php endif; ?>
-<script type="text/javascript">
-	// Load dialog on click
-	$('.add-product-modal-button').click(function (e) {
-		
-		//$(".chzn-select").trigger("liszt:updated");
-		$('#add-product-modal-button').modal({
-			onShow:function(dialog){
-				// Access elements inside the dialog
-				// Useful for binding events, initializing other plugins, etc.
-				$(".chzn-select").chosen();
-				
-				setupTagAutocomplete();
-			}
-		});
-	});
-</script>

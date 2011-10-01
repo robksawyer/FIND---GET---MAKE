@@ -96,10 +96,10 @@ class OwnershipsController extends AppController {
 												'user_id' => $user_id,
 												'model' => $model,
 												'model_id' => $model_id,
-												'name' => $controller
+												'name' => $controller,
+												'have_it' => 1
 												)
 											);
-					$this->Ownership->set($type,1);
 					if($this->Ownership->save()){
 						//The save was successful
 						$isOwned = 1;

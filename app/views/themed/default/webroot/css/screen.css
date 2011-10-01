@@ -498,9 +498,6 @@ a.category:hover{
 #block_2 .view-actions a.have-it{
 	color: #ef3f23;
 }
-#block_2 .view-actions  #share-panel{ position: relative; padding: 0; margin: 0; top: 3px; overflow: auto; }
-#block_2 .view-actions  #share-panel label{ float: left; display: inline; margin: 5px 5px 0 0; padding: 0;}
-#block_2 .view-actions  #share-panel input{ position: relative; float: left; display: inline; padding: 3px; clear: none; width: 200px;}
 #block_2 .view-actions .list-sep{
 	float: left;
 	display: block;
@@ -512,6 +509,9 @@ a.category:hover{
 	position: relative;
 	overflow: auto;
 }
+.sharing a{ float: left; margin: 0 5px 0 0; padding: 0;}
+#share-panel{ float: left; position: relative; padding: 0; margin: 0; top: 0px; overflow: auto; }
+#share-panel input{ float: left; padding: 3px; margin: 0; clear: none; width: 200px; vertical-align: middle;}
 /* END VIEW PAGES */
 /* ITEM GRID */
 ul.gridded_item_set{
@@ -565,7 +565,9 @@ ul.gridded_item_set li.item ul.grid_context_menu .dot{
 	width: 36px; height: 36px;
 	cursor: pointer;
 }
-#block_1 .storage-dot a{
+#block_1 .storage-dot a:active,
+#block_1 .storage-dot a:link,
+#block_1 .storage-dot a:visited{
 	z-index: 2;
 	text-indent: -999em;
 	overflow: hidden;
@@ -575,7 +577,7 @@ ul.gridded_item_set li.item ul.grid_context_menu .dot{
 	margin:0; padding:0;
 	overflow: hidden;
 }
-#block_1 .storage-dot.storage-dot-add span:hover{
+#block_1 .storage-dot.storage-dot-add:hover span{
 	background: transparent url('img/fgm_sprite.gif') -59px -106px no-repeat;
 	overflow: hidden;
 }
@@ -585,7 +587,7 @@ ul.gridded_item_set li.item ul.grid_context_menu .dot{
 	margin:0; padding:0;
 	overflow: hidden;
 }
-#block_1 .storage-dot.storage-dot-remove span:hover{
+#block_1 .storage-dot.storage-dot-remove:hover span{
 	background: transparent url('img/fgm_sprite.gif') -99px -106px no-repeat;
 	overflow: hidden;
 }
@@ -656,31 +658,21 @@ ul.tags a:hover{text-decoration:none;background:none; color: #000; border-bottom
 #left-panel-index .sorter a:link,
 #left-panel-index .sorter a:visited{ color: #666666; line-height: 20px; }
 #left-panel-index .sorter a:hover{ color: #333333; }
-#right-panel{ float: left; width: 650px; }
+#right-panel{ float: left; width: 650px; overflow: auto;}
 #left-container-with-sidebar{ position: relative; float: left; margin: 0 0 10px 0; padding: 0; width: 650px; }
+#left-container{ position: relative; margin: 0 10px 10px 0; float: left; }
 #right-sidebar{ position: relative; float: left; z-index: 2; width: 255px;margin: 0; padding: 0; }
 .view #right-sidebar{ float: right; margin-top: 10px; }
 .view #right-sidebar .added-by{ padding: 10px; margin: 10px; font-size: 11px; }
-.view #right-sidebar .added-by img{ height: 48px !important; }
+.view #right-sidebar .added-by img{ height: 48px; width: 48px; }
 /** END MAIN INDEX VIEWS **/
-
 /** GRIDDED INDEX **/
-#grid-container{
-	position: relative;
-	margin: 15px 0 0 0;
-	width: auto !important;
-}
-
+#grid-container{ position: relative; margin: 15px 0 0 0; width: auto !important; }
 #grid-container-products,
 #grid-container-have-products,
 #grid-container-want-products,
 #grid-container-inspirations,
-#grid-container-collections{
-	position: relative;
-	top: 15px;
-	width: 100% !important;
-}
-
+#grid-container-collections{ position: relative; top: 15px; width: 100% !important; }
 .grid-item{
 	position: relative;
 	display: block;
@@ -693,18 +685,8 @@ ul.tags a:hover{text-decoration:none;background:none; color: #000; border-bottom
 	text-align: left !important;
 	clear: none;
 }
-
-.grid-item img,
-.grid-item a{
-	position: relative;
-	padding: 0 0 3px 0;
-	margin: 0;
-}
-
-.grid-item img{
-	max-width: 175px;
-}
-
+.grid-item img, .grid-item a{ position: relative; padding: 0 0 3px 0; margin: 0; }
+.grid-item img{ max-width: 175px; }
 .grid-item .description{
 	position: relative;
 	color: #666666 !important;
@@ -714,7 +696,6 @@ ul.tags a:hover{text-decoration:none;background:none; color: #000; border-bottom
 	padding-bottom: 10px;
 	border-bottom: none !important;
 }
-
 .grid-item .bottom-detail{
 	border-top: 1px solid #000000;
 	border-bottom: 3px solid #000000;
@@ -722,10 +703,7 @@ ul.tags a:hover{text-decoration:none;background:none; color: #000; border-bottom
 	margin: 12px 0 0 0;
 	width: 100%;
 }
-.grid-item .date{
-	padding-left: 0;
-	margin-left: 1px;
-}
+.grid-item .date{ padding-left: 0; margin-left: 1px; }
 .grid-item .lock{
 	position: relative;
 	float: right;
@@ -733,24 +711,10 @@ ul.tags a:hover{text-decoration:none;background:none; color: #000; border-bottom
 	padding: 0 !important;
 	margin: -2px 0 0 0 !important;
 }
-.grid-item .lock img{
-	padding: 0;
-	margin: 0;
-}
-
-.grid-item span{
-	float: left;
-	padding-left: 5px;
-}
-.grid-item .rating{
-	float: none;
-	padding: 0;
-	margin: 5px 0 5px 0;
-}
-.grid-item .rating img{
-	width: 10px;
-	height: 10px;
-}
+.grid-item .lock img{ padding: 0; margin: 0; }
+.grid-item span{ float: left; padding-left: 5px; }
+.grid-item .rating{ float: none; padding: 0; margin: 5px 0 5px 0; }
+.grid-item .rating img{ width: 10px; height: 10px; }
 /** END GRIDDED INDEX **/ 
 
 /* Alphabet sorter */
@@ -1054,13 +1018,11 @@ ul.btn-actions{ position: relative; float: right; margin: 0; padding: 0; right: 
 /** END USER FEED **/
 /** USER STATS **/
 ul.stats{
-	width: 250px;
-	background-color: #ffffff;
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	padding: 10px 0;
-	margin: 0;
 	clear: both;
+	background-color: #ffffff;
+	/*border-radius: 3px;
+	-moz-border-radius: 3px;*/
+	padding: 5px 0; margin: 0;
 }
 ul.stats .title{
 	font-size: 15px;
@@ -1069,8 +1031,23 @@ ul.stats .title{
 	margin: 5px 0;
 	text-shadow: #ffffff 1px 1px 0px;
 }
-ul.stats li{ list-style-type: none; clear: both; text-align: center; }
+ul.stats li{ list-style-type: none; overflow: auto; text-align: center; padding: 0 0 5px 0; }
 ul.stats li .total{ font-size: 36px; font-weight: bold; color: #000000; display: inline; float: left; width: 100px; }
-ul.stats li .total a{ font-weight: bold; text-decoration: none; }
+ul.stats li .total a:link,ul.stats li .total a:active,ul.stats li .total a:visited{ font-weight: bold; text-decoration: none; }
+ul.stats li .total a:hover{ font-weight: bold; text-decoration: none; color: #08b899; }
 ul.stats li .total span{ font-size: 11px; font-weight: normal; color: #999999; display: block; }
 /** END USER STATS **/
+/** COLLECTION PAGES **/
+.collection .product{
+	position: relative;
+	float: left;
+	clear: none;
+	height: 150px;
+	text-align: center;
+	padding: 0px 10px 0 10px;
+	margin: 0px 10px 25px 10px;
+	border-right: 1px solid #acacac;
+}
+.collection .product:last-child{ border-right: none; }
+.collection .product img.collection-product{ max-height: 100px !important; width: auto;}
+/** END COLLECTION PAGES **/

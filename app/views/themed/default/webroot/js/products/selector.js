@@ -310,11 +310,13 @@ function sizeScrollbar() {
 
 //reset slider value based on scroll content position
 function resetValue() {
-	var remainder = scrollPane.width() - scrollContent.width();
-	var leftVal = scrollContent.css( "margin-left" ) === "auto" ? 0 :
-		parseInt( scrollContent.css( "margin-left" ) );
-	var percentage = Math.round( leftVal / remainder * 100 );
-	scrollbar.slider( "value", percentage );
+	if(scrollPane){
+		var remainder = scrollPane.width() - scrollContent.width();
+		var leftVal = scrollContent.css( "margin-left" ) === "auto" ? 0 :
+			parseInt( scrollContent.css( "margin-left" ) );
+		var percentage = Math.round( leftVal / remainder * 100 );
+		scrollbar.slider( "value", percentage );
+	}
 }
 
 //if the slider is 100% and window gets larger, reveal content
