@@ -18,8 +18,22 @@ class FeedsController extends AppController {
 		parent::beforeFilter();
 		
 		//Make certain pages public
-		$this->Auth->allowedActions = array('user','getUsersFollowingFeedDataDetails');
+		$this->Auth->allowedActions = array('getUsersFollowingFeedDataDetails','site','getSiteFeedCount','getSiteFeed');
 		
+	}
+	
+	/**
+	 * Returns the site feed data
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function site(){
+		$feed = $this->getSiteFeed();
+		$num_items = $this->getSiteFeedCount();
+		$limit = 10;
+		
+		$this->set(compact('feed','num_items','limit'));
 	}
 	
 	/**
@@ -61,6 +75,28 @@ class FeedsController extends AppController {
 		$user_id = $this->Auth->user('id');
 		$following_user_ids = $this->Feed->User->getFollowingUserIds($user_id);
 		return $this->Feed->getFeedCount($following_user_ids);
+	}
+	
+	/**
+	 * Returns the total number of items in the site feed
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function getSiteFeedCount(){
+		return $this->Feed->getFeedCount();
+	}
+	
+	/**
+	 * Returns the feed data for the site
+	 * @param int user_id
+	 * @param offset
+	 * @return 
+	 * 
+	*/
+	public function getSiteFeed($offset=0){
+		$feed = $this->Feed->getSiteFeedDataDetails($offset);
+		return $feed;
 	}
 	
 	/**

@@ -163,26 +163,55 @@ class Feed extends AppModel {
 	}
 	
 	/**
-	 * Finds the feed data for a user.
-	 * @param int user_id
+	 * Finds the feed data for the site.
 	 * @param offset The offset to pull data from in the query
 	 * @return array data
 	 * 
 	*/
-	public function getUserFeedData($user_id=null,$offset=0){
+	public function getSiteFeedDataDetails($offset=0){
 		$this->recursive = -1;
-		$data = $this->find('all',array('conditions'=>array(
-															'Feed.user_id'=>$user_id
-															),
-															'order'=>array('Feed.created'=>'desc'),
-															'offset'=>$offset,
-															'limit'=>10
-															));
-		//debug($data);
-		return $data;
+		$site_feed = $this->getSiteFeedData($offset);
+		$site_feed_data = array();
+		foreach($site_feed as $feed_item){
+			$the_model = $feed_item['Feed']['model'];
+			switch($the_model){
+				
+				case "Ownership":
+					$temp_data = $this->getOwnershipFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+				
+				case "Vote":
+					$temp_data = $this->getVoteFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+					
+				case "Collection":
+					$temp_data = $this->getCollectionFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+				
+				case "Ufo":
+					$temp_data = $this->getUfoFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+					
+				case "Product":
+					$temp_data = $this->getProductFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+				
+				case "UserFollowing":
+					$temp_data = $this->getUserFollowingFeedData($feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+					
+				default:
+					$temp_data = $this->getStandardFeedData($the_model,$feed_item['Feed']['id'],$feed_item['Feed']['model_id']);
+					break;
+	
+			}
+			if(!empty($temp_data)){
+				$site_feed_data[] = $temp_data;
+			}
+		}
+		return $site_feed_data;
 	}
-	
-	
+		
 	/**
 	 * Finds the feed data for a user.
 	 * @param int user_id
@@ -291,6 +320,50 @@ class Feed extends AppModel {
 	}
 	
 	/**
+	 * Finds the feed data for the site.
+	 * @param int user_id
+	 * @param offset The offset to pull data from in the query
+	 * @return array data
+	 * 
+	*/
+	public function getSiteFeedData($offset=0){
+		$this->recursive = -1;
+		$data = $this->find('all',array(
+										'conditions'=>array(
+											'OR'=>array(
+												array('Feed.model'=>'Product'),
+												array('Feed.model'=>'Source')
+											)
+										),
+										'order'=>array('Feed.created'=>'desc'),
+										'offset'=>$offset,
+										'limit'=>10
+										)
+									);
+		return $data;
+	}
+	
+	/**
+	 * Finds the feed data for a user.
+	 * @param int user_id
+	 * @param offset The offset to pull data from in the query
+	 * @return array data
+	 * 
+	*/
+	public function getUserFeedData($user_id=null,$offset=0){
+		$this->recursive = -1;
+		$data = $this->find('all',array('conditions'=>array(
+															'Feed.user_id'=>$user_id
+															),
+															'order'=>array('Feed.created'=>'desc'),
+															'offset'=>$offset,
+															'limit'=>10
+															));
+		//debug($data);
+		return $data;
+	}
+	
+	/**
 	 * Find the data associated with a certain item.
 	 * @param string the_model The model to target
 	 * @param int feed_id The feed item id
@@ -344,15 +417,15 @@ class Feed extends AppModel {
 	*/
 	public function getUfoFeedData($feed_id=null,$model_id=null){
 		$data = $this->Ufo->find('first',array(
-														'conditions'=>array(
-																'Ufo.id'=>$model_id
-														),
-														'contain'=>array('Tag','User',
-																		'Feed'=>array('conditions'=>array('Feed.id'=>$feed_id)),
-																		'Vote'
-																		)
-														)
-													);
+												'conditions'=>array(
+													'Ufo.id'=>$model_id
+												),
+												'contain'=>array('Tag','User',
+																'Feed'=>array('conditions'=>array('Feed.id'=>$feed_id)),
+																'Vote'
+																)
+												)
+											);
 		return $data;
 	}
 	
@@ -451,10 +524,14 @@ class Feed extends AppModel {
 	*/
 	public function getFeedCount($user_ids=null){
 		$this->recursive = 1;
-		$count = $this->find('count',array('conditions'=>array(
-															'Feed.user_id'=>$user_ids
-															)
-															));
+		if(empty($user_ids)){
+			$count = $this->find('count');
+		}else{
+			$count = $this->find('count',array('conditions'=>array(
+																'Feed.user_id'=>$user_ids
+																)
+																));
+		}
 		return $count;
 	}
 	

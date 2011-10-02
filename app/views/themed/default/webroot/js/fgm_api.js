@@ -74,6 +74,12 @@ $(document).ready(function(){
 function fgm_api(){
 	
 	var follow_all_user_id_data;
+	var feed_num_items;
+	var feed_limit;
+	var feed_previous_loaded;
+	var feed_loading = false;
+	var feed_showing_end = false;
+	var is_empty_feed = 1;
 	
 	this.init = function() {
 		try {
@@ -81,6 +87,92 @@ function fgm_api(){
 		} catch(e) {
 			
 		}
+	};
+	
+	/**
+	 * Initializes the feed
+	 * @param int num_items
+	 * @param int limit
+	 * @param bool is_empty_feed
+	 * @return 
+	 * 
+	*/
+	this.feed_init = function(num_items,limit,is_empty_feed){
+		fgm_api.feed_num_items = this.num_items;
+		fgm_api.feed_limit = this.limit;
+		fgm_api.is_empty_feed = this.is_empty_feed;
+		
+		if(!fgm_api.is_empty_feed){
+			$(window).scroll(function(){
+				var position = ($(document).height() - $(window).height());
+				if(fgm_api.feed_previous_loaded < fgm_api.feed_num_items - fgm_api.feed_limit){
+					if($(window).scrollTop() == position){	 //If scrollbar is at the bottom
+						if(!fgm_api.feed_loading){
+							fgm_api.feed_loading = true;
+							var url = "/ajax/users/more_feed_data/"+fgm_api.feed_previous_loaded;
+							$.ajax({
+									url: url,
+									error: function(response, status, xhr) {
+													fgm_api.hideMoreLoader();
+													if (status == "error") {
+														var msg = "Sorry but there was an error: ";
+														$('#auto_pagination_loader_failure').show();
+														$('#auto_pagination_loader_loading').hide();
+														//alert(msg + xhr.status + " " + xhr.statusText);
+													}
+												},
+									beforeSend: fgm_api.showMoreLoader,
+									success:appendData,
+									dataType:'html'
+							});
+						}
+					}
+				}else{
+					if(!fgm_api.feed_showing_end){
+						fgm_api.feed_showing_end = true;
+						$("#grid-container").append("<div id='auto-pagination-finished'>There are no more items to load.</div>");
+					}
+				}
+			});
+		}
+	};
+	
+	/**
+	 * Handles hiding the welcome message on the moderate page
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	this.hideWelcome = function(data){
+		if(data.success){
+			$('.welcome').hide('slow');
+		}
+	};
+	
+	this.retry_auto_paginator_request = function(){
+		$.ajax({
+			success:function (data, textStatus) {
+				appendData(data);
+			}, 
+			url:"/ajax/users/more_feed_data/"+fgm_api.feed_previous_loaded
+		});
+		return false;
+	};
+
+	this.appendData = function(data){
+		//Hide the loader
+		fgm_api.hideMoreLoader();
+		$("#grid-container").append(data);
+		fgm_api.feed_previous_loaded += fgm_api.feed_limit;
+		fgm_api.feed_loading = false;
+	};
+
+	this.showMoreLoader = function(){
+		$("#auto-pagination-loader").show();
+	};
+
+	this.hideMoreLoader = function(){
+		$("#auto-pagination-loader").hide();
 	};
 	
 	//THE DOT

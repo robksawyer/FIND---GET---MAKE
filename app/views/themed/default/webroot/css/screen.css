@@ -963,16 +963,13 @@ ul.btn-actions{ position: relative; float: right; margin: 0; padding: 0; right: 
 	filter:alpha(opacity=75);
 }
 #auto-pagination-finished{
-	border-top: 1px solid #f7f7f7;
-	color: #999999;
-	width: 600px;
+	color: #c3c3c3;
 	display: block;
-	font-size: 34px;
+	font-size: 18px;
 	font-weight: bold;
-	padding: 25px 5px;
-	text-align: center;
+	padding: 0; margin: 50px 0 0 15px;
+	text-align: left;
 	text-decoration: none;
-	text-shadow: #e7e7e7 2px 2px 3px;
 }
 #user-feed { position: relative; margin-top: 10px; width: 600px; }
 #user-feed .grid-item{ width: 600px !important; }

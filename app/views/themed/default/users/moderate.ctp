@@ -9,7 +9,7 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 																			'class'=>'hide-welcome'
 																			)),'/ajax/users/hide_welcome',array(
 																													'escape'=>false,
-																													'success'=>'hideWelcome(data);'
+																													'success'=>'fgm_api.hideWelcome(data);'
 																													)); 
 	?>
 <h3>Hi <?php echo $user['User']['fullname']; ?>! Welcome to your space. Here you'll find all of the items that you've added to the system.</h3>
@@ -127,10 +127,3 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 	?>
 </div>
 <div class="clear"></div>
-<script type="text/javascript">
-function hideWelcome(data){
-	if(data.success){
-		$('.welcome').hide('slow');
-	}
-}
-</script>

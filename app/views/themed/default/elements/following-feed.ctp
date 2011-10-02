@@ -45,18 +45,8 @@
 					<span id="auto_pagination_loader_loading">
 						<div class="spinner"></div>
 					</span>
-					<span id="auto_pagination_loader_failure" style="display: none;">More items could not be loaded.&nbsp;<a href="#" onclick="retry_auto_paginator_request(); return false;">Try again</a>.</span>
+					<span id="auto_pagination_loader_failure" style="display: none;">More items could not be loaded.&nbsp;<a href="#" onclick="feed_api.retry_auto_paginator_request(); return false;">Try again</a>.</span>
 				</div>
-				<?php 
-					/*echo $this->Js->link('More',
-													'/ajax/users/more_feed_data/'.$limit,
-													array('title'=>'See more',
-															'id'=>'more-button',
-															//'beforeSend'=>'showMoreLoader',
-															'success'=>'appendData(data)'
-														)
-													);*/
-				?>
 			<?php
 			else:
 				echo "<p>There is no new feed data to review at this time. Please check back, I'm sure the people you follow will post something soon.</p>";
@@ -70,72 +60,7 @@
 <script type="text/javascript">
 var num_items = <?php echo $num_items; ?>;
 var limit = <?php echo $limit; ?>;
-var previous_loaded = limit;
-var loading = false;
-var showing_end = false;
-var empty_feed = <?php if(empty($feed)) echo 1; else echo 0; ?>;
+var is_empty_feed = <?php if(empty($feed)) echo 1; else echo 0; ?>;
 
-if(!empty_feed){
-	$(window).scroll(function(){
-		var position = ($(document).height() - $(window).height());
-		if(previous_loaded < num_items - limit){
-			if($(window).scrollTop() == position){	 //If scrollbar is at the bottom
-				if(!loading){
-					loading = true;
-					var url = "/ajax/users/more_feed_data/"+previous_loaded;
-					$.ajax({
-							url: url,
-							error: function(response, status, xhr) {
-											hideMoreLoader();
-											if (status == "error") {
-												var msg = "Sorry but there was an error: ";
-												$('#auto_pagination_loader_failure').show();
-												$('#auto_pagination_loader_loading').hide();
-												//alert(msg + xhr.status + " " + xhr.statusText);
-											}
-										},
-							beforeSend: showMoreLoader,
-							success:appendData,
-							dataType:'html'
-					});
-				}
-			}
-		}else{
-			if(!showing_end){
-				showing_end = true;
-				$("#grid-container").append("<div id='auto-pagination-finished'>There are no more items to load.</div>");
-			}
-		}
-	});
-}
-
-function retry_auto_paginator_request(){
-	$.ajax({
-		success:function (data, textStatus) {
-			appendData(data);
-		}, 
-		url:"/ajax/users/more_feed_data/"+previous_loaded
-	});
-	return false;
-}
-
-function appendData(data){
-	//Hide the loader
-	hideMoreLoader();
-	$("#grid-container").append(data);
-	//var grid_container = document.getElementById("grid-container");
-	//grid_container.innerHTML += data;
-	
-	previous_loaded += limit;
-	loading = false;
-}
-
-function showMoreLoader(){
-	$("#auto-pagination-loader").show();
-}
-
-function hideMoreLoader(){
-	$("#auto-pagination-loader").hide();
-}
-
+fgm_api.feed_init(num_items,limit,is_empty_feed); //Initialize the feed
 </script>
