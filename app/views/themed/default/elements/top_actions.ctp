@@ -18,8 +18,8 @@
 	echo $this->Html->css("popup/wide",'stylesheet',array('inline'=>false));
 	$controller = Inflector::pluralize(strtolower($model));
 ?>
+<?php if(!empty($authUser)): ?>
 <div class="top-actions">
-	<?php if(!empty($authUser)): ?>
 	<ul class="links">
 		<!-- PRIVATE -->
 		<?php if(!empty($item[$model]['private'])): ?>
@@ -146,10 +146,10 @@
 		?>
 		<!-- END STAFF FAVORITE -->
 	</ul>
-	<?php endif; ?>
 </div>
-<div class="clear"></div>
 <div>&mdash;</div>
+<div class="clear"></div>
+
 <!-- FLAG ITEMS MODAL CONTENT -->
 <div id="basic-modal-content">
 	<div class="wrapper">
@@ -187,3 +187,5 @@
 		});
 	});
 </script>
+
+<?php endif; ?>

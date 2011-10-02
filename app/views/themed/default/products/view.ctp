@@ -60,6 +60,7 @@
 				<?php if(!empty($product['Product']['description'])): ?>
 					<li class="description">
 					<?php echo $product['Product']['description']; ?>
+					<div class="mdash">&mdash;&mdash;</div>
 					</li>
 				<?php endif; ?>
 				<li class="designer">

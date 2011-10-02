@@ -1,4 +1,4 @@
-<div id="left-panel">
+<div id="block_1">
 	<div class="header profile">
 		<div class="user-details">
 			<div class="name">
@@ -21,8 +21,9 @@
 		</div>
 	</div>
 </div>
-<div id="right-panel">
-	<div class="header red">
+<div class="mdash">&mdash;&mdash;</div>
+<div id="block_2">
+	<h4>
 	<?php 
 		if(count($followers) > 1){
 			__(count($followers).' members are following '.$user['User']['username']);
@@ -30,7 +31,8 @@
 			__(count($followers).' member is following '.$user['User']['username']);
 		}
 	?>
-	</div>
+	</h4>
+	<div class="mdash">&mdash;</div>
 	<div class="clear"></div>
 	<div id="follower-following">
 		<?php if(!empty($followers)): ?>

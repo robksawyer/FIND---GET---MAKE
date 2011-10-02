@@ -1,6 +1,12 @@
+<?php if(empty($height)){ 
+	$height = 48; 
+	$width = $height; 
+} else { 
+	$width = $height; 
+} 
+?>
 <style type="text/css">
 	<?php 
-		if(empty($height)){ $height = 32; $width = height; } else { $width = $height; }
 		$unique_id = uniqid('avatar-'.$height.'-');
 	?>
 	#<?php echo $unique_id;?> img{ width: <?php echo $height; ?>px; height: <?php echo $height; ?>px; }

@@ -5,9 +5,11 @@ if(!empty($feed_item['Attachment'][0])):
 if(empty($action)) $action = 'view';
 if(empty($model)) $model = 'Product';
 if(empty($model_id)) $model_id = $feed_item[$model]['id'];
-$showLikeDislike = true;
+//$showLikeDislike = true;
+$showDot = false;
 
 if($model == "Product"){
+	$showDot = true;
 	$added_by = "Found by ";
 }else{
 	$added_by = "Added by ";
@@ -16,10 +18,8 @@ if($model == "Product"){
 ?>
 <div class='grid-item'>
 	<?php
-	/*
-		TODO Add a like/dislike button in this area. Or, possibly the rating.
-	*/
-	if($showLikeDislike) echo $this->element('feed-like-dislike',array('cache'=>false,'model'=>$model,'model_id'=>$model_id));
+	//if($showLikeDislike) echo $this->element('feed-like-dislike',array('cache'=>false,'model'=>$model,'model_id'=>$model_id));
+	if($showDot) echo $this->element('feed-dot',array('cache'=>false,'model'=>$model,'model_id'=>$model_id));
 	echo $this->Html->image($feed_item['Attachment'][0]['path'],array(
 																	'alt'=>$feed_item[$model]['name'],
 																	'title'=>$feed_item[$model]['name'],

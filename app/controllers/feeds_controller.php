@@ -23,56 +23,6 @@ class FeedsController extends AppController {
 	}
 	
 	/**
-	 * DEPRECATED: The Feed shows up on the moderate page.
-	 * Spits out the recent additions from user passed
-	 * @param string username 
-	 * @return 
-	 * 
-	*/
-	/*public function me(){
-		$user = $this->Auth->user();
-		$user = $this->Feed->User->read(null,$user['User']['id']);
-		//debug($user['UserFollowing']);
-		$user_ids = array();
-		$feed = array();
-		if(!empty($user)){
-			$feed = $this->Feed->User->getFeedDetails($user['User']['id']);
-			$this->set(compact('feed','user'));
-		}else{
-			$this->Session->setFlash(__('This is an invalid user.', true));
-			$this->redirect('/');
-		}
-	}*/
-	
-	/**
-	 * DEPRECATED: The Feed shows up on the profile page.
-	 * Spits out the recent additions from user passed
-	 * @param string username 
-	 * @return 
-	 * 
-	*/
-	/*public function user($username=null){
-		if(is_int($username)){
-			$id = $username;
-			$user = $this->Feed->User->read(null,$id);
-		}else{
-			$userTemp = $this->Feed->User->find('first',array('conditions'=>array('username'=>$username)));
-			$id = $userTemp['User']['id'];
-			$user = $this->Feed->User->read(null,$id);
-		}
-		//debug($user['UserFollowing']);
-		$user_ids = array();
-		$feed = array();
-		if(!empty($user)){
-			$feed = $this->Feed->User->getFeedDetails($user['User']['id']);
-			$this->set(compact('feed','user'));
-		}else{
-			$this->Session->setFlash(__('This is an invalid user.', true));
-			$this->redirect('/');
-		}
-	}*/
-	
-	/**
 	 * Spits out the recent additions from followed users
 	 * @param 
 	 * @return 

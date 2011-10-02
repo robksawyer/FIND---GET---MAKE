@@ -107,9 +107,16 @@ class StoragesController extends AppController {
 		if (!empty($this->params['requested'])) {
 			//Check to see if the user is storing this item
 			$user_id = $this->Auth->user('id');
-			$user = $this->Storage->User->find('first',array('conditions'=>array('User.id'=>$user_id),'contain'=>array('Storage')));
-			if(!empty($user['Storage'])){
-				if($user['Storage'][0]['model'] == $model && $user['Storage'][0]['model_id'] == $model_id){
+			$storageRecord = $this->Storage->find('first',array('conditions'=>array(
+															'AND'=>array(
+																array('Storage.user_id'=>$user_id),
+																array('Storage.model'=>$model),
+																array('Storage.model_id'=>$model_id)
+															)
+														)
+														));
+			if(!empty($storageRecord)){
+				if($storageRecord['Storage']['model'] == $model && $storageRecord['Storage']['model_id'] == $model_id){
 					//The user is storing this item.
 					return true;
 				}else{

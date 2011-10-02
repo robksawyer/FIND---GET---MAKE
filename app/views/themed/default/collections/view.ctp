@@ -34,7 +34,7 @@
 			if($collection['Collection']['total_products'] > 1) $ending = "products."; else $ending = "product.";
 			__($collection['Collection']['name']." <span class='includes'>includes ".$collection['Collection']['total_products']." ".$ending."</span>");
 			if(!empty($collection['Collection']['credit'])){
-				echo "<div class='credit'>&mdash;".$collection['Collection']['credit']."</div>";
+				echo "<div class='credit'>&mdash; ".$collection['Collection']['credit']."</div>";
 			}
 			?></h2>
 		<?php if(!empty($collection['Collection']['description'])): ?>
@@ -61,6 +61,7 @@
 		<?php echo $this->element('tags',array('model'=>$collection,'cache'=>false)); ?>
 	</div>
 </div>
+<div class="mdash">&mdash;&mdash;</div>
 <div class="related collection">
 	<?php
 		//Check to see if the inspiration is private. Make sure that the user who owns this isn't viewing it.
@@ -92,6 +93,11 @@ if(!empty($authUser)):
 	endif;
 endif; 
 ?>
+<div id="collection-comments" class="inner-block">
+	<?php
+		echo $this->element('comments',array('ajax'=>false,'cache'=>false));
+	?>
+</div>
 <?php if(!empty($authUser)): ?>
 <?php
 //PRODUCT SELECTOR
@@ -105,12 +111,6 @@ echo $this->element('product-selector',array(
 														'productList'=>$productList
 														));
 ?>
-<div id="collection-comments">
-<div>&mdash;</div>
-<?php
-	echo $this->element('comments',array('ajax'=>false,'cache'=>false));
-?>
-</div>
 <!-- preload the images -->
 <div style='display:none'>
 	<?php 

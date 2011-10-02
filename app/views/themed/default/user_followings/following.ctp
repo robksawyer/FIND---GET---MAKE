@@ -1,4 +1,4 @@
-<div id="left-panel">
+<div id="block_1">
 	<div class="header profile">
 		<div class="user-details">
 			<div class="name">
@@ -21,12 +21,14 @@
 		</div>
 	</div>
 </div>
-<div id="right-panel">
-	<div class="header red">
+<div class="mdash">&mdash;&mdash;</div>
+<div id="block_2">
+	<h4>
 	<?php 
 		__('Members '.$user['User']['username'].' is following');
 	?>
-	</div>
+	</h4>
+	<div class="mdash">&mdash;</div>
 	<div class="clear"></div>
 	<div id="follower-following">
 		<?php if(!empty($following)): ?>

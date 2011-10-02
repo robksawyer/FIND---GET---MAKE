@@ -550,54 +550,42 @@ ul.gridded_item_set li.item ul.grid_context_menu .dot{
 }
 /* END ITEM GRID */
 /* DOT */
-#block_1 .storage-dot{
-	position: relative;
-	display: block;
-	float: left;
-	margin: 0 0 0 25px;
-	width: 36px; height: 36px;
-}
+#block_1 .storage-dot{ position: relative; display: block; float: left; margin: 0 0 0 25px; width: 36px; height: 36px; }
 #block_1 .storage-dot span,
 #block_1 .storage-dot a,
 #block_1 .storage-dot .ajax-dot-status{
-	position: absolute;
-	top: 0; left: 0;
-	display: block;
-	z-index:1;
+	position: absolute; top: 0; left: 0;
+	display: block; z-index:1;
 	margin:0; padding:0;
 	width: 36px; height: 36px;
 	cursor: pointer;
 }
 #block_1 .storage-dot a:active,
-#block_1 .storage-dot a:link,
-#block_1 .storage-dot a:visited{
-	z-index: 2;
-	text-indent: -999em;
-	overflow: hidden;
-}
-#block_1 .storage-dot.storage-dot-add span{
-	background: transparent url('img/fgm_sprite.gif') -59px -67px no-repeat;
+#block_1 .storage-dot a:link, 
+#block_1 .storage-dot a:visited{ z-index: 2; text-indent: -999em; overflow: hidden; }
+#block_1 .storage-dot.storage-dot-add span{ background: transparent url('img/fgm_sprite.gif') -59px -67px no-repeat; margin:0; padding:0; overflow: hidden; }
+#block_1 .storage-dot.storage-dot-add:hover span{ background: transparent url('img/fgm_sprite.gif') -59px -106px no-repeat; overflow: hidden; }
+#block_1 .storage-dot.storage-dot-remove span{ background: transparent url('img/fgm_sprite.gif') -99px -67px no-repeat; margin:0; padding:0; overflow: hidden; }
+#block_1 .storage-dot.storage-dot-remove:hover span{ background: transparent url('img/fgm_sprite.gif') -99px -106px no-repeat; overflow: hidden; }
+#block_1 .storage-dot .ajax-dot-status{ z-index: 4; display: none; }
+#user-feed .storage-dot{ position: relative; display: block; float: right; margin: 0; width: 15px; height: 15px; }
+#user-feed .storage-dot span,
+#user-feed .storage-dot a,
+#user-feed .storage-dot .ajax-dot-status{
+	position: absolute; top: 0; left: 0;
+	display: block; z-index:1;
 	margin:0; padding:0;
-	overflow: hidden;
+	width: 15px; height: 15px;
+	cursor: pointer;
 }
-#block_1 .storage-dot.storage-dot-add:hover span{
-	background: transparent url('img/fgm_sprite.gif') -59px -106px no-repeat;
-	overflow: hidden;
-}
-
-#block_1 .storage-dot.storage-dot-remove span{
-	background: transparent url('img/fgm_sprite.gif') -99px -67px no-repeat;
-	margin:0; padding:0;
-	overflow: hidden;
-}
-#block_1 .storage-dot.storage-dot-remove:hover span{
-	background: transparent url('img/fgm_sprite.gif') -99px -106px no-repeat;
-	overflow: hidden;
-}
-#block_1 .storage-dot .ajax-dot-status{
-	z-index: 4;
-	display: none;
-}
+#user-feed .storage-dot a:active,
+#user-feed .storage-dot a:link, 
+#user-feed .storage-dot a:visited{ z-index: 2; text-indent: -999em; overflow: hidden; }
+#user-feed .storage-dot.storage-dot-add span{ background: transparent url('img/fgm_sprite.gif') -140px -70px no-repeat; margin:0; padding:0; overflow: hidden; }
+#user-feed .storage-dot.storage-dot-add:hover span{ background: transparent url('img/fgm_sprite.gif') -140px -85px no-repeat; overflow: hidden; }
+#user-feed .storage-dot.storage-dot-remove span{ background: transparent url('img/fgm_sprite.gif') -155px -70px no-repeat; margin:0; padding:0; overflow: hidden; }
+#user-feed .storage-dot.storage-dot-remove:hover span{ background: transparent url('img/fgm_sprite.gif') -155px -85px no-repeat; overflow: hidden; }
+#user-feed .storage-dot .ajax-dot-status{ z-index: 4; display: none; }
 /* END DOT */
 
 /** TAGS **/
@@ -629,6 +617,7 @@ ul.tags a:hover{text-decoration:none;background:none; color: #000; border-bottom
 /** END TAGS **/
 /** COMMENTS **/
 .comments{ position: relative; overflow: auto; margin: 5px 0 0 0;}
+.comments p{ margin: 5px 0 0 0; color: #666;}
 .comments #CommentAddForm{ width: 500px; }
 .comments #CommentBody { padding: 5px; width: 350px; }
 .comments textarea{ resize: none; }
@@ -825,7 +814,7 @@ div.attachments.view .attachments.box img{ /*max-width: 800px; max-height: 800px
 
 /* END FIND PEOPLE */
 /** PROFILE PAGES **/
-.profile { clear: both; padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px dotted #e7e7e7; }
+.profile { clear: both; padding: 0; margin: 0;}
 .profile button{ float: right; clear: both; cursor: pointer; margin: 0; }
 .profile .about{ padding: 10px 0; color: #999; }
 .profile .avatar{ display: inline-block; margin: 5px; width: 20%; padding-right: 10px; }
@@ -897,6 +886,11 @@ ul.btn-actions{ position: relative; float: right; margin: 0; padding: 0; right: 
 .user-block ul.item-details li a{ margin-right: 10px; vertical-align: middle; }
 .user-block ul.item-details li a:hover{ opacity:.75; filter:alpha(opacity=75); }
 /*** END STANDARD USER BLOCK ***/
+#block_1 .profile .user-details { overflow: auto;}
+#block_1 .profile .user-details .avatar{ float: left; width: auto; padding: 0; margin: 0 20px 0 0;}
+#block_1 .profile .user-details .avatar img{ padding: 0; margin: 0;}
+#block_1 .profile .user-details ul.follower-details{ float: left; padding: 0; margin: 0; }
+#block_1 .profile .user-details ul.follower-details li{ line-height: 14px; padding: 0; margin: 0; }
 #follow-all-btn { text-align: center; }
 #follow-all-btn a{
 	position: relative;
@@ -920,12 +914,7 @@ ul.btn-actions{ position: relative; float: right; margin: 0; padding: 0; right: 
 	float: left;
 }
 #follower-following .follower .avatar img{ padding-bottom: 5px; }
-#follower-following ul.follower-details{
-	position: relative;
-	font-size: 12px;
-	left: 10px;
-	color: #999;
-}
+#follower-following ul.follower-details{ position: relative; font-size: 12px; left: 10px; padding: 0; color: #999;}
 #follower-following a:link,
 #follower-following a:visited,
 #follower-following a:active{ font-weight: bold; color: #000000; }
@@ -1000,7 +989,7 @@ ul.btn-actions{ position: relative; float: right; margin: 0; padding: 0; right: 
 #user-feed .grid-item .voteblock ul li{ display: inline; padding: 0; margin: 0; }
 #user-feed .grid-item .added-by{ padding: 2px 0; }
 #user-feed .grid-item .title{ padding: 0px 0px 5px 0; }
-#user-feed .grid-item .feed-text-title{ font-size: 32px; text-decoration: none; }
+#user-feed .grid-item .feed-text-title{ font-size: 24px; text-decoration: none; }
 #user-feed .grid-item .feed-follower-title{
 	font-size: 13px;
 	text-decoration: none;
@@ -1017,7 +1006,7 @@ ul.btn-actions{ position: relative; float: right; margin: 0; padding: 0; right: 
 #user-feed .grid-item .feed-follower-title a:hover{ text-decoration: none; }
 #user-feed .grid-item .feed-text-title a{ font-weight: bold; text-decoration: none; }
 #user-feed .grid-item .text-title{ font-size: 14px; text-align: left; font-weight: bold; }
-#user-feed .grid-item .description{ text-align: left; padding-left: 5px; }
+#user-feed .grid-item .description{ text-align: left; }
 /** END USER FEED **/
 /** USER STATS **/
 ul.stats{
@@ -1092,7 +1081,7 @@ img.product-remove{
 #selectable .ui-selected, 
 #selectable .ui-selected img{  outline: 0; opacity:.75; border-color: #9bc204; filter:alpha(opacity=75); background: none; }
 #selectable img{ width: 100px; padding: 0; margin: 0; }
-#selectable {  list-style-type: none; margin: 0; padding: 0; }
+#selectable { list-style-type: none; margin: 0; padding: 0; }
 #selectable li.scroll-content-item { 
 	margin: 10px; 
 	padding: 5px; 
@@ -1117,3 +1106,21 @@ img.product-remove{
 .scroll-bar-wrap .ui-slider-handle .ui-icon { margin: -8px auto 0; position: relative; top: 50%; }
 /** END JQUERY UI **/
 /** END PRODUCT SELECTOR **/
+.followers{
+	position: relative; display: block;
+	padding: 10px 0; margin: 10px 0;
+	color: #BBBBBB;
+	font-size: 15px; font-weight: bold;
+	text-decoration: none; clear: both;
+}
+.followers .avatar { display: inline; margin: 0; padding: 0; }
+.followers .avatar img{
+	display: inline;
+	width: 24px; height: 24px;
+	padding: 1px; margin: 10px 0px 10px 0px;
+	border: 1px solid #999999;
+}
+.followers .avatar img:hover{ opacity:.60; filter:alpha(opacity=60); border: 1px solid #3bb796; }
+.followers .view-all{ position: relative; width: 250px; text-align: right; }
+.followers .view-all a{ color: #3bb796; font-size: 13px; font-weight: normal; text-decoration: none; text-align: right; }
+.followers a:hover{ color: #262626; }

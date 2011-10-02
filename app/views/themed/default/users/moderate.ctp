@@ -56,50 +56,16 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 				</ul>
 				<ul>
 					<li><?php echo $this->Html->link('View your public profile',array('plugin'=>'','admin'=>false,'controller'=>'users','action'=>'profile',$user['User']['username']),array('title'=>'View your public profile.')); ?></li>
-					<br/>
-					<!--<ul>
-						<li class="link">
-							<?php 
-							/* if(empty($user['User']['url'])):
-								echo $this->Html->link('Add more details about yourself.','/settings'); 
-							else:
-								echo "Website/Blog:".$this->Html->link($user['User']['url'],$user['User']['url'],array('target'=>'_blank')); 
-							endif; */
-							?>
-						</li>
-					</ul>-->
-					<?php //if (!empty($user['User']['about'])) { ?>
-					<!--<li class="about value"><?php //echo $user['User']['about']; ?></li>-->
-					<?php //} ?>
-					<?php
-						/*
-							TODO Count the likes of inspiraitons, sources, products, etc.
-							Build a page that lists all the user's likes
-						*/
-						$user_likes = $user['User']['totalProductLikes'];
-						$user_dislikes = $user['User']['totalProductDislikes'];
-
-						//debug($user['Ownership']);
-					?>
-					<!--<li>Member since: <span class='value'><?php //echo $this->Time->nice($user['User']['created'], $this->Cupcake->timezone()); ?></span></li>-->
 				</ul>
 			</div>
 		</div>
-		<div class="clear"></div>
+		<br class="clear" />
 		<div>
 			<?php 
 			if($authUser['User']['totalUsersFollowing'] > 1) $people = "people"; else $people = "person";
 			echo $this->Html->link("Following ".$authUser['User']['totalUsersFollowing']." $people",
 			array('controller'=>'user_followings','action'=>'following','admin'=>false,'plugin'=>'',$authUser['User']['username']),
 			array('title'=>'The users you are following','class'=>'simple-btn')); ?>
-		</div>
-		<div>
-		<?php 
-			if($user_likes > 1) $items_str = "items"; else $items_str = "item";
-			echo $this->Html->link("Likes ".$user_likes." $items_str",
-												array('plugin'=>'','admin'=>false,'controller'=>'votes','action'=>'likes',$user['User']['id']),
-												array('title'=>'Your likes','class'=>'simple-btn')
-												); ?>
 		</div>
 		<div class="followers">
 		<?php 
@@ -147,10 +113,6 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 				</div>
 			</li>
 			<li>
-				<div class='total'> 
-					<?php echo $this->Html->link($user_wants,array('plugin'=>'','admin'=>false,'controller'=>'ownerships','action'=>'wants',$user['User']['id'])); ?>
-					<span>wants</span>
-				</div> 
 				<div class='total'>
 					<?php echo $this->Html->link($user_haves,array('plugin'=>'','admin'=>false,'controller'=>'ownerships','action'=>'haves',$user['User']['id'])); ?>
 					<span>owned</span>

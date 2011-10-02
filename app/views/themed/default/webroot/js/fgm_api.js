@@ -505,7 +505,7 @@ function fgm_api(){
 		$('.vote-val-like').text(data.likes);
 		$('.vote-val-dislike').text(data.dislikes);
 		return 0;
-	}
+	};
 	
 	/**
 	* This method handles updating the like and dislike values in the view. 
@@ -524,7 +524,7 @@ function fgm_api(){
 
 		$('.vote-val-like-'+data.id).text(data.likes);
 		return 0;
-	}
+	};
 	
 	/**
 	 * Submits the like for the user
@@ -544,7 +544,7 @@ function fgm_api(){
 			url:"\/ajax\/votes\/vote_up\/"+model+"\/"+model_id
 		});
 		return false;
-	}
+	};
 
 	/**
 	 * Submits the dislike for the user
@@ -564,7 +564,27 @@ function fgm_api(){
 			url:"\/ajax\/votes\/vote_down\/"+model+"\/"+model_id
 		});
 		return false;
-	}
+	};
+	
+	/**
+	 * Submits an item to the storage from the feed
+	 * @param string model
+	 * @param int model_id
+	 * @return 
+	 * 
+	*/
+	this.storage_submit = function(model, model_id){
+		$.ajax({
+			beforeSend:function (XMLHttpRequest) {
+				fgm_api.showDotLoader("source-369","-green");
+			}, 
+			success:function (data, textStatus) {
+				fgm_api.updateDotLink(data);
+			}, 
+			url:"\/ajax\/storages\/toggle\/"+model+"\/"+model_id
+		});
+		return false;
+	};
 	
 	//Initialize The FIND|GET|MAKE Finder
 	this.init();

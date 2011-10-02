@@ -1,18 +1,18 @@
 <?php
 if(empty($action)) $action = 'view';
 if(empty($model_id)) $model_id = $feed_item[$model]['id'];
-if($model == "Source"){
-	$showLikeDislike = true;
+/*if($model == "Source"){
+	$showDot = true;
 }else{
-	$showLikeDislike = false;
-}
+	$showDot = false;
+}*/
 ?>
 <div class='grid-item'>
 	<?php
 	/*
 		TODO Add a like/dislike button in this area. Or, possibly the rating.
 	*/
-	if($showLikeDislike) echo $this->element('feed-like-dislike',array('cache'=>false,'model'=>$model,'model_id'=>$model_id));
+	//if($showDot) echo $this->element('feed-dot',array('cache'=>false,'model'=>$model,'model_id'=>$model_id));
 	?>
 	<div class="feed-text-title"><?php echo $this->Html->link($feed_item[$model]['name'],array('controller'=>$controller,
 																												'action'=>$action,
