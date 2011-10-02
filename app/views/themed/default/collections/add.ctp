@@ -27,21 +27,6 @@
 		//echo $this->element('add_product',array(''));
 		
 	?>
-		<div class="side-by-side clearfix"><div>
-		<fieldset class="checkboxes">
-			<legend class="">Products</legend>
-			<?php
-				echo $this->Form->input('Product',array(
-																	'label'=>'',
-																	'type' => 'select', 
-																	'multiple' => 'multiple',
-																	'options' => $products,
-																	'class'=>'chzn-select'
-																	)
-																);
-			?>
-		</fieldset>
-		</div></div>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>
 </div>

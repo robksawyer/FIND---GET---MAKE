@@ -155,11 +155,15 @@ class InspirationsController extends AppController {
 		
 		$countries = $this->Inspiration->Country->find('list');
 		$sources = $this->Inspiration->Source->find('list');
-		$products = $this->Inspiration->Product->getList();
-		$productsAll = $this->Inspiration->Product->getProductSelectorData();
+		$user_id = $this->Auth->user('id');
+		if(!empty($user_id)){
+			$products = $this->Inspiration->Product->getList($user_id);
+			$productsAll = $this->Inspiration->Product->getProductSelectorData($user_id);
+			$this->set(compact('products','productsAll'));
+		}
 		//$productList = $this->Inspiration->Product->getList();
 
-		$this->set(compact('inspiration','sources','products','countries','productsAll'));
+		$this->set(compact('inspiration','sources','countries'));
 		
 	}
 

@@ -5,8 +5,7 @@
 	<?php
 		echo $this->element('top_actions',array('item'=>$inspiration,'model'=>'Inspiration','rate'=>true,'cache'=>false));
 	?>
-	<!-- START LEFT CONTAINER -->
-	<div id="left-container">
+	<div id="block_1">
 		<!--- TAGGABLE IMAGE SECTION -->
 		<div id="taggable-image">
 			<?php 
@@ -18,18 +17,11 @@
 				}
 				echo $this->element('taggable_image',array('inspiration'=>$inspiration,'disableTagging'=>$disableTagging)); 
 			?>
-			<div class="source">
-				<?php echo $this->Html->link('Source',$inspiration['Inspiration']['source_url'],array('target'=>'_blank')); ?>
-				&nbsp;
-			</div>
 		</div>
 		<!--- END TAGGABLE IMAGE SECTION -->
 		<div class="clear"></div>
 	</div>
-	<!-- END LEFT CONTAINER -->
-	
-	<!-- START RIGHT CONTAINER -->
-	<div id="right-container">
+	<div id="block_2">
 		<!--- DETAILS SECTION -->
 		<div class="details">
 			<div id="responseSuccess" class="message" style="display: none"></div>
@@ -89,11 +81,20 @@
 				</li>
 				<?php endif; ?>
 				<li class="description"><?php if(!empty($inspiration['Inspiration']['description'])) echo $inspiration['Inspiration']['description']; ?></li>
-				<div class="clear"></div>
 			</ul>
+			<div class="added-by">
+				<?php
+					echo $this->element('avatar',array('cache'=>false,'user'=>$inspiration,'height'=>'20'));
+			 		echo "Added by ".$this->Html->link($inspiration['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$inspiration['User']['username'])); 
+				?>
+			</div>
 		</div>
 		<!--- END DETAILS SECTION -->
-		<div class="clear"></div>
+		<br class="clear" />
+		<ul>
+			<li class="view-actions">
+		<?php echo $this->Html->link('Source',$inspiration['Inspiration']['source_url'],array('target'=>'_blank')); ?>
+			<span class="list-sep">|</span>
 		<?php 
 			echo $this->element('share-buttons',array('controller'=>'inspirations',
 																	'keycode'=>$inspiration['Inspiration']['keycode'],
@@ -105,28 +106,13 @@
 																	'cache'=>false
 																	));
 		?>
+			</li>
+		</ul>
+		<br class="clear" />
 		<?php echo $this->element('tags',array('model'=>$inspiration,'cache'=>false)); ?>
-		<div class="clear"></div>
-	</div>
-	<!-- END RIGHT CONTAINER -->
-	
-	<div id="right-sidebar">
-		<?php
-		echo $this->element('like-dislike',array('model_id'=>$inspiration['Inspiration']['id'],
-																'model'=>'Inspiration',
-																'cache'=>false
-																));
-		?>
-		<div class="added-by" style="text-align:center">
-			<?php
-				echo $this->element('avatar',array('cache'=>false,'user'=>$inspiration,'height'=>'32'));
-		 		echo "Added by ".$this->Html->link($inspiration['User']['username'],array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$inspiration['User']['username'])); 
-			?>
-		</div>
 	</div>
 </div>
-<div class="clear"></div>
-<div class="bar">&nbsp;</div>
+<div>&mdash;</div>
 <?php
 	//PRODUCTS IN THE INSPIRATION
 	if(!empty($productsAll) && !empty($products)){
@@ -151,8 +137,8 @@
 		$this->log('You did not set the products or product list values.');
 	}
 ?>
-<div class="clear"></div>
-<div class="bar">&nbsp;</div>
+<br class="clear" />
+<div>&mdash;</div>
 <?php
 	//SOURCES
 	if($inspiration['Inspiration']['private'] == 1 && $inspiration['Inspiration']['user_id'] != $authUser['User']['id']){
@@ -160,35 +146,13 @@
 	}else{
 		$disableSourceAdding = false;
 	}
-	echo $this->element('sources',array('item'=>$inspiration,
+	echo $this->element('inspiration_sources',array('item'=>$inspiration,
 													'model'=>'Inspiration',
 													'disableAdding'=>$disableSourceAdding,
+													'title'=>'Sources in the inspiration',
 													'cache'=>false
 													));
 ?>
-<div class="clear"></div>
-<div class="bar">&nbsp;</div>
-<?php
-	//ATTACHMENTS
-	//Check to see if the inspiration is private. Make sure that the user who owns this isn't viewing it.
-	if($inspiration['Inspiration']['private'] == 1 && $inspiration['Inspiration']['user_id'] != $authUser['User']['id']){
-		$disableAttachmentAdding = true;
-		$disableAttachmentDeleting = true;
-	}else{
-		$disableAttachmentAdding = false;
-		$disableAttachmentDeleting = false;
-	}
-	echo $this->element('attachments',array('item'=>$inspiration,
-														'model'=>'Inspiration',
-														'controller'=>'inspirations',
-														'disableAdding'=>$disableAttachmentAdding,
-														'disableDeleting'=>$disableAttachmentDeleting,
-														'removeFirst'=>true,
-														'cache'=>false
-														));
-?>
-<div class="clear"></div>
-<div class="bar">&nbsp;</div>
 <div id="inspiration-comments">
 <div>&mdash;</div>
 <?php

@@ -11,23 +11,23 @@
  * Revision: $Id: basic.css 257 2010-07-27 23:06:56Z emartin24 $
  */
 
-#product-selector-modal-content {display:none;}
+#product-selector-modal-content { display:none; }
 
 /* Overlay */
-#productselector-overlay {background-color:#000; cursor:wait;}
+#productselector-overlay {background-color:#ffffff; cursor:wait;}
 
 /* Container */
 #productselector-container {
 	height:475px; 
 	width:600px; 
-	color:#bbb; 
-	background-color:#333; 
+	color:#000000; 
+	background-color:#ffffff; 
 	border:4px solid #444; 
 	padding:12px;
 }
-#productselector-container .productselector-data {padding:8px;}
-#productselector-container code {background:#141414; border-left:3px solid #65B43D; color:#bbb; display:block; font-size:12px; margin-bottom:12px; padding:4px 6px 6px;}
-#productselector-container a {color:#ddd;}
+#productselector-container .productselector-data { padding:8px; }
+#productselector-container code { background:#141414; border-left:3px solid #65B43D; color:#bbb; display:block; font-size:12px; margin-bottom:12px; padding:4px 6px 6px; }
+#productselector-container a { color:#ddd; }
 #productselector-container a.modalCloseImg {
 	background:url('/theme/default/img/modal/x.png') top right no-repeat; 
 	width:25px; height:29px; 
@@ -40,24 +40,5 @@
 #productselector-container a.modalCloseImg:hover{
 	background:url('/theme/default/img/modal/x_on.png') top right no-repeat;
 }
-#productselector-container h3 { 
-	color:#ef3f23 !important; 
-	border-bottom: 3px solid #ef3f23; 
-	text-transform: lowercase; 
-	width: auto;
-	float: left;
-	clear: both;
-	margin-bottom: 25px;
-	padding-bottom: 3px;
-}
-#basic-modal-content p{
-	padding: 0;
-	margin: 0;
-	width: 100%;
-	clear: both;
-}
-
 /** PRODUCT SELECTOR MODAL **/
-
-
 /** END PRODUCT SELECTOR MODAL **/

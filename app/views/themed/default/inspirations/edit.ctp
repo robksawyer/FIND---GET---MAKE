@@ -53,48 +53,6 @@
 		echo $this->Form->input('country_id',array('empty' => '-- Select a Country --','class'=>'chzn-select'));
 	?>
 	</fieldset>
-	<div class="side-by-side clearfix"><div>
-	<fieldset class="checkboxes">
-		<legend>Sources</legend>
-		<?php
-			/*echo $this->Form->input('Source',array(
-																'label'=>'',
-																'type' => 'select', 
-																'multiple' => 'checkbox',
-																'options' => $sources
-																)
-															);*/
-			echo $this->Form->input('Source',array(
-																'label'=>'',
-																'type' => 'select', 
-																'multiple' => 'multiple',
-																'options' => $sources,
-																'class'=>'chzn-select'
-																)
-															);
-		?>
-	</fieldset>
-	<fieldset class="checkboxes">
-		<legend>Products</legend>
-		<?php
-			/*echo $this->Form->input('Product',array(
-																'label'=>'',
-																'type' => 'select', 
-																'multiple' => 'checkbox',
-																'options' => $products
-																)
-															);*/
-			echo $this->Form->input('Product',array(
-																'label'=>'',
-																'type' => 'select', 
-																'multiple' => 'multiple',
-																'options' => $products,
-																'class'=>'chzn-select'
-																)
-															);
-		?>
-	</fieldset>
-	</div></div>
 <?php echo $this->Form->end(__('Submit', true));?>
 </div>
 <script type="text/javascript">

@@ -22,23 +22,7 @@
 		echo $this->Form->input('description');
 		echo '<div id="charlimitinfo">You have 300 characters left.</div>';
 		echo $this->Form->input('tags',array('type'=>'text','label'=>'Keywords','after'=>'<div class="extra">Separate each keyword with a comma e.g., modern, red, furniture.</div>'));
-		//echo $this->Form->input('Product',array('after'=>'<div class="extra">Select one or more (hold SHIFT) of the products below to add them to the collection. Hold COMMAND and click to remove a selection.</div>'));
 	?>
-		<div class="side-by-side clearfix"><div>
-		<fieldset class="checkboxes">
-			<legend class="">Products</legend>
-			<?php
-				echo $this->Form->input('Product',array(
-																	'label'=>'',
-																	'type' => 'select', 
-																	'multiple' => 'multiple',
-																	'options' => $products,
-																	'class'=>'chzn-select'
-																	)
-																);
-			?>
-		</fieldset>
-		</div></div>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>
 </div>

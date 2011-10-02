@@ -199,7 +199,7 @@ class Inspiration extends AppModel {
 										'contain'=>array(
 														'User','Attachment','InspirationPhotoTag',
 														'Tag','Source'=>array('SourceCategory'),'Vote','Country',
-														'Product'=>array('Attachment')
+														'Product'=>array('Attachment','Source'=>array('SourceCategory'))
 														)
 										)
 									);

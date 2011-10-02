@@ -291,14 +291,15 @@ class Product extends AppModel {
 	
 	/**
 	 * Get all of the data needed for the product selector
-	 * @param 
+	 * @param int user_id The user is to pull data for
 	 * @return 
 	 * 
 	*/
-	function getProductSelectorData(){
+	function getProductSelectorData($user_id=null){
 		$this->recursive = 1;
 		$products = $this->find('all',
 						array(
+							'conditions'=>array('Product.user_id'=>$user_id),
 							'order' => array('Product.created DESC'),
 							'contain'=>array('Attachment')
 							//'limit'=>25
@@ -311,12 +312,13 @@ class Product extends AppModel {
 	
 	/**
 	 * Get all of the products in the system in list form
-	 * @param 
+	 * @param int user_id The user is to pull data for
 	 * @return 
 	 * 
 	*/
-	function getList(){
+	function getList($user_id=null){
 		$products = $this->find('list',array(
+											'conditions'=>array('Product.user_id'=>$user_id),
 											'order' => array('Product.created DESC'),
 											'recursive'=>1
 											)

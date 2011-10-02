@@ -1,11 +1,7 @@
 <?php
 	//CSS
-	echo $this->Html->css('elements/product-selector','stylesheet',array('inline'=>false));
+	//echo $this->Html->css('elements/product-selector','stylesheet',array('inline'=>false));
 	echo $this->Html->css('modal/productselector','stylesheet',array('inline'=>false));
-	//JS
-	//echo $this->Html->script('inspirations/product-selector',array('inline'=>false));
-	echo $this->Html->script('products/selector',array('inline'=>false));
-	//echo $this->Html->script('modal/jquery.productselectormodal.min',array('inline'=>false));
 	
 	//Get all of the products in the system and create a JSON array of these objects
 	//Pass along the id so that only the items that aren't already added can be added.
@@ -80,8 +76,7 @@
 <!-- PRODUCT SELECTOR MODAL CONTENT -->
 <div id="product-selector-modal-content" style="display:none">
 	<h3>Add Existing Products</h3>
-	<div class="clear"></div>
-	<p>Select products below to add them. Hold down [command] to select multiple options and [option] to remove a selection.</p>
+	<h4>Select products below to add them. Hold down [command] to select multiple options and [option] to remove a selection.</h4>
 	<div id="model-content-products">
 	</div>
 </div>
@@ -92,6 +87,9 @@
 		echo $this->Html->image('/img/modal/x_on.png',array('alt'=>'Close')); 
 	?>
 </div>
+<?php
+	echo $this->Html->script('fgm_product_selector',array('inline'=>false));
+?>
 <!-- END PRODUCT SELECTOR MODAL CONTENT -->
 <script type="text/javascript">
 	var local_products = <?php echo $jsonProducts; ?>;
@@ -163,20 +161,16 @@
 																		closeClass: 'productselector-close',
 																		onShow:function(){
 																			if(local_products){
-																				setProducts(local_model, local_controller, local_id,local_products,local_productOptions); //Setup the products
+																				fgm_product_selector.setProducts(local_model, local_controller, local_id,local_products,local_productOptions); //Setup the products
 																			}else{
 																				alert("ERROR: The products haven't been set.")
 																			}
 
 																			//Init
-																			product_selector_init(local_scrollContentWidth);
+																			fgm_product_selector.init(local_scrollContentWidth);
 																			//resetSelector();
 																		}
 																	});
-			if(!selector_activated){
-				//Loads only once, when the modal is opened.
-				selector_activated = true;
-			}
 			return false;
 		});
 	});

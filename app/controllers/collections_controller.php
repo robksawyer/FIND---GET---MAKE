@@ -157,12 +157,15 @@ class CollectionsController extends AppController {
 		//Initialize the Source model because it's not a part of the collection. 
 		//This is used in the add form that's in the element.
 		$sourceList = ClassRegistry::init('Source')->getList(); 
-		
-		$productList = $this->Collection->Product->getList();
-		$products = $this->Collection->Product->getProductSelectorData();
+		$user_id = $this->Auth->user('id');
+		if(!empty($user_id)){
+			$products = $this->Collection->Product->getProductSelectorData($user_id);
+			$productList = $this->Collection->Product->getList($user_id);
+			$this->set(compact('products','productList'));
+		}
 		$collection = $this->Collection->getViewData($id);
 		$this->set("title_for_layout", "Collection : ".$collection['Collection']['name']);
-		$this->set(compact('collection','productCategoryList','sourceList','products','productList'));
+		$this->set(compact('collection','productCategoryList','sourceList'));
 	}
 	
 	/**

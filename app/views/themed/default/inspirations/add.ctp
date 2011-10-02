@@ -1,7 +1,4 @@
 <div class="inspirations form">
-	<p class="description">
-		An inspiration is an image that contains multiple sources. You should be able to add an image from anywhere and select multiple sources that are inside of the piece of inspiration. 
-	</p>
 <?php echo $this->Form->create('Inspiration',array('type' => 'file'));?>
 	<fieldset>
 		<legend><?php __('Add Inspiration'); ?></legend>
@@ -42,49 +39,6 @@
 		echo '</div></div>';
 	?>
 	</fieldset>
-	<div class="side-by-side clearfix"><div>
-	<fieldset class="checkboxes">
-		<legend class="">Sources</legend>
-		<?php
-			/*echo $this->Form->input('Source',array(
-																'label'=>'',
-																'type' => 'select', 
-																'multiple' => 'checkbox',
-																'options' => $sources
-																)
-															);*/
-
-			echo $this->Form->input('Source',array(
-																'label'=>'',
-																'type' => 'select', 
-																'multiple' => 'multiple',
-																'options' => $sources,
-																'class'=>'chzn-select'
-																)
-															);
-		?>
-	</fieldset>
-	<fieldset class="checkboxes">
-		<legend class="">Products</legend>
-		<?php
-			/*echo $this->Form->input('Product',array(
-																'label'=>'',
-																'type' => 'select', 
-																'multiple' => 'checkbox',
-																'options' => $products
-																)
-															);*/
-			echo $this->Form->input('Product',array(
-																'label'=>'',
-																'type' => 'select', 
-																'multiple' => 'multiple',
-																'options' => $products,
-																'class'=>'chzn-select'
-																)
-															);
-		?>
-	</fieldset>
-	</div></div>
 <?php echo $this->Form->end(__('Submit', true));?>
 </div>
 <script type="text/javascript">

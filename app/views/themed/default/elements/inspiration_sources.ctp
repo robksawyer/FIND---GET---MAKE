@@ -4,7 +4,7 @@
 	<?php else: ?>
 		<h4><?php __('Sources');?></h4>
 	<?php endif; ?>
-	<?php if (!empty($item['Source'])):?>
+	<?php if(!empty($item['Product'])): ?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php __('Name'); ?></th>
@@ -17,12 +17,14 @@
 	</tr>
 	<?php
 		$i = 0;
-		foreach ($item['Source'] as $source):
-			$class = null;
-			if ($i++ % 2 == 0) {
-				$class = ' class="altrow"';
-			}
-			//debug($source);
+		foreach ($item['Product'] as $source):
+			$source = $source['Source'];
+			if(!empty($source['id'])):
+				$class = null;
+				if ($i++ % 2 == 0) {
+					$class = ' class="altrow"';
+				}
+				//debug($source);
 		?>
 		<tr<?php echo $class;?>>
 			<td><?php 
@@ -53,24 +55,18 @@
 			<td><?php //echo $source['Country']['name'];?></td>-->
 			<td><?php echo $this->Html->link($source['url'],$source['url'],array('target'=>'_blank'));?></td>
 		</tr>
-	<?php endforeach; ?>
+	<?php 
+			endif;
+		endforeach; 
+	?>
 	</table>
 <?php else: ?>
 	<div class="empty">There are no sources attached to this inspiration.</div>
 <?php endif; ?>
 <?php 
-	if($this->params['action'] == 'view' && $this->params['controller'] == 'inspirations'):
-		if(empty($item['Source'])):
-?>
-			<p>If you add sources, you can tag the image with your sources.</p>
-<?php 
-	endif;
-endif; 
-?>
-	<?php 
 	$disableAdding = true;
 	if(empty($disableAdding)): 
-	?>
+?>
 	<div class="actions">
 		<ul>
 			<li><?php echo $this->Html->link(__('New Source', true), array('controller'=>'sources', 'action' => 'add','model'=>$model,'id'=>$item[$model]['id'],'admin'=>true));?> </li>

@@ -1,11 +1,11 @@
 <?php
-	echo $this->Html->css('elements/products','stylesheet',array('inline'=>false));
+	//echo $this->Html->css('elements/products','stylesheet',array('inline'=>false));
 	
 	//Make the controller name
 	$controller = strtolower(Inflector::pluralize($model));
 ?>
 <div id="products-group">
-	<h3 class="header"><?php __('Products');?></h3>
+	<h4><?php __('Products in the inspiration');?></h4>
 	<?php if(!empty($item['Product'])):?>
 		<div class="products">
 		<?php
@@ -26,38 +26,41 @@
 																								));
 						echo "<br/>";
 						endif;
-						if(!empty($product['Attachment'][0]['path_small'])){
+						if(!empty($product['Attachment'][0]['path_med'])){
 							if(empty($client)){
-								echo $this->Html->image($product['Attachment'][0]['path_small'],
+								echo $this->Html->image($product['Attachment'][0]['path_med'],
 																array(
 																	'alt'=>'product_'.$i,
 																	'url'=>array(
 																	'controller'=>'products',
 																	'action'=>'view',$product['id']
 																	),
-																	'title'=>strval($product['description'])
+																	'title'=>strval($product['description']),
+																	'class'=>'product'
 																	));
 							}else{
 								//Check for a keycode
 								if(empty($product['keycode'])){
-									echo $this->Html->image($product['Attachment'][0]['path_small'],
+									echo $this->Html->image($product['Attachment'][0]['path_med'],
 																	array(
 																		'alt'=>'product_'.$i,
 																		'url'=>array(
 																		'controller'=>'products',
 																		'action'=>'generateKeycode',$product['id']
 																		),
-																		'title'=>strval($product['description'])
+																		'title'=>strval($product['description']),
+																		'class'=>'product'
 																		));
 								}else{
-									echo $this->Html->image($product['Attachment'][0]['path_small'],
+									echo $this->Html->image($product['Attachment'][0]['path_med'],
 																	array(
 																		'alt'=>'product_'.$i,
 																		'url'=>array(
 																		'controller'=>'products',
 																		'action'=>'key',$product['keycode']
 																		),
-																		'title'=>strval($product['description'])
+																		'title'=>strval($product['description']),
+																		'class'=>'product'
 																		));
 								}
 							}
@@ -70,20 +73,19 @@
 						echo $this->Html->link($product['name'],array('controller'=>'products','action'=>'view',$product['id']),array('title'=>$product['description']));
 						?>
 				</div>
-				<div class="clear"></div>
 			</div>
 		<?php endforeach; ?>
-		<div class="clear"></div>
+		<br class="clear" />
 		</div>
 <?php else: ?>
 	<p>If you add products, you can tag the image with your products.</p>
 <?php endif; ?>
 <?php if(!empty($authUser) && empty($disableAdding)): ?>
+	
 	<div class="actions">
 		<ul>
-			<li><?php echo $this->Html->link(__('Add Product', true), array('controller' => 'products', 'action' => 'add','model'=>$model,'id'=>$item[$model]['id'],'admin'=>true));?> </li>
 		<?php if(!empty($controller) && !empty($model)): ?>
-			<li><?php echo $this->Html->link(__('Add Existing Product', true),'javascript:return false;',array('class'=>'button product-selector-modal-button')); ?></li>
+			<li><?php echo $this->Html->link(__('Add Existing Product', true),'javascript:return false;',array('class'=>'product-selector-modal-button')); ?></li>
 			<?php endif; ?>
 		</ul>
 	</div>

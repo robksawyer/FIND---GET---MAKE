@@ -13,9 +13,9 @@ echo $this->Html->script('jquery.phototagging',array('inline'=>false));
 <?php
 	$testing = false;
 	//Load the options list with sources and products
-	foreach($inspiration['Source'] as $source){
+	/*foreach($inspiration['Source'] as $source){
 		$source_options["source_".$source['id']."_".$source['name']] = $source['name'];
-	}
+	}*/
 	
 	foreach($inspiration['Product'] as $product){
 		$product_options["product_".$product['id']."_".$product['name']] = $product['name'];
@@ -55,7 +55,7 @@ echo $this->Html->script('jquery.phototagging',array('inline'=>false));
 				if(empty($product_options)) $product_options = array();
 				echo $this->Form->select('name',
 												array(
-														'Sources'=>$source_options,
+														//'Sources'=>$source_options,
 														'Products'=>$product_options
 												),
 												array('class'=>'name','label'=>'Tag Name')

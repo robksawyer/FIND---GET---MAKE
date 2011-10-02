@@ -1,16 +1,16 @@
-#products-group{ position: relative; float: left; margin: 5px 0 0 0; padding: 0px; width: 100%; }
-#products-group div.products{ width: 100%; padding: 0; margin: 0; text-align: left; border-top: 1px solid #ccc; }
+#products-group{ position: relative; margin: 5px 0 0 0; padding: 0px; width: 100%; overflow: auto; }
+#products-group div.products{ width: 100%; padding: 0; margin: 0; text-align: left; }
 #products-group div.products .product{
-	position: relative; float: left; display: block;
-	margin: 10px; padding: 10px;
-	border: 1px solid #e7e7e7;
-	text-align: center;
+	position: relative; float: left; 
+	display: block; text-align: center;
+	margin: 10px 10px 20px 0; padding: 0 10px 0 10px;
+	overflow: auto;
 }
-#products-group div.products .product:hover{ border: 1px solid #666666; }
-#products-group div.products .product .section{ margin: 0; }
+#products-group div.products .product:hover{ }
+#products-group div.products .product .section{ padding: 0; margin: 0; }
 #products-group div.products .product .section img.product{
-	height: 100px; width: auto;
-	padding: 0; margin: 0;
+	height: 150px; width: auto;
+	padding: 0; margin: 0 0 10px 0;
 	text-align: center;
 }
 #products-group div.products .product .section a{ padding: 0; margin: 0; text-align: center; }
