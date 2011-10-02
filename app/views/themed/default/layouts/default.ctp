@@ -179,5 +179,13 @@
 		</div><!-- close div#wrapper_extra -->
 		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
 	</body>
-	<?php echo $this->Facebook->init(); ?>
+	<?php 
+		echo $this->Facebook->init(); 
+	?>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
+			fgm_api.setSiteUrl(currentSiteAddress);
+		});
+	</script>
 </html>

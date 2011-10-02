@@ -72,7 +72,7 @@ $(document).ready(function(){
  * 
 */
 function fgm_api(){
-	
+	var currentSiteAddress;
 	var follow_all_user_id_data;
 	var feed_num_items;
 	var feed_limit;
@@ -90,6 +90,79 @@ function fgm_api(){
 	};
 	
 	/**
+	 * Set the current site url
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	this.setSiteUrl = function(url){
+		fgm_api.currentSiteAddress = url;
+	}
+	
+	/**
+	 * Initializes the main nav
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	this.nav_init = function(){
+		var navRoot = document.getElementById("main-nav");
+		var navChildren = document.getElementById("main-nav").getElementsByTagName("li");
+		for (var i=0; i<navChildren.length; i++) {
+			navChildren[i].onmouseover=function() {
+				this.className+=" fgm_hover";
+			}
+			navChildren[i].onmouseout=function() {
+				this.className=this.className.replace(new RegExp(" fgm_hover\\b"), "");
+			}
+		}
+	}
+	
+	this.init_social_services = function(){
+		//Setup the popup window profile
+		var profiles = {
+			windowCenter:{
+				height:500,
+				width:800, 
+				center:1, 
+				onUnload:fgm_api.unloadedTwitterPopup,
+				center: 1
+			}
+		}
+
+		//Make the popup window
+		$.getJSON(currentSiteAddress+'/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
+	   	$('#twitter-login-wrap #btn-twitter').attr('href', data.url);
+			$('#twitter-login-wrap #btn-twitter').attr('rel','windowCenter');
+			$('#twitter-login-wrap #btn-twitter').show();
+	   	$('#twitter-login-wrap .loading').hide();
+			$('.popupwindow').popupwindow(profiles);
+	   });
+	}
+	
+	/**
+	 * Unloads the Twitter popup window
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	this.unloadedTwitterPopup = function(){
+		//Redirect the user to the signup page and continue the process
+		window.location="/users/twitter_signup";
+	}
+	
+	/**
+	 * The user accepted the requirements. Log them in
+	 * @param string login_url 
+	 * @return 
+	 * 
+	*/
+	this.facebook_login = function(loginURL){
+		var loginURL = loginURL;
+		window.location.href = loginURL;
+	}
+	
+	/**
 	 * Initializes the feed
 	 * @param int num_items
 	 * @param int limit
@@ -98,9 +171,9 @@ function fgm_api(){
 	 * 
 	*/
 	this.feed_init = function(num_items,limit,is_empty_feed){
-		fgm_api.feed_num_items = this.num_items;
-		fgm_api.feed_limit = this.limit;
-		fgm_api.is_empty_feed = this.is_empty_feed;
+		fgm_api.feed_num_items = num_items;
+		fgm_api.feed_limit = limit;
+		fgm_api.is_empty_feed = is_empty_feed;
 		
 		if(!fgm_api.is_empty_feed){
 			$(window).scroll(function(){
@@ -434,7 +507,7 @@ function fgm_api(){
 			fgm_api.follow_all_user_id_data.followed_user_ids = '';
 		}
 
-		this.hideFollowAllLoader(); //Hide that ajax loader
+		fgm_api.hideFollowAllLoader(); //Hide that ajax loader
 		if(data.following > 0){
 			fgm_api.showUnfollowAll();
 		}else{

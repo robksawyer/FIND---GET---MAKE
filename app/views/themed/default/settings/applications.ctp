@@ -1,6 +1,3 @@
-<?php
-	echo $this->Html->css('settings/style');
-?>
 <?php echo $this->Session->flash(); ?>
 <?php echo $this->element('settings-header',array('cache'=>true,'username'=>$authUser['User']['username'])); ?>
 <?php echo $this->element('settings-nav',array('cache'=>false)); ?>
@@ -30,7 +27,7 @@
 			<?php else: ?>
 				<div id="facebook-login-wrap">
 				<?php 
-					echo $this->Facebook->login(array('perms'=>'user_about_me,user_birthday,email,offline_access,publish_stream','onlogin'=>'facebook_login();'),'Sign in with Facebook');
+					echo $this->Facebook->login(array('perms'=>'user_about_me,user_birthday,email,offline_access,publish_stream','onlogin'=>'fgm_api.facebook_login("'.$loginURL.'");'),'Sign in with Facebook');
 				?>
 				</div>
 			<?php endif; ?>
@@ -59,45 +56,7 @@
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function() {
-	
-	var profiles = {
-		windowCenter:{
-			height:500,
-			width:800, 
-			center:1, 
-			onUnload:unloadedTwitterPopup,
-			center: 1
-		}
-	}
-	
-	var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
-	$.getJSON(currentSiteAddress+'/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
-   	$('#twitter-login-wrap #btn-twitter').attr('href', data.url);
-		$('#twitter-login-wrap #btn-twitter').attr('rel','windowCenter');
-		$('#twitter-login-wrap #btn-twitter').show();
-   	$('#twitter-login-wrap .loading').hide();
-		$('.popupwindow').popupwindow(profiles);
-   });
-
-	function unloadedTwitterPopup(){
-		//Redirect the user to the signup page and continue the process
-		window.location="/users/twitter_signup";
-	}
+	fgm_api.init_social_services(); //Startup the social services
 });
-
-/**
- * The user accepted the requirements. Log them in
- * @param 
- * @return 
- * 
-*/
-function facebook_login(){
-	var loginURL = "<?php echo $loginURL; ?>";
-	window.location.href = loginURL;
-}
-
-$("#settings-container").corner("10px");
-$("#settings-container .right-panel").corner("10px");
-
 //]]>
 </script>

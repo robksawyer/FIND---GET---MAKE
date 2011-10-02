@@ -1,6 +1,3 @@
-<?php
-	echo $this->Html->css('settings/style');
-?>
 <?php echo $this->Session->flash(); ?>
 <?php echo $this->element('settings-header',array('cache'=>true,'username'=>$authUser['User']['username'])); ?>
 <?php echo $this->element('settings-nav',array('cache'=>false)); ?>
@@ -53,11 +50,8 @@
 //<![CDATA[
 $(document).ready(function() {
 	
-
 });
 
-$("#settings-container").corner("10px");
-$("#settings-container .right-panel").corner("10px");
 $('#UserAbout').keyup(function(){
 	limitChars('UserAbout', 125, 'charlimitinfo');
 })

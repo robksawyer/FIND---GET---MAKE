@@ -17,7 +17,7 @@
 				<div id="facebook-login-wrap">
 				<?php 
 					//echo $this->Html->link('Sign in with Facebook','',array('id'=>'btn-facebook','class'=>'popupwindow','style'=>'display:none')); 
-					echo $this->Facebook->login(array('perms'=>'user_about_me,user_birthday,email,offline_access,publish_stream','onlogin'=>'facebook_login();'),'Sign in with Facebook');
+					echo $this->Facebook->login(array('perms'=>'user_about_me,user_birthday,email,offline_access,publish_stream','onlogin'=>'fgm_api.facebook_login("'.$loginURL.'");'),'Sign in with Facebook');
 				?>
 				</div>
 			</div>
@@ -73,48 +73,11 @@
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function() {
-	
-	var profiles = {
-		windowCenter:{
-			height:500,
-			width:800, 
-			center:1, 
-			onUnload:unloadedTwitterPopup,
-			center: 1
-		}
-	}
-	
-	var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
-	var authenticateURL = <?php echo '"'.$twitterAuthorizeURL.'"'; ?>;
-	//var oldURL = currentSiteAddress+'/twitter_kit/oauth/authenticate_url/twitter';
-	//$.getJSON(authenticateURL, {}, function(data){
-   	$('#twitter-login-wrap #btn-twitter').attr('href', authenticateURL);
-		$('#twitter-login-wrap #btn-twitter').attr('rel','windowCenter');
-		$('#twitter-login-wrap #btn-twitter').show();
-   	$('#twitter-login-wrap .loading').hide();
-		$('.popupwindow').popupwindow(profiles);
-   //});
-
-	function unloadedTwitterPopup(){
-		//Redirect the user to the signup page and continue the process
-		window.location="/users/twitter_signup";
-	}
+	fgm_api.init_social_services();
 });
-
-/**
- * The user accepted the requirements. Log them in
- * @param 
- * @return 
- * 
-*/
-function facebook_login(){
-	var loginURL = "<?php echo $loginURL; ?>";
-	window.location.href = loginURL;
-}
 
 $("#join").corner("10px");
 $(".basic").corner('10px');
 $(".basic-sign-up").corner("10px");
-
 //]]>
 </script>

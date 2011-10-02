@@ -24,7 +24,7 @@
 					<li><?php echo $this->Html->link('An Inspiration',array('controller'=>'inspirations','action'=>'add'),array()); ?></li>
 				</ul>
 			</li>
-			<li><?php echo $this->Html->link('Feed','#',array('title'=>'Feed')); ?></li>
+			<li><?php echo $this->Html->link('Feed',array('admin'=>false,'controller'=>'feeds','action'=>'site'),array('title'=>'Feed')); ?></li>
 			<li><?php echo $this->Html->link('Find People',array('controller'=>'users','action'=>'find'),array('title'=>'Find People')); ?></li>
 			<!--<li><?php //echo $this->Html->link('Forum','#',array('title'=>'Forum')); ?></li>-->
 			<li>
@@ -42,19 +42,7 @@
 	<br class="clear" />
 </div>
 <script type="text/javascript">
-fgmHover = function() {
-	var navRoot = document.getElementById("main-nav");
-	var navChildren = document.getElementById("main-nav").getElementsByTagName("li");
-	for (var i=0; i<navChildren.length; i++) {
-		navChildren[i].onmouseover=function() {
-			this.className+=" fgm_hover";
-		}
-		navChildren[i].onmouseout=function() {
-			this.className=this.className.replace(new RegExp(" fgm_hover\\b"), "");
-		}
-	}
-}
 $(document).ready(function(){
-	fgmHover();
+	fgm_api.nav_init();
 });
 </script>

@@ -2,43 +2,20 @@
 *{margin:0px;padding:0px;}
 html{ 
 	background-color: #f2f2f2 !important;
-	/*background-image: url('img/zig_zag_pattern2.jpg') !important;*/
+	background-image: url('img/zig_zag_pattern2.jpg') !important;
 }
 body{ font-family: Arial, Helvetica, Verdana, Geneva, sans-serif; font-size: 12px; }
 a:link,a:active,a:visited{ color: #000000; vertical-align: baseline; z-index: 1;}
 a:hover{ text-decoration: none; }
-h1, h2, h3, h4,.header{
-	line-height: 26px;
-	font-weight: normal;
-	color: #000000;
-}
-h1,h2,h3,.header{
-	font-size: 16px;
-}
-h4 {
-	font-size: 14px;
-	line-height: 18px;
-	color: #666666;
-}
+h1, h2, h3, h4,.header{ line-height: 26px; font-weight: normal; color: #000000; }
+h1,h2,h3,.header{ font-size: 16px; }
+h4 { font-size: 14px; line-height: 18px; color: #666666; }
 /** PRETTY INPUT FIELDS **/
 /** Forms **/
-form {
-	clear: both;
-	margin-right: 20px;
-	padding: 0;
-	width: 95%;
-}
+form { clear: both; margin-right: 20px; padding: 0; width: 95%; }
 fieldset { border: 1px solid #e7e7e7; margin-bottom: 1em; padding: 16px 20px; }
-fieldset legend {
-	background:#ffffff;
-	font-size: 16px;
-	font-weight: normal;
-}
-fieldset fieldset {
-	margin-top: 0px;
-	margin-bottom: 20px;
-	padding: 16px 10px;
-}
+fieldset legend { background:#ffffff; font-size: 16px; font-weight: normal; }
+fieldset fieldset { margin-top: 0px; margin-bottom: 20px; padding: 16px 10px; }
 fieldset fieldset legend { font-weight: normal; }
 fieldset fieldset div { clear: left; margin: 0 20px; }
 form div {
@@ -51,20 +28,13 @@ form .input { color: #444; }
 form .required { font-weight: bold; }
 form .required label:after { color: #e32; content: '*'; display:inline; }
 label { display: block; margin-bottom:3px; }
-input, textarea {
-	clear: both;
-	padding: 1%;
-	width:98%;
-	resize: none;
-}
+input, textarea { clear: both; padding: 1%; width:98%; resize: none; }
 select { clear: both; vertical-align: text-bottom; }
 select[multiple=multiple] { width: 100%; }
 option { padding: 0 3px; }
 input[type=checkbox] {
-	clear: left;
-	float: left;
-	margin: 0px 6px 7px 2px;
-	width: auto;
+	clear: left; float: left;
+	margin: 0px 6px 7px 2px; width: auto;
 }
 div.checkbox label { display: inline; }
 input[type=radio] { float:left; width:auto; margin: 0 3px 7px 0; }
@@ -107,18 +77,13 @@ input[type="text"].phone{ width: 250px !important; }
 /** END PRETTY INPUT FIELDS **/
 /** Tables **/
 table {
-	background: #fff;
-	border-right:0;
-	clear: both;
-	color: #333;
-	margin-bottom: 10px;
-	width: 100%;
+	background: #fff; border-right:0;
+	clear: both; color: #333;
+	margin-bottom: 10px; width: 100%;
 }
 th {
-	border:0;
-	border-bottom:2px solid #555;
-	text-align: left;
-	padding:4px;
+	border:0; border-bottom:2px solid #555;
+	text-align: left; padding:4px;
 }
 th.actions { text-align: center; }
 th a { display: block; padding: 2px 4px; text-decoration: none; }
@@ -1121,3 +1086,83 @@ img.product-remove{
 .followers .view-all{ position: relative; width: 250px; text-align: right; }
 .followers .view-all a{ color: #3bb796; font-size: 13px; font-weight: normal; text-decoration: none; text-align: right; }
 .followers a:hover{ color: #262626; }
+/** USER SETTINGS **/
+/************ SETTING NAV *******************/
+ul.settings-nav{ position: relative; display: block; padding: 0; margin: 20px 0 10px 0; }
+ul.settings-nav li{
+	display: inline !important;
+	margin: 10px 5px;
+}
+ul.settings-nav li.active a{
+	color: #000000;
+	font-weight: bold;
+	text-decoration: none;
+}
+ul.settings-nav li a:link,
+ul.settings-nav li a:active,
+ul.settings-nav li a:visited{
+	text-decoration: none;
+	background-color: #e7e7e7;
+	color: #262626;
+	padding: 4px 15px;
+}
+ul.settings-nav li a:hover{ color: #ffffff; background-color: #EF3F23; }
+ul.settings-nav li a.active{ color: #ffffff; background-color: #EF3F23; }
+/************ END SETTING NAV *******************/
+#settings-container{ background-color: #ffffff; padding: 15px; }
+#settings-container .header .avatar{ display: inline; float: left; margin: 0 10px 0 10px; }
+#settings-container .avatar-container .avatar img{ width: auto; height: 100px; }
+#settings-container #left-panel{ display:inline-block; float: left; width: 70%; }
+#settings-container #left-panel .full-name{ position: relative; display: block; margin: 10px 0; }
+#settings-container #left-panel .submit{ position: relative; top: 10px; }
+#settings-container #left-panel #change-password{ margin: 10px 0; }
+#settings-container #left-panel #change-password .input{ width: 230px; }
+#settings-container #left-panel #change-password .input a.after{ position: relative; top: 10px; }
+#settings-container #left-panel #UserProfileForm .input{ margin: 0; padding: 5px 0; width: 230px; }
+#settings-container #left-panel #UserAccountForm .input{ padding: 0; margin: 0; }
+#settings-container #left-panel #UserAccountForm .input input{ width: 230px; float: left; clear: none; }
+#settings-container #left-panel #UserAccountForm .warning{
+	float: left;
+	clear: none;
+	padding: 0;
+	vertical-align: baseline;
+	margin: 10px 0 0 10px;
+}
+#settings-container #left-panel #UserAccountForm .after .username-preview{ font-weight: bold; }
+#settings-container #left-panel #UserProfileForm  .gender{ position: relative; display: inline-block; margin: 10px 0 10px 0; }
+#settings-container #left-panel #UserProfileForm .input.textarea{
+	margin: 0;
+	padding: 0;
+	width: auto;
+	clear: both;
+}
+#settings-container #left-panel #charlimitinfo{ clear: both; margin-top: 10px; }
+#settings-container .right-panel{
+	display:inline-block;
+	width: 25%;
+	background-color: #ffffff;
+	padding: 5px 15px 15px 15px;
+}
+#settings-container .right-panel h4{
+	font-size: 20px;
+	margin: 10px 0px 5px;
+	font-weight: normal;
+	line-height: 1;
+	padding: 0px;
+}
+#settings-container .right-panel p{
+	color: #777;
+	margin-bottom: 5px;
+	font-size: 13px;
+	line-height: 18px;
+	margin: 0px 0px 15px;
+}
+#settings-container .right-panel hr{
+	border: 1px;
+	border-top: 1px solid #DDD;
+	display: block;
+	margin: 20px 0px 19px !important;
+}
+#settings-container .social-networks .item{ position: relative; display: block; margin: 10px 5px; }
+#settings-container .social-networks .item a.revoke{ margin-left: 20px; }
+/** END USER SETTINGS **/

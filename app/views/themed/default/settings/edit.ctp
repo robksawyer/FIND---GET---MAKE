@@ -1,7 +1,3 @@
-<?php
-	echo $this->Html->script('jquery.corner',array('inline'=>false));
-?>
-<br/>
 <div id="left-panel">
 	<div class="header">
 		<h2><?php __('Edit Your Profile') ?></h2>
@@ -125,29 +121,7 @@
 $(document).ready(function() {
 	$("#tabs" ).tabs();
 	
-	var profiles = {
-		windowCenter:{
-			height:500,
-			width:800, 
-			center:1, 
-			onUnload:unloadedPopup,
-			center: 1
-		}
-	}
-	
-	var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
-	$.getJSON(currentSiteAddress+'/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
-   	$('#twitter-login-wrap #btn-twitter').attr('href', data.url);
-		$('#twitter-login-wrap #btn-twitter').attr('rel','windowCenter');
-		$('#twitter-login-wrap #btn-twitter').show();
-   	$('#twitter-login-wrap .loading').hide();
-		$('.popupwindow').popupwindow(profiles);
-   });
-
-	function unloadedPopup(){
-		//Redirect the user to the signup page and continue the process
-		window.location="/signup";
-	}
+	fgm_api.init_social_services();
 });
 
 $(".change").toggle(function(){
