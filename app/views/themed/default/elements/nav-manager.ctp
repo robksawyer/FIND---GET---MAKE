@@ -17,8 +17,8 @@
 			<li>
 				<?php echo $this->Html->link('Profile','#',array('title'=>'Profile'))." | "; ?>
 				<ul id="product-sub-nav" class="sub-nav" style="">
-					<li><?php echo $this->Html->link('Followers',array('controller'=>'user_followings','action'=>'followers'),array('title'=>'Followers')); ?></li>
-					<li><?php echo $this->Html->link('Following',array('controller'=>'user_followings','action'=>'following'),array('title'=>'Following')); ?></li>
+					<li><?php echo $this->Html->link('Followers',array('controller'=>'user_followings','action'=>'followers',$authUser['User']['username']),array('title'=>'Followers')); ?></li>
+					<li><?php echo $this->Html->link('Following',array('controller'=>'user_followings','action'=>'following',$authUser['User']['username']),array('title'=>'Following')); ?></li>
 					<li><?php echo $this->Html->link('Settings',array('controller'=>'settings','action'=>'account'),array('title'=>'Settings')); ?></li>
 				</ul>
 			</li>

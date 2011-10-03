@@ -1026,11 +1026,11 @@ ul.btn-actions{ position: relative; float: right; margin: 0; padding: 0; right: 
 #follow-user a:visited{
 	z-index: 2;
 	font-size: 12px;
-	color: #262626;
-	text-decoration: none;
+	color: #08b899;
+	text-decoration: underline;
 	font-weight: normal;
 }
-#follow-user a:hover{ color: #000000; text-decoration: underline; }
+#follow-user a:hover{ color: #08b899; text-decoration: none; }
 /** END PROFILE PAGES **/
 /** USER FEED **/
 #auto-pagination-loader{

@@ -36,30 +36,15 @@
 	<div class="clear"></div>
 	<div id="follower-following">
 		<?php if(!empty($followers)): ?>
-			<!-- Start gridded items -->
-			<div id="grid-container">
+			<div id="user_items_block" class="inner_block">
 			<?php foreach($followers as $follower): ?>
-				<div class="grid-item" style="width:500px !important;">
-					<?php echo $this->element('user-block',array('cache'=>false,'user'=>$follower)); ?>
+				<div class="user-item">
+					<?php echo $this->element('user-block-with-products',array('cache'=>false,'user'=>$follower)); ?>
 				</div>
+				<div class="mdash">&mdash;</div>
 			<?php endforeach; ?>
 			</div>
-			<div class="clear"></div>
 			<!-- End gridded items -->
 		<?php endif; ?>
 	</div>
 </div>
-<?php
-	$this->Html->script('jquery.masonry.min',array('inline'=>false));
-?>
-<script type="text/javascript">
-$(function(){
-	var $container = $("#grid-container");
-	$container.imagesLoaded(function(){
-		$container.masonry({
-			//option
-			itemSelector: '.grid-item'
-		});
-	});
-});
-</script>

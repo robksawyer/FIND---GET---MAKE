@@ -65,6 +65,10 @@ class UserFollowing extends AppModel {
 													'contain'=>array('Attachment'=>array(
 																		'conditions'=>array('Attachment.id'=>'User.attachment_id'),
 																		'fields'=>array('Attachment.id','Attachment.path_med','Attachment.path_small')
+																		),
+																		'Product'=>array('Attachment',
+																			'order' => 'Product.id DESC',
+																			'limit'=>3
 																		)
 																	),
 													'limit'=>$limit
