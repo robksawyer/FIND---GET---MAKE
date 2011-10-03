@@ -167,9 +167,10 @@ class SourcesController extends AppController {
 		}
 		
 		$sourceCategories = $this->Source->SourceCategory->getAll();
-		$sources = $this->paginate('Source',array(
-										   'Source.user_id' => $id
-										));
+		$this->paginate = array('conditions'=>array('Source.user_id' => $id),
+								'order'=>array('Source.created'=>'desc')
+								);
+		$sources = $this->paginate('Source');
 		$total_count = $this->Source->find('count');
 		$this->set(compact('total_count','sources','sourceCategories','user'));
 		

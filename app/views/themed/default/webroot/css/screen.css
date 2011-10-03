@@ -173,6 +173,40 @@ div.code-coverage-results span.result-ok { color: #fa0; }
 div.code-coverage-results span.result-good { color: #0a0; }
 .subtext{ padding: 0; margin: 10px 0 0 0; }
 /** End Debugging */
+/** Notices and Errors */
+/** Notices and Errors **/
+div.message {
+	clear: both;
+	background: #c73e14; color: #fff;
+	font-size: 140%; font-weight: bold;
+	margin: 0 0 1em 0; padding: 5px;
+}
+div.error-message {
+	clear: both; 
+	background: #c73e14; color: #fff;
+	font-size: 140%; font-weight: bold;
+	margin: 0 0 1em 0;	padding: 5px;
+}
+p.error {
+	background-color: #e32;
+	color: #fff;
+	font-family: Courier, monospace; font-size: 120%;
+	line-height: 140%;
+	padding: 0.8em; margin: 1em 0;
+}
+p.error em { color: #000; font-weight: normal; line-height: 140%; }
+.notice {
+	background: #ffcc00;
+	color: #000;
+	display: block;
+	font-family: Courier, monospace;
+	font-size: 120%;
+	line-height: 140%;
+	padding: 0.8em;
+	margin: 1em 0;
+}
+.success { background: green; color: #fff; }
+/** End Notices and Errors */
 /** CHOSEN SELECT BOXES */
 .clearfix:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 div.side-by-side fieldset div { margin: 0 !important; }
@@ -430,6 +464,7 @@ a.category:hover{
 	padding: 0 5px;
 }
 #block_bottom { position: relative; overflow: auto; }
+#block_bottom .inner_block a:hover{ background: #ffffff; opacity:.75; filter:alpha(opacity=75); }
 .sharing a{ float: left; margin: 0 5px 0 0; padding: 0;}
 #share-panel{ float: left; position: relative; padding: 0; margin: 0; top: 0px; overflow: auto; }
 #share-panel input{ float: left; padding: 3px; margin: 0; clear: none; width: 200px; vertical-align: middle;}
@@ -587,7 +622,6 @@ ul.gridded_item_set li.item{
 	list-style-type: none;
 	display: inline-block;
 	margin: 0 15px 10px 0;
-	background: yellow;
 }
 ul.gridded_item_set li.item img{
 	width: 200px;
@@ -694,7 +728,8 @@ ul.tags a:hover{text-decoration:none;background:none; color: #000; border-bottom
 .comment .actions a:first-child{ border-left: none; }
 .comment .header .avatar{ float: left; margin-right: 10px; }
 .comment .body{ position: relative; margin: 0 0 10px 0; }
-.comments .submit input{ cursor: pointer; margin: 10px 0 0 0; padding: 5px; border:none}
+.comments .submit { margin: 0; padding: 0;}
+.comments .submit input{ cursor: pointer; margin: 0; padding: 5px; border:none}
 .comments .submit input:hover{ background: #08b899;}
 /** END COMMENTS **/
 

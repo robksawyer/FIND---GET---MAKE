@@ -95,22 +95,24 @@ class Storage extends AppModel {
 		$this->recursive = -1;
 		$users = $this->find('all',array('conditions'=>array(
 												'AND'=>array(
-													array("Storage.id" => $model_id),
+													array("Storage.model_id" => $model_id),
 													array("Storage.model" => $model)
 												),
 												'NOT'=>array(
-													array("Storage.user_id" => $user_id)
+													"Storage.user_id" => $user_id
 												)
 											),
 											'limit'=>$limit,
 											'contain'=>array(
-												'Product'=>array('Attachment',
+												'User'=>array(
+															'Attachment',
+															'Product'=>array('Attachment',
 																'order' => 'Product.id DESC',
 																'limit'=>3
-																)
+															)
+												)
 											)
 										));
-		
 		return $users;
 	}
 	

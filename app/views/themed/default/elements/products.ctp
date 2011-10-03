@@ -91,17 +91,6 @@
 	<div class="clear"></div>
 	</div>
 <?php endif; ?>
-<?php if(empty($disableAdding)): ?>
-	<?php if(!empty($authUser)): ?>
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Product', true), array('controller' => 'products', 'action' => 'add','model'=>$model,'id'=>$item[$model]['id'],'admin'=>true));?> </li>
-			<?php if(!empty($show_selector)): ?>
-			<li><?php echo $this->Html->link(__('Add Existing Product', true),'javascript:return false;',array('class'=>'button basic-modal-button')); ?></li>
-			<?php endif; ?>
-		</ul>
-	</div>
-	<?php endif; ?>
 </div>
 <?php
 	if(!empty($show_selector)){
@@ -110,7 +99,6 @@
 		
 	}
 ?>
-<?php endif; ?>
 <script type="text/javascript">
 $(document).ready(function(){
 	$(".product-remove").hide();

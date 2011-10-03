@@ -1,5 +1,10 @@
 <div class="user-block">
-	<?php echo $this->element('avatar',array('cache'=>false,'user'=>$user,'height'=>64,'follow'=>false)); ?>
+	<?php 
+	if(empty($follow)){
+		$follow = false;
+	}
+	?>
+	<?php echo $this->element('avatar',array('cache'=>false,'user'=>$user,'height'=>64,'follow'=>$follow)); ?>
 	<ul class="user-details">
 		<li class="username"><?php echo $this->Html->link($user['User']['username'],array(
 																												'admin'=>false,
@@ -37,16 +42,18 @@
 		foreach($productData as $item): ?>
 		<li>
 			<?php 
-				if(!empty($item['Attachment'][0]['title'])) $image_title = $item['Attachment'][0]['title']; else $image_title = "image";
-				echo $this->Html->image($item['Attachment'][0]['path_small'],array('alt'=>$image_title,
-																												'url'=>array(
-																															'admin'=>false,
-																															'ajax'=>false,
-																															'controller'=>'products',
-																															'action'=>'view',
-																															$item['id']
-																												)
-																											)); 
+				if(!empty($item['Attachment'])){
+					if(!empty($item['Attachment'][0]['title'])) $image_title = $item['Attachment'][0]['title']; else $image_title = "image";
+					echo $this->Html->image($item['Attachment'][0]['path_small'],array('alt'=>$image_title,
+																													'url'=>array(
+																																'admin'=>false,
+																																'ajax'=>false,
+																																'controller'=>'products',
+																																'action'=>'view',
+																																$item['id']
+																													)
+																												));
+				}
 			?>
 		</li>
 		<?php endforeach; ?>

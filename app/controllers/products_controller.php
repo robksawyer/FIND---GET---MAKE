@@ -2,7 +2,7 @@
 class ProductsController extends AppController {
 
 	var $name = 'Products';
-	var $components = array('Search.Prg','Uploader.Uploader','Comments.Comments' => array('userModel' => 'User'));
+	var $components = array('Search.Prg','Uploader.Uploader','Comments.Comments' => array('userModel' => 'User'),'Email');
 	var $helpers = array('Tags.TagCloud');
 
 	var $paginate = array(
@@ -27,7 +27,9 @@ class ProductsController extends AppController {
 		//Make certain pages public
 		$this->Auth->allowedActions = array('index','view','verifyAddition','clearVerifySessions',
 											'getProductsForSource','getProductsForInspiration','userProducts',
-											'comments','bookmarklet_product_add');
+											'comments','bookmarklet_product_add','callback_commentsAdd','callback_commentsAfterAdd',
+											'send_email_on_comment','send_email_on_product_add_to_storage'
+											);
 		
 		$this->Uploader->uploadDir = 'media/static/img/products/';
 		$this->Uploader->enableUpload = true;
@@ -42,6 +44,22 @@ class ProductsController extends AppController {
 		}
 		
 		$this->passedArgs['comment_view_type'] = 'flat';
+		
+		/* SMTP Options */
+		$this->Email->smtpOptions = array(
+			'port'=>'25',
+			'timeout'=>'30',
+			'host' => 's64785.gridserver.com',
+			'username'=>'mailer@find-get-make.com',
+			'password'=>'fgmmailer',
+			'client' => 's64785.gridserver.com'
+		);
+
+	    /* Set delivery method */
+	    $this->Email->delivery = 'smtp';
+
+		$this->Email->replyTo = '<noreply@'.env('HTTP_HOST').'>'; 
+		$this->Email->return = '<noreply@'.env('HTTP_HOST').'>';
 	}
 	
 	/**
@@ -663,9 +681,12 @@ class ProductsController extends AppController {
 			$this->redirect(array('action' => 'index','admin'=>false));
 		}
 		$productCategories = $this->Product->ProductCategory->getAll();
-		$products = $this->paginate('Product',array(
-										   'Product.user_id' => $id
-										));
+		$this->paginate = array('conditions'=>array('Product.user_id' => $id),
+								'order' => array(
+									'Product.created' => 'desc'
+									)
+								);
+		$products = $this->paginate('Product');
 		$total_count = $this->Product->find('count',array('conditions'=>array('Product.user_id'=>$id)));
 		$this->set(compact('products','total_count','productCategories','user'));
 		
@@ -834,7 +855,109 @@ class ProductsController extends AppController {
 		$this->Session->delete('Check.name');
 	}
 	
+	/**
+	 * Fired before a comment is saved, but when it's added.
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function callback_commentsAdd($modelId, $commentId, $displayType, $data = array()) {
+	    if (!empty($this->data)) {
+			//Check the comment to see if @someone was added. If so, send the user a message.
+			///perform some validation and field manipulations here. all value need to store into the $data.
+			//$data['Comment']['author_name'] = $this->Auth->user('username');
+			//$data['Comment']['author_email'] = $this->Auth->user('email');
+
+			/*$valid = true;
+			if (empty($this->data['Comment']['author_name'])) {
+ 				$valid = false;
+			}
+			if (!$valid) {
+				$this->Session->setFlash(__('Please enter necessery information', true));
+				return;
+			}*/
+	    }
+	    return $this->Comments->callback_add($modelId, $commentId, $displayType, $data);
+	}
+	
+	/**
+	 * Called after a comment is successfully saved.
+	 * @param array options
+	 * @return 
+	 * Array(
+	 *   [userId] => 2
+	 *   [modelId] => 210
+	 *   [modelName] => Product
+	 *   [defaultTitle] => 
+	 *   [data] => Array(
+	 * 				[Comment] => Array(
+	 *					[body] => Cool chair
+	 * 			)
+	 *   )
+	 *   [permalink] => 
+	 *   [commentId] => 4e897001-2f08-4b92-a950-1390482fe47e
+	 * )
+	 * 
+	*/
+	public function callback_commentsAfterAdd($options) {
+		//Send an email when someone comments on the product
+		$this->send_email_on_comment($options['modelName'],$options['modelId'],$options['data']);
+	}
+	
 	/******************************** NOTIFICATIONS *******************************************/
+	
+	/**
+	 * Sends an email when someone adds an item that has already been added. This will notify the original user that added the product.
+	 * @param String model The model that was liked
+	 * @param Int model_id The model id that was liked
+	 * @return 
+	 * 
+	*/
+	protected function send_email_on_comment($model='Product',$model_id=null,$data){
+		Configure::write('debug', 0);
+		$user = $this->Auth->user();
+		//Find the product that the user wanted or has
+		$item = $this->Product->find('first',array('conditions'=>array('Product.id'=>$model_id),'contain'=>array('User','Attachment','Storage')));
+		if(!empty($item)){
+			$model_lower = strtolower($model);
+			if($item['User']['email_on_comment'] == 1){
+				//You don't want to receive comments from yourself on products that you've added.
+				if($user['User']['id'] != $item['Product']['user_id']){
+					$site_name = $this->Toolbar->settings['site_name'];
+				
+					//When auth user follows a user, send an email to the user 
+					$this->Email->to = $user['User']['email'];
+					$this->Email->from = $site_name .' <'. $this->Toolbar->settings['site_email'] .'>';
+				
+					if(!empty($user['User']['fullname'])){
+						$this->Email->subject = $site_name.' - '.__($user['User']['fullname'].' just commented on a product that you found.', true);
+					}else{
+						$this->Email->subject = $site_name.' - '.__($user['User']['username'].' just commented on a product that you found.', true);
+					}
+					$this->Email->template = 'email_on_comment'; // note no '.ctp'
+
+					//Send as 'html', 'text' or 'both' (default is 'text')
+					$this->Email->sendAs = 'html'; // because we like to send pretty mail
+				
+					$recent_products = $this->Product->getThreeFromUser($user['User']['id']);
+					/* Check for SMTP errors. */
+				    $smtp_errors = $this->Email->smtpError;
+				
+					//debug($smtp_errors);
+					//Set view variables as normal
+					$this->set(compact('user','site_name','recent_products','item','smtp_errors','data'));
+				
+					// uncomment this to debug EmailComponent instead of sending  
+					//$this->Email->delivery = 'debug';
+				
+					//Do not pass any args to send()
+					if($this->Email->send()){
+						CakeLog::write('activity','Email on '.$model_lower.' - '.$user['User']['username']. ' commented on '. $item[$model]['name']);
+					}
+				}
+			}
+		}
+	}
 	
 	/**
 	 * Sends an email when someone adds an item that has already been added. This will notify the original user that added the product.

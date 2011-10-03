@@ -49,7 +49,11 @@
 						}
 					}
 					if(count($users_storing) > 0){
-						echo ' and '.count($users_storing).' others.';
+						if(count($users_storing) == 1){
+							echo ' and added by '.$this->Html->link(count($users_storing).' user.','#user_items_block');
+						}else{
+							echo ' and added by '.$this->Html->link(count($users_storing).' users.','#user_items_block');
+						}
 					}
 				}
 			?>
@@ -157,11 +161,19 @@
 		<?php if(!empty($usersStoring)): ?>
 		<div class="mdash">&mdash;</div>
 		<div id="user_items_block" class="inner_block">
-			<h4>This product was added by <?php echo count($usersStoring); ?> members</h4>
+			<?php if(count($usersStoring) == 1): ?>
+			<h4>This product was added by <?php echo count($usersStoring); ?> user</h4>
+			<?php else: ?>
+			<h4>This product was added by <?php echo count($usersStoring); ?> users</h4>
+			<?php endif; ?>
 			<?php
-				debug($usersStoring);
-				//Check to see how many users have this in their storage (holds)
-				//echo $this->element('related-products-grid-block',array('cache'=>false,'items'=>$otherProducts));
+				//debug($usersStoring);
+				foreach($usersStoring as $user){
+					echo "<div class='user-item'>";
+					//debug($user);
+					echo $this->element('user-block-with-products',array('cache'=>false,'user'=>$user,'follow'=>true));
+					echo "</div>";
+				}
 			?>
 		</div>
 		<?php	endif; ?>
