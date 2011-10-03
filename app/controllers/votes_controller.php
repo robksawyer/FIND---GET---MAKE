@@ -484,7 +484,7 @@ class VotesController extends AppController {
 				//Send as 'html', 'text' or 'both' (default is 'text')
 				$this->Email->sendAs = 'html'; // because we like to send pretty mail
 				
-				$recent_products = $this->Vote->User->Product->getThreeFromUser($user['User']['id']);
+				$recent_products = $this->Vote->User->Feed->getThreeFromUser($user['User']['id']);
 				/* Check for SMTP errors. */
 			    $smtp_errors = $this->Email->smtpError;
 				
@@ -535,7 +535,7 @@ class VotesController extends AppController {
 				//Send as 'html', 'text' or 'both' (default is 'text')
 				$this->Email->sendAs = 'html'; // because we like to send pretty mail
 				
-				$recent_products = $this->Vote->User->Product->getThreeFromUser($user['User']['id']);
+				$recent_products = $this->Vote->User->Feed->getThreeFromUser($user['User']['id']);
 				/* Check for SMTP errors. */
 			    $smtp_errors = $this->Email->smtpError;
 				
@@ -586,7 +586,7 @@ class VotesController extends AppController {
 				//Send as 'html', 'text' or 'both' (default is 'text')
 				$this->Email->sendAs = 'html'; // because we like to send pretty mail
 
-				$recent_products = $this->Vote->User->Product->getThreeFromUser($user['User']['id']);
+				$recent_products = $this->Vote->User->Feed->getThreeFromUser($user['User']['id']);
 				/* Check for SMTP errors. */
 			    $smtp_errors = $this->Email->smtpError;
 
@@ -637,7 +637,7 @@ class VotesController extends AppController {
 				//Send as 'html', 'text' or 'both' (default is 'text')
 				$this->Email->sendAs = 'html'; // because we like to send pretty mail
 				
-				$recent_products = $this->Vote->User->Product->getThreeFromUser($user['User']['id']);
+				$recent_products = $this->Vote->User->Feed->getThreeFromUser($user['User']['id']);
 				/* Check for SMTP errors. */
 			    $smtp_errors = $this->Email->smtpError;
 				

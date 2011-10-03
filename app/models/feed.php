@@ -554,6 +554,30 @@ class Feed extends AppModel {
 	}
 	
 	/**
+	 * Returns three products with attachments. 
+	 * @param int user_id The user id to return products for
+	 * @return 
+	 * 
+	*/
+	function getThreeFromUser($user_id=null){
+		$data = $this->find('all',array(
+										'conditions'=>array(
+											'AND'=>array(
+												array('Feed.user_id'=>$user_id),
+												array('Feed.model'=>'Product')
+											)
+										),
+										'recursive' => 1,
+										'contain'=>array('Product'=>array('Attachment')),
+										'limit'=>3,
+										'order'=>array('Feed.created'=>'desc')
+										)
+									);
+		//debug($data);
+		return $data;
+	}
+	
+	/**
 	 * DEPRECATED: This was used on the user and me pages.
 	 * Handles returning the feed details (items) for a particular user
 	 * @param id follow_user_id The followed user

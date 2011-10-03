@@ -392,7 +392,7 @@ class UserFollowingsController extends AppController {
 				//Send as 'html', 'text' or 'both' (default is 'text')
 				$this->Email->sendAs = 'html'; // because we like to send pretty mail
 				
-				$recent_products = $this->UserFollowing->User->Product->getThreeFromUser($user['User']['id']);
+				$recent_products = $this->UserFollowing->User->Feed->getThreeFromUser($user['User']['id']);
 				$follower_count = $this->UserFollowing->getFollowerCount($user['User']['id']);
 				//Pull the followers known and compare these to the person who followed the user. It may be a friend of a friend
 				$followers_known['people'] = $this->UserFollowing->getSimilarFollowers($followed_user['User']['id'],$user['User']['id']);

@@ -939,7 +939,7 @@ class ProductsController extends AppController {
 					//Send as 'html', 'text' or 'both' (default is 'text')
 					$this->Email->sendAs = 'html'; // because we like to send pretty mail
 				
-					$recent_products = $this->Product->getThreeFromUser($user['User']['id']);
+					$recent_products = $this->Product->Feed->getThreeFromUser($user['User']['id']);
 					/* Check for SMTP errors. */
 				    $smtp_errors = $this->Email->smtpError;
 				
@@ -991,7 +991,7 @@ class ProductsController extends AppController {
 				//Send as 'html', 'text' or 'both' (default is 'text')
 				$this->Email->sendAs = 'html'; // because we like to send pretty mail
 				
-				$recent_products = $this->Product->getThreeFromUser($user['User']['id']);
+				$recent_products = $this->Product->Feed->getThreeFromUser($user['User']['id']);
 				/* Check for SMTP errors. */
 			    $smtp_errors = $this->Email->smtpError;
 				
