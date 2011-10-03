@@ -1,6 +1,3 @@
-<?php
-
-?>
 <div id="login-wrapper">
 	<div class="wrapper">
 		<div class="users form">

@@ -144,14 +144,14 @@
 						//The competition was here.
 					}
 				?>
-				<?php echo $this->Session->flash();?>
 				<?php 
 					//debug($this->params['plugin']);
 					if ($this->params['plugin'] == 'forum') {
 						echo $this->element('navigation',array('plugin' => 'forum')); 
 					}
 				?>
-			
+				<br class="clear"/>
+				<?php echo $this->Session->flash();?>
 				<?php echo $content_for_layout;?>
 
 			</div>

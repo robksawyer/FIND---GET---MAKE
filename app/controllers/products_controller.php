@@ -151,7 +151,7 @@ class ProductsController extends AppController {
 
 						$this->Product->Source->id = $source_id;
 						$this->Product->Source->saveField('keycode',$keycode);
-						
+					
 						$this->data['Product']['source_id'] = $source_id;
 					}else{
 						CakeLog::write('error_events','BOOKMARKLET::There was an error adding the source named '.$sourceName.' from '.$baseURL.'.');
@@ -208,6 +208,9 @@ class ProductsController extends AppController {
 							$id = $this->Product->getLastInsertID();
 							//Upload the attachments
 							$this->uploadAttachments('Product',$id);
+							
+							//Add the product to the user's storage
+							$this->Product->Storage->addItem($user['User']['id'],$id,'Product');
 
 							//Generate and create keycode
 							$this->generateKeycode($id,true);
@@ -220,8 +223,10 @@ class ProductsController extends AppController {
 						return false;
 					}
 				}else{
-					//The product exists already add it to the user's stash
-					$this->Product->Ownership->setWant($user['User']['id'],'Product',$productCheck['Product']['id']);
+					//The product exists already add it to the user's storage
+					$this->Product->Storage->addItem($user['User']['id'],$productCheck['Product']['id'],'Product');
+					//Send an email if the user has allowed this
+					$this->send_email_on_product_add_to_storage('Product',$productCheck['Product']['id']);
 				}
 				
 			}
@@ -828,4 +833,59 @@ class ProductsController extends AppController {
 		$this->Session->delete('Check.count');
 		$this->Session->delete('Check.name');
 	}
+	
+	/******************************** NOTIFICATIONS *******************************************/
+	
+	/**
+	 * Sends an email when someone adds an item that has already been added. This will notify the original user that added the product.
+	 * @param String model The model that was liked
+	 * @param Int model_id The model id that was liked
+	 * @return 
+	 * 
+	*/
+	protected function send_email_on_product_add_to_storage($model=null,$model_id=null){
+		Configure::write('debug', 0);
+		//Find the product that the user wanted or has
+		$item = $this->Product->$model->find('first',array('conditions'=>array($model.'.id'=>$model_id),'contain'=>array('User','Attachment')));
+		if(!empty($item)){
+			$model_lower = strtolower($model);
+			if($item['User']['email_on_storage_add'] == 1){
+				$user = $this->Auth->user();
+				
+				$site_name = $this->Toolbar->settings['site_name'];
+				
+				//When auth user follows a user, send an email to the user 
+				$this->Email->to = $user['User']['email'];
+				$this->Email->from = $site_name .' <'. $this->Toolbar->settings['site_email'] .'>';
+				
+				if(!empty($user['User']['fullname'])){
+					$this->Email->subject = $site_name.' - '.__($user['User']['fullname'].' just found a product that you added.', true);
+				}else{
+					$this->Email->subject = $site_name.' - '.__($user['User']['username'].' just found a product that you added.', true);
+				}
+				$this->Email->template = 'email_on_storage_add'; // note no '.ctp'
+
+				//Send as 'html', 'text' or 'both' (default is 'text')
+				$this->Email->sendAs = 'html'; // because we like to send pretty mail
+				
+				$recent_products = $this->Product->getThreeFromUser($user['User']['id']);
+				/* Check for SMTP errors. */
+			    $smtp_errors = $this->Email->smtpError;
+				
+				//debug($smtp_errors);
+				//Set view variables as normal
+				$this->set(compact('user','site_name','recent_products','item','smtp_errors'));
+				
+				// uncomment this to debug EmailComponent instead of sending  
+				//$this->Email->delivery = 'debug';
+				
+				//Do not pass any args to send()
+				if($this->Email->send()){
+					CakeLog::write('activity','Email on '.$model_lower.' - '.$user['User']['username']. ' added '. $item[$model]['name']. ' to storage.');
+				}
+			}
+		}
+	}
+	
+	/******************************** NOTIFICATIONS *******************************************/
 }

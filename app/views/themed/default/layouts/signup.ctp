@@ -78,9 +78,7 @@
 		<div id="container">
 			<div id="content">
 				<?php echo $this->Session->flash();?>
-				
 				<?php echo $content_for_layout;?>
-
 			</div>
 			<div id="footer">
 				<h3>FIND | GET | MAKE is an intricate, multi-layered database for all the resources you could ever want to use in an interior decor project.</h3>

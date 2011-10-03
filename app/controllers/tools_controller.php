@@ -18,10 +18,21 @@ class ToolsController extends AppController {
 		parent::beforeFilter();
 		
 		//Make certain pages public
-		$this->Auth->allowedActions = array('bookmarklet');
+		$this->Auth->allowedActions = array('bookmarklet','extras');
 		
 	}
 	
+	/**
+	 * Main bookmarklet view page
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function extras(){
+		$user_bookmarklet_path = $this->generateUserBookmarklet();
+		
+		$this->set(compact('user_bookmarklet_path'));
+	}
 	
 	/**
 	 * Main bookmarklet view page

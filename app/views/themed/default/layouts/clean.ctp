@@ -52,8 +52,8 @@
 				echo '</script>'."\n";
 			}
 			echo $this->Html->script('fgm_api')."\n";
-			echo $this->Html->script('jquery.popupwindow',array('inline'=>false));
 			echo $this->Html->script('utils')."\n"; //Common helper scripts
+			echo $this->Html->script('jquery.popupwindow')."\n";
 			echo $scripts_for_layout;
 		?>
 		
@@ -78,8 +78,8 @@
 				<div id="header">
 					<?php echo $this->element('nav', array('cache' => false,'nolinks'=>true)); ?>
 				</div>
+				<br class="clear"/>
 				<?php echo $this->Session->flash();?>
-				
 				<?php echo $content_for_layout;?>
 
 			</div>

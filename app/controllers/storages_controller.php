@@ -64,7 +64,7 @@ class StoragesController extends AppController {
 			}
 			
 			//Check to see if the item is already being stored. If it is, remove it, otherwise add it.
-			$storageCheck = $this->Storage->getItem($model,$model_id);
+			$storageCheck = $this->Storage->getItem($user_id,$model,$model_id);
 			if(!empty($storageCheck)){
 				//Remove the item
 				if($this->Storage->delete($storageCheck['Storage']['id'])){

@@ -62,6 +62,8 @@ function fgm_finder(){
 	this.needsCategory = true;
 	this.needsPrice = true;
 	this.base_url = REPLACE_BASE_URL;
+	this.item_title;
+	
 	this.array_category = [
 		{"id":0,"label":"Accessory"},
 		{"id":1,"label":"Furniture"},
@@ -111,6 +113,8 @@ function fgm_finder(){
 
 			var fgm_user = REPLACE_USERNAME;
 			fgm_user = (fgm_user) ? fgm_user : window['fgm_user'];
+			
+			fgm_finder.item_title = document.title; //Set the title for reference later
 			
 			var html = '<div class="fgm_finder_header">';
 					html += '<img width="386" height="33" src="'+this.base_url+'theme/default/img/logo_dark.jpg"/>';
@@ -188,12 +192,15 @@ function fgm_finder(){
 	
 	this.selectInput = function(item){
 		var dragable1 = dragHandler.detach(document.getElementById("fgm_finder"));
-		item.value = "";
+		//item.value = "";
 		item.focus();
 	};
 	
 	this.deselectInput = function(item){
 		var dragable1 = dragHandler.attach(document.getElementById("fgm_finder"));
+		if(item.value == "" || item.value == " "){
+			item.value = fgm_finder.item_title;
+		}
 	};
 	
 	this.finder = function() {

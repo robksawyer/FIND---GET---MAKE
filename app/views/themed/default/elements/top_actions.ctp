@@ -147,8 +147,8 @@
 		<!-- END STAFF FAVORITE -->
 	</ul>
 </div>
-<div>&mdash;</div>
 <div class="clear"></div>
+<div>&mdash;</div>
 
 <!-- FLAG ITEMS MODAL CONTENT -->
 <div id="basic-modal-content">

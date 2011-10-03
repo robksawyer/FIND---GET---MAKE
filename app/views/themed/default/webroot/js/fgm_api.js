@@ -83,9 +83,11 @@ function fgm_api(){
 	
 	this.init = function() {
 		try {
-
+			var event = document.createEvent("Event");
+			event.initEvent("FGM_API.INITIALIZED", true, true);
+			window.dispatchEvent(event);
 		} catch(e) {
-			
+			//alert(e);
 		}
 	};
 	
@@ -117,6 +119,26 @@ function fgm_api(){
 				this.className+=" fgm_hover";
 			}
 			navChildren[i].onmouseout=function() {
+				this.className=this.className.replace(new RegExp(" fgm_hover\\b"), "");
+			}
+		}
+	}
+	
+	/**
+	 * Initializes the user nav
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	this.init_user_nav = function(){
+		alert("Initializing user nav");
+		var userNavRoot = document.getElementById("user-nav");
+		var userNavChildren = document.getElementById("user-nav").getElementsByTagName("li");
+		for (var i=0; i<userNavChildren.length; i++) {
+			userNavChildren[i].onmouseover=function() {
+				this.className+=" fgm_hover";
+			}
+			userNavChildren[i].onmouseout=function() {
 				this.className=this.className.replace(new RegExp(" fgm_hover\\b"), "");
 			}
 		}

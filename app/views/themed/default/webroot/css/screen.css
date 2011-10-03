@@ -294,20 +294,11 @@ a.category:hover{
 }
 /*END HEADER*/
 /*MAIN NAVIGATION*/
-#nav{
-	color: #08b899;
-	height: 50px;
-}
-#nav a:link,
-#nav a:active,
-#nav a:visited{
-	color: #08b899;
-	vertical-align: middle;
-}
+#nav{ color: #08b899; height: 50px; float: left;}
+#nav a:link, #nav a:active,
+#nav a:visited{ color: #08b899; vertical-align: middle; }
 #nav #nav-wrapper { }
-#nav #nav-wrapper li{
-	display: inline;
-}
+#nav #nav-wrapper li{ display: inline; }
 /* Replacing Text By An Image: http://wellstyled.com/css-replace-text-by-image.html */
 #nav #nav-wrapper ul#logo-nav{
 	position:relative;
@@ -323,41 +314,13 @@ a.category:hover{
 	padding: 0; margin: 0;
 	z-index: 4;
 }
-#nav #nav-wrapper ul#logo-nav li span{
-	display:block; position:absolute; 
-	left:0; top:0; z-index:1;
-	margin:0; padding:0;
-}
-
-#nav #nav-wrapper ul#logo-nav li.nav-item{
-	left:0; top:0;
-	width:237px; height:100px;
-}
-#nav #nav-wrapper ul#logo-nav li.nav-item span{
-	background: transparent url('img/fgm_sprite.gif') 0px 0px no-repeat;
-	width:237px; height:20px;
-	left:0; top:0;
-	overflow: hidden;
-	cursor: pointer;
-}
-#nav #nav-wrapper ul#logo-nav li.nav-item:hover span{
-	background: transparent url('img/fgm_sprite.gif') 0px -21px no-repeat;
-}
-#nav #nav-wrapper ul#main-nav{
-	position: relative;
-	margin:0; padding:0;
-	left: 15px; top: 0px;
-	float: left;
-}
-#nav #nav-wrapper ul#main-nav li:first-child{
-	margin: 0;
-	float: left;
-}
-#nav #nav-wrapper ul#main-nav li{
-	margin: 0 0 0 15px;
-	float: left;
-}
-
+#nav #nav-wrapper ul#logo-nav li span{ display:block; position:absolute; left:0; top:0; z-index:1; margin:0; padding:0; }
+#nav #nav-wrapper ul#logo-nav li.nav-item{ left:0; top:0; width:237px; height:100px; }
+#nav #nav-wrapper ul#logo-nav li.nav-item span{ background: transparent url('img/fgm_sprite.gif') 0px 0px no-repeat; width:237px; height:20px; left:0; top:0; overflow: hidden; cursor: pointer; }
+#nav #nav-wrapper ul#logo-nav li.nav-item:hover span{ background: transparent url('img/fgm_sprite.gif') 0px -21px no-repeat; }
+#nav #nav-wrapper ul#main-nav{ position: relative; margin:0; padding:0; left: 15px; top: 0px; float: left; }
+#nav #nav-wrapper ul#main-nav li:first-child{ margin: 0; float: left; }
+#nav #nav-wrapper ul#main-nav li{ margin: 0 0 0 15px; float: left; }
 /* Drop downs */
 #nav #nav-wrapper ul#main-nav li ul.sub-nav{
 	position: absolute;
@@ -371,32 +334,41 @@ a.category:hover{
 	border-left: 1px solid #3bb796;
 }
 #nav #nav-wrapper ul#main-nav li.fgm_hover ul.sub-nav,
-#nav #nav-wrapper ul#main-nav li:hover ul.sub-nav{
-	display: block;
-}
-#nav #nav-wrapper ul#main-nav li:hover ul.sub-nav li{
-	float: none; 
-}
-#nav #nav-wrapper ul#main-nav li ul.sub-nav li{
-	position: relative;
-	display: list-item;
-	padding: 0; margin: 0;
-}
-#nav #nav-wrapper ul#main-nav li ul.sub-nav li a{
-	position: relative;
-	display: block;
-	color: #262626;
-	margin: 5px 0;
-}
+#nav #nav-wrapper ul#main-nav li:hover ul.sub-nav{ display: block; }
+#nav #nav-wrapper ul#main-nav li:hover ul.sub-nav li{ float: none;  }
+#nav #nav-wrapper ul#main-nav li ul.sub-nav li{ position: relative; display: list-item; padding: 0; margin: 0; }
+#nav #nav-wrapper ul#main-nav li ul.sub-nav li a{ position: relative; display: block; color: #262626; margin: 5px 0; }
 /* End Drop downs */
 /*END MAIN NAVIGATION*/
 /*USER NAVIGATION*/
 #user-nav-wrapper{
-	position: absolute;
-	text-align: right;
-	margin: 0 0 0 -50px; padding: 0; 
-	width: 984px;
+	position: relative;
+	margin: 0; padding: 0;
+	width: 934px;
+	clear: both;
 }
+#user-nav-wrapper .user-nav{ position: relative; float: right; }
+#user-nav-wrapper ul#user-nav{ margin:0; padding:0; }
+#user-nav-wrapper ul#user-nav li:first-child{ padding: 0; margin: 0 0 0 10px; float: left; }
+#user-nav-wrapper ul#user-nav li{ padding: 0; margin: 0 0 0 10px; float: left; }
+/* Drop downs */
+#user-nav-wrapper ul#user-nav li ul.sub-nav{
+	position: absolute;
+	width: 10em; /* Width to help Opera out */
+	/*top: 15px;*/ /* This is important. If it's any farther down an onmouseout will register and the menu will collapse. */
+	list-style: none;
+	padding: 0px 0 0 7px; margin: 0;
+	background: #ffffff;
+	display: none;
+	z-index: 3;
+	border-left: 1px solid #000000;
+}
+#user-nav-wrapper ul#user-nav li.fgm_hover ul.sub-nav,
+#user-nav-wrapper ul#user-nav li:hover ul.sub-nav{ display: block; }
+#user-nav-wrapper ul#user-nav li:hover ul.sub-nav li{ float: none; }
+#user-nav-wrapper ul#user-nav li ul.sub-nav li{ position: relative; display: list-item; padding: 0; margin: 0; }
+#user-nav-wrapper ul#user-nav li ul.sub-nav li a{ position: relative; display: block; color: #262626; margin: 5px 0; }
+/* End Drop downs */
 /*END USER NAVIGATION*/
 /* TOP ACTIONS */
 .top-actions{ position: relative; margin: 10px 0 10px 0; font-size: 11px; display: block; float: left; text-align: left; overflow: auto; }

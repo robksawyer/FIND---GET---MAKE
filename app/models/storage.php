@@ -63,14 +63,16 @@ class Storage extends AppModel {
 	
 	/**
 	 * Returns the item details that was stored
+	 * @param int user_id The user id that is trying to add to storage
 	 * @param string model
 	 * @param int model_id
 	 * @return array
 	 * 
 	*/
-	public function getItem($model="Product",$model_id){
+	public function getItem($user_id,$model="Product",$model_id){
 		$stored_item = $this->find('first',array('conditions'=>array(
 																	'AND'=>array(
+																		array('Storage.user_id'=>$user_id),
 																		array('Storage.model'=>$model),
 																		array('Storage.model_id'=>$model_id)
 																	)
@@ -110,5 +112,43 @@ class Storage extends AppModel {
 										));
 		
 		return $users;
+	}
+	
+	/**
+	 * Adds an item to a user's storage
+	 * @param int user_id 
+	 * @param int model_id the id of the item to target
+	 * @param string model the item type to target
+	 * @return 
+	 * 
+	*/
+	public function addItem($user_id,$model_id,$model="Product"){
+		$this->recursive = -1;
+		$productCheck = $this->find('count',array('conditions'=>array(
+												'AND'=>array(
+													array("Storage.id" => $model_id),
+													array("Storage.model" => $model),
+													array("Storage.user_id" => $user_id)
+												)
+											)
+										));
+		
+		if(empty($productCheck)){
+			$saveData = array();
+			$saveData['Storage']['model'] = $model;
+			$saveData['Storage']['model_id'] = $model_id;
+			$saveData['Storage']['user_id'] = $user_id;
+			$saveData['Storage']['name'] = Inflector::pluralize(strtolower($model));
+			$this->create();
+			if($this->save($saveData)){
+				//Save successful
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			//The user has already added this product
+			return true;
+		}
 	}
 }

@@ -9,8 +9,10 @@ div.fgm_finder *{
 	vertical-align:baseline;
 	list-style:none ;
 	text-transform:none;
+	text-align: left;
 }
 div.fgm_finder{
+	text-align: left;
 	background:#ffffff;
 	border-top: 17px solid #000000;
 	border-bottom: 17px solid #000000;
@@ -48,7 +50,7 @@ div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul{list-style-typ
 div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul li{cursor:pointer;display:inline;margin:0 0 0 10px;}
 div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul li:hover{color:#ef3f23 ;}
 div.fgm_finder div.fgm_finder_option div.fgm_finder_selections ul li.fgm_finder_first{margin:0;}
-div.fgm_finder div.fgm_finder_option div.extra{ color: #777777;}
+div.fgm_finder div.fgm_finder_option div.extra{ font-size: 12px; color: #777777;}
 div#fgm_finder_container div.fgm_finder_overlay{
 	border:10px dashed #ef3f23;
 	cursor:pointer;
@@ -79,6 +81,7 @@ div.fgm_finder div.fgm_finder_option textarea {
 	border: solid 1px #E5E5E5;
 	margin: 0 0 10px 0;
 	outline: 0;
+	width: 80%;
 	font: normal 13px/100% Verdana, Tahoma, sans-serif;
 	background: #ffffff; /* Old browsers */
 	background: -moz-linear-gradient(top, #ffffff 0%, #f7f7f7 100%); /* FF3.6+ */
@@ -97,18 +100,23 @@ div.fgm_finder div.fgm_finder_option textarea:focus {
 	border-color: #C9C9C9;
 }
 div.fgm_finder .submit{
+	position: relative;
 	text-align: right;
+	margin: 10px 0 0 0;
 }
 div.fgm_finder input[type="submit"]{
 	background: #000000 !important;
 	color: #ffffff !important;
+	text-align: center !important;
 	margin: 5px;
 	border-radius: 0 !important;
 	-moz-border-radius: 0 !important;
 	-webkit-border-radius: 0 !important;
+	width: 75px !important;
 }
 div.fgm_finder input[type="submit"]:hover{
 	background: #262626 !important;
 	color: #ffffff !important;
 	cursor: pointer;
+	width: 75px !important;
 }

@@ -55,7 +55,6 @@ Configure::load('fgm_config');
 //Load the Facebook config file
 Configure::load('facebook');
 
-
 //Load the Forum config file
 App::import(array(
 	'type' => 'File', 

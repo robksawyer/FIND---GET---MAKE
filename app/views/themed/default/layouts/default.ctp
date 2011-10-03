@@ -86,7 +86,7 @@
 			
 			echo $this->Html->script('fgm_api')."\n";
 			echo $this->Html->script('utils')."\n"; //Common helper scripts
-			echo $this->Html->script('jquery.popupwindow',array('inline'=>false));
+			echo $this->Html->script('jquery.popupwindow')."\n";
 			echo $this->Html->script('jquery.form')."\n";
 			echo $this->Html->script('jquery.autocomplete.min')."\n";
 			echo $this->Html->script('jquery.jeditable.mini')."\n";
@@ -159,6 +159,7 @@
 						echo $this->element('navigation',array('plugin' => 'forum')); 
 					}
 				?>
+				<br class="clear"/>
 				<?php echo $this->Session->flash(); ?>
 				<?php echo $this->Session->flash('email'); ?>
 				<?php echo $content_for_layout;?>

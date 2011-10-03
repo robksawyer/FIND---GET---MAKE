@@ -12,8 +12,8 @@
 			<?php echo $this->Form->label(__('Email Notifications', true)); ?>
 			<?php 
 				echo $this->Form->input('email_on_follow',array('type'=>'checkbox','label'=>'Email when someone follows you')); 
-				echo $this->Form->input('email_on_product_have_want',array('type'=>'checkbox','label'=>'Email when someone has or wants a product that you\'ve added'));
-				echo $this->Form->input('email_on_like',array('type'=>'checkbox','label'=>'Email when someone likes an item that you\'ve added'));
+				echo $this->Form->input('email_on_product_have',array('type'=>'checkbox','label'=>'Email when someone has a product that you\'ve added'));
+				//echo $this->Form->input('email_on_like',array('type'=>'checkbox','label'=>'Email when someone likes an item that you\'ve added'));
 				echo $this->Form->input('email_on_comment',array('type'=>'checkbox','label'=>'Email when someone comments on an item you\'ve added')); 
 			?>
 		</div>
@@ -22,12 +22,12 @@
 			<?php echo $this->Form->label(__('Feed Notifications', true)); ?>
 			<?php
 				echo $this->Form->input('notify_on_follow',array('label'=>'Notify when someone follows you','type'=>'checkbox'));
-				echo $this->Form->input('notify_on_like',array('label'=>'Notify when someone likes an item you\'ve found','type'=>'checkbox'));
-				echo $this->Form->input('notify_on_product_have_want',array('type'=>'checkbox','label'=>'Notify when someone has or wants a product that you\'ve added'));
+				//echo $this->Form->input('notify_on_like',array('label'=>'Notify when someone likes an item you\'ve found','type'=>'checkbox'));
+				//echo $this->Form->input('notify_on_product_have_want',array('type'=>'checkbox','label'=>'Notify when someone has or wants a product that you\'ve added'));
 				
 				echo $this->Form->input('notify_followers_on_add',array('type'=>'checkbox','label'=>'Notify when your followers add a new item'));
-				echo $this->Form->input('notify_followers_on_like',array('label'=>'Notify when your followers like an item','type'=>'checkbox'));
-				echo $this->Form->input('notify_followers_on_product_have_want',array('type'=>'checkbox','label'=>'Notify when your followers have or want a product'));
+				//echo $this->Form->input('notify_followers_on_like',array('label'=>'Notify when your followers like an item','type'=>'checkbox'));
+				echo $this->Form->input('notify_followers_on_product_have',array('type'=>'checkbox','label'=>'Notify when your followers have a product'));
 			?>
 		</div>
 		
