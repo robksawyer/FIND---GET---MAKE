@@ -17,26 +17,27 @@
 				</ul>
 			</li>
 			<li><?php echo $this->Html->link('Extras',array('controller'=>'tools','action'=>'bookmarklet'),array()); ?></li>
-			<li>
-				<?php echo $this->Html->link('Make','#',array('title'=>'Make')); ?>
-				<ul id="make-sub-nav" class="sub-nav" style="">
-					<li><?php echo $this->Html->link('A Collection',array('controller'=>'collections','action'=>'add'),array()); ?></li>
-					<li><?php echo $this->Html->link('An Inspiration',array('controller'=>'inspirations','action'=>'add'),array()); ?></li>
-				</ul>
-			</li>
 			<li><?php echo $this->Html->link('Feed',array('admin'=>false,'controller'=>'feeds','action'=>'site'),array('title'=>'Feed')); ?></li>
-			<li><?php echo $this->Html->link('Find People',array('controller'=>'users','action'=>'find'),array('title'=>'Find People')); ?></li>
-			<!--<li><?php //echo $this->Html->link('Forum','#',array('title'=>'Forum')); ?></li>-->
-			<li>
-				<?php echo $this->Html->link('Profile','#',array('title'=>'Profile')); ?>
-				<ul id="product-sub-nav" class="sub-nav" style="">
-					<li><?php echo $this->Html->link('Moderate',array('controller'=>'users','action'=>'moderate'),array('title'=>'Moderate')); ?></li>
-					<li><?php echo $this->Html->link('Followers',array('controller'=>'user_followings','action'=>'followers'),array('title'=>'Followers')); ?></li>
-					<li><?php echo $this->Html->link('Following',array('controller'=>'user_followings','action'=>'following'),array('title'=>'Following')); ?></li>
-					<li><?php echo $this->Html->link('Settings',array('controller'=>'settings','action'=>'account'),array('title'=>'Settings')); ?></li>
-				</ul>
-			</li>
-			
+			<?php if(!empty($authUser)): ?>
+				<li>
+					<?php echo $this->Html->link('Make','#',array('title'=>'Make')); ?>
+					<ul id="make-sub-nav" class="sub-nav" style="">
+						<li><?php echo $this->Html->link('A Collection',array('controller'=>'collections','action'=>'add'),array()); ?></li>
+						<li><?php echo $this->Html->link('An Inspiration',array('controller'=>'inspirations','action'=>'add'),array()); ?></li>
+					</ul>
+				</li>
+				<li><?php echo $this->Html->link('Find People',array('controller'=>'users','action'=>'find'),array('title'=>'Find People')); ?></li>
+				<!--<li><?php //echo $this->Html->link('Forum','#',array('title'=>'Forum')); ?></li>-->
+				<li>
+					<?php echo $this->Html->link('Profile','#',array('title'=>'Profile')); ?>
+					<ul id="product-sub-nav" class="sub-nav" style="">
+						<li><?php echo $this->Html->link('Moderate',array('controller'=>'users','action'=>'moderate'),array('title'=>'Moderate')); ?></li>
+						<li><?php echo $this->Html->link('Followers',array('controller'=>'user_followings','action'=>'followers'),array('title'=>'Followers')); ?></li>
+						<li><?php echo $this->Html->link('Following',array('controller'=>'user_followings','action'=>'following'),array('title'=>'Following')); ?></li>
+						<li><?php echo $this->Html->link('Settings',array('controller'=>'settings','action'=>'account'),array('title'=>'Settings')); ?></li>
+					</ul>
+				</li>
+			<?php endif; ?>
 		</ul>
 	</div>
 	<br class="clear" />

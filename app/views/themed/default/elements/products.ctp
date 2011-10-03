@@ -4,7 +4,13 @@
 	$controller = strtolower(Inflector::pluralize($model));
 ?>
 <div id="products-group">
-	<h3 class="header"><?php __('Products');?></h3>
+	<h4><?php 
+			if(empty($title)){
+				__('Products');
+			}else{
+				__($title);
+			}
+		?></h4>
 <?php if(!empty($item['Product'])):?>
 	<div class="products">
 	<?php

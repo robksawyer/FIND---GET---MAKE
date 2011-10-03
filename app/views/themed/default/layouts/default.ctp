@@ -41,10 +41,7 @@
 				echo $this->Html->css('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/base/jquery-ui.css')."\n";
 			}
 			
-			//echo $this->Html->css('cake.generic')."\n";
 			echo $this->Html->css('screen')."\n";
-			//echo $this->Html->css('basic')."\n";
-			//echo $this->Html->css('elements/nav')."\n";
 			//Chosen Select Boxes (http://harvesthq.github.com/chosen/)
 			echo $this->Html->css('chosen/chosen')."\n";
 			//Used for the autocomplete tags element
@@ -89,6 +86,7 @@
 			
 			echo $this->Html->script('fgm_api')."\n";
 			echo $this->Html->script('utils')."\n"; //Common helper scripts
+			echo $this->Html->script('jquery.popupwindow',array('inline'=>false));
 			echo $this->Html->script('jquery.form')."\n";
 			echo $this->Html->script('jquery.autocomplete.min')."\n";
 			echo $this->Html->script('jquery.jeditable.mini')."\n";

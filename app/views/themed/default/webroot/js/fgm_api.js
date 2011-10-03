@@ -72,18 +72,18 @@ $(document).ready(function(){
  * 
 */
 function fgm_api(){
-	var currentSiteAddress;
-	var follow_all_user_id_data;
-	var feed_num_items;
-	var feed_limit;
-	var feed_previous_loaded;
-	var feed_loading = false;
-	var feed_showing_end = false;
-	var is_empty_feed = 1;
+	this.currentSiteAddress = "";
+	this.follow_all_user_id_data;
+	this.feed_num_items = 0;
+	this.feed_limit = 10;
+	this.feed_previous_loaded = 0;
+	this.feed_loading = false;
+	this.feed_showing_end = false;
+	this.is_empty_feed = 1;
 	
 	this.init = function() {
 		try {
-			
+
 		} catch(e) {
 			
 		}
@@ -96,7 +96,11 @@ function fgm_api(){
 	 * 
 	*/
 	this.setSiteUrl = function(url){
+		var event = document.createEvent("Event");
+		event.initEvent("FGM_API.SITE_SET", true, true);
+		//event.customData = getCustomData();
 		fgm_api.currentSiteAddress = url;
+		window.dispatchEvent(event);
 	}
 	
 	/**
@@ -129,60 +133,55 @@ function fgm_api(){
 				center: 1
 			}
 		}
-
-		//Make the popup window
-		$.getJSON(currentSiteAddress+'/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
-	   	$('#twitter-login-wrap #btn-twitter').attr('href', data.url);
-			$('#twitter-login-wrap #btn-twitter').attr('rel','windowCenter');
-			$('#twitter-login-wrap #btn-twitter').show();
-	   	$('#twitter-login-wrap .loading').hide();
-			$('.popupwindow').popupwindow(profiles);
-	   });
-	}
-	
-	/**
-	 * Unloads the Twitter popup window
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	this.unloadedTwitterPopup = function(){
-		//Redirect the user to the signup page and continue the process
-		window.location="/users/twitter_signup";
-	}
-	
-	/**
-	 * The user accepted the requirements. Log them in
-	 * @param string login_url 
-	 * @return 
-	 * 
-	*/
-	this.facebook_login = function(loginURL){
-		var loginURL = loginURL;
-		window.location.href = loginURL;
+		try {
+			//Make the popup window
+			if(fgm_api.currentSiteAddress){
+				$.getJSON(
+					fgm_api.currentSiteAddress+'/twitter_kit/oauth/authenticate_url/twitter', {}, 
+					function(data){
+				   		$('#twitter-login-wrap #btn-twitter').attr('href', data.url);
+						$('#twitter-login-wrap #btn-twitter').attr('rel','windowCenter');
+						$('#twitter-login-wrap #btn-twitter').show();
+				   		$('#twitter-login-wrap .loading').hide();
+						$('.popupwindow').popupwindow(profiles);
+			   		}
+				);
+			}else{
+				//The site url isn't set.
+			}
+		} catch(e) {
+			//alert(e);
+		}
 	}
 	
 	/**
 	 * Initializes the feed
+	 * @param string controller The controller to target
 	 * @param int num_items
 	 * @param int limit
 	 * @param bool is_empty_feed
 	 * @return 
 	 * 
 	*/
-	this.feed_init = function(num_items,limit,is_empty_feed){
+	this.feed_init = function(controller,num_items,limit,is_empty_feed){
 		fgm_api.feed_num_items = num_items;
 		fgm_api.feed_limit = limit;
 		fgm_api.is_empty_feed = is_empty_feed;
+		fgm_api.feed_previous_loaded = fgm_api.feed_limit;
 		
 		if(!fgm_api.is_empty_feed){
 			$(window).scroll(function(){
 				var position = ($(document).height() - $(window).height());
-				if(fgm_api.feed_previous_loaded < fgm_api.feed_num_items - fgm_api.feed_limit){
+				if(fgm_api.feed_previous_loaded < (fgm_api.feed_num_items - fgm_api.feed_limit)){
 					if($(window).scrollTop() == position){	 //If scrollbar is at the bottom
 						if(!fgm_api.feed_loading){
 							fgm_api.feed_loading = true;
-							var url = "/ajax/users/more_feed_data/"+fgm_api.feed_previous_loaded;
+							var url;
+							if(!controller){
+								url = "/ajax/users/more_feed_data/"+fgm_api.feed_previous_loaded;
+							}else{
+								url = "/ajax/"+controller+"/more_feed_data/"+fgm_api.feed_previous_loaded;
+							}	
 							$.ajax({
 									url: url,
 									error: function(response, status, xhr) {
@@ -195,7 +194,7 @@ function fgm_api(){
 													}
 												},
 									beforeSend: fgm_api.showMoreLoader,
-									success:appendData,
+									success: fgm_api.appendFeedData,
 									dataType:'html'
 							});
 						}
@@ -222,17 +221,52 @@ function fgm_api(){
 		}
 	};
 	
-	this.retry_auto_paginator_request = function(){
+	/**
+	 * Unloads the Twitter popup window
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	this.unloadedTwitterPopup = function(){
+		//Redirect the user to the signup page and continue the process
+		window.location="/users/twitter_signup";
+	}
+	
+	/**
+	 * The user accepted the requirements. Log them in
+	 * @param string login_url 
+	 * @return 
+	 * 
+	*/
+	this.facebook_login = function(loginURL){
+		var loginURL = loginURL;
+		window.location.href = loginURL;
+	}
+	
+	/**
+	 * 
+	 * @param string controller The controller to target
+	 * @return 
+	 * 
+	*/
+	this.retry_auto_paginator_request = function(controller){
+		if(!controller) controller = "users";
 		$.ajax({
 			success:function (data, textStatus) {
-				appendData(data);
+				fgm_api.appendFeedData(data);
 			}, 
-			url:"/ajax/users/more_feed_data/"+fgm_api.feed_previous_loaded
+			url:"/ajax/"+controller+"/more_feed_data/"+fgm_api.feed_previous_loaded
 		});
 		return false;
 	};
 
-	this.appendData = function(data){
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	this.appendFeedData = function(data){
 		//Hide the loader
 		fgm_api.hideMoreLoader();
 		$("#grid-container").append(data);
@@ -240,10 +274,22 @@ function fgm_api(){
 		fgm_api.feed_loading = false;
 	};
 
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	this.showMoreLoader = function(){
 		$("#auto-pagination-loader").show();
 	};
 
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	this.hideMoreLoader = function(){
 		$("#auto-pagination-loader").hide();
 	};

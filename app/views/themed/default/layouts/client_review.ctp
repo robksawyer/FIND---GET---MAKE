@@ -40,22 +40,16 @@
 				echo $this->Html->css('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/base/jquery-ui.css');
 			}
 			
-			echo $this->Html->css('cake.generic');
-			echo $this->Html->css('basic');
-			echo $this->Html->css('elements/nav');
+			echo $this->Html->css('screen');
 			//Chosen Select Boxes (http://harvesthq.github.com/chosen/)
 			echo $this->Html->css('chosen/chosen');
 			//Used for the autocomplete tags element
 			//echo $this->Html->css('jquery.autocomplete');
 			echo $this->Html->css('auto-complete');
-			
 			echo $this->Html->css('jquery.tablescroll');
 			echo $this->Html->css('/rating/css/rating');
-			
 			//Cupcake Forum
 			echo $this->Html->css('forum/style.css');
-			
-			
 			//Modal windows
 			echo $this->Html->css('modal/basic');
 			echo '<!-- IE6 "fix" for the close png image -->';
@@ -84,9 +78,10 @@
 				echo '</script>'."\n";
 			}
 			
-			echo $this->Html->script('elements/nav');
-			echo $this->Html->script('common'); //Common helper scripts
+			echo $this->Html->script('fgm_api')."\n";
+			echo $this->Html->script('utils'); //Common helper scripts
 			echo $this->Html->script('/rating/js/rating_jquery_min');
+			echo $this->Html->script('jquery.popupwindow',array('inline'=>false));
 			echo $this->Html->script('jquery.form');
 			echo $this->Html->script('jquery.autocomplete.min');
 			echo $this->Html->script('jquery.jeditable.mini');
@@ -124,39 +119,26 @@
 	<body>
 		<!-- This is for the popup plugin -->
 		<div id="popups" style="z-index: 1000;"></div>
-		<div id="container">
-			<div id="header">
-				<div id="login-container">
-					<?php
-						if(empty($authUser)){
-							if ($this->params['action'] != 'login') {
-								echo $this->Html->link('Login','/users/login',array('title'=>'Login'));
+		<div id="wrapper_extra">
+			<div id="wrapper">
+				<div id="header">
+					<!-- Navigation -->
+					<?php  //User Nav
+						if(!empty($authUser)){
+							if($authUser['User']['group_id'] == 1){
+								echo $this->element('nav-admin',array('cache'=>false));
+							}else if($authUser['User']['group_id'] == 2){
+								echo $this->element('nav-manager',array('cache'=>false));
+							}else{
+								echo $this->element('nav-user',array('cache'=>false));
 							}
 						}else{
-							if(!empty($authUser['User']['fullname'])){
-								echo "Hi, ".ucwords($authUser['User']['fullname']).". | ";
-							}else{
-								echo "Hi, ".$authUser['User']['username'].". | ";
-							}
-							echo $this->Html->link('Your Space','/users/moderate',array('title'=>'Check out your space.'))." | ";
-							if ($this->Cupcake->user() && $this->Cupcake->hasAccess('admin')):
-								echo $this->Html->link(__d('forum', 'Admin', true), '/admin/forum/home')." | ";
-							endif;
-							echo $this->Html->link('Logout','/users/logout',array('title'=>'Logout'));
-						
+							echo $this->element('nav-user',array('cache'=>false));
 						}
 					?>
+					<?php echo $this->element('nav', array('cache' => false)); ?>
+					<!-- End Navigation -->
 				</div>
-				<div id="logo-container">
-					<div class="app-name"><?php echo $this->Html->image('/img/logo.png',array('alt'=>'FIND | GET | MAKE','url'=>'/','style'=>'position: relative; float: none; margin: 0px 0px 2px 0px; padding: 0px;','title'=>'FIND | GET | MAKE')); ?></div>
-				</div>
-				<div class="clear"></div>
-			
-				<!-- Navigation -->
-				<?php echo $this->element('nav_share', array('cache' => false)); ?>
-				<!-- End Navigation -->
-			</div>
-			<div id="content">
 				<?php
 					if ($this->params['action'] == 'display' || $this->params['action'] == 'moderate') {
 						//The competition was here.
@@ -169,7 +151,7 @@
 						echo $this->element('navigation',array('plugin' => 'forum')); 
 					}
 				?>
-				
+			
 				<?php echo $content_for_layout;?>
 
 			</div>
@@ -186,5 +168,11 @@
 			</div>
 		</div>
 		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
+				fgm_api.setSiteUrl(currentSiteAddress);
+			});
+		</script>
 	</body>
 </html>

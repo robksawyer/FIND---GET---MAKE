@@ -18,9 +18,27 @@ class FeedsController extends AppController {
 		parent::beforeFilter();
 		
 		//Make certain pages public
-		$this->Auth->allowedActions = array('getUsersFollowingFeedDataDetails','site','getSiteFeedCount','getSiteFeed');
+		$this->Auth->allowedActions = array('ajax_more_feed_data','getUsersFollowingFeedDataDetails','site','getSiteFeedCount','getSiteFeed');
 		
 	}
+	
+	/**************** AJAX METHODS ************************/
+	
+	/**
+	 * Returns the feed data based on the offset passed for the logged in user
+	 * @param offset
+	 * @return 
+	 * 
+	*/
+	public function ajax_more_feed_data($offset=0){
+		Configure::write ('debug', 0);
+		$this->autoLayout = true;
+		$this->autoRender = true;
+		$feed = $this->getSiteFeed($offset);
+		$this->set(compact('feed'));
+	}
+	
+	/**************** END AJAX METHODS ************************/
 	
 	/**
 	 * Returns the site feed data
@@ -32,7 +50,6 @@ class FeedsController extends AppController {
 		$feed = $this->getSiteFeed();
 		$num_items = $this->getSiteFeedCount();
 		$limit = 10;
-		
 		$this->set(compact('feed','num_items','limit'));
 	}
 	

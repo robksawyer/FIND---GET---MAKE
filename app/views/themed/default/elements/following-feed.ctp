@@ -45,7 +45,7 @@
 					<span id="auto_pagination_loader_loading">
 						<div class="spinner"></div>
 					</span>
-					<span id="auto_pagination_loader_failure" style="display: none;">More items could not be loaded.&nbsp;<a href="#" onclick="feed_api.retry_auto_paginator_request(); return false;">Try again</a>.</span>
+					<span id="auto_pagination_loader_failure" style="display: none;">More items could not be loaded.&nbsp;<a href="#" onclick="fgm_api.retry_auto_paginator_request('users'); return false;">Try again</a>.</span>
 				</div>
 			<?php
 			else:
@@ -62,5 +62,5 @@ var num_items = <?php echo $num_items; ?>;
 var limit = <?php echo $limit; ?>;
 var is_empty_feed = <?php if(empty($feed)) echo 1; else echo 0; ?>;
 
-fgm_api.feed_init(num_items,limit,is_empty_feed); //Initialize the feed
+fgm_api.feed_init('users',num_items,limit,is_empty_feed); //Initialize the feed
 </script>

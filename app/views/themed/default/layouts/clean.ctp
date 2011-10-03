@@ -38,11 +38,7 @@
 			}else{
 				echo $this->Html->css('http://yui.yahooapis.com/2.8.0r4/build/reset/reset-min.css');
 			}
-			
-			echo $this->Html->css('cake.generic');
-			echo $this->Html->css('basic');
-
-
+			echo $this->Html->css('screen');
 			if(Configure::read('FGM.local') == true){
 				echo $this->Html->script('jquery-1.4.1.min');
 			}else{
@@ -55,8 +51,9 @@
 				echo '//]]>'."\n";
 				echo '</script>'."\n";
 			}
-			echo $this->Html->script('common')."\n"; //Common helper scripts
-			
+			echo $this->Html->script('fgm_api')."\n";
+			echo $this->Html->script('jquery.popupwindow',array('inline'=>false));
+			echo $this->Html->script('utils')."\n"; //Common helper scripts
 			echo $scripts_for_layout;
 		?>
 		
@@ -76,14 +73,11 @@
 	<body>
 		<!-- This is for the popup plugin -->
 		<div id="popups" style="z-index: 1000;"></div>
-		<div id="container">
-			<div id="header">
-				<div id="logo-container">
-					<div class="app-name"><?php echo $this->Html->image('/img/logo.png',array('alt'=>'FIND | GET | MAKE','url'=>'/','style'=>'position: relative; float: none; margin: 0px 0px 2px 0px; padding: 0px;','title'=>'FIND | GET | MAKE')); ?></div>
+		<div id="wrapper_extra">
+			<div id="wrapper">
+				<div id="header">
+					<?php echo $this->element('nav', array('cache' => false,'nolinks'=>true)); ?>
 				</div>
-				<div class="clear"></div>
-			</div>
-			<div id="content">
 				<?php echo $this->Session->flash();?>
 				
 				<?php echo $content_for_layout;?>
@@ -104,4 +98,10 @@
 		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
 	</body>
 	<?php echo $this->Facebook->init(); ?>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
+			fgm_api.setSiteUrl(currentSiteAddress);
+		});
+	</script>
 </html>

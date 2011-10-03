@@ -38,11 +38,8 @@
 			}else{
 				echo $this->Html->css('http://yui.yahooapis.com/2.8.0r4/build/reset/reset-min.css');
 			}
+			echo $this->Html->css('screen');
 			
-			echo $this->Html->css('cake.generic');
-			echo $this->Html->css('basic');
-
-
 			if(Configure::read('FGM.local') == true){
 				echo $this->Html->script('jquery-1.4.1.min');
 			}else{
@@ -58,8 +55,9 @@
 				echo '//]]>'."\n";
 				echo '</script>'."\n";
 			}
-			echo $this->Html->script('common')."\n"; //Common helper scripts
-			
+			echo $this->Html->script('fgm_api')."\n";
+			echo $this->Html->script('utils')."\n"; //Common helper scripts
+			echo $this->Html->script('jquery.popupwindow',array('inline'=>false));
 			echo $scripts_for_layout;
 		?>
 		
@@ -99,4 +97,10 @@
 		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
 	</body>
 	<?php echo $this->Facebook->init(); ?>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
+			fgm_api.setSiteUrl(currentSiteAddress);
+		});
+	</script>
 </html>

@@ -5,7 +5,7 @@
 	<div class="wrapper">
 		<div class="users form">
 			<div id="social-login">
-				<h3>Log in to <b>FIND | GET | MAKE</b> with Twitter.</h3>
+				<h3>Log in to <b>FIND | GET | MAKE</b> with Twitter or Facebook.</h3>
 				<div id="twitter-login-wrap">
 				<?php 
 					//$linkOptions['login'] = 'Sign in with Twitter';
@@ -66,18 +66,8 @@
 	</div>
 	<div class="clear"></div>
 </div>
-<?php
-	echo $this->Html->script('jquery.corner',array('inline'=>false));
-	echo $this->Html->script('jquery.popupwindow',array('inline'=>false));
-?>
 <script type="text/javascript">
 //<![CDATA[
-$(document).ready(function() {
-	fgm_api.init_social_services();
-});
-
-$("#join").corner("10px");
-$(".basic").corner('10px');
-$(".basic-sign-up").corner("10px");
+window.addEventListener("FGM_API.SITE_SET", function(){ fgm_api.init_social_services(); },false);
 //]]>
 </script>
