@@ -65,7 +65,7 @@ if(!empty($this->Paginator->params['paging']['Tagged'])){
 			}
 		?>
 		<tr<?php echo $class;?>>
-			<td><?php echo $this->Html->link(__($source['Source']['name'],true), array('action' => 'view', $source['Source']['id'])); ?>&nbsp;</td>
+			<td><?php echo $this->Html->link($source['Source']['name'], array('action' => 'view', $source['Source']['id']),array('escape'=>false)); ?>&nbsp;</td>
 			<td><?php echo $this->Html->link(__($source['SourceCategory']['name'],true), array('controller'=>'source_categories','action' => 'view', $source['SourceCategory']['id'])); ?>&nbsp;</td>
 			<td><?php echo $this->Html->link($source['Source']['url'],$source['Source']['url'],array('target'=>'_blank')); ?>&nbsp;</td>
 			<td><?php echo $source['Source']['city']; ?>&nbsp;</td>

@@ -20,7 +20,7 @@ if(empty($model_id)) $model_id = $feed_item[$model]['id'];
 																												'admin'=>false,
 																												$model_id)); ?></div>
 	<div class="description"><?php echo $this->String->truncate($feed_item[$model]['description'],150); ?></div>
-	<div class="added-by">Added by <?php echo $this->Html->link($feed_item['User']['username'],array('admin'=>false,'controller'=>'users','plugin'=>'forum','action'=>'profile',$feed_item['User']['username'])); ?></div>
+	<div class="added-by">Added by <?php echo $this->Html->link($feed_item['User']['username'],array('admin'=>false,'controller'=>'users','plugin'=>'','action'=>'profile',$feed_item['User']['username'])); ?></div>
 	<div class='bottom-detail'>
 		<span class='date'><?php echo $this->Time->timeAgoInWords($feed_item['Feed'][0]['modified']); ?></span>
 		<span class="tags">

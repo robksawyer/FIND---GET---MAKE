@@ -33,7 +33,7 @@
 			<?php 
 				__($product['Product']['name']);
 				if(!empty($product['Source']['name'])){
-					echo "<span class='light-grey'> &rarr; ".$this->Html->link(__($product['Source']['name'],true), array('controller' => 'sources', 'action' => 'view', $product['Source']['id']))."</span>";
+					echo "<span class='light-grey'> &rarr; ".$this->Html->link($product['Source']['name'], array('controller' => 'sources', 'action' => 'view', $product['Source']['id']),array('escape'=>false))."</span>";
 				}
 			?>
 		</h3>

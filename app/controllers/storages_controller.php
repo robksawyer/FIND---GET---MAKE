@@ -30,8 +30,8 @@ class StoragesController extends AppController {
 			'client' => 's64785.gridserver.com'
 		);
 
-	    /* Set delivery method */
-	    $this->Email->delivery = 'smtp';
+		/* Set delivery method */
+		$this->Email->delivery = 'smtp';
 		
 		$this->Email->replyTo = '<noreply@'.env('HTTP_HOST').'>'; 
 		$this->Email->return = '<noreply@'.env('HTTP_HOST').'>';

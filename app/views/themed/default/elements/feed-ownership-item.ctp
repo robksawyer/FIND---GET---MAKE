@@ -20,7 +20,7 @@ if(!empty($feed_item['User']['fullname'])){
 }
 ?>
 <div class='grid-item' style="margin: 4px 0 4px 0;padding: 0 0 0 0;">
-	<div class="feed-follower-title"><?php echo $this->Html->link($user_name,array('admin'=>false,'controller'=>'users','plugin'=>'forum','action'=>'profile',$feed_item['User']['username'])).$status_by."the product ".$this->Html->link($product['Product']['name'],array('controller'=>$controller,
+	<div class="feed-follower-title"><?php echo $this->Html->link($user_name,array('admin'=>false,'controller'=>'users','plugin'=>'','action'=>'profile',$feed_item['User']['username'])).$status_by."the product ".$this->Html->link($product['Product']['name'],array('controller'=>$controller,
 																												'action'=>$action,
 																												'plugin'=>'',
 																												'admin'=>false,

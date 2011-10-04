@@ -1,9 +1,10 @@
 <?php
 class Storage extends AppModel {
+	
 	var $name = 'Storage';
 	var $displayField = 'name';
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
+	
 	var $belongsTo = array(
 		'User' => array(
 			'className' => 'User',
@@ -20,16 +21,34 @@ class Storage extends AppModel {
 		)
 	);
 	
-	/*var $hasMany = array(
+	var $hasMany = array(
 		'Feed' => array(
-			'className' => 'Storage',
+			'className' => 'Feed',
 			'foreignKey' => 'model_id',
 			'conditions' => array('Feed.model' => 'Storage'),
 			'dependent' => true,
 			'exclusive' => true
 		)
-	);*/
+	);
 	
+	
+	/**
+	 * Updates the total count in the user table for this particular type of item
+	 * @param created 
+	 * @return 
+	 * 
+	*/	
+	public function afterSave($created){
+		$this->recursive = 1;
+		if($created){
+			//Update the total count for the user
+			$last = $this->read(null,$this->id);
+			if(!empty($last['Storage']['user_id'])){
+				//Add the feed data to the feed
+				$this->Feed->addFeedData('Storage',$last);
+			}
+		}
+	}
 	
 	/**
 	 * Update the feed with the latest held item

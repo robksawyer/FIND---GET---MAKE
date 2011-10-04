@@ -110,7 +110,7 @@ class ProductsController extends AppController {
 	 * 
 	*/
 	public function bookmarklet_product_add($pk = null){
-		Configure::write('debug',2);
+		Configure::write('debug',0);
 		$this->autoRender = false;
 		$this->autoLayout = false;
 		//$this->layout = 'ajax';
@@ -137,11 +137,13 @@ class ProductsController extends AppController {
 				$baseUrlString = parse_url(trim($baseURL));
 				$urlString = parse_url(trim($referringUrl));
 				$baseSourceUrl = $baseUrlString['scheme']."://".$baseUrlString['host'];
+				$baseSourceUrl = trim($baseSourceUrl);
 				$sourceName = $this->getStoreNameFromURL($baseUrlString['host']);
 				$source = $this->Product->Source->find('first',array('conditions'=>array(
 																					'OR'=>array(
 																						array('Source.url'=>"$baseSourceUrl"),
 																						array('Source.url'=>"$baseSourceUrl/"),
+																						array('Source.url'=>"$baseSourceUrl/#"),
 																						array('Source.name'=>"$sourceName")
 																					)
 																					)));

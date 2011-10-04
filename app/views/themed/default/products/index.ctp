@@ -59,7 +59,7 @@
 						echo $this->Html->image($product['Attachment'][0]['path_med'],array('alt'=>'','url'=>array('action'=>'view',$product['Product']['id']))); 
 					}
 				?>
-				<div class="title"><?php echo $this->Html->link(__($product['Product']['name'],true),array('controller'=>'products','action'=>'view',$product['Product']['id'])); ?></div>
+				<div class="title"><?php echo $this->Html->link($product['Product']['name'],array('controller'=>'products','action'=>'view',$product['Product']['id']),array('escape'=>false)); ?></div>
 				<div class="description"><?php echo $this->Text->truncate($product['Product']['description'],250); ?></div>
 				<?php if(!empty($product['Product']['designer'])) echo "<div class='designer'>Designed by ".$product['Product']['designer']."</div>"; ?>
 				<div class="designer"><?php echo "Found by ".$this->Html->link(__($product['User']['username'],true),array('admin'=>false,'plugin'=>'','controller'=>'users','action'=>'profile',$product['User']['username'])); ?></div>
