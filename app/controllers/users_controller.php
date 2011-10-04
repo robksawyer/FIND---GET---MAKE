@@ -161,17 +161,21 @@ class UsersController extends AppController {
 																			)
 																			),
 																			'limit'=>10,
-																			'contain'=>array('Product'=>array('Attachment','limit'=>'3','order'=>'created DESC'))
+																			'contain'=>array(
+																							//'Product'=>array('Attachment','limit'=>'3','order'=>'created DESC'),
+																							'Storage'=>array('Product'=>array('Attachment','limit'=>'1'),
+																													'limit'=>'3',
+																													'order'=>'created DESC'
+																													)
+																			)
 																			));
 																			
 				$result_ids = Set::extract('/User/id', $results);
 				$query = $this->passedArgs['search'];
 				$user_id = $this->Auth->user('id');
 				$user_ids = $this->User->UserFollowing->getFollowedUnfollowedUserIds($user_id,$result_ids);
-				
 				$this->set(compact('results','query','user_ids')); //Set the results for the render action
 				$this->render('/users/ajax_find_users');
-				
 				//$data['query'] = $this->passedArgs['search'];
 				//$this->AjaxHandler->response(true, $data);
 				//$this->AjaxHandler->respond();
@@ -271,8 +275,14 @@ class UsersController extends AppController {
 																				array('User.facebook_id'=>$friend_ids)
 																			)
 																			),
-																			'limit'=>50,
-																			'contain'=>array('Product'=>array('Attachment','limit'=>'3'))
+																			'limit'=>20,
+																			'contain'=>array(
+																								//'Product'=>array('Attachment','limit'=>'3')
+																								'Storage'=>array('Product'=>array('Attachment','limit'=>'1'),
+																														'limit'=>'3',
+																														'order'=>'created DESC'
+																														)
+																								)
 																		));
 			}else{
 				$results = null;
@@ -335,8 +345,16 @@ class UsersController extends AppController {
 																					array('User.username' => $twitter_friends['screen_names']),
 																					array('User.fullname' => $twitter_friends['names']),
 																					array('User.twitter_id' => $twitter_friend_ids)
-																				)
 																			)
+																		),
+																		'limit'=>20,
+																		'contain'=>array(
+																							//'Product'=>array('Attachment','limit'=>'3')
+																							'Storage'=>array('Product'=>array('Attachment','limit'=>'1'),
+																													'limit'=>'3',
+																													'order'=>'created DESC'
+																													)
+																							)
 																		)
 																	);
 			}else{

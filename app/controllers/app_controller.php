@@ -667,8 +667,13 @@ class AppController extends Controller {
 			}
 			
 			//Make some other sizes
-			$small_path = $this->Uploader->resize(array('width' => 100, 'append' => '_small')); // Returns: /files/uploads/fileName_100_small.jpg
-			$med_path = $this->Uploader->resize(array('height' => 300, 'append' => '_med'));
+			if($data['width'] > $data['height']){
+				$small_path = $this->Uploader->resize(array('width' => 132, 'append' => '_small')); // Returns: /files/uploads/fileName_100_small.jpg
+				$med_path = $this->Uploader->resize(array('width' => 250, 'append' => '_med'));
+			}else{
+				$small_path = $this->Uploader->resize(array('height' => 132, 'append' => '_small')); // Returns: /files/uploads/fileName_100_small.jpg
+				$med_path = $this->Uploader->resize(array('height' => 250, 'append' => '_med'));
+			}
 			
 			$this->data['Attachment']['file']['title'] = $title;
 			$this->data['Attachment']['file']['source_url'] = $source;

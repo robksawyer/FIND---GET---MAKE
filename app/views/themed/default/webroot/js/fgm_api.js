@@ -72,6 +72,8 @@ $(document).ready(function(){
  * 
 */
 function fgm_api(){
+	this.api_initialized = false;
+	this.site_url_set = false;
 	this.currentSiteAddress = "";
 	this.follow_all_user_id_data;
 	this.feed_num_items = 0;
@@ -94,9 +96,7 @@ function fgm_api(){
 	
 	this.init = function() {
 		try {
-			var event = document.createEvent("Event");
-			event.initEvent("FGM_API.INITIALIZED", true, true);
-			window.dispatchEvent(event);
+			this.api_initialized = true;
 		} catch(e) {
 			//alert(e);
 		}
@@ -109,11 +109,9 @@ function fgm_api(){
 	 * 
 	*/
 	this.setSiteUrl = function(url){
-		var event = document.createEvent("Event");
-		event.initEvent("FGM_API.SITE_SET", true, true);
 		//event.customData = getCustomData();
 		fgm_api.currentSiteAddress = url;
-		window.dispatchEvent(event);
+		fgm_api.site_url_set = true;
 	}
 	
 	/**
@@ -142,7 +140,6 @@ function fgm_api(){
 	 * 
 	*/
 	this.init_user_nav = function(){
-		alert("Initializing user nav");
 		var userNavRoot = document.getElementById("user-nav");
 		var userNavChildren = document.getElementById("user-nav").getElementsByTagName("li");
 		for (var i=0; i<userNavChildren.length; i++) {
@@ -187,6 +184,12 @@ function fgm_api(){
 		}
 	}
 	
+	/**
+	 * Initialize methods needed for the find users page.
+	 * @param 
+	 * @return 
+	 * 
+	*/
 	this.init_find_users = function(passedParams){
 		fgm_api.allowDeeplinking = true;
 		fgm_api.lastStateID;
@@ -240,7 +243,7 @@ function fgm_api(){
 						//Set the value of the search input.
 						$("#SearchQuery").css({color:'#000',border:'1px solid #54d154'}).val(fgm_api.search_query).blur();
 
-						if(!searchInitiated) fgm_api.searchUsers();
+						if(!fgm_api.searchInitiated) fgm_api.searchUsers();
 
 					}else if(fgm_api.search_query === undefined){
 						$("#SearchQuery").css({color:'#999',border:'1px solid #B9B9B9'}).val('Find people').blur();

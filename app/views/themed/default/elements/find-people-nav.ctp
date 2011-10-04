@@ -1,20 +1,3 @@
-<style type="text/css">
-	#facebook-loader{
-		position: relative;
-		top: -15px;
-		float: right;
-		clear: none;
-		display: block;
-		
-	}
-	#twitter-loader{
-		position: relative;
-		top: -15px;
-		float: right;
-		clear: none;
-		display: block;
-	}
-</style>
 <ul class="find-people">
 	<?php
 	$class = " class='selected' ";
@@ -35,10 +18,10 @@
 															'action' => 'find_facebook_users'
 															),
 															array(
-																'before'=>'startSocialSearch("facebook");',
+																'before'=>'fgm_api.startSocialSearch("facebook");',
 																'update'=>'#search-results-facebook',
-																'complete'=>'socialSearchComplete("facebook");',
-																'success'=>'socialSearchSuccess(data,textStatus);',
+																'complete'=>'fgm_api.socialSearchComplete("facebook");',
+																'success'=>'fgm_api.socialSearchSuccess(data,textStatus);',
 																'id'=>'get-facebook-friends',
 																'type'=>'json',
 																'class'=>'facebook'
@@ -67,10 +50,10 @@
 															'action' => 'find_twitter_users'
 															),
 															array(
-																'before'=>'startSocialSearch("twitter");',
+																'before'=>'fgm_api.startSocialSearch("twitter");',
 																'update'=>'#search-results-twitter',
-																'complete'=>'socialSearchComplete("twitter");',
-																'success'=>'socialSearchSuccess(data,textStatus);',
+																'complete'=>'fgm_api.socialSearchComplete("twitter");',
+																'success'=>'fgm_api.socialSearchSuccess(data,textStatus);',
 																'type'=>'json',
 																'id'=>'get-twitter-friends',
 																'class'=>'twitter'
@@ -93,7 +76,7 @@
 																							)
 															));
 		echo $this->Form->input('User.search', array('div' => false,'label'=>'','value'=>'Find people','style'=>'color:#999','id'=>'SearchQuery'));
-		echo $this->Js->get('#SearchQuery')->event('keypress','checkKeyPress(event);',array('stop'=>false));
+		echo $this->Js->get('#SearchQuery')->event('keypress','fgm_api.checkKeyPress(event);',array('stop'=>false));
 		echo $this->Form->submit('Submit',array('div'=>false,
 															'id'=>'SearchSubmit',
 															'style'=>'display:none',

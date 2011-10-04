@@ -28,10 +28,12 @@
 		?></li>
 	</ul>
 	<?php 
-		if(!empty($user['Product'])){
-			$productData = $user['Product'];
-		}else if(!empty($user['User']['Product'])){
-			$productData = $user['User']['Product'];
+		if(!empty($user['Storage'])){
+			$productData = $user['Storage'];
+		} 
+		//Try the user array (The default location)
+		if(!empty($user['User']['Storage'])){
+			$productData = $user['User']['Storage'];
 		}else{
 			//debug("An error occured.");
 		}
@@ -39,7 +41,9 @@
 	?>
 	<ul class="item-details">
 		<?php 
-		foreach($productData as $item): ?>
+		foreach($productData as $item): 
+			$item = $item['Product'];
+		?>
 		<li>
 			<?php 
 				if(!empty($item['Attachment'])){

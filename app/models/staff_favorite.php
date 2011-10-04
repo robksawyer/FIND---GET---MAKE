@@ -99,10 +99,14 @@ class StaffFavorite extends AppModel {
 										'User.id'=>$data
 									),
 									'contain'=>array('Product'=>array(
+																	'Attachment',
 																	'limit'=>3,
-																	'order'=>'created DESC',
-																	'Attachment'
-																)
+																	'order'=>'created DESC'
+															),
+															'Storage'=>array('Product'=>array('Attachment','limit'=>'1'),
+																					'limit'=>'3',
+																					'order'=>'created DESC'
+																					)
 													))
 									);
 		

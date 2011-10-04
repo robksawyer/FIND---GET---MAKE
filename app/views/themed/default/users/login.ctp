@@ -65,6 +65,12 @@
 </div>
 <script type="text/javascript">
 //<![CDATA[
-window.addEventListener("FGM_API.SITE_SET", function(){ fgm_api.init_social_services(); },false);
+var login_int = window.setInterval("init()",100);
+function init(){
+	if(fgm_api.site_url_set){
+		window.clearInterval(login_int);
+		fgm_api.init_social_services();
+	}
+}
 //]]>
 </script>

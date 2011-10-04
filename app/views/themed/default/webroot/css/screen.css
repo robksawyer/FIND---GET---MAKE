@@ -463,8 +463,9 @@ a.category:hover{
 	line-height: 30px;
 	padding: 0 5px;
 }
-#block_bottom { position: relative; overflow: auto; }
+#block_bottom { position: relative; clear: both; }
 #block_bottom .inner_block a:hover{ background: #ffffff; opacity:.75; filter:alpha(opacity=75); }
+#other_items_block { overflow: hidden; }
 .sharing a{ float: left; margin: 0 5px 0 0; padding: 0;}
 #share-panel{ float: left; position: relative; padding: 0; margin: 0; top: 0px; overflow: auto; }
 #share-panel input{ float: left; padding: 3px; margin: 0; clear: none; width: 200px; vertical-align: middle;}
@@ -612,36 +613,12 @@ a.fb_button_medium:hover{ background-position: 0% -210px; font-size: 11px; line-
 #join .basic-sign-up a:hover{ color: #efefef; } 
 /** END join PAGE **/
 /* ITEM GRID */
-ul.gridded_item_set{
-	position: relative;
-	top: 20px;
-	clear: both;
-	overflow: auto;
-}
-ul.gridded_item_set li.item{
-	list-style-type: none;
-	display: inline-block;
-	margin: 0 15px 10px 0;
-}
-ul.gridded_item_set li.item img{
-	width: 200px;
-}
-}
-ul.gridded_item_set li.item ul.grid_context_menu{
-	position: relative;
-	z-index: 2;
-	margin-top: -25px;
-	color: purple;
-}
-
-ul.gridded_item_set li.item ul.grid_context_menu a{
-	padding: 0;
-	margin: 0;
-}
-ul.gridded_item_set li.item ul.grid_context_menu .dot{
-	padding: 0;
-	margin: 0;
-}
+ul.gridded_item_set{ position: relative; top: 20px; clear: both; overflow: auto; }
+ul.gridded_item_set li.item{ list-style-type: none; display: inline-block; margin: 0 15px 10px 0; }
+ul.gridded_item_set li.item img{ width: 200px;}
+ul.gridded_item_set li.item ul.grid_context_menu{ position: relative; z-index: 2; margin-top: -25px; }
+ul.gridded_item_set li.item ul.grid_context_menu a{ padding: 0; margin: 0; }
+ul.gridded_item_set li.item ul.grid_context_menu .dot{ padding: 0; margin: 0; }
 /* END ITEM GRID */
 /* DOT */
 #block_1 .storage-dot{ position: relative; display: block; float: left; margin: 0 0 0 25px; width: 36px; height: 36px; }
@@ -886,6 +863,9 @@ div.attachments.view .attachments.box img{ /*max-width: 800px; max-height: 800px
 	padding: 8px 10px;
 	width: 194px;
 }
+#search-results-container .query{ font-weight: bold; font-style: italic; }
+#facebook-loader{ position: relative; top: -15px; float: right; clear: none; display: block; }
+#twitter-loader{ position: relative; top: -15px; float: right; clear: none; display: block; }
 #left-panel-index .find-people li.selected,
 #left-panel-index .find-people li.selected:hover{
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3bb796), to(#32ab8b));

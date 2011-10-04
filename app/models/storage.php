@@ -109,9 +109,12 @@ class Storage extends AppModel {
 																				'conditions'=>array('Attachment.id'=>'User.attachment_id'),
 																				'fields'=>array('Attachment.id','Attachment.path_med','Attachment.path_small')
 															),
-															'Product'=>array('Attachment',
-																'order' => 'Product.id DESC',
-																'limit'=>3
+															'Storage'=>array(
+																'order' => 'Storage.created DESC',
+																'limit'=>3,
+																'Product' => array(
+																						'Attachment' => array('limit'=>1)
+																						)
 															)
 												)
 											)
