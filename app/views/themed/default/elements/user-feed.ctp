@@ -33,7 +33,7 @@
 						}else	if($model == 'UserFollowing'){
 							echo $this->element('feed-follower-item',array('cache'=>false,'model'=>'UserFollowing','feed_item'=>$feed_item));
 						}else if($model == 'Storage'){
-							echo $this->element('feed-storage-item',array('cache'=>false,'model'=>'Product','feed_item'=>$feed_item,'controller'=>'storages'));
+							echo $this->element('feed-storage-item',array('cache'=>false,'model'=>'Product','feed_item'=>$feed_item,'controller'=>'products'));
 						}
 					endif;
 				endfor;

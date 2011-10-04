@@ -96,36 +96,7 @@
 			</div>
 		</div>
 		<div id="outer-container">
-			<div id="see-why" style="display:none">
-				<div id="see-why-title">Ten reasons why you should sign up.</div>
-				<ul id="start-learning">
-					<li>
-						<h3>Something 1</h3>
-						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-					</li>
-					<li>
-						<h3>Something 2</h3>
-						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-					</li>
-					<li>
-						<h3>Something 3</h3>
-						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-					</li>
-					<li>
-						<h3>Something 4</h3>
-						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-					</li>
-					<li>
-						<h3>Something 5</h3>
-						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-					</li>
-					<li>
-						<h3>Something 6</h3>
-						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-					</li>
-				</ul>
-				<div class="clear"></div>
-			</div>
+			
 		</div>
 		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
 	</body>

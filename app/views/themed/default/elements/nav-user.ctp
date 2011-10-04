@@ -27,6 +27,7 @@
 			<?php
 			if(empty($authUser)){
 				if ($this->params['action'] != 'login') {
+					echo $this->Html->link('Sign up','/register',array('title'=>'Sign up'))." | ";
 					echo $this->Html->link('Login','/login',array('title'=>'Login'));
 				}
 			}else{

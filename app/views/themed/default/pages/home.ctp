@@ -76,7 +76,7 @@ $(document).ready(function(){
 		if($("#sign_up_form_container").is(":hidden")){
 			$("#sign_up_form_container").slideDown("slow",function(){
 				$("#SignupUserUsername").focus();
-				$("#see-why").slideDown('slow');
+				//$("#see-why").slideDown('slow');
 				//document.location.replace("#signup", "signup");
 			});
 			$("#login_form_container").slideUp('slow');
@@ -98,7 +98,7 @@ $(document).ready(function(){
 			$("#sign_up_form_container").slideUp("slow");
 			$("#login_form_container").slideDown('slow',function(){
 				$("#UserUsername").focus();
-				$("#see-why").slideUp('slow');
+				//$("#see-why").slideUp('slow');
 				//document.location.replace("#login", "login");
 			});
 		}else{
