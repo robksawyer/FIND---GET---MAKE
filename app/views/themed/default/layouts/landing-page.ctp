@@ -39,9 +39,8 @@
 				echo $this->Html->css('http://yui.yahooapis.com/2.8.0r4/build/reset/reset-min.css');
 			}
 			
-			echo $this->Html->css('cake.generic');
-			echo $this->Html->css('basic');
-
+			echo $this->Html->css('screen');
+			echo $this->Html->css('landing');
 
 			if(Configure::read('FGM.local') == true){
 				echo $this->Html->script('jquery-1.4.1.min');
@@ -55,7 +54,11 @@
 				echo '//]]>'."\n";
 				echo '</script>'."\n";
 			}
-			echo $this->Html->script('common')."\n"; //Common helper scripts
+			echo $this->Html->script('fgm_api')."\n";
+			echo $this->Html->script('utils')."\n"; //Common helper scripts
+			echo $this->Html->script('jquery.form')."\n";
+			echo $this->Html->script('jquery.masonry.min')."\n";
+			echo $this->Html->script('jquery.infieldlabel.min')."\n";
 			
 			echo $scripts_for_layout;
 		?>
@@ -76,11 +79,9 @@
 	<body class="landing-page">
 		<!-- This is for the popup plugin -->
 		<div id="popups" style="z-index: 1000;"></div>
-		<div id="container">
-			<div id="header">
-
-			</div>
-			<div id="content">
+		<div id="wrapper_extra">
+			<div id="wrapper">
+				<div id="header"></div>
 				<?php echo $this->Session->flash();?>
 				
 				<?php echo $content_for_layout;?>

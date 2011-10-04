@@ -1,192 +1,3 @@
-<style type="text/css">
-
-#container{
-	position: relative;
-	display: block;
-	box-shadow: -5px 12px 5px rgba(0, 0, 0, 0.5);
-	-moz-box-shadow: -5px 12px 5px rgba(0, 0, 0, 0.5);
-	-webkit-box-shadow: -5px 12px 5px rgba(0, 0, 0, 0.5);
-	z-index: 3;
-}
-
-
-#container a.top-button{
-	background: #000000;
-	padding: 10px 15px;
-	color: #ffffff;
-	border: 1px solid #999999;
-	float: right;
-	margin: 10px;
-	text-decoration: none;
-}
-
-#container a.top-button:hover{
-	border-color: #ef3f23;
-}
-
-#inner-container{
-	position: relative;
-	margin-top: 125px;
-}
-
-#inner-container #login_form_container{
-	width: 575px;
-	margin: 0 auto;
-	background: none;
-}
-
-#inner-container #sign_up_form_container{
-	width: 850px;
-	margin: 0 auto;
-	background: none;
-}
-
-#inner-container form{
-	text-align: left;
-	width: auto;
-	margin: 0 auto;
-}
-
-#inner-container form .input_wrapper{
-	/*background: url(https://secure.assets.tumblr.com/images/register_login/input.png) no-repeat 0px 11px;*/
-	position: relative;
-	border-width: 0px;
-	float: left;
-	width: 219px;
-	margin: 0 20px 0 0;
-	clear: none;
-}
-
-#inner-container form .input_wrapper label{
-	position: absolute;
-	color: #d5d5d5;
-	font-size: 20px;
-	top: 0px;
-	left: 0px;
-	line-height: 40px;
-	margin: 5px 0 0 14px;
-	padding: 0;
-	width: 176px;
-	z-index: 1;
-	font-weight: normal;
-	text-align: left;
-	display: inline;
-}
-
-#inner-container form .input_wrapper input{
-	display: inline;
-	clear: none;
-	font-size: 20px;
-	color: #000000;
-	padding: 5px;
-	z-index: 20;
-	float: left;
-}
-
-#inner-container .submit{
-	display: block;
-	position: relative;
-	margin-top: 5px;
-	float: left;
-	clear: none;
-	vertical-align: middle;
-	border: 1px solid #e7e7e7;
-	background: #000000;
-}
-#inner-container .submit:hover{
-	opacity:0.75;
-	filter:alpha(opacity=75); /* For IE8 and earlier */
-	border-color: #ef3f23;
-}
-
-#inner-container .submit input[type="submit"]{
-	padding: 5px;
-	border-radius: 0px;
-	-moz-border-radius: 0px;
-	background: none;
-}
-
-#inner-container a.after{
-	position: relative;
-	clear: both;
-	display: block;
-	text-align: left;
-	padding: 0 0 0 8px;
-	color: #ffffff;
-	width: auto;
-	float: left;
-}
-
-#outer-container{
-	padding-bottom: 75px;
-}
-
-#outer-container #see-why{
-	position:relative;
-	width: 1024px;
-	margin: 0 auto;
-}
-
-#outer-container #see-why ul{
-	position:relative;
-	background: #ffffff;
-	-moz-border-radius: 15px;
-	border-radius: 15px;
-	-webkit-border-radius: 15px;
-	color: #000000;
-	padding: 25px;
-	margin: 0 auto;
-	text-align: center;
-}
-
-#outer-container #see-why ul li{
-	position: relative;
-	background: none;
-	border: none;
-	width: 400px;
-	display: inline-block;
-	clear: none;
-	text-align: left;
-}
-
-#outer-container #see-why ul li.border{
-	padding-right: 10px;
-	padding-left: 10px;
-	border-right: 1px solid #e7e7e7;
-	border-left: 1px solid #e7e7e7;
-	background: none;
-}
-
-#outer-container #see-why #see-why-title{
-	position: relative;
-	margin: 0 0 75px 0;
-	font-size: 48px;
-	text-shadow: 1px 1px #999999;
-	color: #ffffff;
-	padding: 25px 0 25px 0;
-	cursor: pointer;
-}
-
-
-#footer{
-	position: relative;
-	width: 100%;
-	height: 25px;
-	background: none;
-	padding: 0;
-	margin: 0 auto;
-	color: #000000;
-}
-
-#footer a:link,
-#footer a:visited,
-#footer a:active{
-	background: none;
-	color: #000000;
-	font-family: 'Lucida Grande', Arial;
-	text-shadow: #999999 0px -1px -1px;
-}
-</style>
 <div id="link-button">
 	<?php 
 		echo $this->Html->link('Sign up','#signup',array('class'=>'top-button','id'=>'sign-up-button'));
@@ -233,9 +44,17 @@
 				<div class="clear"></div>
 		</div>
 	</div>
+	<div class="mdash">&mdash;</div>
+	<div id="site-feed">
+		<div id="block_1">
+			<h3><?php __('what\'s happening on the inside'); ?></h3>
+			<?php
+			echo $this->element('site-feed',array('cache'=>false,'limit'=>$limit,'feed'=>$feed,'num_items'=>$num_items));
+			?>
+		</div>
+	</div>
 </div>
 <div class="clear"></div>
-<?php echo $this->Html->script('jquery.infieldlabel.min'); ?>
 <script type="text/javascript">
 var signup = false;
 var login = true;

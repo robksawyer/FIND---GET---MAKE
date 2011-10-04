@@ -92,6 +92,8 @@
 			echo $this->Html->script('jquery.jeditable.mini')."\n";
 			echo $this->Html->script('jquery.mousewheel.min')."\n";
 			echo $this->Html->script('jquery.simpletip-1.3.1.min')."\n";
+			echo $this->Html->script('jquery.masonry.min')."\n";
+			echo $this->Html->script('jquery.infieldlabel.min')."\n";
 			//Chosen Select Boxes (http://harvesthq.github.com/chosen/)
 			echo $this->Html->script('chosen/chosen.jquery.min')."\n";
 			//Include jQuery modal window APIs

@@ -1,6 +1,3 @@
-<?php
-$this->Html->script('jquery.masonry.min',array('inline'=>false));
-?>
 <div id="site-feed">
 	<div id="block_1">
 		<h3>
@@ -9,8 +6,5 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 		<?php
 		echo $this->element('site-feed',array('cache'=>false,'limit'=>$limit,'feed'=>$feed,'num_items'=>$num_items));
 		?>
-	</div>
-	<div id="block_2">
-		
 	</div>
 </div>

@@ -54,7 +54,7 @@ class PagesController extends AppController {
  * @var array
  * @access public
  */
-	var $uses = array();
+	var $uses = array('Feed');
 
 	function beforeFilter(){
 		parent::beforeFilter();
@@ -96,6 +96,10 @@ class PagesController extends AppController {
 				//Redirect to the Auth redirect
 				//$this->redirect($this->Auth->redirect());
 			}
+			$feed = $this->Feed->getSiteFeedDataDetails(0);
+			$num_items = $this->Feed->getFeedCount();
+			$limit = 10;
+			$this->set(compact('feed','num_items','limit'));
 		}
 		
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
