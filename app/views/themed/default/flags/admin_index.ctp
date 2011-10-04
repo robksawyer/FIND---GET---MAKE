@@ -1,18 +1,6 @@
-<?php
-
-?>
-<div id="left-container">
-	<?php
-
-	?>
-</div>
-<div id="right-container-index">
+<div id="block_1">
 	<div class="flags index">
-		<div class="header red">
-		<?php 
-			__('Flags');
-		?>
-		</div>
+		<h3><?php __('Flag Moderation'); ?></h3>
 		<div class="clear"></div>
 		<h4>There are currently <span class="flag-count"><?php echo $total_count; ?></span> flagged items in the system.</h4>
 		<ul class="legend">
