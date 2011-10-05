@@ -10,14 +10,20 @@
  **/
 
 return array(
-	'dependencies_js' => array(
+	'jquery_js' => array(
 		'//theme/default/js/jquery-1.6.2.min.js',
-		'//theme/default/js/jquery-ui-1.8.16.custom.min.js',
+		'//theme/default/js/jquery-ui-1.8.16.custom.min.js'
+	),
+	'dependencies_js' => array(
+		'//theme/default/js/sizzle.js',
+		'//theme/default/js/jstorage.min.js',
+		'//theme/default/js/json2.js',
+		'//theme/default/js/jquery.json-2.3.min.js',
+		//'//theme/default/js/history.min.js',
+		//'//theme/default/js/history.html4.min.js', 
+		//'//theme/default/js/init-history.js',
+		//'//theme/default/js/history.adapter.jquery.min.js',
 		'//theme/default/js/chosen/chosen.jquery.min.js', //Chosen Select Boxes (http://harvesthq.github.com/chosen/) 
-		'//theme/default/js/history.js',
-		'//theme/default/js/history.html4.js', 
-		'//theme/default/js/history.adapter.jquery.js',
-		'//theme/default/js/init-history.js',
 		'//theme/default/js/jquery.popupwindow.js',
 		'//theme/default/js/jquery.form.js',
 		'//theme/default/js/jquery.autocomplete.min.js',

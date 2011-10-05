@@ -64,10 +64,20 @@
 		?>
 		<?php
 			if(Configure::read('FGM.local') == true){
-				
+				echo '<script type="text/javascript" src="/min/g=jquery_js?'.date("His").'"></script>'."\n";
 			}else{
-
+				echo $this->Html->script('https://www.google.com/jsapi?key=ABQIAAAAnmDjwFmPVi_wiEa7kcH4kxRoSg5s9K5GPFZf3sp5WjiQsRDImxRDlMCi9qkG8Qo4zHXzieotWXFWzA')."\n";
+				echo '<script language="Javascript" type="text/javascript">'."\n";
+				echo '//<![CDATA['."\n";
+				echo 'google.load("jquery", "1.6.2");'."\n";
+				echo 'google.load("jqueryui", "1.8.4");'."\n";
+				echo '//]]>'."\n";
+				echo '</script>'."\n";
 			}
+			//Minify messes these up
+			echo $this->Html->script('history.adapter.jquery.min');
+			echo $this->Html->script('history.min');
+			echo $this->Html->script('history.html4.min');
 			echo '<script type="text/javascript" src="/min/g=dependencies_js"></script>'."\n";
 			echo '<script type="text/javascript" src="/min/g=base_js"></script>'."\n";
 			//echo '<script type="text/javascript" src="/min/g=forum_js"></script>'."\n";
@@ -82,12 +92,6 @@
 			
 			//echo $scripts_for_layout;
 		?>
-		<script type="text/javascript">
-		if(typeof window.JSON === 'undefined'){
-			//Include JSON if you want to support older browsers
-			document.write('<script type="text/javascript" src="/theme/default/js/json2.js"><\/script>'); 
-		}
-		</script>
 	</head>
 	<body>
 		<!-- This is for the popup plugin -->

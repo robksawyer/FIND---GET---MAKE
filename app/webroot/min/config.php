@@ -25,14 +25,14 @@ $min_allowDebugFlag = false;
  *
  * @todo cache system does not have error logging yet.
  */
-$min_errorLogger = true;
+$min_errorLogger = false;
 
 
 /**
  * Allow use of the Minify URI Builder app. If you no longer need 
  * this, set to false.
  **/
-$min_enableBuilder = true;
+$min_enableBuilder = false;
 
 
 /**
