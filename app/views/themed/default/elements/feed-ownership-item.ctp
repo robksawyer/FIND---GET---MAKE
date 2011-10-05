@@ -4,10 +4,7 @@
 if(empty($action)) $action = 'view';
 if(empty($model_id)) $model_id = $feed_item[$model]['id'];
 
-if($feed_item[$model]['have_it'] > 0){
-	$status_by = ' owns ';
-}
-
+$status_by = ' owns ';
 $added_by = "Found by";
 $showLikeDislike = true; //Show the likes for the product
 $product = $feed_item;

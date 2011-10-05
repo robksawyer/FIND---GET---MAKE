@@ -124,5 +124,4 @@
 */
 	$config['FGM']['local'] = false;
 
-
 ?>

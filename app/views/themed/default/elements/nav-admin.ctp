@@ -17,6 +17,7 @@
 			<li>
 				<?php echo $this->Html->link('Profile','#',array('title'=>'Profile'))." | "; ?>
 				<ul id="product-sub-nav" class="sub-nav" style="">
+					<li><?php echo $this->Html->link('View',array('controller'=>'users','action'=>'profile',$authUser['User']['username']),array('title'=>'View your public profile.')); ?></li>
 					<li><?php echo $this->Html->link('Followers',array('controller'=>'user_followings','action'=>'followers',$authUser['User']['username']),array('title'=>'Followers')); ?></li>
 					<li><?php echo $this->Html->link('Following',array('controller'=>'user_followings','action'=>'following',$authUser['User']['username']),array('title'=>'Following')); ?></li>
 					<li><?php echo $this->Html->link('Settings',array('controller'=>'settings','action'=>'account'),array('title'=>'Settings')); ?></li>
@@ -30,7 +31,7 @@
 					<li><?php echo $this->Html->link('Flag Management','/admin/flags',array('title'=>'Manage the items that people have flagged.')); ?></li>
 					<li><?php 
 						if ($this->Cupcake->user() && $this->Cupcake->hasAccess('admin')):
-							echo $this->Html->link(__d('forum', 'Forum Admin', true), '/admin/forum/home')." | ";
+							echo $this->Html->link(__d('forum', 'Forum Admin', true), '/admin/forum/home');
 						endif;
 					?></li>
 				</ul>

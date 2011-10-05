@@ -6,7 +6,7 @@ if (!empty($user)): ?>
 <div id="moderate-area">
 	<div id="left-container-with-sidebar">
 		<div class="header red"><?php 
-				__('running bond: what '.$user['User']['username'].' is posting.');
+				__('<b>Running Bond:</b> It\'s what '.$user['User']['username'].' is posting.');
 		?></div>
 		<div class="clear"></div>
 		<?php

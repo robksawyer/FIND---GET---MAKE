@@ -514,7 +514,8 @@ a.category:hover{
 #facebook-user-found img{ margin: 0px 10px 10px 10px; float: left; }
 #facebook-user-found ul{ margin-left: 0px; float: left; }
 #facebook-user-found a{ color: #ffffff; line-height: 17px; }
-#btn-facebook{ margin: 0; padding: 0; display: block; }
+#btn-facebook{ margin: 5px 0 5px 0; padding: 0; display: block; }
+#twitter-login-wrap { margin: 0; padding: 0; display: block;}
 .users #login{ float: left; width: 500px; margin: 0 10px 0 0; }
 .users #login .input{ width: 80%; }
 #signup-wrapper{ position: relative; overflow: auto; padding: 0; margin: 0; }
@@ -557,9 +558,8 @@ a.fb_button_medium:hover{ background-position: 0% -210px; font-size: 11px; line-
 #join p{ font-weight: bold; line-height: 26px; padding: 0px 10px 0 10px; }
 #join .header{
 	color: #ffffff;
-	border-bottom: 1px dotted white;
 	margin: 10px 20px;
-	padding-bottom: 20px;
+	padding-bottom: 0px;
 	background: none;
 }
 #join .header h1{
@@ -585,7 +585,7 @@ a.fb_button_medium:hover{ background-position: 0% -210px; font-size: 11px; line-
 }
 #join .basic{
 	float: left;
-	color: #ffffff; background: #b9b9b9; 
+	color: #ffffff; background: #08b899; 
 	margin: 0 0 10px 0; padding: 10px 10px 25px;
 }
 #join .basic .free{
@@ -594,7 +594,6 @@ a.fb_button_medium:hover{ background-position: 0% -210px; font-size: 11px; line-
 	display: inline; float: right; 
 	padding: 0;
 }
-#join .basic-sign-up a, #join .plus-sign-up a{ text-decoration: none; }
 #join .basic-sign-up,
 #join .plus-sign-up{
 	position: relative; clear: both;
@@ -602,15 +601,14 @@ a.fb_button_medium:hover{ background-position: 0% -210px; font-size: 11px; line-
 	margin: 0 auto; padding: 10px;
 	text-align: center;
 }
-#join .basic-sign-up{ background: #b9b9b9; width: 200px; }
 #join .plus-sign-up{ background: #666; width: 460px; margin: 0; }
 #join .plus-sign-up p{ font: normal normal bold 16px/20px arial, sans-serif; color: #e1e1e1; }
 #join .plus-sign-up span{ font: normal normal bold 12px/16px arial, sans-serif; color: #e7e7e7; }
 #join .plus-sign-up span.number{ color: #ffffff; font: normal normal bold 18px/22px arial, sans-serif; }
 #join .basic-sign-up a,
-#join .plus-sign-up a{ color: #ffffff; }
+#join .plus-sign-up a{ text-decoration: none; padding: 10px; background: #b9b9b9; width: 200px; color: #ffffff; }
 #join .plus-sign-up a:hover,
-#join .basic-sign-up a:hover{ color: #efefef; } 
+#join .basic-sign-up a:hover{ background: #08b899; color: #efefef; } 
 /** END join PAGE **/
 /* ITEM GRID */
 ul.gridded_item_set{ position: relative; top: 20px; clear: both; overflow: auto; }
@@ -716,13 +714,13 @@ ul.tags a:hover{text-decoration:none;background:none; color: #000; border-bottom
 	margin-top: 10px;
 	overflow: auto;
 }
-#left-panel-index{ float: left; width: 255px; }
+#left-panel-index{ float: left; width: 304px; }
 #left-panel-index h3{ color: #08b899; }
 #left-panel-index .sorter a:active,
 #left-panel-index .sorter a:link,
 #left-panel-index .sorter a:visited{ color: #666666; line-height: 20px; }
 #left-panel-index .sorter a:hover{ color: #333333; }
-#right-panel{ float: left; width: 650px; overflow: auto;}
+#right-panel{ float: left; width: 625px; overflow: auto; padding: 0; margin: 0;}
 #left-container-with-sidebar{ position: relative; float: left; margin: 0 0 10px 0; padding: 0; width: 650px; overflow: auto;}
 #left-container{ position: relative; margin: 0 10px 10px 0; float: left; width: 650px; }
 #right-sidebar{ position: relative; float: left; z-index: 2; width: 255px;margin: 0; padding: 0; }
@@ -743,7 +741,7 @@ ul.tags a:hover{text-decoration:none;background:none; color: #000; border-bottom
 	float: left;
 	font-size: 11px;
 	padding: 10px;
-	margin: 0px 10px 10px 0px;
+	margin: 0px 5px 10px 0px;
 	width: 175px !important;
 	height: auto;
 	text-align: left !important;

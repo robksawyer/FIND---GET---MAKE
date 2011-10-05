@@ -128,6 +128,10 @@
 																				'cache'=>false
 																				));
 					?>
+					 <?php 
+						echo "<span class='list-sep'>|</span>";
+						echo $this->Html->link('Report an issue', '#', array('title'=>'Report an issue')); 
+					?>
 				</li>
 			</ul>
 		</div>

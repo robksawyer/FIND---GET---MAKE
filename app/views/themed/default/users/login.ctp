@@ -37,11 +37,11 @@
 						<?php //echo $this->Html->image('site/free.png',array('class'=>'free')); ?>
 						<div class="header">
 							<h1>Basic</h1>
-							<h2>(for the amateurs and individuals)</h2>
+							<h2>(for the amateurs and individuals)<br/>&mdash;</h2>
 						</div>
 						<ul>
 							<li>free to use</li>
-							<li>public forum access</li>
+							<!--<li>public forum access</li>-->
 							<li>easy tools for collecting and identifying products</li>
 							<li>community-added content</li>
 						</ul>

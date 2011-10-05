@@ -14,11 +14,11 @@ if(empty($model_id)) $model_id = $feed_item[$model]['id'];
 	*/
 	//if($showDot) echo $this->element('feed-dot',array('cache'=>false,'model'=>$model,'model_id'=>$model_id));
 	?>
-	<div class="feed-text-title"><?php echo $this->Html->link($feed_item[$model]['name'],array('controller'=>$controller,
+	<div class="feed-text-title"><?php echo $this->Html->link(__($feed_item[$model]['name']),array('controller'=>$controller,
 																												'action'=>$action,
 																												'plugin'=>'',
 																												'admin'=>false,
-																												$model_id)); ?></div>
+																												$model_id),array('escape'=>true)); ?></div>
 	<div class="description"><?php echo $this->String->truncate($feed_item[$model]['description'],150); ?></div>
 	<div class="added-by">Added by <?php echo $this->Html->link($feed_item['User']['username'],array('admin'=>false,'controller'=>'users','plugin'=>'','action'=>'profile',$feed_item['User']['username'])); ?></div>
 	<div class='bottom-detail'>

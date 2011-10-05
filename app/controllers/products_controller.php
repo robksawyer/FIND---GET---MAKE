@@ -243,12 +243,23 @@ class ProductsController extends AppController {
 						return false;
 					}
 				}else{
-					//The product exists already add it to the user's storage
-					$this->Product->Storage->addItem($user['User']['id'],$productCheck['Product']['id'],'Product');
-					//Send an email if the user has allowed this
-					$this->send_email_on_product_add_to_storage('Product',$productCheck['Product']['id']);
+					
+					//Make sure that the user doesn't already have this item in their storage.
+					$storageCheck = $this->Product->Storage->find('count',array('conditions'=>array(
+																										'AND'=>array(
+																											array('Storage.user_id'=>$user['User']['id']),
+																											array('Storage.model'=>'Product'),
+																											array('Storage.model_id'=>$productCheck['Product']['id'])
+																										)
+																									)
+																								));
+					if(empty($storageCheck)){
+						//The product exists already add it to the user's storage
+						$this->Product->Storage->addItem($user['User']['id'],$productCheck['Product']['id'],'Product');
+						//Send an email if the user has allowed this
+						$this->send_email_on_product_add_to_storage('Product',$productCheck['Product']['id']);
+					}
 				}
-				
 			}
 		}
 	}

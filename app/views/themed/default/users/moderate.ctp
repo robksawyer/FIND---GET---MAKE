@@ -1,6 +1,3 @@
-<?php
-$this->Html->script('jquery.masonry.min',array('inline'=>false));
-?>
 <?php if(empty($user['User']['hide_welcome'])): ?>
 <div class="welcome">
 	<?php 
@@ -21,7 +18,7 @@ $this->Html->script('jquery.masonry.min',array('inline'=>false));
 	?>
 	<div id="left-container-with-sidebar">
 		<div class="header red">
-		<?php __('running bond: what others are posting.'); ?>
+		<?php __('<b>Running Bond:</b> It\'s more than just a tile pattern&mdash;it\'s what\'s happening.'); ?>
 		</div>
 		<div class="clear"></div>
 		<?php
