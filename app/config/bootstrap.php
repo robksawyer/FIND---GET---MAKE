@@ -55,6 +55,11 @@ Configure::load('fgm_config');
 
 //Load the Facebook config file
 Configure::load('facebook');
+
+/** 
+* Turn on MinifyHelper 
+*/ 
+Configure::write('MinifyAssets', true);
 	
 //Load the Forum config file
 App::import(array(

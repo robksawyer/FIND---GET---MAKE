@@ -58,69 +58,30 @@
 			echo '<!--[if lt IE 7]>'."\n";
 			echo $this->Html->css('modal/basic_ie')."\n";
 			echo '<![endif]-->';
+			
+			//Minify the css
+			echo $this->Minify->css($this->__scripts);
 		?>
 		<?php
 			if(Configure::read('FGM.local') == true){
-				echo $this->Html->script('jquery-1.4.1.min')."\n";
-				echo $this->Html->script('jquery-ui/jquery-ui-1.8.2.custom.min')."\n";
+				
 			}else{
-				//echo "<!-- Include jquery 1.4.2 via google apis -->"."\n";
-				//echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js')."\n";
-				//v1.2.6
-				//echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js');
-				//echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js')."\n";
-				echo $this->Html->script('https://www.google.com/jsapi?key=ABQIAAAAnmDjwFmPVi_wiEa7kcH4kxRoSg5s9K5GPFZf3sp5WjiQsRDImxRDlMCi9qkG8Qo4zHXzieotWXFWzA')."\n";
-				echo '<script language="Javascript" type="text/javascript">'."\n";
-				echo '//<![CDATA['."\n";
-				echo 'google.load("jquery", "1.6.2");'."\n";
-				echo 'google.load("jqueryui", "1.8.4");'."\n";
-				echo '//]]>'."\n";
-				echo '</script>'."\n";
+
 			}
-			//AJAX Deeplinking
-			echo $this->Html->script('history.adapter.jquery.js')."\n"; 
-			echo $this->Html->script('history')."\n";
-			echo $this->Html->script('history.html4')."\n";
-			echo $this->Html->script('init-history')."\n";
-			//END AJAX Deeplinking
+			echo '<script type="text/javascript" src="/min/g=dependencies_js"></script>'."\n";
+			echo '<script type="text/javascript" src="/min/g=base_js"></script>'."\n";
+			//echo '<script type="text/javascript" src="/min/g=forum_js"></script>'."\n";
 			
-			echo $this->Html->script('fgm_api')."\n";
-			echo $this->Html->script('utils')."\n"; //Common helper scripts
-			echo $this->Html->script('jquery.popupwindow')."\n";
-			echo $this->Html->script('jquery.form')."\n";
-			echo $this->Html->script('jquery.autocomplete.min')."\n";
-			echo $this->Html->script('jquery.jeditable.mini')."\n";
-			echo $this->Html->script('jquery.mousewheel.min')."\n";
-			echo $this->Html->script('jquery.simpletip-1.3.1.min')."\n";
-			echo $this->Html->script('jquery.masonry.min')."\n";
-			echo $this->Html->script('jquery.infieldlabel.min')."\n";
-			//Chosen Select Boxes (http://harvesthq.github.com/chosen/)
-			echo $this->Html->script('chosen/chosen.jquery.min')."\n";
-			//Include jQuery modal window APIs
-			echo $this->Html->script('modal/jquery.simplemodal.1.4.1.min')."\n";
-			echo $this->Html->script('modal/basic')."\n";
+			echo $this->Html->script('http://partner.googleadservices.com/gampad/google_service.js')."\n";
 			
-			//Cupcake forum
-			echo $this->Html->script('/forum/js/script.js')."\n";
 			if ($this->params['controller'] == 'home') {
 				echo $this->Html->meta(__d('forum', 'RSS Feed - Latest Topics', true), array('action' => 'feed', 'ext' => 'rss'), array('type' => 'rss'));
 			} else if (isset($feedId) && in_array($this->params['controller'], array('categories', 'topics'))) {
 				echo $this->Html->meta(__d('forum', 'RSS Feed - Content Review', true), array('action' => 'feed', $feedId, 'ext' => 'rss'), array('type' => 'rss'));
 			}
 			
-			echo $scripts_for_layout;
+			//echo $scripts_for_layout;
 		?>
-		<script type='text/javascript' src='http://partner.googleadservices.com/gampad/google_service.js'></script>
-		<script type='text/javascript'>
-		GS_googleAddAdSenseService("ca-pub-6286199062010551");
-		GS_googleEnableAllServices();
-		</script>
-		<script type='text/javascript'>
-		GA_googleAddSlot("ca-pub-6286199062010551", "Index_Box_Unit");
-		</script>
-		<script type='text/javascript'>
-		GA_googleFetchAds();
-		</script>
 		<script type="text/javascript">
 		if(typeof window.JSON === 'undefined'){
 			//Include JSON if you want to support older browsers
@@ -180,13 +141,13 @@
 		</div><!-- close div#wrapper_extra -->
 		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
 	</body>
-	<?php 
-		echo $this->Facebook->init(); 
+	<?php
+		echo $this->Html->script('footer')."\n";
+		echo $this->Facebook->init();
+		echo $this->Minify->external($this->__scripts); 
+		echo $this->Minify->js($this->__scripts);
 	?>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
-			fgm_api.setSiteUrl(currentSiteAddress);
-		});
-	</script>
+	<?php 
+		
+	?>
 </html>

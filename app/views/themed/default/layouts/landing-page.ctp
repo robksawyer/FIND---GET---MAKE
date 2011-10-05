@@ -41,40 +41,21 @@
 			
 			echo $this->Html->css('screen');
 			echo $this->Html->css('landing');
-
-			if(Configure::read('FGM.local') == true){
-				echo $this->Html->script('jquery-1.4.1.min');
-			}else{
-				//echo "<!-- Include jquery 1.4.2 via google apis -->";
-				//echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
-				echo $this->Html->script('https://www.google.com/jsapi?key=ABQIAAAAnmDjwFmPVi_wiEa7kcH4kxRoSg5s9K5GPFZf3sp5WjiQsRDImxRDlMCi9qkG8Qo4zHXzieotWXFWzA')."\n";
-				echo '<script language="Javascript" type="text/javascript">'."\n";
-				echo '//<![CDATA['."\n";
-				echo 'google.load("jquery", "1.6.2");'."\n";
-				echo '//]]>'."\n";
-				echo '</script>'."\n";
-			}
-			echo $this->Html->script('fgm_api')."\n";
-			echo $this->Html->script('utils')."\n"; //Common helper scripts
-			echo $this->Html->script('jquery.form')."\n";
-			echo $this->Html->script('jquery.masonry.min')."\n";
-			echo $this->Html->script('jquery.infieldlabel.min')."\n";
+			//Minify the css
+			echo $this->Minify->css($this->__scripts);
 			
-			echo $scripts_for_layout;
+			if(Configure::read('FGM.local') == true){
+				
+			}else{
+				
+			}
+			echo '<script type="text/javascript" src="/min/g=dependencies_js"></script>'."\n";
+			echo '<script type="text/javascript" src="/min/g=base_js"></script>'."\n";
+			//echo '<script type="text/javascript" src="/min/g=forum_js"></script>'."\n";
+			
+			echo $this->Html->script('http://partner.googleadservices.com/gampad/google_service.js')."\n";
+			//echo $scripts_for_layout;
 		?>
-		
-		<script type='text/javascript' src='http://partner.googleadservices.com/gampad/google_service.js'>
-		</script>
-		<script type='text/javascript'>
-		GS_googleAddAdSenseService("ca-pub-6286199062010551");
-		GS_googleEnableAllServices();
-		</script>
-		<script type='text/javascript'>
-		GA_googleAddSlot("ca-pub-6286199062010551", "Index_Box_Unit");
-		</script>
-		<script type='text/javascript'>
-		GA_googleFetchAds();
-		</script>
 	</head>
 	<body class="landing-page">
 		<!-- This is for the popup plugin -->
@@ -100,5 +81,10 @@
 		</div>
 		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
 	</body>
-	<?php echo $this->Facebook->init(); ?>
+	<?php 
+		echo $this->Html->script('footer')."\n";
+		echo $this->Minify->external($this->__scripts); 
+		echo $this->Minify->js($this->__scripts);
+		echo $this->Facebook->init(); 
+	?>
 </html>

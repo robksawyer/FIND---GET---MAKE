@@ -78,7 +78,7 @@ class AppController extends Controller {
 	 */
 	var $helpers = array('Form', 'Html', 'Time','Text','Session','Js' => array('Jquery'),
 						'Popup.Popup'=>array('Jquery'),'TwitterKit.Twitter','Facebook',
-						'Forum.Cupcake', 'Forum.Decoda' => array(),'String','Paginator'
+						'Forum.Cupcake', 'Forum.Decoda' => array(),'String','Paginator','Minify'
 						);
 	
 	/**

@@ -25,14 +25,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<?php echo $html->charset(); ?>
+	<?php echo $this->Html->charset(); ?>
 	<meta name="keywords" content="brands,culture,brandname,brandnames,tool,track,users,friends,analytics,style,fashion" />
 	<title>
 		<?php __('Sawyer/Tapia : '); ?>
 		<?php echo $title_for_layout; ?>
 	</title>
 	<?php
-		echo $html->meta('icon');
+		echo $this->Html->meta('icon');
 		echo $this->Html->css('cake.generic');
 		echo $this->Html->css('cake.basic');
 		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js');
