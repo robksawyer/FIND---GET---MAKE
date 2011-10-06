@@ -94,11 +94,8 @@
 		</div>
 		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
 	</body>
-	<?php echo $this->Facebook->init(); ?>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
-			fgm_api.setSiteUrl(currentSiteAddress);
-		});
-	</script>
+	<?php 
+		echo '<script type="text/javascript" src="/min/g=footer_js?'.date("His").'"></script>'."\n";
+		echo $this->Facebook->init(); 
+	?>
 </html>

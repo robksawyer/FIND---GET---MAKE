@@ -40,7 +40,7 @@ $min_enableBuilder = false;
  * will have to load extra code to guess. Some examples below:
  */
 //$min_cachePath = 'c:\\WINDOWS\\Temp';
-$min_cachePath = APP.'/tmp/cache/assets';
+$min_cachePath = TMP . '/minify';
 //$min_cachePath = preg_replace('/^\\d+;/', '', session_save_path());
 
 
@@ -55,6 +55,7 @@ $min_cachePath = APP.'/tmp/cache/assets';
  * second line. The third line might work on some Apache servers.
  */
 $min_documentRoot = '';
+//$min_documentRoot = WWW_ROOT;
 //$min_documentRoot = $_SERVER['DOCUMENT_ROOT'].'app/webroot/';
 //$min_documentRoot = substr(__FILE__, 0, strlen(__FILE__) - 15);
 //$min_documentRoot = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
@@ -76,6 +77,11 @@ $min_cacheFileLocking = true;
  * affect CSS values (which is why this option is disabled by default).
  */
 $min_serveOptions['bubbleCssImports'] = false;
+
+
+$min_serveOptions['rewriteCssUris'] = false;
+// WEBROOT_URL is defined by us in minify_controller.php
+$min_serveOptions['minifierOptions']['text/css']['prependRelativePath'] = WEBROOT_URL . 'css/theme/default/';
 
 
 /**

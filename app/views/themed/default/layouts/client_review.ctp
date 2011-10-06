@@ -167,12 +167,11 @@
 			<?php //echo $this->Facebook->like(); ?>
 			</div>
 		</div>
-		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
-		<script type="text/javascript">
-			$(document).ready(function(){
-				var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
-				fgm_api.setSiteUrl(currentSiteAddress);
-			});
-		</script>
+		<?php 
+			echo '<script type="text/javascript" src="/min/g=footer_js?'.date("His").'"></script>'."\n";
+			echo $this->Minify->external($this->__scripts); 
+			echo $this->Minify->js($this->__scripts);
+			echo $this->Js->writeBuffer(); // write cached scripts 
+		?>
 	</body>
 </html>

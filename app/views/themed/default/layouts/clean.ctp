@@ -56,19 +56,28 @@
 			echo $this->Html->script('jquery.popupwindow')."\n";
 			echo $scripts_for_layout;
 		?>
-		
-		<script type='text/javascript' src='http://partner.googleadservices.com/gampad/google_service.js'>
-		</script>
-		<script type='text/javascript'>
-		GS_googleAddAdSenseService("ca-pub-6286199062010551");
-		GS_googleEnableAllServices();
-		</script>
-		<script type='text/javascript'>
-		GA_googleAddSlot("ca-pub-6286199062010551", "Index_Box_Unit");
-		</script>
-		<script type='text/javascript'>
-		GA_googleFetchAds();
-		</script>
+		<?php
+			if(Configure::read('FGM.local') == true){
+				echo '<script type="text/javascript" src="/min/g=jquery_js?'.date("His").'"></script>'."\n";
+			}else{
+				echo $this->Html->script('https://www.google.com/jsapi?key=ABQIAAAAnmDjwFmPVi_wiEa7kcH4kxRoSg5s9K5GPFZf3sp5WjiQsRDImxRDlMCi9qkG8Qo4zHXzieotWXFWzA')."\n";
+				echo '<script language="Javascript" type="text/javascript">'."\n";
+				echo '//<![CDATA['."\n";
+				echo 'google.load("jquery", "1.6.2");'."\n";
+				echo 'google.load("jqueryui", "1.8.4");'."\n";
+				echo '//]]>'."\n";
+				echo '</script>'."\n";
+			}
+			//Minify messes these up
+			echo $this->Html->script('history.adapter.jquery.min');
+			echo $this->Html->script('history.min');
+			echo $this->Html->script('history.html4.min');
+			echo '<script type="text/javascript" src="/min/g=dependencies_js"></script>'."\n";
+			echo '<script type="text/javascript" src="/min/g=base_js"></script>'."\n";
+			//echo '<script type="text/javascript" src="/min/g=forum_js"></script>'."\n";
+			
+			echo $this->Html->script('http://partner.googleadservices.com/gampad/google_service.js')."\n";
+		?>
 	</head>
 	<body>
 		<!-- This is for the popup plugin -->
@@ -97,11 +106,10 @@
 		</div>
 		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
 	</body>
-	<?php echo $this->Facebook->init(); ?>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
-			fgm_api.setSiteUrl(currentSiteAddress);
-		});
-	</script>
+	<?php 
+		echo '<script type="text/javascript" src="/min/g=footer_js?'.date("His").'"></script>'."\n";
+		echo $this->Facebook->init();
+		echo $this->Minify->external($this->__scripts); 
+		echo $this->Minify->js($this->__scripts); 
+	?>
 </html>

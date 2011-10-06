@@ -92,7 +92,7 @@
 		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
 	</body>
 	<?php 
-		echo $this->Html->script('footer')."\n";
+		echo '<script type="text/javascript" src="/min/g=footer_js?'.date("His").'"></script>'."\n";
 		echo $this->Minify->external($this->__scripts); 
 		echo $this->Minify->js($this->__scripts);
 		echo $this->Facebook->init(); 
