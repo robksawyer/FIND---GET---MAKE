@@ -224,7 +224,13 @@ class AppController extends Controller {
 				$isUser = true;
 			}
 		}
-		$this->set(compact('authUser','facebookUser','twitterUser','isAdmin','isManager','isUser'));
+		
+		$apiToken = 'XXXXXX';
+		/*
+		 * {"type":"User","id":65955,"id_str":"65955","name":"Rob","username":"robksawyer","display_name":"Rob","profile_image_url":"http:\/\/assets.svpply.com.s3.amazonaws.com\/portraits\/65955.png?u=1317833462","profile_image_small_url":"http:\/\/assets.svpply.com.s3.amazonaws.com\/avatars\/65955.png?u=1317833462","description":null,"url":"","date_created":"2011-08-12 19:56:46","location":null,"twitter_id":1679511,"facebook_id":27402804,"product_grabs_count":2,"product_following_count":2,"user_followers_count":2,"user_following_count":21,"store_following_count":0,"search_following_count":0,"count_sets":0}
+		 */ 
+		$json_user_data = $this->getJSONUserData($authUser);
+		$this->set(compact('authUser','facebookUser','twitterUser','isAdmin','isManager','isUser','apiToken','json_user_data'));
 		
 		//Redirect the user to the previous page
 		/*$referer = $this->Session->read('Auth.redirect');
@@ -234,6 +240,64 @@ class AppController extends Controller {
 		}*/
 		
 		//$this->Auth->allow('*');
+	}
+	
+	/**
+	 * Returns a JSON object that contains the user data
+	 * @param Array authUser The logged in user
+	 * @return 
+	 * 
+	*/
+	public function getJSONUserData($authUser){
+		if(empty($authUser['User']['fullname'])){
+			$display_name = $authUser['User']['username'];
+		}else{
+			$display_name = $authUser['User']['fullname'];
+		}
+		if(empty($authUser['User']['attachment_id'])){
+			$profile_image_url = $authUser['User']['profile_image_url'];
+			$small_profile_image_url = $authUser['User']['profile_image_url'];
+		}else{
+			//Get the user image url from attachment id
+			//$profile_image_url = $this->Attachment->getProfileImageURL($authUser['User']['attachment_id']); 
+			//$small_profile_image_url = $this->Attachment->getSmallProfileImageURL($authUser['User']['attachment_id']);
+			/*
+				TODO Add the full url to the attachment on add.
+			*/
+			$profile_image_url = "";
+			$small_profile_image_url = "";
+		}
+		if(!empty($authUser)){
+			//Build a json user object for the view
+			$json_user_data = array(
+				'type'=>'User',
+				'id'=>$authUser['User']['id'],
+				'id_str'=>'"'.$authUser['User']['id'].'"',
+				'name'=>$authUser['User']['fullname'],
+				'username'=>$authUser['User']['username'],
+				'display_name'=>$display_name,
+				'profile_image_url'=>$profile_image_url,
+				'profile_image_small_url'=>$small_profile_image_url,
+				'about'=>$authUser['User']['about'],
+				'url'=>$authUser['User']['url'],
+				'date_created'=>$authUser['User']['created'],
+				'location'=>$authUser['User']['location'],
+				'twitter_id'=>$authUser['User']['twitter_id'],
+				'facebook_id'=>$authUser['User']['facebook_id'],
+				'products_stored_count'=>$authUser['User']['products_stored_count'],
+				'user_followers_count'=>$authUser['User']['user_followers_count'],
+				'user_following_count'=>$authUser['User']['user_following_count'],
+				'total_collections'=>$authUser['User']['total_collections'],
+				'total_inspirations'=>$authUser['User']['total_inspirations'],
+				'total_sources'=>$authUser['User']['total_sources'],
+				'total_products_found'=>$authUser['User']['total_products']
+			);
+			$json_user_data = json_encode($json_user_data);
+		}else{
+			$json_user_data = "";
+			$json_user_data = json_encode($json_user_data);
+		}
+		return $json_user_data;
 	}
 	
 	/**

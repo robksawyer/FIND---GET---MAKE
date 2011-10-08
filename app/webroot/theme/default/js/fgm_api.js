@@ -17,126 +17,477 @@ api = {
 		})
 	}
 };;*/
-// source: http://msdn.microsoft.com/en-us/library/ms537509(v=vs.85).aspx
-function getInternetExplorerVersion()
-// Returns the version of Internet Explorer or a -1
-// (indicating the use of another browser).
-{
-	var rv = false; // Return value assumes failure.
-	if (navigator.appName == 'Microsoft Internet Explorer'){
-		var ua = navigator.userAgent;
-		var re	= new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-		if (re.exec(ua) != null) rv = parseFloat( RegExp.$1 );
-	}
-	return rv;
-}
 
-function addEvent( obj, evt, fn ) {
-	if ( typeof obj.attachEvent != 'undefined' )  {
-		obj.attachEvent( "on" + evt, fn );
-	}
-	else if ( typeof obj.addEventListener != 'undefined' ) {
-		obj.addEventListener( evt, fn, false );
-	}
-};
-
-function addElementAfter( node, tag_type, html ) {
-	var new_element = document.createElement( tag_type );
-	if(html) new_element.innerHTML = html;
-	node.parentNode.insertBefore( new_element, node.nextSibling );
-};
-
-function getElementsByClassName(cl) {
-	var retnode = [];
-	var myclass = new RegExp('\\b'+cl+'\\b');
-	var elem = document.getElementsByTagName('*');
-	for (var i = 0; i < elem.length; i++) {
-		var classes = elem[i].className;
-		if (myclass.test(classes)) retnode.push(elem[i]);
-	}
-	return retnode;
-};
-
-// source: https://gist.github.com/992575
-var jsonp = {
-	callbackCounter: 0,
-	fetch: function(url, callback) {
-		var fn = 'JSONPCallback_' + this.callbackCounter++;
-		window[fn] = this.evalJSONP(callback);
-		url = url.replace('=JSONPCallback', '=' + fn);
-		var scriptTag = document.createElement('SCRIPT');
-		scriptTag.src = url;
-		document.getElementsByTagName('HEAD')[0].appendChild(scriptTag);
-	},
-	evalJSONP: function(callback) {
-	   return function(data) {
-		   var validJSON = false;
-		if (typeof data == "string") {
-			try {validJSON = JSON.parse(data);} catch (e) {
-				/*invalid JSON*/
-			}
-		} else {
-			validJSON = JSON.parse(JSON.stringify(data));
-				window.console && console.warn(
-				'response data was not a JSON string');
-		   }
-		   if (validJSON) {
-			   callback(validJSON);
-		   } else {
-			   throw("JSONP call returned invalid or empty JSON");
-		   }
-	   }
-	}
-};
+/*if(!window.fgm_api_running){
+	var fgm_api;
+	window.fgm_api_running = true;
+	fgm_api = new fgm_api();
+	fgm_api.setDomain(DOMAIN);
+}*/
 
 /**
- * THE API
+ * Init History
  * @param 
  * @return 
  * 
 */
-function fgm_api(){
-	this.api_initialized = false;
-	this.site_url_set = false;
-	this.currentSiteAddress = "";
-	this.follow_all_user_id_data;
-	this.feed_num_items = 0;
-	this.feed_limit = 10;
-	this.feed_previous_loaded = 0;
-	this.feed_loading = false;
-	this.feed_showing_end = false;
-	this.is_empty_feed = 1;
-	
-	//Find users
-	this.twitterSearchComplete = false;
-	this.facebookSearchComplete = false;
-	this.facebook_permissions = "user_about_me,user_birthday,email,offline_access,publish_stream";
-	this.searchInitiated = false;
-	this.allowDeeplinking = true;
-	this.lastStateID;
-	this.searchInitiated = false;
-	this.search_query;
-	this.passedParams;
-	
-	this.init = function() {
-		try {
-			this.api_initialized = true;
-		} catch(e) {
-			//alert(e);
-		}
-	};
-	
-	/**
-	 * Set the current site url
-	 * @param 
-	 * @return 
-	 * 
-	*/
-	this.setSiteUrl = function(url){
-		//event.customData = getCustomData();
-		fgm_api.currentSiteAddress = url;
-		fgm_api.site_url_set = true;
+(function(window,undefined){
+	// Check Location
+	if( document.location.protocol === 'file:' ) {
+		alert('The HTML5 History API (and thus History.js) do not work on files, please upload it to a server.');
 	}
+
+	// Establish Variables
+	var History = window.History, // Note: We are using a capital H instead of a lower h
+		State = History.getState(),
+		$log = $('#log');
+
+	// Log Initial State
+	History.log('initial:', State.data, State.title, State.url);
+
+	// Bind to State Change
+	History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
+		// Log the State
+		var State = History.getState(); // Note: We are using History.getState() instead of event.state
+		History.log('statechange:', State.data, State.title, State.url);
+	});
+
+})(window);
+
+
+var User = Model.extend({
+    type: "User",
+    _can: {},
+    can: function (a) {
+        return typeof this._can !== UNDEFINED && this._can[a] ? true : false
+    },
+    feed: function (a) {
+        return this.has_many(a, "feed", "Event")
+    },
+    products: function (a) {
+        return this.has_many(a, "products")
+    },
+    collections: function (a) {
+        return this.has_many(a, "collections")
+    },
+    user_followers: function (a) {
+        return this.has_many(a, "followers/users")
+    },
+    users_following: function (a) {
+        return this.has_many(a, "following/users")
+    },
+    /*stores_following: function (a) {
+        return this.has_many(a, "following/stores")
+    },
+    searches_following: function (a) {
+        return this.has_many(a, "following/searches")
+    },*/
+    follow: function (a, b) {
+        b = b ||
+        function (c) {
+            console.log(c)
+        };
+        api.call({
+            url: this.type.toLowerCase() + "s/" + this.id + "/follow",
+            data: {
+                entity_type: a.type,
+                entity_id: a.id
+            },
+            success: function () {
+                b()
+            }
+        })
+    },
+    unfollow: function (a, b) {
+        b = b ||
+        function (c) {
+            console.log(c)
+        };
+        api.call({
+            url: this.type.toLowerCase() + "s/" + this.id + "/unfollow",
+            data: {
+                entity_type: a.type,
+                entity_id: a.id
+            },
+            success: function () {
+                b()
+            }
+        })
+    },
+    is_following: function (a, b) {
+        return a instanceof User ? (new DataStore).svpply().all(function (c) {
+            for (var d = 0; d < c.length; d++) if (c[d].id == a.id) {
+                b(true, c[d]);
+                return true
+            }
+            return b(false)
+        }) : b(false)
+    },
+    init: function (a) {
+        this._super(a);
+        this.logged_in = this.id >= 0
+    }
+});
+User.find = function (a, b) {
+    return Model._find("User", a, b)
+};;
+var Product = Model.extend({
+    type: "Product",
+    sets: function (a) {
+        return this.has_many(a, "sets")
+    },
+    comments: function (a) {
+        return this.has_many(a, "comments")
+    },
+    users: function (a) {
+        return this.has_many(a, "users")
+    }
+});
+Product.find = function (a, b) {
+    return Model._find("Product", a, b)
+};;
+var fgm_pk_data = {};
+$(function () {
+    ({
+        pk: null,
+        user: null,
+        pub: null,
+        engine: null,
+        init: function () {
+            this.pk = fgm_pk_data.pk;
+            this.user = fgm_pk_data.user;
+            this.pub = fgm_pk_data.pub;
+            try {
+                if ((this.engine = typeof localStorage != "undefined" ? localStorage : typeof globalStorage[location.host] != "undefined" ? globalStorage[location.host] : false) && this.pk) {
+                    this.engine.setItem("pk_" + this.pub, this.pk);
+                    this.engine.setItem("user_" + this.pub, this.user)
+                }
+            } catch (a) {}
+        }
+    }).init()
+});;
+var page_action = [];
+page_action.push("load");
+var action_on = {
+    _defines: {
+        cookie_name: "action_on_event",
+        product_url: "/storages/toggle/",
+        follow_url: "/followers/toggle"
+    },
+    _cookie: null,
+    _action: null,
+    _event: null,
+    _type: null,
+    _id: null,
+    init: function () {
+        var a = this,
+            b;
+        if ($.cookie("ci_session") && typeof unserialize($.cookie("ci_session")) !== "undefined") {
+            typeof unserialize($.cookie("ci_session")).user_id !== "undefined" && page_action.push("logged_in");
+            if ($.cookie(a._defines.cookie_name)) {
+                a._cookie = $.parseJSON($.cookie(a._defines.cookie_name));
+                $.each(a._cookie, function (c, d) {
+                    b = "_" + c;
+                    a[b] = d
+                });
+                a._event && a.do_action()
+            }
+        }
+    },
+    do_action: function () {
+        var a = this;
+        $.each(page_action, function (b, c) {
+            if (c === a._event) a["do_" + a._action](function () {
+                a.delete_cookie()
+            })
+        })
+    },
+    do_follow: function (a) {
+        var b = this,
+            c, d, e;
+        switch (b._type) {
+        case "product":
+            c = b._defines.product_url + b._id;
+            d = {
+                ajax: 1
+            };
+            e = function (f) {
+                $("body").append(f.growler);
+                growler = new Growler;
+                growler.grab_id = b._id;
+                toggle_add_remove(b._id);
+                a()
+            };
+            break;
+        case "domain":
+        case "user":
+            c = b._defines.follow_url;
+            d = {
+                type: b._type,
+                following_id: b._id
+            };
+            switch_follow_button_state(false, b._id);
+            (new DataStore).svpply().refresh();
+            e = a
+        }
+        $.ajax({
+            url: c,
+            data: d,
+            type: "post",
+            dataType: "json",
+            success: e,
+            cache: false
+        })
+    },
+    do_show: function (a) {
+        if (page_entity.id === this._new_id && page_entity.type === "Set") {
+            $('<div id="header_message">').html('<div style="width: 920px; margin: 0 auto;"><span style="float: left;">Your new set, cloned from <a style="border-bottom-color: #136357; color: #136357; font-size: 16px; font-weight: bold;" href="/' + this._current_set_username + "/sets/" + this._current_id + '">' + this._current_title + '</a></span><a href="#" id="dismiss_message" style="float: right; border-bottom-color: #136357; font-size: 18px; font-weight: bold; color: #136357;">Dismiss</a></div>').css({
+                overflow: "auto",
+                "background-color": "#19ffdc",
+                padding: "20px 0",
+                "font-size": 18,
+                color: "#136357"
+            }).prependTo(document.body);
+            $("#dismiss_message").click(function (b) {
+                b.preventDefault();
+                $("#header_message").animate({
+                    height: 0,
+                    "padding-top": 0,
+                    "padding-bottom": 0
+                }, function () {
+                    $(this).remove()
+                })
+            });
+            a()
+        }
+    },
+    delete_cookie: function () {
+        $.cookie(this._defines.cookie_name, null, {
+            path: "/",
+            domain: "." + DOMAIN
+        })
+    }
+};
+$(function () {
+    action_on.init()
+});;
+var DataStore = function (){
+	return {
+		init: function() {
+			try {
+				this.api_initialized = true;
+			} catch(e) {
+				//alert(e);
+			}
+		},
+		setRelationships: function (a) {
+            this.relationships = a;
+            return this
+        },
+        all: function (a) {
+            a(this.getData())
+        },
+        getDB: function () {
+            return this.db.split("::")[1].split(":")[0]
+        },
+        setSearchFields: function (a) {
+            this.fields = $.isArray(a) ? a : [a];
+            return this
+        },
+        get: function (a, b) {
+            var c = b === false ? a : this.db + a;
+            if (this.db) return this.storage.get(c);
+            else if (ENVIRONMENT !== PRODUCTION) {
+                console.log("You must init the DataStore with a DB string.");
+                return false
+            }
+        },
+        DBs: function () {
+            var a = {};
+            a[this.getDB()] = this;
+            return a
+        },
+        set: function (a, b, c) {
+            a = c === false ? a : this.db + a;
+            if (this.db) return this.storage.set(a, b);
+            else if (ENVIRONMENT !== PRODUCTION) {
+                console.log("You must init the DataStore with a DB string.");
+                return false
+            }
+        },
+        setData: function (a) {
+            if (this.db) return this.storage.set(this.db, a || [])
+        },
+        getData: function () {
+            var a;
+            if (this.db) {
+                a = this.storage.get(this.db);
+                a === null && this.refresh();
+                return a || []
+            }
+        },
+        query: function (a, b) {
+            var c = this,
+                d = RegExp(a);
+            b = b ||
+            function () {};
+            var e = [],
+                f = [],
+                g;
+            if (c.db) {
+                f = c.getData();
+                g = f.length;
+                g > 0 ? $.each(f, function (h, k) {
+                    $.each(c.fields, function (m, j) {
+                        if (d.test(k[j])) {
+                            k.matched_on = j;
+                            k.from_db = c.getDB();
+                            e.push(k);
+                            return false
+                        }
+                    });
+                    if (!--g) return b(e)
+                }) : b([])
+            } else if (ENVIRONMENT !== PRODUCTION) {
+                console.log("You must init the DataStore with a DB string");
+                return false
+            }
+        },
+        setRefresh: function (a) {
+            this._refresh = a;
+            return this
+        },
+        refresh: function (a) {
+            var b = this;
+            a = a ||
+            function () {};
+            if (b.db) b.flush(function () {
+                if (typeof b._refresh === "function") b._refresh(function (c) {
+                    if (typeof c === "object") {
+                        b.setData(c);
+                        return a.call(b, {
+                            db: b.db,
+                            status: true,
+                            name: b.getDB()
+                        })
+                    } else return a.call(b, {
+                        db: b.db,
+                        status: false,
+                        name: b.getDB()
+                    })
+                });
+                else return a.call(b, {
+                    db: b.db,
+                    status: true,
+                    name: b.getDB()
+                })
+            });
+            else if (ENVIRONMENT !== PRODUCTION) {
+                console.log("You must init the DataStore with a DB string");
+                return false
+            }
+        },
+        flush: function (a) {
+            this.setData([]);
+            return a(true)
+        },
+		setDomain: function(url){
+			//event.customData = getCustomData();
+			fgm_api.DOMAIN = url;
+			fgm_api.domain_set = true;
+		},
+		navInit: function(){
+			var navRoot = document.getElementById("main-nav");
+			var navChildren = document.getElementById("main-nav").getElementsByTagName("li");
+			for (var i=0; i<navChildren.length; i++) {
+				navChildren[i].onmouseover=function() {
+					this.className+=" fgm_hover";
+				}
+				navChildren[i].onmouseout=function() {
+					this.className=this.className.replace(new RegExp(" fgm_hover\\b"), "");
+				}
+			}
+		},
+		Collection: function () {
+            return this.initWithDB(current_user.id + "::collections").setRefresh(function (a) {
+                current_user.collections(function (b) {
+                    a(b)
+                })
+            })
+        },
+		fgm: function () {
+            return this.initWithDB(current_user.id + "::sv").setRefresh(function (a) {
+                current_user.users_following(function (b) {
+                    $.each(b, function (c, d) {
+                        d.name = d.display_name;
+                        d._identifier = "id"
+                    });
+                    return a(b)
+                })
+            }).setSearchFields(["name", "username"]).setRelationships([{
+                type: "master",
+                field: "facebook_id",
+                parse: function (a) {
+                    return parseInt(a, 10)
+                },
+                common: "facebook_id"
+            }, {
+                type: "master",
+                field: "twitter_id",
+                parse: function (a) {
+                    return parseInt(a, 10)
+                },
+                common: "twitter_id"
+            }])
+        },
+		fgm_followers: function () {
+            return this.initWithDB(current_user.id + "::fgmfol").setRefresh(function (a) {
+                current_user.user_followers(function (b) {
+                    $.each(b, function (c, d) {
+                        d.name = d.display_name;
+                        d._identifier = "id"
+                    });
+                    return a(b)
+                })
+            }).setSearchFields(["name", "username"])
+        },
+        twitter: function () {
+            return this.initWithDB(current_user.id + "::tw").setRefresh(function (a) {
+                if (Network.has("twitter")) $.get("/connect/twitter/friends.json", function (b) {
+                    var c = [];
+                    if (typeof b._status !== "boolean" || b.status === false) {
+                        $.each(b, function (d, e) {
+                            var f = {};
+                            f.id = d;
+                            f.name = e.display_name;
+                            f.screen_name = e.screen_name;
+                            f.real_name = e.name;
+                            f.profile_image_url = e.profile;
+                            f._identifier = "screen_name";
+                            c.push(f)
+                        });
+                        return a(c)
+                    } else {
+                        Network.remove("twitter");
+                        return a(false)
+                    }
+                });
+                else return a(false)
+            }).setSearchFields(["name", "screen_name"]).setRelationships([{
+                type: "slave",
+                field: "id",
+                parse: function (a) {
+                    return parseInt(a, 10)
+                },
+                common: "twitter_id"
+            }])
+        }
+	}
+	
+	
+	
+	
+	
 	
 	/**
 	 * Initializes the main nav
@@ -144,18 +495,7 @@ function fgm_api(){
 	 * @return 
 	 * 
 	*/
-	this.nav_init = function(){
-		var navRoot = document.getElementById("main-nav");
-		var navChildren = document.getElementById("main-nav").getElementsByTagName("li");
-		for (var i=0; i<navChildren.length; i++) {
-			navChildren[i].onmouseover=function() {
-				this.className+=" fgm_hover";
-			}
-			navChildren[i].onmouseout=function() {
-				this.className=this.className.replace(new RegExp(" fgm_hover\\b"), "");
-			}
-		}
-	}
+	
 	
 	/**
 	 * Initializes the user nav
@@ -189,9 +529,9 @@ function fgm_api(){
 		}
 		try {
 			//Make the popup window
-			if(fgm_api.currentSiteAddress){
+			if(fgm_api.DOMAIN){
 				$.getJSON(
-					fgm_api.currentSiteAddress+'/twitter_kit/oauth/authenticate_url/twitter', {}, 
+					fgm_api.DOMAIN+'/twitter_kit/oauth/authenticate_url/twitter', {}, 
 					function(data){
 				   		$('#twitter-login-wrap #btn-twitter').attr('href', data.url);
 						$('#twitter-login-wrap #btn-twitter').attr('rel','windowCenter');
@@ -282,8 +622,8 @@ function fgm_api(){
 				fgm_api.lastStateID = State.id;
 			};
 
-			if(fgm_api.currentSiteAddress){
-				$.getJSON(fgm_api.currentSiteAddress+'/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
+			if(fgm_api.DOMAIN){
+				$.getJSON(fgm_api.DOMAIN+'/twitter_kit/oauth/authenticate_url/twitter', {}, function(data){
 			   	$('#twitter-allow').attr('href', data.url);
 					$('#twitter-allow').attr('rel','windowCenter');
 					$('#twitter-allow').popupwindow(profiles);
@@ -1254,107 +1594,3 @@ function fgm_api(){
 	//Initialize The FIND|GET|MAKE API
 	this.init();
 }
-
-if(!window.fgm_api_running){
-	var fgm_api;
-	window.fgm_api_running = true;
-	fgm_api = new fgm_api();
-}
-
-$(function(){
-	
-	var currentSiteAddress = "<?php echo $this->String->getCurrentSiteAddress(); ?>";
-	fgm_api.setSiteUrl(currentSiteAddress);
-	
-	// fade out good flash messages after 3 seconds  
-	$('.flash_good').animate({opacity: 1.0}, 3000).hide("slow");
-	//var t=setTimeout("javascript statement",milliseconds);
-		
-	$(".debuggg").click(function () {
-			      $(".debuggg-inner").slideToggle("slow");
-			    });
-			
-	
-	// fade out flash 'success' messages
-	$('#flashMessage').delay(3000).hide('slow');
-	
-	$("#slidingDiv").hide();
-	$(".show_hide").show();
-	
-	$('.show_hide').click(function(){
-		$(this).next('#slidingDiv').slideToggle();
-		if($(this).html() == "<h3>Hide Details</h3>"){
-			$(this).html('<h3>Show Details</h3>');
-		}else{
-			$(this).html('<h3>Hide Details</h3>');
-		}
-	});
-	
-	//Add external links icon
-	/*$('a[target="_blank"]').filter(function() {
-		return this.hostname && this.hostname !== location.hostname;
-	}).after(' <img src="/img/icons/external.png" alt="" class="external"/>');*/
-	
-	$("img").hover(
-		function(){
-			this.src = this.src.replace("_off", "_on");
-		},
-		function(){
-			this.src = this.src.replace("_on", "_off");
-		}
-	);
-	
-	//Get our elements for faster access and set overlay width
-	 /*var div = $('div#attachments'),
-			 		ul = $('ul.wrapper'),
-					// unordered list's left margin
-					ulPadding = 15;
-
-	//Remove scrollbars
-	div.css({overflow: 'hidden'});
-					
-	//Get menu width
-	var divWidth = div.width();
-
-	//Find last image container
-	var lastLi = ul.find('li:last-child');
-
-	//When user move mouse over menu
-	div.mousemove(function(e){
-		//As images are loaded ul width increases,
-		//so we recalculate it each time
-		var ulWidth = lastLi[0].offsetLeft + lastLi.outerWidth() + ulPadding;
-
-		var left = (e.pageX - div.offset().left) * (ulWidth-divWidth) / divWidth;
-		div.scrollLeft(left);
-	});*/
-});
-
-/**
- * Init History
- * @param 
- * @return 
- * 
-*/
-(function(window,undefined){
-	// Check Location
-	if( document.location.protocol === 'file:' ) {
-		alert('The HTML5 History API (and thus History.js) do not work on files, please upload it to a server.');
-	}
-
-	// Establish Variables
-	var History = window.History, // Note: We are using a capital H instead of a lower h
-		State = History.getState(),
-		$log = $('#log');
-
-	// Log Initial State
-	History.log('initial:', State.data, State.title, State.url);
-
-	// Bind to State Change
-	History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
-		// Log the State
-		var State = History.getState(); // Note: We are using History.getState() instead of event.state
-		History.log('statechange:', State.data, State.title, State.url);
-	});
-
-})(window);

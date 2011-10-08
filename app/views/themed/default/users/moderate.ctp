@@ -59,14 +59,14 @@
 		<br class="clear" />
 		<div>
 			<?php 
-			if($authUser['User']['totalUsersFollowing'] > 1) $people = "people"; else $people = "person";
-			echo $this->Html->link("Following ".$authUser['User']['totalUsersFollowing']." $people",
+			if($authUser['User']['user_following_count'] > 1) $people = "people"; else $people = "person";
+			echo $this->Html->link("Following ".$authUser['User']['user_following_count']." $people",
 			array('controller'=>'user_followings','action'=>'following','admin'=>false,'plugin'=>'',$authUser['User']['username']),
 			array('title'=>'The users you are following','class'=>'simple-btn')); ?>
 		</div>
 		<div class="followers">
 		<?php 
-			echo "<span>Followers ".$authUser['User']['totalFollowers']."</span> | ";
+			echo "<span>Followers ".$authUser['User']['user_followers_count']."</span> | ";
 			echo "<span class='view-all'>";
 			echo $this->Html->link("View all &rarr;",
 										array('plugin'=>'',
@@ -91,21 +91,21 @@
 			<div class="title">Your totals</div>
 			<li>
 				<div class='total'>
-					<?php echo $this->Html->link($user['User']['totalSources'],array('plugin'=>'','admin'=>false,'controller'=>'sources','action'=>'users',$user['User']['id'])); ?>
+					<?php echo $this->Html->link($user['User']['total_sources'],array('plugin'=>'','admin'=>false,'controller'=>'sources','action'=>'users',$user['User']['id'])); ?>
 					<span>sources</span>
 				</div> 
 				<div class='total'>
-					<?php echo $this->Html->link($user['User']['totalProducts'],array('plugin'=>'','admin'=>false,'controller'=>'products','action'=>'users',$user['User']['id'])); ?>
+					<?php echo $this->Html->link($user['User']['total_products'],array('plugin'=>'','admin'=>false,'controller'=>'products','action'=>'users',$user['User']['id'])); ?>
 					<span>products</span>
 				</div>
 			</li>
 			<li>
 				<div class='total'>
-					<?php echo $this->Html->link($user['User']['totalInspirations'],array('plugin'=>'','admin'=>false,'controller'=>'inspirations','action'=>'users',$user['User']['id'])); ?>
+					<?php echo $this->Html->link($user['User']['total_inspirations'],array('plugin'=>'','admin'=>false,'controller'=>'inspirations','action'=>'users',$user['User']['id'])); ?>
 					<span>inspirations</span>
 				</div> 
 				<div class='total'>
-					<?php echo $this->Html->link($user['User']['totalCollections'],array('plugin'=>'','admin'=>false,'controller'=>'collections','action'=>'users',$user['User']['id'])); ?>
+					<?php echo $this->Html->link($user['User']['total_collections'],array('plugin'=>'','admin'=>false,'controller'=>'collections','action'=>'users',$user['User']['id'])); ?>
 					<span>collections</span>
 				</div>
 			</li>

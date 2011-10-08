@@ -41,6 +41,6 @@
 </div>
 <script type="text/javascript">
 //<![CDATA[
-window.addEventListener("FGM_API.INITIALIZED", function(){ fgm_api.user_nav_init(); },false);
+window.addEventListener("FGM_API.INITIALIZED", function(){ fgm_api.userNavInit(); },false);
 //]]>
 </script>

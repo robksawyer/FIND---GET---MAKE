@@ -49,32 +49,22 @@ class User extends AppModel {
 	 * @var array
 	 */
 	var $columnMap = array(
-		'status'					=> 'status',
-		'signature'					=> 'signature',
-		'locale'					=> 'locale', // Must allow 3 characters: eng
-		'timezone'					=> 'timezone', // Must allow 5 digits: -10.5
-		'totalPosts'				=> 'totalPosts',
-		'totalTopics'				=> 'totalTopics',
-		'totalUfos'					=> 'totalUfos',
-		'totalProducts'				=> 'totalProducts',
-		'totalProductLikes'			=> 'totalProductLikes',
-		'totalProductDislikes'		=> 'totalProductDislikes',
-		'totalSources'				=> 'totalSources',
-		'totalSourceLikes'			=> 'totalSourceLikes',
-		'totalSourceDislikes'		=> 'totalSourceDislikes',
-		'totalInspirations'			=> 'totalInspirations',
-		'totalInspirationLikes'		=> 'totalInspirationLikes',
-		'totalInspirationDislikes'	=> 'totalInspirationDislikes',
-		'totalCollections'			=> 'totalCollections',
-		'totalCollectionLikes'		=> 'totalCollectionlikes',
-		'totalCollectionDislikes'	=> 'totalCollectionDislikes',
-		'totalUfos'					=> 'totalUfos',
-		'totalUfoLikes'				=> 'totalUfoLikes',
-		'totalUfoDislikes'			=> 'totalUfoDislikes',
-		'totalFollowers'			=> 'totalFollowers',
-		'totalUsersFollowing'		=> 'totalUsersFollowing',
-		'currentLogin'				=> 'currentLogin',
-		'lastLogin'					=> 'lastLogin'
+		'status'							=> 'status',
+		'signature'						=> 'signature',
+		'locale'							=> 'locale', // Must allow 3 characters: eng
+		'timezone'						=> 'timezone', // Must allow 5 digits: -10.5
+		'totalPosts'					=> 'totalPosts',
+		'totalTopics'					=> 'totalTopics',
+		'totalUfos'						=> 'totalUfos',
+		'total_products_added'		=> 'total_products_added',
+		'total_sources'				=> 'total_sources',
+		'total_inspirations'			=> 'total_inspirations',
+		'total_collections'			=> 'total_collections',
+		'total_ufos'					=> 'total_ufos',
+		'user_followers_count'		=> 'user_followers_count',
+		'user_following_count'		=> 'user_following_count',
+		'currentLogin'					=> 'currentLogin',
+		'lastLogin'						=> 'lastLogin'
 	);
 	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -599,7 +589,7 @@ class User extends AppModel {
 	public function updateTotalFollowCount($user_id=null){
 		$this->id = $user_id;
 		$totalFollows = $this->UserFollowing->getFollowCount($user_id);
-		$this->saveField('totalUsersFollowing',$totalFollows);
+		$this->saveField('user_following_count',$totalFollows);
 	}
 	
 	/**
@@ -611,7 +601,7 @@ class User extends AppModel {
 	public function updateTotalFollowerCount($user_id=null){
 		$this->id = $user_id;
 		$totalFollowers = $this->UserFollowing->getFollowerCount($user_id);
-		$this->saveField('totalFollowers',$totalFollowers);
+		$this->saveField('user_followers_count',$totalFollowers);
 	}
 	
 	/**
@@ -623,7 +613,7 @@ class User extends AppModel {
 	public function updateTotalProducts($user_id=null){
 		$this->id = $user_id;
 		$total = $this->getTotalProducts($user_id);
-		$this->saveField('totalProducts',$total);
+		$this->saveField('total_products',$total);
 	}
 	
 	/**
@@ -648,7 +638,7 @@ class User extends AppModel {
 	public function updateTotalSources($user_id=null){
 		$this->id = $user_id;
 		$total = $this->getTotalSources($user_id);
-		$this->saveField('totalSources',$total);
+		$this->saveField('total_sources',$total);
 	}
 	
 	/**
@@ -672,7 +662,7 @@ class User extends AppModel {
 	public function updateTotalInspirations($user_id=null){
 		$this->id = $user_id;
 		$total = $this->getTotalInspirations($user_id);
-		$this->saveField('totalInspirations',$total);
+		$this->saveField('total_inspirations',$total);
 	}
 	
 	/**
@@ -760,10 +750,9 @@ class User extends AppModel {
 																	),
 												'fields'=>array('id','username','slug',
 																'created','status','email',
-																'totalSources','totalProducts','totalInspirations',
-																'totalCollections','totalUfos',
-																'totalPosts','totalTopics','totalProductLikes',	
-																'totalProductDislikes','totalUsersFollowing'
+																'total_sources','total_products','total_inspirations',
+																'total_collections','total_ufos',
+																'totalPosts','totalTopics','user_following_count'
 																)
 												));
 		return $user_details;

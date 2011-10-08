@@ -78,8 +78,6 @@
 			echo $this->Html->script('history.adapter.jquery.min');
 			echo $this->Html->script('history.min');
 			echo $this->Html->script('history.html4.min');
-			echo '<script type="text/javascript" src="/min/g=dependencies_js"></script>'."\n";
-			echo '<script type="text/javascript" src="/min/g=base_js"></script>'."\n";
 			//echo '<script type="text/javascript" src="/min/g=forum_js"></script>'."\n";
 			
 			echo $this->Html->script('http://partner.googleadservices.com/gampad/google_service.js')."\n";
@@ -89,9 +87,28 @@
 			} else if (isset($feedId) && in_array($this->params['controller'], array('categories', 'topics'))) {
 				echo $this->Html->meta(__d('forum', 'RSS Feed - Content Review', true), array('action' => 'feed', $feedId, 'ext' => 'rss'), array('type' => 'rss'));
 			}
-			
 			//echo $scripts_for_layout;
 		?>
+		<script type="text/javascript">
+		<?php
+			//Spit out a json object that contains user related data for the view to use
+			echo 'var DOMAIN = "'.$this->String->getCurrentSiteAddress().'",'."\n";
+			echo 'ENVIRONMENT = 4,DEVELOPMENT=1,TESTING=2,STAGING=3,PRODUCTION=4,'."\n";
+			echo 'page_date   = new Date('.getlastmod().'),'."\n";
+			echo 'api_token   = "'.getlastmod().':'.$apiToken.'";'."\n";
+		?>	
+		</script>
+		<script type="text/javascript" src="/min/g=dependencies_js"></script>
+		<script type="text/javascript" src="/min/g=base_js"></script>
+		<script type="text/javascript">
+		<?php
+		
+    		echo 'var page_entity = {"id":-1,"username":false},'."\n";
+			echo 'hover_entity = {},'."\n";
+			echo 'current_user = new User('.$json_user_data.');'
+			//current_user._can.create_sets = 0;
+		?>
+		</script>
 	</head>
 	<body>
 		<!-- This is for the popup plugin -->
@@ -127,6 +144,7 @@
 					}
 				?>
 				<br class="clear"/>
+				
 				<?php echo $this->Session->flash(); ?>
 				<?php echo $this->Session->flash('email'); ?>
 				<?php echo $content_for_layout;?>
@@ -143,7 +161,17 @@
 			<?php echo $this->Facebook->like(); ?>
 			</div>
 		</div><!-- close div#wrapper_extra -->
-		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
+		<script type="text/javascript">
+		<?php
+			//Spit out a json object that contains user related data for the view to use
+			//fgm_pk_data.pk   = '018b614934730a80bd2c627b6695eee7';
+			//fgm_pk_data.user = 'robksawyer';
+			//fgm_pk_data.pub  = 'fgm_5eeeca1a0b2ed4c29df34327bf8e0ffe';
+		?>	
+		</script>
+		<?php 
+			echo $this->Js->writeBuffer(); // write cached scripts 
+		?>
 	</body>
 	<?php
 		echo '<script type="text/javascript" src="/min/g=footer_js?'.date("His").'"></script>'."\n";

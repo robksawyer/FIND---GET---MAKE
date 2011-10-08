@@ -15,16 +15,16 @@
 																												$user['User']['username']
 																												))?></li>
 		<li><?php 
-			echo $user['User']['totalFollowers']." Followers";
+			echo $user['User']['user_followers_count']." Followers";
 		?></li>
 		<li><?php 
-			echo $user['User']['totalProducts']." Products <br/>";
-			//echo $user['User']['totalSources']." Sources <br/>";
+			echo $user['User']['total_products']." Products <br/>";
+			//echo $user['User']['total_sources']." Sources <br/>";
 		?></li>
 		<li><?php 
 			echo $this->element('follow-unfollow',array('cache'=>false,'user_id'=>$user['User']['id']));
-			//echo $user['User']['totalCollections']." Collections<br/>";
-			//echo $user['User']['totalInspirations']." Inspirations<br/>";
+			//echo $user['User']['total_collections']." Collections<br/>";
+			//echo $user['User']['total_inspirations']." Inspirations<br/>";
 		?></li>
 	</ul>
 	<?php 

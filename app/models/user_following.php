@@ -62,15 +62,16 @@ class UserFollowing extends AppModel {
 		$following = $this->User->find('all',array('conditions'=>array(
 													'User.id'=>$users_following
 													),
-													'contain'=>array('Attachment'=>array(
-																		'conditions'=>array('Attachment.id'=>'User.attachment_id'),
-																		'fields'=>array('Attachment.id','Attachment.path_med','Attachment.path_small')
-																		),
-																		'Product'=>array('Attachment',
-																			'order' => 'Product.id DESC',
-																			'limit'=>3
-																		)
-																	),
+													'contain'=>array('Product'=>array(
+																					'Attachment',
+																					'limit'=>3,
+																					'order'=>'created DESC'
+																			),
+																			'Storage'=>array('Product'=>array('Attachment','limit'=>'1'),
+																									'limit'=>'3',
+																									'order'=>'created DESC'
+																									)
+													),
 													'limit'=>$limit
 													));
 		return $following;
@@ -103,12 +104,19 @@ class UserFollowing extends AppModel {
 		$followers = $this->find('all',array('conditions'=>array(
 												 	'UserFollowing.follow_user_id'=>$user_id
 													),
-													'contain'=>array('User',
-																	'User.Attachment'=>array(
-																		'conditions'=>array('Attachment.id'=>'User.attachment_id'),
-																		'fields'=>array('Attachment.id','Attachment.path_med','Attachment.path_small')
-																		)
-																	),
+													'contain'=>array('User'=>array(
+																				'Product'=>array(
+																					'Attachment',
+																					'limit'=>3,
+																					'order'=>'created DESC'
+																				),
+																				'Storage'=>array(
+																					'Product'=>array('Attachment','limit'=>'1'),
+																					'limit'=>'3',
+																					'order'=>'created DESC'
+																				)
+																			)
+													),
 													'limit'=>$limit
 													));
 		return $followers;

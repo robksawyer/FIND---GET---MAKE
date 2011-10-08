@@ -35,6 +35,6 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
-	fgm_api.nav_init();
+	fgm_api.navInit();
 });
 </script>

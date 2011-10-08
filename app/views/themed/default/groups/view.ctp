@@ -70,16 +70,6 @@
 		<th><?php __('TotalUfos'); ?></th>
 		<th><?php __('TotalPosts'); ?></th>
 		<th><?php __('TotalTopics'); ?></th>
-		<th><?php __('TotalProductLikes'); ?></th>
-		<th><?php __('TotalProductDislikes'); ?></th>
-		<th><?php __('TotalSourceLikes'); ?></th>
-		<th><?php __('TotalSourceDislikes'); ?></th>
-		<th><?php __('TotalInspirationLikes'); ?></th>
-		<th><?php __('TotalInspirationDislikes'); ?></th>
-		<th><?php __('TotalUfoLikes'); ?></th>
-		<th><?php __('TotalUfoDislikes'); ?></th>
-		<th><?php __('TotalCollectionLikes'); ?></th>
-		<th><?php __('TotalCollectionDislikes'); ?></th>
 		<th><?php __('TotalFollowers'); ?></th>
 		<th><?php __('TotalUsersFollowing'); ?></th>
 		<th><?php __('Staff Favorite'); ?></th>
@@ -122,25 +112,15 @@
 			<td><?php echo $user['signature'];?></td>
 			<td><?php echo $user['locale'];?></td>
 			<td><?php echo $user['timezone'];?></td>
-			<td><?php echo $user['totalProducts'];?></td>
-			<td><?php echo $user['totalSources'];?></td>
-			<td><?php echo $user['totalCollections'];?></td>
-			<td><?php echo $user['totalInspirations'];?></td>
-			<td><?php echo $user['totalUfos'];?></td>
+			<td><?php echo $user['total_products'];?></td>
+			<td><?php echo $user['total_sources'];?></td>
+			<td><?php echo $user['total_collections'];?></td>
+			<td><?php echo $user['total_inspirations'];?></td>
+			<td><?php echo $user['total_ufos'];?></td>
 			<td><?php echo $user['totalPosts'];?></td>
 			<td><?php echo $user['totalTopics'];?></td>
-			<td><?php echo $user['totalProductLikes'];?></td>
-			<td><?php echo $user['totalProductDislikes'];?></td>
-			<td><?php echo $user['totalSourceLikes'];?></td>
-			<td><?php echo $user['totalSourceDislikes'];?></td>
-			<td><?php echo $user['totalInspirationLikes'];?></td>
-			<td><?php echo $user['totalInspirationDislikes'];?></td>
-			<td><?php echo $user['totalUfoLikes'];?></td>
-			<td><?php echo $user['totalUfoDislikes'];?></td>
-			<td><?php echo $user['totalCollectionLikes'];?></td>
-			<td><?php echo $user['totalCollectionDislikes'];?></td>
-			<td><?php echo $user['totalFollowers'];?></td>
-			<td><?php echo $user['totalUsersFollowing'];?></td>
+			<td><?php echo $user['user_followers_count'];?></td>
+			<td><?php echo $user['user_following_count'];?></td>
 			<td><?php echo $user['staff_favorite'];?></td>
 			<td><?php echo $user['currentLogin'];?></td>
 			<td><?php echo $user['lastLogin'];?></td>

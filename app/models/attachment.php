@@ -265,4 +265,26 @@ class Attachment extends AppModel {
 																)));
 		if(!empty($avatar)) return $avatar; else return false;
 	}
+	
+	/**
+	 * Returns the absolute path to the user's profile image
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function getProfileImageURL($attachment_id){
+		$attachment = $this->find('first',array('conditions'=>array('Attachment.id'=>$attachment_id)));
+		return Router::url($attachment['Attachment']['path'],true);
+	}
+	
+	/**
+	 * Returns the absolute path to the user's profile image
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	public function getSmallProfileImageURL($attachment_id){
+		$attachment = $this->find('first',array('conditions'=>array('Attachment.id'=>$attachment_id)));
+		return Router::url($attachment['Attachment']['path_small'],true);
+	}
 }
