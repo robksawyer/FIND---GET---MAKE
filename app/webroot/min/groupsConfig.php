@@ -19,10 +19,6 @@ return array(
 		'//theme/default/js/jstorage.min.js',
 		'//theme/default/js/json2.js',
 		'//theme/default/js/jquery.json-2.3.min.js',
-		//'//theme/default/js/history.min.js',
-		//'//theme/default/js/history.html4.min.js', 
-		//'//theme/default/js/init-history.js',
-		//'//theme/default/js/history.adapter.jquery.min.js',
 		'//theme/default/js/chosen/chosen.jquery.min.js', //Chosen Select Boxes (http://harvesthq.github.com/chosen/) 
 		'//theme/default/js/jquery.popupwindow.js',
 		'//theme/default/js/jquery.form.js',
@@ -36,8 +32,8 @@ return array(
 		'//theme/default/js/modal/basic.js'
 	),
 	'base_js' => array(
-		'//theme/default/js/fgm_api.js', 
-		'//theme/default/js/utils.js'
+		'//theme/default/js/utils.js',
+		'//theme/default/js/fgm_api.js'
 	),
 	'forum_js' => array(
 		'/forum/js/script.js' //Cupcake forum

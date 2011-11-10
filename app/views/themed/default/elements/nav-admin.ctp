@@ -51,8 +51,3 @@
 		</ul>
 	</div>
 </div>
-<script type="text/javascript">
-//<![CDATA[
-window.addEventListener("FGM_API.INITIALIZED", function(){ fgm_api.init_user_nav(); },false);
-//]]>
-</script>

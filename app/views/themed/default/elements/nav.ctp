@@ -33,8 +33,3 @@
 	</div>
 	<br class="clear" />
 </div>
-<script type="text/javascript">
-$(document).ready(function(){
-	fgm_api.navInit();
-});
-</script>

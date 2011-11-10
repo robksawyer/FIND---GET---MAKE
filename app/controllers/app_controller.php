@@ -203,7 +203,9 @@ class AppController extends Controller {
 		$this->Toolbar->initForum();
 		
 		/** SET GLOBAL VARIABLES **/
-		$facebookUser = $this->Connect->user();
+		//$facebookUser = $this->Connect->user();
+		$facebookUser = null;
+		
 		// get token
 		$this->Twitter->setTwitterSource('twitter');
 		$token = $this->Twitter->getAccessToken();

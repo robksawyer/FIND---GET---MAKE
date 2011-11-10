@@ -1,493 +1,167 @@
-/*var UNDEFINED = "undefined", 
-api = {
-	call: function (a) {
-		if (typeof a.data == UNDEFINED) a.data = {};
-		a.data.api_token = api_token;
-		return $.ajax({
-			 url: "http://api." + DOMAIN + "/v1/" + a.url + ".json",
-			 dataType: "jsonp",
-			 type: "GET",
-			 data: a.data,
-			 success: function (b) {
-				  if (b.meta.status == 200) if (typeof a.success != UNDEFINED) a.success(b);
-				  else ENVIRONMENT === DEVELOPMENT && console.log(b);
-				  else if (typeof a.failure != UNDEFINED) a.failure(b);
-				  else ENVIRONMENT === DEVELOPMENT && console.log(b)
-			 }
+var UNDEFINED = "undefined",
+	api = {
+	  call: function (a) {
+			if (typeof a.data == UNDEFINED) a.data = {};
+			a.data.api_token = api_token;
+			/*return $.ajax({
+				 url: "http://api." + DOMAIN + "/v1/" + a.url + ".json",
+				 dataType: "jsonp",
+				 type: "GET",
+				 data: a.data,
+				 success: function (b) {
+					  if (b.meta.status == 200) if (typeof a.success != UNDEFINED) a.success(b);
+					  else ENVIRONMENT === DEVELOPMENT && console.log(b);
+					  else if (typeof a.failure != UNDEFINED) a.failure(b);
+					  else ENVIRONMENT === DEVELOPMENT && console.log(b)
+				 }
+			})*/
+	  }
+};
+(function () {
+	var d = false,
+		g = /xyz/.test(function () {
+			return xyz
+		}) ? /\b_super\b/ : /.*/;
+	this.Class = function () {};
+	Class.extend = function (b) {
+		function c() {
+			!d && this.init && this.init.apply(this, arguments)
+		}
+		var e = this.prototype;
+		d = true;
+		var f = new this;
+		d = false;
+		for (var a in b) f[a] = typeof b[a] == "function" && typeof e[a] == "function" && g.test(b[a]) ?
+		function (h, i) {
+			return function () {
+				var j = this._super;
+				this._super = e[h];
+				var k = i.apply(this, arguments);
+				this._super = j;
+				return k
+			}
+		}(a, b[a]) : b[a];
+		c.prototype = f;
+		c.prototype.constructor = c;
+		c.extend = arguments.callee;
+		return c
+	}
+})();;
+var Model = Class.extend({
+	init: function (a) {
+		for (v in a) this[v] = a[v];
+	},
+	has_many: function (a, e, b) {
+		var c, d;
+		switch (typeof a) {
+			case "object":
+				d = a.success;
+				delete a.success;
+				break;
+			case "function":
+				d = a;
+				a = {};
+				break;
+			case "number":
+				a = {
+					limit: a
+				};
+				break;
+			case "undefined":
+				a = {}
+		}
+		d || (d = function (f) { 
+			ENVIRONMENT === DEVELOPMENT && console.log(f); 
+		});
+		if (typeof b == "undefined" || !b) {
+			b = e.split("/");
+			c = b[b.length - 1];
+		} else { c = b.toLowerCase() + "s" };
+		return api.call({
+			data: a,
+			url: this.type.toLowerCase() + "fgm/" + this.id + "/" + e,
+			success: function (f) {
+				d(f.response[c])
+			}
 		})
 	}
-};;*/
-
-/*if(!window.fgm_api_running){
-	var fgm_api;
-	window.fgm_api_running = true;
-	fgm_api = new fgm_api();
-	fgm_api.setDomain(DOMAIN);
-}*/
+});;
+Model._find = function (a, e, b) {
+	/*api.call({
+		url: a.toLowerCase() + "fgm/" + e + "/show",
+		success: function (c) {
+			c = new window[a](c.response[a.toLowerCase()]);
+			typeof b != "undefined" ? b(c) : console.log(c)
+		}
+	});*/
+	return true
+};;
+var User = Model.extend({
+	type: "User",
+	_can: {},
+	can: function (a) {
+		return typeof this._can !== UNDEFINED && this._can[a] ? true : false;
+    },
+	init:function (a) {
+		this._super(a);
+		this.logged_in = this.id >= 0;
+		alert(this.name);
+	}
+});
+User.find = function (a, b) {
+    return Model._find("User", a, b);
+};
 
 /**
- * Init History
+ * THE SITE CONTROLLER
  * @param 
  * @return 
  * 
 */
-(function(window,undefined){
-	// Check Location
-	if( document.location.protocol === 'file:' ) {
-		alert('The HTML5 History API (and thus History.js) do not work on files, please upload it to a server.');
+function fgm_api(){
+	this.api_initialized = false;
+	this.domain_set = false;
+	this.DOMAIN = "";
+	this.follow_all_user_id_data;
+	this.feed_num_items = 0;
+	this.feed_limit = 10;
+	this.feed_previous_loaded = 0;
+	this.feed_loading = false;
+	this.feed_showing_end = false;
+	this.is_empty_feed = 1;
+	
+	//Find users
+	this.twitterSearchComplete = false;
+	this.facebookSearchComplete = false;
+	this.facebook_permissions = "user_about_me,user_birthday,email,offline_access,publish_stream";
+	this.searchInitiated = false;
+	this.allowDeeplinking = true;
+	this.lastStateID;
+	this.searchInitiated = false;
+	this.search_query;
+	this.passedParams;
+	
+	this.init = function() {
+		try {
+			this.api_initialized = true;
+			fgm_api.navInit();
+			fgm_api.navUserInit();
+		} catch(e) {
+			//alert(e);
+		}
+	};
+	
+	/**
+	 * Set the current site url
+	 * @param 
+	 * @return 
+	 * 
+	*/
+	this.DOMAIN = function(url){
+		//event.customData = getCustomData();
+		fgm_api.DOMAIN = url;
+		fgm_api.domain_set = true;
 	}
-
-	// Establish Variables
-	var History = window.History, // Note: We are using a capital H instead of a lower h
-		State = History.getState(),
-		$log = $('#log');
-
-	// Log Initial State
-	History.log('initial:', State.data, State.title, State.url);
-
-	// Bind to State Change
-	History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
-		// Log the State
-		var State = History.getState(); // Note: We are using History.getState() instead of event.state
-		History.log('statechange:', State.data, State.title, State.url);
-	});
-
-})(window);
-
-
-var User = Model.extend({
-    type: "User",
-    _can: {},
-    can: function (a) {
-        return typeof this._can !== UNDEFINED && this._can[a] ? true : false
-    },
-    feed: function (a) {
-        return this.has_many(a, "feed", "Event")
-    },
-    products: function (a) {
-        return this.has_many(a, "products")
-    },
-    collections: function (a) {
-        return this.has_many(a, "collections")
-    },
-    user_followers: function (a) {
-        return this.has_many(a, "followers/users")
-    },
-    users_following: function (a) {
-        return this.has_many(a, "following/users")
-    },
-    /*stores_following: function (a) {
-        return this.has_many(a, "following/stores")
-    },
-    searches_following: function (a) {
-        return this.has_many(a, "following/searches")
-    },*/
-    follow: function (a, b) {
-        b = b ||
-        function (c) {
-            console.log(c)
-        };
-        api.call({
-            url: this.type.toLowerCase() + "s/" + this.id + "/follow",
-            data: {
-                entity_type: a.type,
-                entity_id: a.id
-            },
-            success: function () {
-                b()
-            }
-        })
-    },
-    unfollow: function (a, b) {
-        b = b ||
-        function (c) {
-            console.log(c)
-        };
-        api.call({
-            url: this.type.toLowerCase() + "s/" + this.id + "/unfollow",
-            data: {
-                entity_type: a.type,
-                entity_id: a.id
-            },
-            success: function () {
-                b()
-            }
-        })
-    },
-    is_following: function (a, b) {
-        return a instanceof User ? (new DataStore).svpply().all(function (c) {
-            for (var d = 0; d < c.length; d++) if (c[d].id == a.id) {
-                b(true, c[d]);
-                return true
-            }
-            return b(false)
-        }) : b(false)
-    },
-    init: function (a) {
-        this._super(a);
-        this.logged_in = this.id >= 0
-    }
-});
-User.find = function (a, b) {
-    return Model._find("User", a, b)
-};;
-var Product = Model.extend({
-    type: "Product",
-    sets: function (a) {
-        return this.has_many(a, "sets")
-    },
-    comments: function (a) {
-        return this.has_many(a, "comments")
-    },
-    users: function (a) {
-        return this.has_many(a, "users")
-    }
-});
-Product.find = function (a, b) {
-    return Model._find("Product", a, b)
-};;
-var fgm_pk_data = {};
-$(function () {
-    ({
-        pk: null,
-        user: null,
-        pub: null,
-        engine: null,
-        init: function () {
-            this.pk = fgm_pk_data.pk;
-            this.user = fgm_pk_data.user;
-            this.pub = fgm_pk_data.pub;
-            try {
-                if ((this.engine = typeof localStorage != "undefined" ? localStorage : typeof globalStorage[location.host] != "undefined" ? globalStorage[location.host] : false) && this.pk) {
-                    this.engine.setItem("pk_" + this.pub, this.pk);
-                    this.engine.setItem("user_" + this.pub, this.user)
-                }
-            } catch (a) {}
-        }
-    }).init()
-});;
-var page_action = [];
-page_action.push("load");
-var action_on = {
-    _defines: {
-        cookie_name: "action_on_event",
-        product_url: "/storages/toggle/",
-        follow_url: "/followers/toggle"
-    },
-    _cookie: null,
-    _action: null,
-    _event: null,
-    _type: null,
-    _id: null,
-    init: function () {
-        var a = this,
-            b;
-        if ($.cookie("ci_session") && typeof unserialize($.cookie("ci_session")) !== "undefined") {
-            typeof unserialize($.cookie("ci_session")).user_id !== "undefined" && page_action.push("logged_in");
-            if ($.cookie(a._defines.cookie_name)) {
-                a._cookie = $.parseJSON($.cookie(a._defines.cookie_name));
-                $.each(a._cookie, function (c, d) {
-                    b = "_" + c;
-                    a[b] = d
-                });
-                a._event && a.do_action()
-            }
-        }
-    },
-    do_action: function () {
-        var a = this;
-        $.each(page_action, function (b, c) {
-            if (c === a._event) a["do_" + a._action](function () {
-                a.delete_cookie()
-            })
-        })
-    },
-    do_follow: function (a) {
-        var b = this,
-            c, d, e;
-        switch (b._type) {
-        case "product":
-            c = b._defines.product_url + b._id;
-            d = {
-                ajax: 1
-            };
-            e = function (f) {
-                $("body").append(f.growler);
-                growler = new Growler;
-                growler.grab_id = b._id;
-                toggle_add_remove(b._id);
-                a()
-            };
-            break;
-        case "domain":
-        case "user":
-            c = b._defines.follow_url;
-            d = {
-                type: b._type,
-                following_id: b._id
-            };
-            switch_follow_button_state(false, b._id);
-            (new DataStore).svpply().refresh();
-            e = a
-        }
-        $.ajax({
-            url: c,
-            data: d,
-            type: "post",
-            dataType: "json",
-            success: e,
-            cache: false
-        })
-    },
-    do_show: function (a) {
-        if (page_entity.id === this._new_id && page_entity.type === "Set") {
-            $('<div id="header_message">').html('<div style="width: 920px; margin: 0 auto;"><span style="float: left;">Your new set, cloned from <a style="border-bottom-color: #136357; color: #136357; font-size: 16px; font-weight: bold;" href="/' + this._current_set_username + "/sets/" + this._current_id + '">' + this._current_title + '</a></span><a href="#" id="dismiss_message" style="float: right; border-bottom-color: #136357; font-size: 18px; font-weight: bold; color: #136357;">Dismiss</a></div>').css({
-                overflow: "auto",
-                "background-color": "#19ffdc",
-                padding: "20px 0",
-                "font-size": 18,
-                color: "#136357"
-            }).prependTo(document.body);
-            $("#dismiss_message").click(function (b) {
-                b.preventDefault();
-                $("#header_message").animate({
-                    height: 0,
-                    "padding-top": 0,
-                    "padding-bottom": 0
-                }, function () {
-                    $(this).remove()
-                })
-            });
-            a()
-        }
-    },
-    delete_cookie: function () {
-        $.cookie(this._defines.cookie_name, null, {
-            path: "/",
-            domain: "." + DOMAIN
-        })
-    }
-};
-$(function () {
-    action_on.init()
-});;
-var DataStore = function (){
-	return {
-		init: function() {
-			try {
-				this.api_initialized = true;
-			} catch(e) {
-				//alert(e);
-			}
-		},
-		setRelationships: function (a) {
-            this.relationships = a;
-            return this
-        },
-        all: function (a) {
-            a(this.getData())
-        },
-        getDB: function () {
-            return this.db.split("::")[1].split(":")[0]
-        },
-        setSearchFields: function (a) {
-            this.fields = $.isArray(a) ? a : [a];
-            return this
-        },
-        get: function (a, b) {
-            var c = b === false ? a : this.db + a;
-            if (this.db) return this.storage.get(c);
-            else if (ENVIRONMENT !== PRODUCTION) {
-                console.log("You must init the DataStore with a DB string.");
-                return false
-            }
-        },
-        DBs: function () {
-            var a = {};
-            a[this.getDB()] = this;
-            return a
-        },
-        set: function (a, b, c) {
-            a = c === false ? a : this.db + a;
-            if (this.db) return this.storage.set(a, b);
-            else if (ENVIRONMENT !== PRODUCTION) {
-                console.log("You must init the DataStore with a DB string.");
-                return false
-            }
-        },
-        setData: function (a) {
-            if (this.db) return this.storage.set(this.db, a || [])
-        },
-        getData: function () {
-            var a;
-            if (this.db) {
-                a = this.storage.get(this.db);
-                a === null && this.refresh();
-                return a || []
-            }
-        },
-        query: function (a, b) {
-            var c = this,
-                d = RegExp(a);
-            b = b ||
-            function () {};
-            var e = [],
-                f = [],
-                g;
-            if (c.db) {
-                f = c.getData();
-                g = f.length;
-                g > 0 ? $.each(f, function (h, k) {
-                    $.each(c.fields, function (m, j) {
-                        if (d.test(k[j])) {
-                            k.matched_on = j;
-                            k.from_db = c.getDB();
-                            e.push(k);
-                            return false
-                        }
-                    });
-                    if (!--g) return b(e)
-                }) : b([])
-            } else if (ENVIRONMENT !== PRODUCTION) {
-                console.log("You must init the DataStore with a DB string");
-                return false
-            }
-        },
-        setRefresh: function (a) {
-            this._refresh = a;
-            return this
-        },
-        refresh: function (a) {
-            var b = this;
-            a = a ||
-            function () {};
-            if (b.db) b.flush(function () {
-                if (typeof b._refresh === "function") b._refresh(function (c) {
-                    if (typeof c === "object") {
-                        b.setData(c);
-                        return a.call(b, {
-                            db: b.db,
-                            status: true,
-                            name: b.getDB()
-                        })
-                    } else return a.call(b, {
-                        db: b.db,
-                        status: false,
-                        name: b.getDB()
-                    })
-                });
-                else return a.call(b, {
-                    db: b.db,
-                    status: true,
-                    name: b.getDB()
-                })
-            });
-            else if (ENVIRONMENT !== PRODUCTION) {
-                console.log("You must init the DataStore with a DB string");
-                return false
-            }
-        },
-        flush: function (a) {
-            this.setData([]);
-            return a(true)
-        },
-		setDomain: function(url){
-			//event.customData = getCustomData();
-			fgm_api.DOMAIN = url;
-			fgm_api.domain_set = true;
-		},
-		navInit: function(){
-			var navRoot = document.getElementById("main-nav");
-			var navChildren = document.getElementById("main-nav").getElementsByTagName("li");
-			for (var i=0; i<navChildren.length; i++) {
-				navChildren[i].onmouseover=function() {
-					this.className+=" fgm_hover";
-				}
-				navChildren[i].onmouseout=function() {
-					this.className=this.className.replace(new RegExp(" fgm_hover\\b"), "");
-				}
-			}
-		},
-		Collection: function () {
-            return this.initWithDB(current_user.id + "::collections").setRefresh(function (a) {
-                current_user.collections(function (b) {
-                    a(b)
-                })
-            })
-        },
-		fgm: function () {
-            return this.initWithDB(current_user.id + "::sv").setRefresh(function (a) {
-                current_user.users_following(function (b) {
-                    $.each(b, function (c, d) {
-                        d.name = d.display_name;
-                        d._identifier = "id"
-                    });
-                    return a(b)
-                })
-            }).setSearchFields(["name", "username"]).setRelationships([{
-                type: "master",
-                field: "facebook_id",
-                parse: function (a) {
-                    return parseInt(a, 10)
-                },
-                common: "facebook_id"
-            }, {
-                type: "master",
-                field: "twitter_id",
-                parse: function (a) {
-                    return parseInt(a, 10)
-                },
-                common: "twitter_id"
-            }])
-        },
-		fgm_followers: function () {
-            return this.initWithDB(current_user.id + "::fgmfol").setRefresh(function (a) {
-                current_user.user_followers(function (b) {
-                    $.each(b, function (c, d) {
-                        d.name = d.display_name;
-                        d._identifier = "id"
-                    });
-                    return a(b)
-                })
-            }).setSearchFields(["name", "username"])
-        },
-        twitter: function () {
-            return this.initWithDB(current_user.id + "::tw").setRefresh(function (a) {
-                if (Network.has("twitter")) $.get("/connect/twitter/friends.json", function (b) {
-                    var c = [];
-                    if (typeof b._status !== "boolean" || b.status === false) {
-                        $.each(b, function (d, e) {
-                            var f = {};
-                            f.id = d;
-                            f.name = e.display_name;
-                            f.screen_name = e.screen_name;
-                            f.real_name = e.name;
-                            f.profile_image_url = e.profile;
-                            f._identifier = "screen_name";
-                            c.push(f)
-                        });
-                        return a(c)
-                    } else {
-                        Network.remove("twitter");
-                        return a(false)
-                    }
-                });
-                else return a(false)
-            }).setSearchFields(["name", "screen_name"]).setRelationships([{
-                type: "slave",
-                field: "id",
-                parse: function (a) {
-                    return parseInt(a, 10)
-                },
-                common: "twitter_id"
-            }])
-        }
-	}
-	
-	
-	
-	
-	
 	
 	/**
 	 * Initializes the main nav
@@ -495,7 +169,18 @@ var DataStore = function (){
 	 * @return 
 	 * 
 	*/
-	
+	this.navInit = function(){
+		var navRoot = document.getElementById("main-nav");
+		var navChildren = document.getElementById("main-nav").getElementsByTagName("li");
+		for (var i=0; i<navChildren.length; i++) {
+			navChildren[i].onmouseover=function() {
+				this.className+=" fgm_hover";
+			}
+			navChildren[i].onmouseout=function() {
+				this.className=this.className.replace(new RegExp(" fgm_hover\\b"), "");
+			}
+		}
+	}
 	
 	/**
 	 * Initializes the user nav
@@ -503,7 +188,7 @@ var DataStore = function (){
 	 * @return 
 	 * 
 	*/
-	this.init_user_nav = function(){
+	this.initUserNav = function(){
 		var userNavRoot = document.getElementById("user-nav");
 		var userNavChildren = document.getElementById("user-nav").getElementsByTagName("li");
 		for (var i=0; i<userNavChildren.length; i++) {
@@ -1594,3 +1279,38 @@ var DataStore = function (){
 	//Initialize The FIND|GET|MAKE API
 	this.init();
 }
+
+if(!window.fgm_api_running){
+	var fgm_api;
+	window.fgm_api_running = true;
+	fgm_api = new fgm_api();
+}
+
+/**
+ * Init History
+ * @param 
+ * @return 
+ * 
+*/
+(function(window,undefined){
+	// Check Location
+	if( document.location.protocol === 'file:' ) {
+		alert('The HTML5 History API (and thus History.js) do not work on files, please upload it to a server.');
+	}
+
+	// Establish Variables
+	var History = window.History, // Note: We are using a capital H instead of a lower h
+		State = History.getState(),
+		$log = $('#log');
+
+	// Log Initial State
+	History.log('initial:', State.data, State.title, State.url);
+
+	// Bind to State Change
+	History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
+		// Log the State
+		var State = History.getState(); // Note: We are using History.getState() instead of event.state
+		History.log('statechange:', State.data, State.title, State.url);
+	});
+
+})(window);

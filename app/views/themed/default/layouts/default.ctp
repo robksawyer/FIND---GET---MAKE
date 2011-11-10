@@ -93,13 +93,13 @@
 		<?php
 			//Spit out a json object that contains user related data for the view to use
 			echo 'var DOMAIN = "'.$this->String->getCurrentSiteAddress().'",'."\n";
-			echo 'ENVIRONMENT = 4,DEVELOPMENT=1,TESTING=2,STAGING=3,PRODUCTION=4,'."\n";
+			echo "ENVIRONMENT = 4,DEVELOPMENT=1,TESTING=2,STAGING=3,PRODUCTION=4,"."\n";
 			echo 'page_date   = new Date('.getlastmod().'),'."\n";
 			echo 'api_token   = "'.getlastmod().':'.$apiToken.'";'."\n";
 		?>	
 		</script>
-		<script type="text/javascript" src="/min/g=dependencies_js"></script>
-		<script type="text/javascript" src="/min/g=base_js"></script>
+		<script type="text/javascript" src="/min/g=dependencies_js?<?php echo date("His");?>"></script>
+		<script type="text/javascript" src="/min/g=base_js?<?php echo date("His");?>"></script>
 		<script type="text/javascript">
 		<?php
 		
