@@ -286,13 +286,13 @@ class AppController extends Controller {
 				'location'=>$authUser['User']['location'],
 				'twitter_id'=>$authUser['User']['twitter_id'],
 				'facebook_id'=>$authUser['User']['facebook_id'],
-				'products_stored_count'=>$authUser['User']['products_stored_count'],
-				'user_followers_count'=>$authUser['User']['user_followers_count'],
-				'user_following_count'=>$authUser['User']['user_following_count'],
-				'total_collections'=>$authUser['User']['total_collections'],
-				'total_inspirations'=>$authUser['User']['total_inspirations'],
-				'total_sources'=>$authUser['User']['total_sources'],
-				'total_products_found'=>$authUser['User']['total_products']
+				'products_stored_count'=>$authUser['User']['totalProducts'],
+				'user_followers_count'=>$authUser['User']['totalFollowers'],
+				'user_following_count'=>$authUser['User']['totalUsersFollowing'],
+				'total_collections'=>$authUser['User']['totalCollections'],
+				'total_inspirations'=>$authUser['User']['totalInspirations'],
+				'total_sources'=>$authUser['User']['totalSources'],
+				'total_products_found'=>$authUser['User']['totalProducts']
 			);
 			$json_user_data = json_encode($json_user_data);
 		}else{

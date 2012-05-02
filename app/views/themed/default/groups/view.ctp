@@ -112,15 +112,15 @@
 			<td><?php echo $user['signature'];?></td>
 			<td><?php echo $user['locale'];?></td>
 			<td><?php echo $user['timezone'];?></td>
-			<td><?php echo $user['total_products'];?></td>
-			<td><?php echo $user['total_sources'];?></td>
-			<td><?php echo $user['total_collections'];?></td>
-			<td><?php echo $user['total_inspirations'];?></td>
-			<td><?php echo $user['total_ufos'];?></td>
+			<td><?php echo $user['totalProducts'];?></td>
+			<td><?php echo $user['totalSources'];?></td>
+			<td><?php echo $user['totalCollections'];?></td>
+			<td><?php echo $user['totalInspirations'];?></td>
+			<td><?php echo $user['totalUfos'];?></td>
 			<td><?php echo $user['totalPosts'];?></td>
 			<td><?php echo $user['totalTopics'];?></td>
-			<td><?php echo $user['user_followers_count'];?></td>
-			<td><?php echo $user['user_following_count'];?></td>
+			<td><?php echo $user['totalFollowers'];?></td>
+			<td><?php echo $user['totalUsersFollowing'];?></td>
 			<td><?php echo $user['staff_favorite'];?></td>
 			<td><?php echo $user['currentLogin'];?></td>
 			<td><?php echo $user['lastLogin'];?></td>

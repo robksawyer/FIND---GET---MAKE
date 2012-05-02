@@ -87,23 +87,23 @@ class ConfigController extends AppController {
 		
 		//Request data for the elements
 		//$userSources = $this->User->Source->userSources($user_id);
-		echo "<h3>The user has added ".$the_user['User']['total_sources']." sources.</h3>";
+		echo "<h3>The user has added ".$the_user['User']['totalSources']." sources.</h3>";
 		//$this->set(compact('userSources'));
 		
 		//$userProducts = $this->User->Product->userProducts($user_id,10,'all');
-		echo "<h3>The user has added ".$the_user['User']['total_products']." products.</h3>";
+		echo "<h3>The user has added ".$the_user['User']['totalProducts']." products.</h3>";
 		//$this->set(compact('userProducts'));
 		
 		//$userInspirations = $this->User->Inspiration->userInspirations($user_id,10,'all');
-		echo "<h3>The user has created ".$the_user['User']['total_inspirations']." inspirations.</h3>";
+		echo "<h3>The user has created ".$the_user['User']['totalInspirations']." inspirations.</h3>";
 		//$this->set(compact('userInspirations'));
 		
 		//$userCollections = $this->User->Collection->userCollections($user_id,10,'all');
-		echo "<h3>The user has created ".$the_user['User']['total_collections']." collections.</h3>";
+		echo "<h3>The user has created ".$the_user['User']['totalCollections']." collections.</h3>";
 		//$this->set(compact('userCollections'));
 		
 		//$userUfos = $this->User->Ufo->userUfos($user_id);
-		echo "<h3>The user has created ".$the_user['User']['total_ufos']." ufos.</h3>";
+		echo "<h3>The user has created ".$the_user['User']['totalUfos']." ufos.</h3>";
 		//$this->set(compact('userUfos'));
 		
 		$wantedProducts = $this->User->Ownership->getUserWants('Product',$user_id);

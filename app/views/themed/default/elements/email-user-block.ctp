@@ -8,13 +8,13 @@
 																															$user['User']['username']),true
 																															))?></li>
 		<li><?php 
-			echo $user['User']['user_followers_count']." Followers";
+			echo $user['User']['totalFollowers']." Followers";
 		?></li>
 		<li><?php 
-			echo $user['User']['total_products']." Products, ".$user['User']['total_sources']." Sources";
+			echo $user['User']['totalProducts']." Products, ".$user['User']['totalSources']." Sources";
 		?></li>
 		<li><?php 
-			echo $user['User']['total_collections']." Collections, ".$user['User']['total_inspirations']." Inspirations";
+			echo $user['User']['totalCollections']." Collections, ".$user['User']['totalInspirations']." Inspirations";
 		?></li>
 	</ul>
 	<div style="clear:both;width:100%;"></div>

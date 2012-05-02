@@ -56,13 +56,11 @@ class User extends AppModel {
 		'totalPosts'					=> 'totalPosts',
 		'totalTopics'					=> 'totalTopics',
 		'totalUfos'						=> 'totalUfos',
-		'total_products_added'		=> 'total_products_added',
-		'total_sources'				=> 'total_sources',
-		'total_inspirations'			=> 'total_inspirations',
-		'total_collections'			=> 'total_collections',
-		'total_ufos'					=> 'total_ufos',
-		'user_followers_count'		=> 'user_followers_count',
-		'user_following_count'		=> 'user_following_count',
+		'total_sources'				=> 'totalSources',
+		'total_inspirations'			=> 'totalInspirations',
+		'total_collections'			=> 'totalCollections',
+		'user_followers_count'		=> 'totalFollowers',
+		'user_following_count'		=> 'totalUsersFollowing',
 		'currentLogin'					=> 'currentLogin',
 		'lastLogin'						=> 'lastLogin'
 	);
@@ -750,9 +748,9 @@ class User extends AppModel {
 																	),
 												'fields'=>array('id','username','slug',
 																'created','status','email',
-																'total_sources','total_products','total_inspirations',
-																'total_collections','total_ufos',
-																'totalPosts','totalTopics','user_following_count'
+																'totalSources','totalProducts','totalInspirations',
+																'totalCollections','totalUfos',
+																'totalPosts','totalTopics','totalUsersFollowing'
 																)
 												));
 		return $user_details;
