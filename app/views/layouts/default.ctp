@@ -35,8 +35,10 @@
 		echo $this->Html->meta('icon');
 		echo $this->Html->css('cake.generic');
 		echo $this->Html->css('cake.basic');
-		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js');
-		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js');
+		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
+		//echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js');
+		echo $this->Html->script('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js');
+		//echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js');
 		echo $this->Html->script('jquery.dropshadow');
 		echo $this->Html->script('jquery.validation.min');
 		echo $this->Html->script('thickbox-compressed');

@@ -318,20 +318,22 @@ function fgm_product_selector(){
 	 * 
 	*/
 	this.sizeScrollbar = function() {
-		var remainder = fgm_product_selector.scrollContent.width() - fgm_product_selector.scrollPane.width();
-		if(remainder < 1){
-			//remainder = scrollContent.width();
-			fgm_product_selector.scrollbar.find(".ui-slider-handle").hide();
-		}else{
-			fgm_product_selector.scrollbar.find(".ui-slider-handle").show();
+		if(fgm_product_selector.scrollContent != undefined && fgm_product_selector.scrollPane != undefined){
+			var remainder = fgm_product_selector.scrollContent.width() - fgm_product_selector.scrollPane.width();
+			if(remainder < 1){
+				//remainder = scrollContent.width();
+				fgm_product_selector.scrollbar.find(".ui-slider-handle").hide();
+			}else{
+				fgm_product_selector.scrollbar.find(".ui-slider-handle").show();
+			}
+			var proportion = remainder / fgm_product_selector.scrollContent.width();
+			var handleSize = fgm_product_selector.scrollPane.width() - ( proportion * fgm_product_selector.scrollPane.width());
+			fgm_product_selector.scrollbar.find( ".ui-slider-handle").css({
+				width: handleSize,
+				"margin-left": -handleSize / 2
+			});
+			fgm_product_selector.handleHelper.width( "").width( fgm_product_selector.scrollbar.width() - handleSize);
 		}
-		var proportion = remainder / fgm_product_selector.scrollContent.width();
-		var handleSize = fgm_product_selector.scrollPane.width() - ( proportion * fgm_product_selector.scrollPane.width());
-		fgm_product_selector.scrollbar.find( ".ui-slider-handle").css({
-			width: handleSize,
-			"margin-left": -handleSize / 2
-		});
-		fgm_product_selector.handleHelper.width( "").width( fgm_product_selector.scrollbar.width() - handleSize);
 	};
 
 	/**
@@ -357,16 +359,18 @@ function fgm_product_selector(){
 	 * 
 	*/
 	this.reflowContent = function() {
-		var showing = fgm_product_selector.scrollContent.width() + parseInt(fgm_product_selector.scrollContent.css("margin-left"), 10);
-		var gap = fgm_product_selector.scrollPane.width() - showing;
-		if (gap > 0) {
-			fgm_product_selector.scrollContent.css("margin-left", parseInt(fgm_product_selector.scrollContent.css( "margin-left" ), 10 ) + gap);
-		}
-		/*
-			CHANGED Extra check to make sure that the content aligns to the left if scrollContent is not as wide as the scrollPane.
-		*/
-		if(fgm_product_selector.scrollContent.width() < fgm_product_selector.scrollPane.width()) {
-			fgm_product_selector.scrollContent.css({ "margin-left":"0px !important" });
+		if(fgm_product_selector.scrollContent != undefined && fgm_product_selector.scrollPane != undefined){
+			var showing = fgm_product_selector.scrollContent.width() + parseInt(fgm_product_selector.scrollContent.css("margin-left"), 10);
+			var gap = fgm_product_selector.scrollPane.width() - showing;
+			if (gap > 0) {
+				fgm_product_selector.scrollContent.css("margin-left", parseInt(fgm_product_selector.scrollContent.css( "margin-left" ), 10 ) + gap);
+			}
+			/*
+				CHANGED Extra check to make sure that the content aligns to the left if scrollContent is not as wide as the scrollPane.
+			*/
+			if(fgm_product_selector.scrollContent.width() < fgm_product_selector.scrollPane.width()) {
+				fgm_product_selector.scrollContent.css({ "margin-left":"0px !important" });
+			}
 		}
 	};
 }
