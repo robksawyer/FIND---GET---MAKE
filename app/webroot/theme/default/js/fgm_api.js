@@ -105,7 +105,7 @@ var User = Model.extend({
 	init:function (a) {
 		this._super(a);
 		this.logged_in = this.id >= 0;
-		alert(this.name);
+		//alert(this.name); (Rob Sawyer)//Testing to see which name is return on load
 	}
 });
 User.find = function (a, b) {
