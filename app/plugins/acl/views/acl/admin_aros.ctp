@@ -1,12 +1,12 @@
 <?php
 /* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
 ?>
-<?php print $this->element('acl_scripts') ?>
-<?php print $this->element('acl_menu') ?>
+<?php echo $this->element('acl_scripts') ?>
+<?php echo $this->element('acl_menu') ?>
 <div>
-  <?php print $html->image('/acl/img/tango/32x32/apps/system-users.png', array('align' => 'absmiddle')) ?>
+  <?php print $this->Html->image('/acl/img/tango/32x32/apps/system-users.png', array('align' => 'absmiddle')) ?>
   <b>Manage Aros</b>
-  <span id="indicator" style="display:none;"><?php print $html->image('/acl/img/indicator.gif') ?> Loading.</span>
+  <span id="indicator" style="display:none;"><?php print $this->Html->image('/acl/img/indicator.gif') ?> Loading.</span>
 </div>
 <table>
   <tr>

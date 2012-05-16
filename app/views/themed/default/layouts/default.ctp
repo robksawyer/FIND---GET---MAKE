@@ -60,11 +60,12 @@
 			echo '<![endif]-->';
 			
 			//Minify the css
-			echo $this->Minify->css($this->__scripts);
+			//echo $minify->css($this->__scripts);
+			//echo $this->Html->css($this->__scripts);
 		?>
 		<?php
 			if(Configure::read('FGM.local') == true){
-				echo '<script type="text/javascript" src="/min/g=jquery_js?'.date("His").'"></script>'."\n";
+				echo '<script type="text/javascript" src="/minify/index?g=jquery_js&'.date("His").'"></script>'."\n";
 			}else{
 				echo $this->Html->script('https://www.google.com/jsapi?key=ABQIAAAAnmDjwFmPVi_wiEa7kcH4kxRoSg5s9K5GPFZf3sp5WjiQsRDImxRDlMCi9qkG8Qo4zHXzieotWXFWzA')."\n";
 				echo '<script language="Javascript" type="text/javascript">'."\n";
@@ -75,10 +76,8 @@
 				echo '</script>'."\n";
 			}
 			//Minify messes these up
-			echo $this->Html->script('history.adapter.jquery.min');
-			echo $this->Html->script('history.min');
-			echo $this->Html->script('history.html4.min');
-			//echo '<script type="text/javascript" src="/min/g=forum_js"></script>'."\n";
+			echo $this->Html->script(array('history.adapter.jquery.min','history.min','history.html4.min'));
+			//echo '<script type="text/javascript" src="/minify/index?g=forum_js"></script>'."\n";
 			
 			echo $this->Html->script('http://partner.googleadservices.com/gampad/google_service.js')."\n";
 			
@@ -98,8 +97,8 @@
 			echo 'api_token   = "'.getlastmod().':'.$apiToken.'";'."\n";
 		?>	
 		</script>
-		<script type="text/javascript" src="/min/g=dependencies_js?<?php echo date("His");?>"></script>
-		<script type="text/javascript" src="/min/g=base_js?<?php echo date("His");?>"></script>
+		<script type="text/javascript" src="/minify/index?g=dependencies_js&<?php echo date("His");?>"></script>
+		<script type="text/javascript" src="/minify/index?g=base_js&<?php echo date("His");?>"></script>
 		<script type="text/javascript">
 		<?php
 		
@@ -174,10 +173,11 @@
 		?>
 	</body>
 	<?php
-		echo '<script type="text/javascript" src="/min/g=footer_js?'.date("His").'"></script>'."\n";
+		echo '<script type="text/javascript" src="/minify/index?g=footer_js&'.date("His").'"></script>'."\n";
+		//debug($this->__scripts);
+		//echo $minify->js($this->__scripts);
 		echo $this->Facebook->init();
-		echo $this->Minify->external($this->__scripts); 
-		echo $this->Minify->js($this->__scripts);
+		//echo $this->Minify->external($this->__scripts); 
 	?>
 	<?php 
 		

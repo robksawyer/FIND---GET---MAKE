@@ -356,3 +356,8 @@ Cache::config('very_long', array(
 //Configure::write('Acl.classname', 'Cached_Acl.Db_Cached_Acl');
 
 Cache::config('default', array('engine' => 'File'));
+
+/** 
+* Turn on MinifyHelper 
+*/ 
+Configure::write('MinifyAsset', true);

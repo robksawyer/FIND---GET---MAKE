@@ -2,8 +2,8 @@
 	<div id="nav-wrapper">
 		<ul id="logo-nav">
 			<li class='nav-item'>
-				<?php echo $this->Html->link('FIND | GET | MAKE','/',array('title'=>'MAKE')); ?>
-				<span title='FIND | GET | MAKE'></span>
+				<?php echo $this->Html->link('FIND | GET | MAKE','/',array('title'=>'FIND | GET | MAKE')); ?>
+				<!--<span title='FIND | GET | MAKE'></span>-->
 			</li>
 		</ul>
 		<ul id="main-nav">

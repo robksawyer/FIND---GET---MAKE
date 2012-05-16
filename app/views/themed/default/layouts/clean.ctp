@@ -58,7 +58,7 @@
 		?>
 		<?php
 			if(Configure::read('FGM.local') == true){
-				echo '<script type="text/javascript" src="/min/g=jquery_js?'.date("His").'"></script>'."\n";
+				echo '<script type="text/javascript" src="/minify/index?g=jquery_js&'.date("His").'"></script>'."\n";
 			}else{
 				echo $this->Html->script('https://www.google.com/jsapi?key=ABQIAAAAnmDjwFmPVi_wiEa7kcH4kxRoSg5s9K5GPFZf3sp5WjiQsRDImxRDlMCi9qkG8Qo4zHXzieotWXFWzA')."\n";
 				echo '<script language="Javascript" type="text/javascript">'."\n";
@@ -69,13 +69,10 @@
 				echo '</script>'."\n";
 			}
 			//Minify messes these up
-			echo $this->Html->script('history.adapter.jquery.min');
-			echo $this->Html->script('history.min');
-			echo $this->Html->script('history.html4.min');
-			echo '<script type="text/javascript" src="/min/g=dependencies_js"></script>'."\n";
-			echo '<script type="text/javascript" src="/min/g=base_js"></script>'."\n";
-			//echo '<script type="text/javascript" src="/min/g=forum_js"></script>'."\n";
-			
+			echo $this->Html->script(array('history.adapter.jquery.min','history.min','history.html4.min'));
+			echo '<script type="text/javascript" src="/minify/index?g=dependencies_js"></script>'."\n";
+			echo '<script type="text/javascript" src="/minify/index?g=base_js"></script>'."\n";
+			//echo '<script type="text/javascript" src="/minify/index?g=forum_js"></script>'."\n";
 			echo $this->Html->script('http://partner.googleadservices.com/gampad/google_service.js')."\n";
 		?>
 	</head>
@@ -107,9 +104,10 @@
 		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
 	</body>
 	<?php 
-		echo '<script type="text/javascript" src="/min/g=footer_js?'.date("His").'"></script>'."\n";
+		echo '<script type="text/javascript" src="/minify/index?g=footer_js&'.date("His").'"></script>'."\n";
+		//echo $minify->js('footer');
 		echo $this->Facebook->init();
-		echo $this->Minify->external($this->__scripts); 
-		echo $this->Minify->js($this->__scripts); 
+		//echo $this->Minify->external($this->__scripts); 
+		//echo $minify->js($this->__scripts); 
 	?>
 </html>

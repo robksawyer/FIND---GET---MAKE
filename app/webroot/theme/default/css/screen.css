@@ -349,9 +349,9 @@ a.category:hover{
 	z-index: 4;
 }
 #nav #nav-wrapper ul#logo-nav li span{ display:block; position:absolute; left:0; top:0; z-index:1; margin:0; padding:0; }
-#nav #nav-wrapper ul#logo-nav li.nav-item{ left:0; top:0; width:237px; height:100px; }
-#nav #nav-wrapper ul#logo-nav li.nav-item span{ background: transparent url('img/fgm_sprite.gif') 0px 0px no-repeat; width:237px; height:20px; left:0; top:0; overflow: hidden; cursor: pointer; }
-#nav #nav-wrapper ul#logo-nav li.nav-item:hover span{ background: transparent url('img/fgm_sprite.gif') 0px -21px no-repeat; }
+/*#nav #nav-wrapper ul#logo-nav li.nav-item { left:0; top:0; width:237px; height:100px; }*/
+#nav #nav-wrapper ul#logo-nav li.nav-item {  display:block; background: white url('img/fgm_sprite.gif') 0px 0px no-repeat; width:237px; height:20px; left:0; top:0; overflow: hidden; cursor: pointer; text-indent: -9999px;}
+#nav #nav-wrapper ul#logo-nav li.nav-item:hover{  display:block; background: white url('img/fgm_sprite.gif') 0px -21px no-repeat; text-indent: -9999px; }
 #nav #nav-wrapper ul#main-nav{ position: relative; margin:0; padding:0; left: 15px; top: 0px; float: left; }
 #nav #nav-wrapper ul#main-nav li:first-child{ margin: 0; float: left; }
 #nav #nav-wrapper ul#main-nav li{ margin: 0 0 0 15px; float: left; }

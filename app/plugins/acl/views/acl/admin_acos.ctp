@@ -4,9 +4,9 @@
 <?php print $this->element('acl_scripts') ?>
 <?php print $this->element('acl_menu') ?>
 <div>
-  <?php print $html->image('/acl/img/tango/32x32/apps/preferences-system-windows.png', array('align' => 'absmiddle')) ?>
+  <?php print $this->Html->image('/acl/img/tango/32x32/apps/preferences-system-windows.png', array('align' => 'absmiddle')) ?>
   <b>Manage Acos</b>
-  <span id="indicator" style="display:none;"><?php print $html->image('/acl/img/indicator.gif') ?> Loading.</span>
+  <span id="indicator" style="display:none;"><?php print $this->Html->image('/acl/img/indicator.gif') ?> Loading.</span>
 </div>
 <table>
   <tr>

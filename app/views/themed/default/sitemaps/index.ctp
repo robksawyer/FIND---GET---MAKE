@@ -11,7 +11,7 @@ if( isset($dynamics) && !empty($dynamics) ):
 	 foreach ($dynamics as $dynamic): ?> 
 	 <tr> 
 		  <th> 
-		  <?php echo $html->link( 
+		  <?php echo $this->Html->link( 
 										 $dynamic['options']['controllertitle'], 
 										 array( 
 														'controller' => $dynamic['options']['url']['controller'],  
@@ -22,7 +22,7 @@ if( isset($dynamics) && !empty($dynamics) ):
 	 <?php foreach ($dynamic['data'] as $section):?> 
 	 <tr> 
 		  <td> 
-		  > <?php echo $html->link( 
+		  > <?php echo $this->Html->link( 
 										$section[$dynamic['model']][$dynamic['options']['fields']['title']], 
 										 array( 
 														'controller' => $dynamic['options']['url']['controller'],  
@@ -48,7 +48,7 @@ if(isset($statics) && !empty($statics) ):?>
 	 <?php foreach ($statics as $static): ?> 
 	 <tr> 
 		  <td> 
-		  <?php echo $html->link( 
+		  <?php echo $this->Html->link( 
 										 $static['title'], 
 										 $static['url']); ?> 
 		  </td> 

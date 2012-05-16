@@ -78,19 +78,14 @@
 				echo '</script>'."\n";
 			}
 			
-			echo $this->Html->script('fgm_api')."\n";
-			echo $this->Html->script('utils'); //Common helper scripts
+			echo $this->Html->script(array('fgm_api','utils'))."\n";
 			echo $this->Html->script('/rating/js/rating_jquery_min');
 			echo $this->Html->script('jquery.popupwindow',array('inline'=>false));
-			echo $this->Html->script('jquery.form');
-			echo $this->Html->script('jquery.autocomplete.min');
-			echo $this->Html->script('jquery.jeditable.mini');
-			echo $this->Html->script('jquery.mousewheel.min');
+			echo $this->Html->script(array('jquery.form','jquery.autocomplete.min','jquery.jeditable.mini','jquery.mousewheel.min'));
 			echo "<!-- Chosen Select Boxes (http://harvesthq.github.com/chosen/) -->";
 			echo $this->Html->script('chosen/chosen.jquery.min');
 			echo "<!-- Include jquery modal window apis -->";
-			echo $this->Html->script('modal/jquery.simplemodal.1.4.1.min');
-			echo $this->Html->script('modal/basic');
+			echo $this->Html->script(array('modal/jquery.simplemodal.1.4.1.min','modal/basic'));
 			
 			//Cupcake forum
 			echo $this->Html->script('/forum/js/script.js');
@@ -168,9 +163,9 @@
 			</div>
 		</div>
 		<?php 
-			echo '<script type="text/javascript" src="/min/g=footer_js?'.date("His").'"></script>'."\n";
-			echo $this->Minify->external($this->__scripts); 
-			echo $this->Minify->js($this->__scripts);
+			echo '<script type="text/javascript" src="/minify/index?g=footer_js&'.date("His").'"></script>'."\n";
+			//echo $this->Minify->external($this->__scripts); 
+			//echo $minify->js($this->__scripts);
 			echo $this->Js->writeBuffer(); // write cached scripts 
 		?>
 	</body>

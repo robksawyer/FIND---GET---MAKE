@@ -3,11 +3,9 @@
 /* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
 
 class AclPermissionsController extends AclAppController {
-	var $name = 'AclPermissions';
+	public $name = 'AclPermissions';
 
-	var $uses = array('Acl.AclAroAco', 'Acl.AclAro', 'Acl.AclAco');
-
-	var $helpers = array('Html');
+	public $uses = array('Acl.AclAroAco', 'Acl.AclAro', 'Acl.AclAco');
 
 	function exists() {
 		$conditions = array(

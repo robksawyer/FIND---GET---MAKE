@@ -27,7 +27,7 @@
   //Theme
   $theme = isset($theme) ? $theme . str_replace("_theme","",$theme) . "_theme" : false;
   if($theme){
-    echo $html->css("popup/css/$theme");
+    echo $this->Html->css("popup/css/$theme");
   }
 
   //draggdrop
@@ -41,7 +41,7 @@
     <div class="fade"></div>
     <div id="drag-<?php $id ?>" class="popup_block">
       <div class="popup">
-        <a href="#" onclick="$('<?php $onclick_pre . $id; ?>').hide(); return false;"><?php $html->image('/popup/img/icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
+        <a href="#" onclick="$('<?php $onclick_pre . $id; ?>').hide(); return false;"><?php $this->Html->image('/popup/img/icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
         <div id="popup-content"><?php $popcont; ?></div>
       </div>
     </div>
@@ -49,5 +49,5 @@
 </div>
 
 <? if($draggable && $library == 'Prototype'): ?>
-  <?php $html->scriptBlock("new Draggable('drag-$id');"); ?>
+  <?php $this->Html->scriptBlock("new Draggable('drag-$id');"); ?>
 <?endif;?>

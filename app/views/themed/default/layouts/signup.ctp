@@ -55,8 +55,7 @@
 				echo '//]]>'."\n";
 				echo '</script>'."\n";
 			}
-			echo $this->Html->script('fgm_api')."\n";
-			echo $this->Html->script('utils')."\n"; //Common helper scripts
+			echo $this->Html->script(array('fgm_api','utils',))."\n";
 			echo $this->Html->script('jquery.popupwindow',array('inline'=>false));
 			echo $scripts_for_layout;
 		?>
@@ -95,7 +94,7 @@
 		<?php echo $this->Js->writeBuffer(); // write cached scripts ?>
 	</body>
 	<?php 
-		echo '<script type="text/javascript" src="/min/g=footer_js?'.date("His").'"></script>'."\n";
+		echo '<script type="text/javascript" src="/minify/index?g=footer_js&'.date("His").'"></script>'."\n";
 		echo $this->Facebook->init(); 
 	?>
 </html>

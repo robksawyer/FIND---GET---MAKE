@@ -19,17 +19,17 @@
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __d('comments', 'Parent Comment'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $html->link($comment['ParentComment']['id'], array('controller'=> 'comments', 'action'=>'view', $comment['ParentComment']['id'])); ?>
+			<?php echo $this->Html->link($comment['ParentComment']['id'], array('controller'=> 'comments', 'action'=>'view', $comment['ParentComment']['id'])); ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __d('comments', 'Commented On'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $html->link($comment['CommentedOn']['id'], array('controller'=> 'users', 'action'=>'view', $comment['CommentedOn']['id'])); ?>
+			<?php echo $this->Html->link($comment['CommentedOn']['id'], array('controller'=> 'users', 'action'=>'view', $comment['CommentedOn']['id'])); ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __d('comments', 'User'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $html->link($comment['User']['id'], array('controller'=> 'users', 'action'=>'view', $comment['User']['id'])); ?>
+			<?php echo $this->Html->link($comment['User']['id'], array('controller'=> 'users', 'action'=>'view', $comment['User']['id'])); ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __d('comments', 'Model'); ?></dt>
@@ -61,14 +61,14 @@
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__d('comments', 'Edit Comment', true), array('action'=>'edit', $comment['Comment']['id'])); ?> </li>
-		<li><?php echo $html->link(__d('comments', 'Delete Comment', true), array('action'=>'delete', $comment['Comment']['id']), null, sprintf(__d('comments', 'Are you sure you want to delete # %s?', true), $comment['Comment']['id'])); ?> </li>
-		<li><?php echo $html->link(__d('comments', 'List Comments', true), array('action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__d('comments', 'New Comment', true), array('action'=>'add')); ?> </li>
-		<li><?php echo $html->link(__d('comments', 'List Comments', true), array('controller'=> 'comments', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__d('comments', 'New Parent Comment', true), array('controller'=> 'comments', 'action'=>'add')); ?> </li>
-		<li><?php echo $html->link(__d('comments', 'List Users', true), array('controller'=> 'users', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__d('comments', 'New User', true), array('controller'=> 'users', 'action'=>'add')); ?> </li>
+		<li><?php echo $this->Html->link(__d('comments', 'Edit Comment', true), array('action'=>'edit', $comment['Comment']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__d('comments', 'Delete Comment', true), array('action'=>'delete', $comment['Comment']['id']), null, sprintf(__d('comments', 'Are you sure you want to delete # %s?', true), $comment['Comment']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__d('comments', 'List Comments', true), array('action'=>'index')); ?> </li>
+		<li><?php echo $this->Html->link(__d('comments', 'New Comment', true), array('action'=>'add')); ?> </li>
+		<li><?php echo $this->Html->link(__d('comments', 'List Comments', true), array('controller'=> 'comments', 'action'=>'index')); ?> </li>
+		<li><?php echo $this->Html->link(__d('comments', 'New Parent Comment', true), array('controller'=> 'comments', 'action'=>'add')); ?> </li>
+		<li><?php echo $this->Html->link(__d('comments', 'List Users', true), array('controller'=> 'users', 'action'=>'index')); ?> </li>
+		<li><?php echo $this->Html->link(__d('comments', 'New User', true), array('controller'=> 'users', 'action'=>'add')); ?> </li>
 	</ul>
 </div>
 <div class="related">
@@ -106,9 +106,9 @@
 			<td><?php echo $childComment['created'];?></td>
 			<td><?php echo $childComment['modified'];?></td>
 			<td class="actions">
-				<?php echo $html->link(__d('comments', 'View', true), array('controller'=> 'comments', 'action'=>'view', $childComment['id'])); ?>
-				<?php echo $html->link(__d('comments', 'Edit', true), array('controller'=> 'comments', 'action'=>'edit', $childComment['id'])); ?>
-				<?php echo $html->link(__d('comments', 'Delete', true), array('controller'=> 'comments', 'action'=>'delete', $childComment['id']), null, sprintf(__d('comments', 'Are you sure you want to delete # %s?', true), $childComment['id'])); ?>
+				<?php echo $this->Html->link(__d('comments', 'View', true), array('controller'=> 'comments', 'action'=>'view', $childComment['id'])); ?>
+				<?php echo $this->Html->link(__d('comments', 'Edit', true), array('controller'=> 'comments', 'action'=>'edit', $childComment['id'])); ?>
+				<?php echo $this->Html->link(__d('comments', 'Delete', true), array('controller'=> 'comments', 'action'=>'delete', $childComment['id']), null, sprintf(__d('comments', 'Are you sure you want to delete # %s?', true), $childComment['id'])); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
@@ -117,7 +117,7 @@
 
 	<div class="actions">
 		<ul>
-			<li><?php echo $html->link(__d('comments', 'New Child Comment', true), array('controller'=> 'comments', 'action'=>'add'));?> </li>
+			<li><?php echo $this->Html->link(__d('comments', 'New Child Comment', true), array('controller'=> 'comments', 'action'=>'add'));?> </li>
 		</ul>
 	</div>
 </div>

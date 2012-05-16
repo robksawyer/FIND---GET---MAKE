@@ -3,8 +3,8 @@
 /* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
 
 class AclArosController extends AclAppController {
-	var $name = 'AclAros';
-
+	public $name = 'AclAros';
+	
 	function load($id) {
 		$this->layout = '';
 		$n = $this->AclAro->find(

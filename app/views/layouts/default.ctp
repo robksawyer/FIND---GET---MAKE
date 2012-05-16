@@ -71,21 +71,21 @@ $(document).ready(function() {
 	//Add external links icon
 	$('a[target="_blank"]').filter(function() {
 		return this.hostname && this.hostname !== location.hostname;
-	}).after(<?php echo "' ".$html->image("icons/external.png", array("alt" => "external link"))."'"; ?>);
+	}).after(<?php echo "' ".$this->Html->image("icons/external.png", array("alt" => "external link"))."'"; ?>);
 });
 </script>
 	
 <body>
 	<div id="container">
 		<div id="header">
-			<!--<h1><?php //echo $html->link(__('Just A Na.me', true), '/'); ?></h1>-->
+			<!--<h1><?php //echo $this->Html->link(__('Just A Na.me', true), '/'); ?></h1>-->
 			<?php
-				/*echo $html->link(
-							$html->image("justaname_logo_off.png", array("alt" => "justana.me","title" => "justana.me")),
+				/*echo $this->Html->link(
+							$this->Html->image("justaname_logo_off.png", array("alt" => "justana.me","title" => "justana.me")),
 							'/',
 							array('escape'=>false)
 					);*/
-					echo $html->link(
+					echo $this->Html->link(
 								'Sawyer/Tapia',
 								'/',
 								array('escape'=>false)
@@ -100,7 +100,7 @@ $(document).ready(function() {
 
 		</div>
 		<div id="footer">
-			&copy; 2009 Copyright Sawyer/<i>Tapia</i>. All Rights Reserved. This is a <a href="http://blog.robksawyer.com" target="_blank">Rob Sawyer</a> production. :: <?php echo $html->link(__('About', true), array('controller'=>'pages','action' => 'about')); ?> :: <?php echo $html->link(__('@justana_me', true), 'http://www.twitter.com/sawyer_tapia',array('target'=>'blank','title'=>'Yep, we\'re on Twitter.')); ?> :: <a href="#" onclick="UserVoice.Popin.show(uservoiceOptions); return false;" title="Request a feature, or a bug.">Feedback</a>
+			&copy; 2009 Copyright Sawyer/<i>Tapia</i>. All Rights Reserved. This is a <a href="http://blog.robksawyer.com" target="_blank">Rob Sawyer</a> production. :: <?php echo $this->Html->link(__('About', true), array('controller'=>'pages','action' => 'about')); ?> :: <?php echo $this->Html->link(__('@justana_me', true), 'http://www.twitter.com/sawyer_tapia',array('target'=>'blank','title'=>'Yep, we\'re on Twitter.')); ?> :: <a href="#" onclick="UserVoice.Popin.show(uservoiceOptions); return false;" title="Request a feature, or a bug.">Feedback</a>
 		</div>
 	</div>
 </body>

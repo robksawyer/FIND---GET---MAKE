@@ -1,5 +1,6 @@
 <?php
-echo $this->Html->css('acl/acl.css');
+//echo $this->Html->css('acl/acl.css');
+echo $minify->css('acl/acl.css');
 ?>
 <div id="plugin_acl">
 	

@@ -3,8 +3,9 @@
 /* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
 
 class AclAcosController extends AclAppController {
-	var $name = 'AclAcos';
-
+	
+	public $name = 'AclAcos';
+	
 	function load($id) {
 		$this->layout = '';
 		$n = $this->AclAco->find(

@@ -84,7 +84,7 @@ although the point notation is still supported.
 
 5) Load the plugin javascript and css files in your layout. Replace [your_framework] with 'prototype_min' or 'jquery_min' depending on the framework you use.
 <?php echo $javascript->link('/rating/js/[your_framework]'); ?>
-<?php echo $html->css('/rating/css/rating'); ?>  
+<?php echo $this->Html->css('/rating/css/rating'); ?>  
 
 6) For full model integration in your app, apply the following relation to your models. (replace [name_of_your_model])
 var $hasMany = array('Rating' => 

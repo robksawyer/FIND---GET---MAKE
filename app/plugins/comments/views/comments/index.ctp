@@ -43,13 +43,13 @@ foreach ($comments as $comment):
 			<?php echo $comment['Comment']['id']; ?>
 		</td>
 		<td>
-			<?php echo $html->link($comment['ParentComment']['id'], array('controller'=> 'comments', 'action'=>'view', $comment['ParentComment']['id'])); ?>
+			<?php echo $this->Html->link($comment['ParentComment']['id'], array('controller'=> 'comments', 'action'=>'view', $comment['ParentComment']['id'])); ?>
 		</td>
 		<td>
-			<?php echo $html->link($comment['CommentedOn']['id'], array('controller'=> 'users', 'action'=>'view', $comment['CommentedOn']['id'])); ?>
+			<?php echo $this->Html->link($comment['CommentedOn']['id'], array('controller'=> 'users', 'action'=>'view', $comment['CommentedOn']['id'])); ?>
 		</td>
 		<td>
-			<?php echo $html->link($comment['User']['id'], array('controller'=> 'users', 'action'=>'view', $comment['User']['id'])); ?>
+			<?php echo $this->Html->link($comment['User']['id'], array('controller'=> 'users', 'action'=>'view', $comment['User']['id'])); ?>
 		</td>
 		<td>
 			<?php echo $comment['Comment']['model']; ?>
@@ -67,9 +67,9 @@ foreach ($comments as $comment):
 			<?php echo $comment['Comment']['modified']; ?>
 		</td>
 		<td class="actions">
-			<?php echo $html->link(__d('comments', 'View', true), array('action'=>'view', $comment['Comment']['id'])); ?>
-			<?php echo $html->link(__d('comments', 'Edit', true), array('action'=>'edit', $comment['Comment']['id'])); ?>
-			<?php echo $html->link(__d('comments', 'Delete', true), array('action'=>'delete', $comment['Comment']['id']), null, sprintf(__d('comments', 'Are you sure you want to delete # %s?', true), $comment['Comment']['id'])); ?>
+			<?php echo $this->Html->link(__d('comments', 'View', true), array('action'=>'view', $comment['Comment']['id'])); ?>
+			<?php echo $this->Html->link(__d('comments', 'Edit', true), array('action'=>'edit', $comment['Comment']['id'])); ?>
+			<?php echo $this->Html->link(__d('comments', 'Delete', true), array('action'=>'delete', $comment['Comment']['id']), null, sprintf(__d('comments', 'Are you sure you want to delete # %s?', true), $comment['Comment']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -82,10 +82,10 @@ foreach ($comments as $comment):
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__d('comments', 'New Comment', true), array('action'=>'add')); ?></li>
-		<li><?php echo $html->link(__d('comments', 'List Comments', true), array('controller'=> 'comments', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__d('comments', 'New Parent Comment', true), array('controller'=> 'comments', 'action'=>'add')); ?> </li>
-		<li><?php echo $html->link(__d('comments', 'List Users', true), array('controller'=> 'users', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__d('comments', 'New User', true), array('controller'=> 'users', 'action'=>'add')); ?> </li>
+		<li><?php echo $this->Html->link(__d('comments', 'New Comment', true), array('action'=>'add')); ?></li>
+		<li><?php echo $this->Html->link(__d('comments', 'List Comments', true), array('controller'=> 'comments', 'action'=>'index')); ?> </li>
+		<li><?php echo $this->Html->link(__d('comments', 'New Parent Comment', true), array('controller'=> 'comments', 'action'=>'add')); ?> </li>
+		<li><?php echo $this->Html->link(__d('comments', 'List Users', true), array('controller'=> 'users', 'action'=>'index')); ?> </li>
+		<li><?php echo $this->Html->link(__d('comments', 'New User', true), array('controller'=> 'users', 'action'=>'add')); ?> </li>
 	</ul>
 </div>

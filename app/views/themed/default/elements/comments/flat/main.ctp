@@ -31,7 +31,7 @@ else: ?>
 
 	<h4><?php __d('comments', 'Comments'); ?></h4>
 	<?php
-		echo "<p>".sprintf(__d('comments', 'If you want to post comments, you need to login first.', true), $html->link(__d('comments', 'login', true), array('controller' => 'users', 'action' => 'login', 'prefix' => $adminRoute, $adminRoute => false)))."</p>";
+		echo "<p>".sprintf(__d('comments', 'If you want to post comments, you need to login first.', true), $this->Html->link(__d('comments', 'login', true), array('controller' => 'users', 'action' => 'login', 'prefix' => $adminRoute, $adminRoute => false)))."</p>";
 endif;
 ?>
 </div>

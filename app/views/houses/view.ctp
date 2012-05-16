@@ -112,9 +112,9 @@
 						if($counter != $totalKeywords):
 				?>
 						<!--<li><a href="<?php //echo '/sales/index/by:'.$tag['name']; ?>" title="'".$tag['name']."'"><?php echo $tag['name']; ?></a></li>-->
-						<li><?php echo $html->link($tag['name'],array('action'=>'index/by:'.$tag['name'])).''; ?></li>
+						<li><?php echo $this->Html->link($tag['name'],array('action'=>'index/by:'.$tag['name'])).''; ?></li>
 					<?php else: ?>
-						<li><?php echo $html->link($tag['name'],array('action'=>'index/by:'.$tag['name'])); ?></li>
+						<li><?php echo $this->Html->link($tag['name'],array('action'=>'index/by:'.$tag['name'])); ?></li>
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php endif; ?>
