@@ -1,15 +1,3 @@
-<?php 
-
-//Styles for tagging
-echo $this->Html->css('phototagging','stylesheet',array('inline'=>false));
-//Styles for the jquery plugin from http://odyniec.net/projects/imgareaselect/ not supported by neillh.com.au
-echo $this->Html->css('imgareaselect-animated','stylesheet',array('inline'=>false));
-
-echo "<!-- The jquery plugin from http://odyniec.net/projects/imgareaselect/ not supported by neillh.com.au -->";
-echo $this->Html->script('jquery.imgareaselect.min',array('inline'=>false));
-echo "<!-- Phototagging Load js -->";
-echo $this->Html->script('jquery.phototagging',array('inline'=>false));
-?>
 <?php
 	$testing = false;
 	//Load the options list with sources and products

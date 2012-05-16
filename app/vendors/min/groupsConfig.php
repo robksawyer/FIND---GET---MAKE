@@ -35,6 +35,12 @@ return array(
 		'//theme/default/js/modal/jquery.simplemodal.1.4.1.min.js', //Include jQuery modal window APIs
 		'//theme/default/js/modal/basic.js'
 	),
+	'inspiration_dependencies_js' => array(
+		//<!-- The jquery plugin from http://odyniec.net/projects/imgareaselect/ not supported by neillh.com.au -->
+		'//theme/default/js/jquery.imgareaselect.min.js',
+		'//theme/default/js/jquery.phototagging.js',
+		'//theme/default/js/jquery.waitforimages.js'
+	),
 	'base_js' => array(
 		'//theme/default/js/utils.js',
 		'//theme/default/js/fgm_api.js'

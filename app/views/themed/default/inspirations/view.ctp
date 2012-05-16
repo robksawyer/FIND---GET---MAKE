@@ -1,5 +1,8 @@
 <?php
-	echo $this->Html->css('inspirations/view','stylesheet',array('inline'=>false));
+	//Styles for the jquery plugin from http://odyniec.net/projects/imgareaselect/ not supported by neillh.com.au
+	echo $this->Html->css(array('inspirations/view','phototagging','imgareaselect-animated'),'stylesheet',array('inline'=>false));
+	//Load the inspiration JS dependencies
+	echo $this->Html->script("/minify/index?g=inspiration_dependencies_js&".date("His"));
 ?>
 <div class="inspirations view">
 	<?php
@@ -160,19 +163,18 @@
 ?>
 </div>
 <script type="text/javascript">
-
 $(document).ready(function() {
-	//Apply css to the titles
-	applyTitleEffects();
-	
-	//Position the tag map on the image relative to the where it is on the page.
-	positionMap();
+	$('#taggable-image').waitForImages(function() {
+		//Apply css to the titles
+		applyTitleEffects();
+		//Position the tag map on the image relative to the where it is on the page.
+		positionMap();
+		//Position items and allow selection
+		activateImageSelect();
+	});
 });
 
 $(window).load(function() {
-	
-	activateImageSelect();
-	
 	//Set up imgAreaSelect
 	$('.start-tagging').click(function() {
 		$('.start-tagging').addClass("hide");

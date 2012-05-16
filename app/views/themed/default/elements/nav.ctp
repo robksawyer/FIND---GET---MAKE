@@ -33,3 +33,8 @@
 	</div>
 	<br class="clear" />
 </div>
+<script type="text/javascript">
+$('.nav-item').click(function(){
+	window.location.href = "/";
+});
+</script>

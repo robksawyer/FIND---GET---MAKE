@@ -59,8 +59,7 @@
 			echo $this->Html->css('modal/basic_ie')."\n";
 			echo '<![endif]-->';
 			
-			//Minify the css
-			//echo $minify->css($this->__scripts);
+			//Add the css files from other views indepdently instead of using $scripts_for_layout.
 			//echo $this->Html->css($this->__scripts);
 		?>
 		<?php
@@ -86,7 +85,6 @@
 			} else if (isset($feedId) && in_array($this->params['controller'], array('categories', 'topics'))) {
 				echo $this->Html->meta(__d('forum', 'RSS Feed - Content Review', true), array('action' => 'feed', $feedId, 'ext' => 'rss'), array('type' => 'rss'));
 			}
-			//echo $scripts_for_layout;
 		?>
 		<script type="text/javascript">
 		<?php
@@ -97,11 +95,14 @@
 			echo 'api_token   = "'.getlastmod().':'.$apiToken.'";'."\n";
 		?>	
 		</script>
-		<script type="text/javascript" src="/minify/index?g=dependencies_js&<?php echo date("His");?>"></script>
-		<script type="text/javascript" src="/minify/index?g=base_js&<?php echo date("His");?>"></script>
+		<?php
+			echo $this->Html->script('/minify/index?g=dependencies_js&'.date("His"));
+			echo $this->Html->script('/minify/index?g=base_js&'.date("His"));
+			
+			echo $scripts_for_layout;
+		?>
 		<script type="text/javascript">
 		<?php
-		
     		echo 'var page_entity = {"id":-1,"username":false},'."\n";
 			echo 'hover_entity = {},'."\n";
 			echo 'current_user = new User('.$json_user_data.');'
@@ -160,26 +161,21 @@
 			<?php echo $this->Facebook->like(); ?>
 			</div>
 		</div><!-- close div#wrapper_extra -->
-		<script type="text/javascript">
+		<!--<script type="text/javascript">
 		<?php
 			//Spit out a json object that contains user related data for the view to use
 			//fgm_pk_data.pk   = '018b614934730a80bd2c627b6695eee7';
 			//fgm_pk_data.user = 'robksawyer';
 			//fgm_pk_data.pub  = 'fgm_5eeeca1a0b2ed4c29df34327bf8e0ffe';
 		?>	
-		</script>
+		</script>-->
 		<?php 
+			echo $this->Html->script("/minify/index?g=footer_js&".date("His"));
+			//echo $minify->js($this->__scripts);
 			echo $this->Js->writeBuffer(); // write cached scripts 
 		?>
 	</body>
 	<?php
-		echo '<script type="text/javascript" src="/minify/index?g=footer_js&'.date("His").'"></script>'."\n";
-		//debug($this->__scripts);
-		//echo $minify->js($this->__scripts);
 		echo $this->Facebook->init();
-		//echo $this->Minify->external($this->__scripts); 
-	?>
-	<?php 
-		
 	?>
 </html>
