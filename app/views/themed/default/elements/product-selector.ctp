@@ -99,7 +99,7 @@
 	var local_controller = <?php echo "'".$controller."'"; ?>;
 	<?php 
 		if(!empty($productList)){
-			$htmlVal = $this->Form->input('Product',array(
+			$htmlVal = $this->Form->input('Product.id',array(
 																'label'=>'',
 																'type' => 'select', 
 																'multiple' => 'multiple',

@@ -574,8 +574,6 @@ a.fb_button_medium:hover{ background-position: 0% -210px; font-size: 11px; line-
 	padding: 0; margin: 0;
 }
 #join .footer{ font: normal normal bold 18px/22px arial, sans-serif; color: #777777; }
-#join ul{ list-style-type: none; display: block; }
-#join ul li{ list-style: disc; }
 #join .plus-group{ position: relative; font-size: 14px; float: left; width: 500px; }
 #join .basic-group{ position: relative; font-size: 14px; float: left; width: auto; overflow: auto; }
 #join .plus{

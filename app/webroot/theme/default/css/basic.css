@@ -2910,13 +2910,13 @@ span.total a:hover{
 	color: #777777;
 }
 #join ul{
-	list-style-type: none;
+	list-style: disc;
 	-webkit-padding-start: 40px;
 	display: block;
 }
 
 #join ul li{
-	list-style: disc;
+	list-style-type: disc;
 }
 
 #join .plus-group{

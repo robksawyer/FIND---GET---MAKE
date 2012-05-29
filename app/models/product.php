@@ -466,7 +466,6 @@ class Product extends AppModel {
 														)
 										)
 									);
-		//debug($data);
 		return $data;
 	}
 	

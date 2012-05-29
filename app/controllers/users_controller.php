@@ -45,11 +45,17 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		
-		$this->Auth->allowedActions = array('ajax_more_user_feed_data','ajax_more_feed_data', 'forgot', 'listing', 'profile','getAvatar',
+		/*$this->Auth->allowedActions = array('ajax_more_user_feed_data','ajax_more_feed_data', 'forgot', 'listing', 'profile','getAvatar',
 											'signup','login','logout','register','register_with_twitter','register_with_facebook',
 											'twitter_logout','facebook_logout','staff_favorites',
 											'facebook_signup','twitter_signup','check',
 											'find','find_via_twitter','find_via_facebook',
+											'ajax_find_users','ajax_find_facebook_users','ajax_find_twitter_users'
+											);*/
+											
+		$this->Auth->allowedActions = array('ajax_more_user_feed_data','ajax_more_feed_data', 'forgot', 'listing', 'profile','getAvatar',
+											'login','logout','twitter_logout','facebook_logout','staff_favorites',
+											'check','find','find_via_twitter','find_via_facebook',
 											'ajax_find_users','ajax_find_facebook_users','ajax_find_twitter_users'
 											);
 		

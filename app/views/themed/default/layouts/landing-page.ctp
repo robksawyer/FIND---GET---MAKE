@@ -77,9 +77,9 @@
 
 			</div>
 			<div id="footer">
-				&copy; Copyright 2011, FIND | GET | MAKE : A Kate Tapia and Rob Sawyer Production 
-				<?php echo $this->Html->link('Blog','http://findgetmake.tumblr.com/',array('target'=>'_blank'));?>
-				<?php echo $this->Html->link('About','#');?>
+				&copy; Copyright 2012, FIND | GET | MAKE : A Kate Tapia and Rob Sawyer Production 
+				<?php //echo $this->Html->link('Blog','http://findgetmake.tumblr.com/',array('target'=>'_blank'));?>
+				<?php //echo $this->Html->link('About','#');?>
 				<?php echo $this->Html->link('Privacy Policy','/privacy');?>
 				<?php echo $this->Html->link('Terms','/terms');?>
 			</div>

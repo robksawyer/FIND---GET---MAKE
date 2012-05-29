@@ -14,7 +14,7 @@ if(empty($model_id)) $model_id = $feed_item[$model]['id'];
 	*/
 	//if($showDot) echo $this->element('feed-dot',array('cache'=>false,'model'=>$model,'model_id'=>$model_id));
 	?>
-	<div class="feed-text-title"><?php echo $this->Html->link(__($feed_item[$model]['name']),array('controller'=>$controller,
+	<div class="feed-text-title"><?php echo $this->Html->link(__($feed_item[$model]['name'],true),array('controller'=>$controller,
 																												'action'=>$action,
 																												'plugin'=>'',
 																												'admin'=>false,

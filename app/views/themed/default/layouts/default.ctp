@@ -151,9 +151,9 @@
 			</div>
 			<div id="footer">
 				<h3>FIND | GET | MAKE is an intricate, multi-layered database for all the resources you could ever want to use in an interior decor project.</h3>
-				<?php echo $this->Html->link('Feedback','https://spreadsheets.google.com/spreadsheet/viewform?formkey=dFUtdmpVUkV3Njc1Nmo2d1RzWF9sekE6MQ',array('target'=>'_blank','class'=>'feedback')); ?> Copyright 2011, FIND | GET | MAKE : A Kate Tapia and Rob Sawyer Production 
-				<?php echo $this->Html->link('Blog','http://findgetmake.tumblr.com/',array('target'=>'_blank'));?>
-				<?php echo $this->Html->link('About','#');?>
+				<?php echo $this->Html->link('Feedback','https://spreadsheets.google.com/spreadsheet/viewform?formkey=dFUtdmpVUkV3Njc1Nmo2d1RzWF9sekE6MQ',array('target'=>'_blank','class'=>'feedback')); ?> Copyright 2012, FIND | GET | MAKE : A Kate Tapia and Rob Sawyer Production 
+				<?php //echo $this->Html->link('Blog','http://findgetmake.tumblr.com/',array('target'=>'_blank'));?>
+				<?php //echo $this->Html->link('About','#');?>
 				<?php echo $this->Html->link('Privacy Policy','/privacy');?>
 				<?php echo $this->Html->link('Terms','/terms');?>
 			</div>
@@ -176,6 +176,6 @@
 		?>
 	</body>
 	<?php
-		echo $this->Facebook->init();
+		//echo $this->Facebook->init();
 	?>
 </html>

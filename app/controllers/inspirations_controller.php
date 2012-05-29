@@ -275,23 +275,24 @@ class InspirationsController extends AppController {
 			//$this->redirect(array('action' => 'index','admin'=>false));
 		}
 		if (!empty($this->data)) {
-			//Save the input data
-			$data = $this->data;
 			
 			//Add the attachments to the current inspiration image.
-			$this->data = $this->Inspiration->read(null,$id);
-			
-			$currentProducts = array();
+			$this->Inspiration->recursive = 1;
+			$inspiration = $this->Inspiration->read(null,$id);
+			//$currentProducts = array();
 			//Check to make sure the user selected a product
-			if(!empty($data['Product'])){
+			if(!empty($this->data['Product']['Product'])){
+				//Add existing products
+				$selectedProductData = $this->data['Product']['Product'];
+
 				//Load the array with product ids that are currently attached to the inspiration
-				if(!empty($this->data['Product'])){
-					foreach($this->data['Product'] as $product){
-						$currentProducts[] = $product['id'];
+				if(!empty($inspiration['Product'])){
+					foreach($inspiration['Product'] as $product){
+						$currentProducts[] = $product;
 					}
 				}
 				
-				foreach($data['Product']['Product'] as $product){
+				foreach($selectedProductData as $product){
 					//Check to make sure that the product doesn't already exist in the inspiration.	
 					if(!empty($currentProducts)){
 						if(!in_array($product,$currentProducts)){
@@ -313,8 +314,9 @@ class InspirationsController extends AppController {
 					
 					This is important because the tags are on the first image in the attachment array. 
 				*/
-				$this->data['Attachment'] = array_reverse($this->data['Attachment']);
+				if(!empty($this->data['Attachment'])) $this->data['Attachment'] = array_reverse($this->data['Attachment']);
 				
+				$this->Inspiration->id = $id;
 				if ($this->Inspiration->save($this->data)) {
 					$this->Session->setFlash(__('The inspiration has been updated', true));
 					$this->redirect(array('action' => 'view','admin'=>false,$id));
