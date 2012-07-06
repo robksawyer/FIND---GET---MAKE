@@ -113,7 +113,7 @@ function fgm_finder(){
 			fgm_user = (fgm_user) ? fgm_user : window['fgm_user'];
 
 			var html = '<div class="fgm_finder_header">';
-					html += '<img width="300" height="" src="'+this.base_url+'theme/default/img/logo.png"/>';
+					html += '<img width="300" height="" src="'+this.base_url+'theme/default/img/logo_dark.png"/>';
 					html += '<div onclick="fgm_finder.close(0)">CLOSE <span>X</span></div>';
 				html += '</div>';
 				html += '<div id="fgm_finder_flash" style="display:none;">';

@@ -60,7 +60,7 @@ class ToolsController extends AppController {
 		if(empty($user['User']['public_key'])){
 			$user['User']['public_key'] = $this->User->generateAndSavePublicKey($user);
 		}
-		$bookmarklet_template_path = App::themePath('default').'webroot'.DS.'js'.DS.'bookmarklet'.DS.'fgm_bookmarklet_template.js';
+		$bookmarklet_template_path = WWW_ROOT.'theme'.DS.$this->theme.DS.'js'.DS.'bookmarklet'.DS.'fgm_bookmarklet_template.js';
 		$bookmarklet_template = new File($bookmarklet_template_path, false);
 		if(!empty($bookmarklet_template)){
 			$bookmarklet_template->open();
@@ -71,7 +71,7 @@ class ToolsController extends AppController {
 					'REPLACE_USERNAME' => $user['User']['username'],
 					'REPLACE_PUBLIC_KEY' => 'fgmpk_'.$user['User']['public_key']
 				);
-				$user_bookmarklet_path = App::themePath('default').'webroot'.DS.'js'.DS.'bookmarklet'.DS.'fgm_bookmarklet_'.$user['User']['public_key'].'.js';
+				$user_bookmarklet_path = WWW_ROOT.'theme'.DS.$this->theme.DS.'js'.DS.'bookmarklet'.DS.'fgm_bookmarklet_'.$user['User']['public_key'].'.js';
 	
 				$fileData = $bookmarklet_template->read();
 				$bookmarklet_template->close();
@@ -79,10 +79,13 @@ class ToolsController extends AppController {
 				$user_bookmarklet_file = new File($user_bookmarklet_path, true);
 				$user_bookmarklet_file->write($updatedFileData);
 				$user_bookmarklet_file->close();
+				
+				return Router::url(DS.'theme'.DS.$this->theme.DS.'js'.DS.'bookmarklet'.DS.'fgm_bookmarklet_'.$user['User']['public_key'].'.js',true);
+			}else{
+				debug("The template file is not readable.");
+				return false;
 			}
 		}
-		
-		return Router::url(DS.'theme'.DS.$this->theme.DS.'js'.DS.'bookmarklet'.DS.'fgm_bookmarklet_'.$user['User']['public_key'].'.js',true);
 	}
 	
 	
