@@ -112,6 +112,7 @@ class FeedsController extends AppController {
 	 * 
 	*/
 	public function getSiteFeed($offset=0){
+		$this->autoRender = false;
 		$feed = $this->Feed->getSiteFeedDataDetails($offset);
 		return $feed;
 	}
@@ -124,6 +125,7 @@ class FeedsController extends AppController {
 	 * 
 	*/
 	public function getUserFeed($user_id=null,$offset=0){
+		$this->autoRender = false;
 		$feed = $this->Feed->getUserFeedDataDetails($user_id,$offset);
 		return $feed;
 	}
@@ -135,6 +137,7 @@ class FeedsController extends AppController {
 	 * 
 	*/
 	public function getUserFeedCount($user_id=null){
+		$this->autoRender = false;
 		return $this->Feed->getFeedCount($user_id);
 	}
 	

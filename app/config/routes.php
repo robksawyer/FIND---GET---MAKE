@@ -43,6 +43,7 @@
 	Router::connect('/join',array('plugin'=>'','controller'=>'pages','action'=>'display','join')); 
 	Router::connect('/account/settings',array('plugin'=>'','controller'=>'users','action'=>'edit'));
 	Router::connect('/problems/users/login',array('plugin'=>'','controller'=>'users','action'=>'login'));
+	//Router::connect('/profile/*', array('plugin' => '', 'controller' => 'feeds', 'action' => 'getUserFeed')); Trying to fix bug #1
 	
 	//Router::connect('/users/index',array('plugin'=>'','controller'=>'users','action'=>'listing'));
 	//Router::connect('/users',array('plugin'=>'','controller'=>'users','action'=>'listing'));
