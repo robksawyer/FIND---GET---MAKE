@@ -126,7 +126,12 @@ class ProductsController extends AppController {
 				$baseURL = $this->params['url']['r'];
 				$pageTitle = $this->params['url']['t'];
 				$referringUrl = $this->params['url']['l'];
-				$tags = $this->params['url']['g'];
+				if(!empty($this->params['url']['g'])){
+					$tags = $this->params['url']['g'];
+				}else{
+					$tags = '';
+				}
+				
 				//debug($urlString);
 				/*Array
 				(

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>app/controllers/storages_controller.php</string>
+	<string>app/controllers/app_controller.php</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -21,6 +21,50 @@
 	<integer>396</integer>
 	<key>metaData</key>
 	<dict>
+		<key>app/config/routes.php</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>1</integer>
+				<key>line</key>
+				<integer>69</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>15</integer>
+		</dict>
+		<key>app/controllers/app_controller.php</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>18</integer>
+				<key>line</key>
+				<integer>57</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>46</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>10</integer>
+				<key>line</key>
+				<integer>57</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>23</integer>
+				<key>line</key>
+				<integer>57</integer>
+			</dict>
+		</dict>
 		<key>app/controllers/feeds_controller.php</key>
 		<dict>
 			<key>caret</key>
@@ -34,34 +78,6 @@
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>78</integer>
-		</dict>
-		<key>app/controllers/ownerships_controller.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>51</integer>
-				<key>line</key>
-				<integer>254</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>221</integer>
-		</dict>
-		<key>app/controllers/products_controller.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>45</integer>
-				<key>line</key>
-				<integer>993</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>959</integer>
 		</dict>
 		<key>app/controllers/settings_controller.php</key>
 		<dict>
@@ -107,20 +123,6 @@
 			<key>firstVisibleLine</key>
 			<integer>130</integer>
 		</dict>
-		<key>app/controllers/storages_controller.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>52</integer>
-				<key>line</key>
-				<integer>66</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>40</integer>
-		</dict>
 		<key>app/controllers/user_followings_controller.php</key>
 		<dict>
 			<key>caret</key>
@@ -134,6 +136,20 @@
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>367</integer>
+		</dict>
+		<key>app/controllers/users_controller.php</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>28</integer>
+				<key>line</key>
+				<integer>56</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>21</integer>
 		</dict>
 		<key>app/controllers/votes_controller.php</key>
 		<dict>
@@ -154,7 +170,7 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>26</integer>
+				<integer>17</integer>
 				<key>line</key>
 				<integer>561</integer>
 			</dict>
@@ -174,7 +190,7 @@
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
-				<integer>26</integer>
+				<integer>17</integer>
 				<key>line</key>
 				<integer>561</integer>
 			</dict>
@@ -228,7 +244,7 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>15</integer>
+				<integer>4</integer>
 				<key>line</key>
 				<integer>110</integer>
 			</dict>
@@ -385,6 +401,20 @@
 				<integer>58</integer>
 			</dict>
 		</dict>
+		<key>app/views/themed/default/elements/feed-text-item.ctp</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>93</integer>
+				<key>line</key>
+				<integer>16</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
 		<key>app/views/themed/default/elements/nav-admin-actions.ctp</key>
 		<dict>
 			<key>caret</key>
@@ -515,19 +545,89 @@
 				<integer>55</integer>
 			</dict>
 		</dict>
+		<key>app/views/themed/default/layouts/clean.ctp</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>207</integer>
+				<key>line</key>
+				<integer>93</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>61</integer>
+		</dict>
 		<key>app/views/themed/default/layouts/default.ctp</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>23</integer>
+				<integer>144</integer>
 				<key>line</key>
-				<integer>161</integer>
+				<integer>152</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
-			<integer>9</integer>
+			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>71</integer>
+			<integer>17</integer>
+		</dict>
+		<key>app/views/themed/default/layouts/landing-page.ctp</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>25</integer>
+				<key>line</key>
+				<integer>79</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>40</integer>
+		</dict>
+		<key>app/views/themed/default/layouts/signup.ctp</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>207</integer>
+				<key>line</key>
+				<integer>83</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>46</integer>
+		</dict>
+		<key>app/views/themed/default/pages/home.ctp</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>22</integer>
+				<key>line</key>
+				<integer>44</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>3</integer>
+		</dict>
+		<key>app/views/themed/default/pages/home_v1.ctp</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>6</integer>
+				<key>line</key>
+				<integer>151</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>308</integer>
 		</dict>
 		<key>app/views/themed/default/plugins/forum/users/edit.ctp</key>
 		<dict>
@@ -577,7 +677,7 @@
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
-				<integer>49</integer>
+				<integer>8</integer>
 				<key>line</key>
 				<integer>162</integer>
 			</dict>
@@ -740,7 +840,7 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>101</integer>
+				<integer>5</integer>
 				<key>line</key>
 				<integer>41</integer>
 			</dict>
@@ -754,29 +854,29 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>5</integer>
+				<integer>11</integer>
 				<key>line</key>
-				<integer>68</integer>
+				<integer>46</integer>
 			</dict>
 			<key>columnSelection</key>
 			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>16</integer>
+			<integer>21</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>6</integer>
 				<key>line</key>
-				<integer>66</integer>
+				<integer>35</integer>
 			</dict>
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
-				<integer>5</integer>
+				<integer>11</integer>
 				<key>line</key>
-				<integer>68</integer>
+				<integer>46</integer>
 			</dict>
 		</dict>
 		<key>app/webroot/css.php</key>
@@ -793,43 +893,54 @@
 			<key>firstVisibleLine</key>
 			<integer>47</integer>
 		</dict>
+		<key>app/webroot/theme/default/css/basic.css</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>16</integer>
+				<key>line</key>
+				<integer>2918</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>2886</integer>
+		</dict>
+		<key>app/webroot/theme/default/css/screen.css</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>12</integer>
+				<key>line</key>
+				<integer>578</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>571</integer>
+		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>app/controllers/feeds_controller.php</string>
-		<string>app/controllers/settings_controller.php</string>
-		<string>app/controllers/storages_controller.php</string>
-		<string>app/models/product.php</string>
-		<string>app/views/themed/default/users/find.ctp</string>
+		<string>app/controllers/users_controller.php</string>
 		<string>app/views/themed/default/users/login.ctp</string>
 		<string>app/views/themed/default/layouts/default.ctp</string>
-		<string>app/models/staff_favorite.php</string>
-		<string>app/models/feed.php</string>
-		<string>app/controllers/ownerships_controller.php</string>
-		<string>app/controllers/products_controller.php</string>
-		<string>app/controllers/sources_controller.php</string>
-		<string>app/views/themed/default/elements/nav-admin-actions.ctp</string>
-		<string>app/views/themed/default/elements/nav-admin.ctp</string>
-		<string>app/views/themed/default/elements/nav-manager.ctp</string>
-		<string>app/views/themed/default/elements/nav-user.ctp</string>
-		<string>app/views/themed/default/user_followings/followers.ctp</string>
-		<string>app/views/themed/default/user_followings/following.ctp</string>
-		<string>app/controllers/user_followings_controller.php</string>
-		<string>app/models/user_following.php</string>
-		<string>app/controllers/votes_controller.php</string>
-		<string>app/views/themed/default/elements/email/html/email_on_comment.ctp</string>
-		<string>app/views/themed/default/elements/email/html/email_on_product_like.ctp</string>
-		<string>app/plugins/comments/controllers/components/comments.php</string>
-		<string>app/models/storage.php</string>
-		<string>app/models/user.php</string>
-		<string>app/views/themed/default/products/view.ctp</string>
-		<string>app/views/themed/default/sources/view.ctp</string>
-		<string>app/views/themed/default/elements/products.ctp</string>
-		<string>app/views/themed/default/elements/user-block-with-products.ctp</string>
+		<string>app/views/themed/default/layouts/landing-page.ctp</string>
+		<string>app/views/themed/default/pages/home.ctp</string>
+		<string>app/views/themed/default/elements/feed-text-item.ctp</string>
+		<string>app/controllers/app_controller.php</string>
+		<string>app/views/themed/default/pages/home_v1.ctp</string>
+		<string>app/config/routes.php</string>
+		<string>app/views/themed/default/layouts/signup.ctp</string>
+		<string>app/views/themed/default/layouts/clean.ctp</string>
+		<string>app/webroot/theme/default/css/basic.css</string>
+		<string>app/webroot/theme/default/css/screen.css</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{66, 61}, {1106, 918}}</string>
+	<string>{{32, -10}, {1106, 918}}</string>
 </dict>
 </plist>
