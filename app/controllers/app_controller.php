@@ -675,7 +675,7 @@ class AppController extends Controller {
 				$filename = basename($target_file_path);
 				//debug($target_file_path);
 				$data = $this->Uploader->importRemote($target_file_path,array('name'=>$filename));
-				CakeLog::write('debug',"<pre>".var_dump($data)."</pre>");
+				//CakeLog::write('debug',"<pre>".var_dump($data)."</pre>");
 				if(!empty($data)){
 					$file->delete(); //Delete the file because it's no longer needed
 					//debug($data);
